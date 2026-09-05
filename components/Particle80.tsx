@@ -38,6 +38,8 @@ import {
   projectField as projectSpatial,
 } from '@/lib/particle80-field';
 import { createFieldDebug, type FieldDebugMode } from '@/lib/particle80-debug';
+import type { OpeningBridgeRef } from '@/lib/brand-opening';
+import { createParticleHandoff } from '@/lib/particle80-handoff';
 
 export type Particle80State = {
   phase?: FieldPhase;
@@ -72,6 +74,8 @@ function brightnessGain(
 }
 
 export type Particle80Props = {
+  /** Optional brand-opening choreography; never changes the field simulation. */
+  opening?: OpeningBridgeRef;
   /** Render-only A/B review; the reusable motif retains its baseline by default. */
   brightnessPreset?: Particle80Brightness;
   /** Display-only composition magnification; preserves world-space physics. */
@@ -214,6 +218,7 @@ const Static80 = memo(function Static80({
 });
 
 function Particle80Surface({
+  opening,
   brightnessPreset = 'baseline',
   viewScale = 1,
   debug = 'off',
@@ -255,7 +260,7 @@ function Particle80Surface({
   const low = lowPower || quality === 'low' || lowPowerMode === 'on';
   const count = fieldBudget(particleCount, low);
   const rate = bounded(speed, 0, 2, DEFAULTS.speed);
-  const magnification = bounded(viewScale, 0.8, 1.6, 1);
+  const magnification = bounded(viewScale, 0.8, 1.8, 1);
   const halo = bounded(
     glowIntensity ?? glow,
     0,
@@ -516,6 +521,7 @@ function Particle80Surface({
     let lastPhysicsTime = elapsed.current;
     const pointer = { x: 0, y: 0, strength: 0 };
     const pointerTarget = { x: 0, y: 0, active: false };
+    const handoff = createParticleHandoff(count);
     const finePointer = window.matchMedia('(any-pointer: fine)');
     const clock: MotionClock = {
       time: elapsed.current,
@@ -539,6 +545,7 @@ function Particle80Surface({
       playback.current.interactive &&
       playback.current.pointerForce > 0 &&
       finePointer.matches &&
+      (!opening || opening.current.frame.pointerWeight > 0) &&
       isAnimating();
     const report = (progress: number) => {
       if (!callback.current || disposed) return;
@@ -569,6 +576,9 @@ function Particle80Surface({
       context.clearRect(0, 0, width, height);
       context.globalCompositeOperation = 'lighter';
       const settings = playback.current;
+      const openingFrame = opening?.current.frame;
+      const physicalDissolve = opening ? 0 : settings.dissolve;
+      const handoffRect = openingFrame && openingFrame.dissolveProgress > 0 ? element.getBoundingClientRect() : null;
       bakeEmitters(settings.halo);
       if (
         (settings.staticMotion || !settings.introEnabled) &&
@@ -584,15 +594,15 @@ function Particle80Surface({
       pointer.x += (pointerTarget.x - pointer.x) * pointerMix;
       pointer.y += (pointerTarget.y - pointer.y) * pointerMix;
       pointer.strength +=
-        ((pointerTarget.active && interaction ? 1 : 0) - pointer.strength) *
+        ((pointerTarget.active && interaction ? (openingFrame?.pointerWeight ?? 1) : 0) - pointer.strength) *
         pointerMix;
       const progress = fieldProgress(
         time,
-        settings.formation,
+        openingFrame?.formationProgress ?? settings.formation,
         settings.staticMotion || !settings.introEnabled,
         settings.duration,
       );
-      setFieldTargets(field, time, progress, layout, settings.dissolve);
+      setFieldTargets(field, time, progress, layout, physicalDissolve);
       if (!initialized || settings.staticMotion) {
         initializeField(field);
         initialized = true;
@@ -605,7 +615,7 @@ function Particle80Surface({
       // the original screen footprint instead of dimming enlarged digit edges.
       const maskMagnification = Math.min(
         magnification,
-        width < 650 ? 1.3 : 1.6,
+        width < 650 ? 1.38 : 1.8,
       );
       const labelHalfWidth = 0.85 / maskMagnification;
       const labelHalfHeight = 0.32 / maskMagnification;
@@ -648,7 +658,7 @@ function Particle80Surface({
       let displacementEnergy = 0;
       for (let index = 0; index < count; index++) {
         const k = index * 3;
-        fieldPoint(field, index, progress, settings.dissolve, point);
+        fieldPoint(field, index, progress, physicalDissolve, point);
         // UI status only needs a representative sample, not 9,600 square roots.
         if (index % 8 === 0)
           displacementEnergy += Math.hypot(
@@ -664,8 +674,10 @@ function Particle80Surface({
           projected,
           settings.shimmer,
         );
-        const x = width / 2 + projected.x * scale;
-        const y = height / 2 + projected.y * scale;
+        let x = width / 2 + projected.x * scale;
+        let y = height / 2 + projected.y * scale;
+        const flight = opening && handoffRect ? handoff.project(index, field.role[index], x, y, opening.current, handoffRect.left, handoffRect.top, width) : null;
+        if (flight) { x = flight.x; y = flight.y; }
         // The field surrounds each origin label, but doesn't wash out its crisp type.
         const labelDx = Math.min(
           Math.abs(projected.x - layout.sourceX),
@@ -677,6 +689,7 @@ function Particle80Surface({
         const alpha = Math.min(
           1,
           projected.opacity *
+            (flight?.opacity ?? 1) *
             labelMask *
             brightnessGain(
               settings.brightnessPreset,
@@ -695,6 +708,7 @@ function Particle80Surface({
         const color = FIELD_PALETTE[field.color[index]];
         if (
           settings.trails &&
+          !flight?.departing &&
           settings.tailLength > 0 &&
           field.trail[index] &&
           !settings.staticMotion
@@ -881,7 +895,7 @@ function Particle80Surface({
         height / (compact ? 5.6 : FIELD_DEFAULTS.viewHeight),
       );
       // Desktop is 1.3x the previous 1.18 composition. Phones preserve both digits.
-      scale = Math.min(magnification, compact ? 1.3 : 1.6) * baseScale;
+      scale = Math.min(magnification, compact ? 1.38 : 1.8) * baseScale;
       pointScale = bounded(baseScale / 170, 0.65, 1.25, 1);
       layout.sourceX = (width * (compact ? 0.245 : 0.315)) / scale;
       layout.sourceY = compact ? (80 - height / 2) / scale : 0;
@@ -1003,7 +1017,7 @@ function Particle80Surface({
       emitters.width = 1;
       emitters.height = 1;
     };
-  }, [count, low, debugMode, magnification]);
+  }, [count, low, debugMode, magnification, opening]);
 
   return (
     <div
