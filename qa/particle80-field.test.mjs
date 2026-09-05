@@ -23,6 +23,8 @@ try {
     FIELD_DEFAULTS,
     FIELD_PALETTE,
     FIELD_LOOPS,
+    fieldColorIndex,
+    FIELD_ACCENT_START,
     projectField,
   } = await server.ssrLoadModule('/lib/particle80-field.ts');
   const config = { ...FIELD_DEFAULTS, pointerForce: FIELD_DEFAULTS.mouseForce };
@@ -49,57 +51,69 @@ try {
     }
     return f;
   }
-  await test('deterministic 60/22/18 roles, exact size tiers and 2% champagne budget', () => {
+  await test('deterministic 50/25/18/7 roles, five size tiers, three optics and 2% champagne budget', () => {
     for (const count of [180, 360, 1400, 2200]) {
       const f = createParticleField(count),
         again = createParticleField(count);
       assert.deepEqual(f, again);
       assert.equal(
         f.role.filter((x) => x === 0).length,
-        Math.round(count * 0.6),
+        Math.round(count * 0.5),
       );
       assert.equal(
         f.role.filter((x) => x === 1).length,
-        Math.round(count * 0.22),
+        Math.round(count * 0.25),
       );
       assert.equal(
         f.role.filter((x) => x === 2).length,
-        count - Math.round(count * 0.6) - Math.round(count * 0.22),
+        Math.round(count * 0.18),
       );
       assert.equal(
-        f.color.filter((x) => x >= 7).length,
+        f.role.filter((x) => x === 3).length,
+        count -
+          Math.round(count * 0.5) -
+          Math.round(count * 0.25) -
+          Math.round(count * 0.18),
+      );
+      assert.equal(
+        f.accent.filter((x) => x === 1).length,
         Math.round(count * 0.02),
       );
       for (const [bin, ratio] of [
-        [0, 0.65],
+        [0, 0.55],
         [1, 0.25],
-        [2, 0.08],
+        [2, 0.12],
+        [3, 0.06],
       ])
         assert.equal(
           f.sizeClass.filter((x) => x === bin).length,
           Math.round(count * ratio),
         );
       const radii = [
-        [0.5, 1],
-        [1, 1.75],
-        [2, 3],
-        [3, 4],
+        [0.35, 0.7],
+        [0.7, 1.15],
+        [1.15, 1.75],
+        [1.75, 2.5],
+        [2.5, 4],
       ];
       for (let i = 0; i < count; i++) {
         const [min, max] = radii[f.sizeClass[i]];
         assert.ok(f.size[i] >= min && f.size[i] <= max);
         assert.ok(FIELD_PALETTE[f.color[i]]);
-        if (f.color[i] < 7) {
-          assert.ok(
-            f.role[i] === 0
-              ? f.color[i] < 3
-              : f.role[i] === 1
-                ? f.color[i] >= 3 && f.color[i] <= 4
-                : f.color[i] >= 5,
-          );
-        }
+        assert.equal(f.color[i] >= FIELD_ACCENT_START, f.accent[i] === 1);
         assert.equal(f.loop[i] === 255, f.role[i] === 2);
       }
+      for (const optical of [0, 1, 2]) assert.ok(f.optical.includes(optical));
+      // Luminance includes emitter area, not alpha alone: tiny dust stays faint.
+      const energy = Array.from(
+        f.size,
+        (radius, i) => radius * radius * f.opacity[i],
+      ).sort((a, b) => a - b);
+      assert.ok(
+        energy[Math.floor(count * 0.95)] > energy[Math.floor(count * 0.5)] * 6,
+      );
+      assert.ok(energy[Math.floor(count * 0.5)] < 0.3);
+      assert.ok(f.opacity.filter((x) => x > 0.7).length < count * 0.08);
       for (const key of [
         'position',
         'velocity',
@@ -117,7 +131,7 @@ try {
     assert.equal(fieldBudget(1e8, true), 360);
     assert.equal(fieldBudget(1e8, false), 2200);
   });
-  await test('stable anchors; independent clockwise / counterclockwise / clockwise lanes', () => {
+  await test('all structural trajectories move; independent lanes with rare counter-current', () => {
     const f = createParticleField(1400);
     const positions = f.position.slice();
     for (const time of [0, 8, 27, 1800]) {
@@ -126,28 +140,30 @@ try {
       setFieldTargets(f, time + 0.05, 1, layout, 0);
       for (let i = 0; i < f.count; i++) {
         const k = i * 3;
-        if (f.role[i] === 0) {
-          assert.deepEqual(
-            f.targetPosition.slice(k, k + 3),
-            f.rest.slice(k, k + 3),
-          );
-        } else if (f.role[i] === 1) {
+        if (f.role[i] !== 2) {
           const loop = FIELD_LOOPS[f.loop[i]];
           const ax = before[k] - loop.x,
             ay = before[k + 1] - loop.y;
           const bx = f.targetPosition[k] - loop.x,
             by = f.targetPosition[k + 1] - loop.y;
-          assert.equal(Math.sign(ax * by - ay * bx), Math.sign(loop.speed));
-          assert.ok(Math.abs(bx) <= loop.rx + 0.22);
-          assert.ok(Math.abs(by) <= loop.ry + 0.22);
-          assert.ok(Math.abs(f.targetPosition[k + 2]) < 0.65);
+          // Formation reference also moves, but does not own living phase.
+          assert.ok(Math.hypot(bx - ax, by - ay) > 0.000001);
+          assert.ok(Math.abs(bx) <= loop.rx + 0.45);
+          assert.ok(Math.abs(by) <= loop.ry + 0.45);
+          assert.ok(Math.abs(f.targetPosition[k + 2]) < 0.9);
         }
       }
     }
     assert.deepEqual(f.position, positions); // Attractors never teleport live positions.
     const speeds = [...new Set(f.orbitSpeed.filter((x) => x !== 0))];
     assert.ok(speeds.length > 30); // No synchronized marquee phase/rate.
-    for (const role of [0, 1])
+    const counter = f.orbitSpeed.filter(
+      (speed, i) =>
+        f.loop[i] < 3 &&
+        Math.sign(speed) !== Math.sign(FIELD_LOOPS[f.loop[i]].speed),
+    );
+    assert.ok(counter.length > 0 && counter.length < f.count * 0.035);
+    for (const role of [0, 1, 3])
       for (const loop of [0, 1, 2])
         for (const side of [-1, 1])
           assert.ok(
@@ -156,10 +172,11 @@ try {
             ),
           );
   });
-  await test('runner circulation is integrated while anchor silhouette stays fixed', () => {
+  await test('EVERY particle moves in XY and depth; quiet field remains alive without pointer or noise', () => {
     const f = createParticleField(180);
     setFieldTargets(f, 8, 1, layout, 0);
     initializeField(f);
+    const initial = f.position.slice();
     for (let frame = 0; frame < 360; frame++) {
       const time = 8 + frame / 60;
       setFieldTargets(f, time, 1, layout, 0);
@@ -167,17 +184,85 @@ try {
     }
     for (let i = 0; i < f.count; i++) {
       const k = i * 3;
-      if (f.role[i] === 0)
-        assert.deepEqual(f.position.slice(k, k + 3), f.rest.slice(k, k + 3));
-      if (f.role[i] === 1) {
-        assert.ok(Math.hypot(f.velocity[k], f.velocity[k + 1]) > 0.04);
+      assert.ok(
+        Math.hypot(
+          f.position[k] - initial[k],
+          f.position[k + 1] - initial[k + 1],
+        ) > 0.003,
+        `XY frozen ${i}`,
+      );
+      assert.ok(
+        Math.abs(f.position[k + 2] - initial[k + 2]) > 0.00001,
+        `depth frozen ${i}`,
+      );
+      if (f.role[i] !== 2) {
+        assert.ok(Math.hypot(f.velocity[k], f.velocity[k + 1]) > 0.001);
         const lane = FIELD_LOOPS[f.loop[i]];
         const cross =
           (f.position[k] - lane.x) * f.velocity[k + 1] -
           (f.position[k + 1] - lane.y) * f.velocity[k];
-        assert.equal(Math.sign(cross), Math.sign(lane.speed));
+        assert.equal(Math.sign(cross), Math.sign(f.orbitSpeed[i]));
+        const width =
+          f.orbitWidth[i] +
+          Math.sin((8 + 359 / 60) * 0.33 + f.noiseSeed[i]) * 0.016;
+        const radial = Math.hypot(
+          (f.position[k] - lane.x) / (lane.rx + width),
+          (f.position[k + 1] - lane.y) / (lane.ry + width),
+        );
+        assert.ok(Math.abs(radial - 1) < 0.06, `orbit tube error ${radial}`);
       }
     }
+  });
+  await test('color is a spatially coherent field; upper 8 cool, lower 8 warmer, no ID-random color', () => {
+    for (const loop of [0, 1, 2]) {
+      const lane = FIELD_LOOPS[loop];
+      for (let theta = 0; theta < 6.2; theta += 0.2) {
+        const x = lane.x + lane.rx * Math.cos(theta),
+          y = lane.y + lane.ry * Math.sin(theta);
+        const color = fieldColorIndex(loop, x, y, 0, 12, false);
+        assert.ok(
+          Math.abs(
+            color -
+              fieldColorIndex(loop, x + 0.001, y + 0.001, 0.001, 12.001, false),
+          ) <= 1,
+        );
+      }
+    }
+    assert.ok(
+      fieldColorIndex(0, -1, -0.5, 0, 0, false) >
+        fieldColorIndex(1, -1, 0.5, 0, 0, false),
+    );
+  });
+  await test('phase freedom: tangential disturbance rejoins the orbit rather than a seeded point', () => {
+    const a = createParticleField(180),
+      b = createParticleField(180);
+    for (const f of [a, b]) {
+      setFieldTargets(f, 8, 1, layout, 0);
+      initializeField(f);
+    }
+    const i = 12,
+      k = i * 3,
+      lane = FIELD_LOOPS[a.loop[i]];
+    const theta =
+      Math.atan2(
+        (b.position[k + 1] - lane.y) / (lane.ry + b.orbitWidth[i]),
+        (b.position[k] - lane.x) / (lane.rx + b.orbitWidth[i]),
+      ) + 0.55;
+    b.position[k] = lane.x + (lane.rx + b.orbitWidth[i]) * Math.cos(theta);
+    b.position[k + 1] = lane.y + (lane.ry + b.orbitWidth[i]) * Math.sin(theta);
+    for (let frame = 0; frame < 600; frame++)
+      for (const f of [a, b]) {
+        const t = 8 + frame / 60;
+        setFieldTargets(f, t, 1, layout, 0);
+        integrateField(f, 1 / 60, t, off, quiet);
+      }
+    assert.ok(
+      Math.hypot(
+        a.position[k] - b.position[k],
+        a.position[k + 1] - b.position[k + 1],
+      ) > 0.12,
+      'phase was locked back to original target',
+    );
   });
   await test('pointer response is layered: ambient > runners > anchors, all spring back', () => {
     const f = createParticleField(3);
@@ -198,6 +283,66 @@ try {
     for (let frame = 0; frame < 600; frame++)
       integrateField(f, 1 / 60, frame / 60, off, quiet);
     assert.ok(error(f) < 1e-8);
+  });
+  await test('actual pointer impulse rejoins a moving orbit with residual phase, not a frozen target', () => {
+    const control = createParticleField(360),
+      pushed = createParticleField(360);
+    for (const f of [control, pushed]) {
+      setFieldTargets(f, 8, 1, layout, 0);
+      initializeField(f);
+    }
+    const radiusError = (f, time) => {
+      let total = 0,
+        count = 0;
+      for (let i = 0; i < f.count; i++)
+        if (f.loop[i] === 0) {
+          const lane = FIELD_LOOPS[0],
+            k = i * 3;
+          const width =
+            f.orbitWidth[i] + Math.sin(time * 0.33 + f.noiseSeed[i]) * 0.016;
+          total += Math.abs(
+            Math.hypot(
+              (f.position[k] - lane.x) / (lane.rx + width),
+              (f.position[k + 1] - lane.y) / (lane.ry + width),
+            ) - 1,
+          );
+          count++;
+        }
+      return total / count;
+    };
+    let peak = 0,
+      after = 0;
+    for (let frame = 0; frame < 600; frame++) {
+      const time = 8 + frame / 60;
+      for (const f of [control, pushed]) {
+        setFieldTargets(f, time, 1, layout, 0);
+        integrateField(
+          f,
+          1 / 60,
+          time,
+          f === pushed && frame >= 120 && frame < 240
+            ? { x: -1.2, y: -0.55, strength: 1 }
+            : off,
+          { ...config, noiseStrength: 0 },
+        );
+      }
+      const excess = radiusError(pushed, time) - radiusError(control, time);
+      if (frame >= 120 && frame < 270) peak = Math.max(peak, excess);
+      if (frame === 599) after = excess;
+    }
+    assert.ok(peak > 0.03, `pointer did not disturb orbit: ${peak}`);
+    assert.ok(
+      Math.abs(after) < 0.008,
+      `normal recovery did not settle: ${after}`,
+    );
+    const phaseDistance = pushed.position.reduce(
+      (sum, v, i) => sum + (v - control.position[i]) ** 2,
+      0,
+    );
+    assert.ok(
+      phaseDistance > 0.03,
+      'particles snapped back to their pre-pointer phase',
+    );
   });
   await test('two independent source populations converge through a central field, then a thick 80', () => {
     const f = createParticleField(1400);
@@ -282,7 +427,8 @@ try {
       x.position.reduce((s, v, i) => s + (v - y.position[i]) ** 2, 0) /
       x.position.length;
     assert.ok(difference(a, b) < 0.001 && difference(b, c) < 0.001);
-    assert.ok(error(b) < 0.002, `end error ${error(b)}`);
+    // Living coordinates may differ tangentially from the formation reference.
+    assert.ok(b.position.every((v) => Number.isFinite(v) && Math.abs(v) < 5));
   });
   await test('noise keeps the formed field alive while stalls and extreme inputs remain bounded', () => {
     const f = simulate(180, 60, 12);

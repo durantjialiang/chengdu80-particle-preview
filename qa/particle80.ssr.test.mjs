@@ -16,6 +16,10 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
     const { default: Particle80 } = await server.ssrLoadModule(
       '/components/Particle80.tsx',
     );
+    const { createParticleField, FIELD_PALETTE } = await server.ssrLoadModule(
+      '/lib/particle80-field.ts',
+    );
+    const fallbackRoles = createParticleField(360).role;
     const render = (props) =>
       renderToStaticMarkup(createElement(Particle80, props));
     const first = render({});
@@ -35,14 +39,19 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
         baseline[i].replace(/opacity="[^"]+"/, ''),
         brighter[i].replace(/opacity="[^"]+"/, ''),
       );
-      if (/#B8C7D9|#9FB3C8/.test(baseline[i]))
-        assert.equal(baseline[i], brighter[i]);
+      if (fallbackRoles[i % 360] === 2) assert.equal(baseline[i], brighter[i]);
     }
     assert.notDeepEqual(baseline, brighter);
     assert.match(first, /<svg/);
     assert.match(first, /<canvas/);
-    for (const color of ['#EAF4FF', '#8FDFFF', '#B8C7D9', '#D9B36C'])
-      assert.ok(first.includes(color), `SVG fallback preserves ${color}`);
+    const fills = [...first.matchAll(/fill="(#[0-9a-f]{6})"/g)].map(
+      (m) => m[1],
+    );
+    assert.ok(
+      new Set(fills).size >= 12,
+      'spatial color field remains visible in fallback',
+    );
+    assert.ok(fills.every((color) => FIELD_PALETTE.includes(color)));
     assert.match(first, /aria-hidden="true"/);
     // Matching initial cloud plus a formed fallback for reduced motion/context failure.
     assert.equal((first.match(/<circle/g) ?? []).length, 720);
