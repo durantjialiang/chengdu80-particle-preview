@@ -73,6 +73,42 @@ export const FIELD_LOOPS = [
   { x: 0.87, y: 0, rx: 0.58, ry: 1.08, speed: 0.255 },
 ] as const;
 
+// Equal arc-length coordinates keep an ellipse's long sides as populated as
+// its ends. Built once; the living frame uses only a lookup and local metric.
+const TAU = Math.PI * 2;
+const ARC_SAMPLES = 256;
+const LOOP_ARCS = FIELD_LOOPS.map((lane) => {
+  const steps = 1024;
+  const lengths = new Float64Array(steps + 1);
+  for (let i = 1; i <= steps; i++) {
+    const theta = ((i - 0.5) / steps) * TAU;
+    lengths[i] =
+      lengths[i - 1] +
+      (Math.hypot(lane.rx * Math.sin(theta), lane.ry * Math.cos(theta)) * TAU) /
+        steps;
+  }
+  const circumference = lengths[steps];
+  const angles = new Float32Array(ARC_SAMPLES + 1);
+  let cursor = 1;
+  for (let i = 0; i <= ARC_SAMPLES; i++) {
+    const distance = (circumference * i) / ARC_SAMPLES;
+    while (cursor < steps && lengths[cursor] < distance) cursor++;
+    const fraction =
+      (distance - lengths[cursor - 1]) /
+      (lengths[cursor] - lengths[cursor - 1]);
+    angles[i] = ((cursor - 1 + fraction) * TAU) / steps;
+  }
+  return { angles, circumference, meanRadius: circumference / TAU };
+});
+
+/** Phase is distance around the loop, not a polar angle. */
+export function fieldOrbitAngle(loop: number, phase: number) {
+  const sample = ((((phase / TAU) % 1) + 1) % 1) * ARC_SAMPLES;
+  const index = Math.floor(sample);
+  const angles = LOOP_ARCS[loop].angles;
+  return angles[index] + (angles[index + 1] - angles[index]) * (sample - index);
+}
+
 function champagneZone(x: number, y: number, z: number) {
   return (
     Math.exp(-((x + 1.05) ** 2 * 4 + (y - 0.78) ** 2 * 5 + z * z * 0.7)) *
@@ -187,7 +223,7 @@ export function fieldProgress(
     : bounded(controlled ?? time / bounded(duration, 0.5, 16, 7.2), 0, 1, 0);
 }
 
-/** Seeded volumetric samples, not equally spaced points travelling an outline. */
+/** Jittered arc-length strata fill the volume without empty random sectors. */
 export function createParticleField(count: number): ParticleField {
   let seed = 802026;
   const random = () => {
@@ -235,14 +271,27 @@ export function createParticleField(count: number): ParticleField {
     field.role[i] = role;
     field.layer[i] = layer;
     const angle = random() * Math.PI * 2;
-    // Filled 3D annular volumes: uneven density across their thickness and depth.
+    // Keep the current volumetric thickness; balance coverage along the loop.
     const thickness = normal() * (role === 1 ? 0.11 : role === 3 ? 0.21 : 0.17);
     field.orbitPhase[i] = angle;
     field.orbitWidth[i] = thickness;
     if (layer === 0) {
       // Independent of side/parity: both SWUFE and FIC seed every loop.
       const local = role === 1 ? i - anchors : role === 3 ? i - ambientEnd : i;
-      const loop = local % 4 === 0 ? 0 : local % 4 === 1 ? 1 : 2;
+      const roleCount =
+        role === 1 ? runners : role === 3 ? count - ambientEnd : anchors;
+      const perimeter = LOOP_ARCS.reduce(
+        (sum, arc) => sum + arc.circumference,
+        0,
+      );
+      const upperCount = Math.round(
+        (roleCount * LOOP_ARCS[0].circumference) / perimeter,
+      );
+      const lowerCount = Math.round(
+        (roleCount * LOOP_ARCS[1].circumference) / perimeter,
+      );
+      const loop =
+        local < upperCount ? 0 : local < upperCount + lowerCount ? 1 : 2;
       field.loop[i] = loop;
       const lane = FIELD_LOOPS[loop];
       const bandSample = random();
@@ -284,13 +333,12 @@ export function createParticleField(count: number): ParticleField {
               : 0.045 + luminance * 0.09;
     hotspot[i] =
       random() +
-      (role === 3 ? 0.85 : role === 1 ? 0.2 : role === 2 ? -0.25 : 0) +
-      (layer === 0 ? Math.abs(Math.sin(angle)) ** 6 * 0.35 : 0);
+      (role === 3 ? 0.85 : role === 1 ? 0.2 : role === 2 ? -0.25 : 0);
     field.depth[i] = field.rest[k + 2];
     field.trail[i] =
       (role === 1 && i % 4 === 0) || (role === 3 && i % 3 === 0) ? 1 : 0;
   }
-  // Exact rounded size budgets, biased toward circulation/turning-point hotspots.
+  // Exact size budgets retain the long tail without favouring the loop poles.
   // Radii: diameters 0.7–1.4 / 1.4–2.3 / 2.3–3.5 / 3.5–5 / 5–8 CSS px.
   sizeOrder.sort((a, b) => hotspot[a] - hotspot[b]);
   const small = Math.round(count * 0.55);
@@ -339,6 +387,36 @@ export function createParticleField(count: number): ParticleField {
     rank++
   )
     field.beacon[sizeOrder[rank]] = 1;
+  // Distribute EACH optical tier around each loop. A random sample can leave
+  // entire phone-sized sectors with only invisible dust; these jittered strata
+  // guarantee initial coverage while independent speeds keep the field organic.
+  // This is setup-only: no sorting, allocation or reseeding in the frame loop.
+  for (const role of [0, 1, 3]) {
+    for (let loop = 0; loop < FIELD_LOOPS.length; loop++) {
+      const lane = FIELD_LOOPS[loop];
+      for (let sizeClass = 0; sizeClass < 5; sizeClass++) {
+        const members = sizeOrder.filter(
+          (i) =>
+            field.role[i] === role &&
+            field.loop[i] === loop &&
+            field.sizeClass[i] === sizeClass,
+        );
+        const offset = random();
+        for (let rank = 0; rank < members.length; rank++) {
+          const i = members[rank],
+            k = i * 3;
+          const phase =
+            ((rank + 0.2 + random() * 0.6) / members.length + offset) * TAU;
+          const angle = fieldOrbitAngle(loop, phase);
+          field.orbitPhase[i] = phase;
+          field.rest[k] =
+            lane.x + Math.cos(angle) * (lane.rx + field.orbitWidth[i]);
+          field.rest[k + 1] =
+            lane.y + Math.sin(angle) * (lane.ry + field.orbitWidth[i]);
+        }
+      }
+    }
+  }
   // A spatial zone, not independent random paint. Sparse membership is capped;
   // its warmth fades as the particle advects outside the champagne region.
   const accentOrder = sizeOrder.filter(
@@ -412,10 +490,11 @@ export function setFieldTargets(
       const lane = FIELD_LOOPS[field.loop[i]];
       // Move attractors inside fixed digit volumes, never rotate a digit/group.
       // Analytic phase modulation has no seam/reset and never reverses a lane.
-      const orbit =
+      const arcPhase =
         field.orbitPhase[i] +
         time * field.orbitSpeed[i] +
         (Math.sin(time * 0.41 + phase) - Math.sin(phase)) * 0.09;
+      const orbit = fieldOrbitAngle(field.loop[i], arcPhase);
       const width = field.orbitWidth[i] + Math.sin(time * 0.33 + phase) * 0.016;
       restX = lane.x + Math.cos(orbit) * (lane.rx + width);
       restY = lane.y + Math.sin(orbit) * (lane.ry + width);
@@ -509,8 +588,14 @@ export function integrateField(
           ey = (y - lane.y) / ry;
         const radius = Math.hypot(ex, ey);
         // Only the degenerate ellipse centre uses a seed direction.
-        const cos = radius > 1e-5 ? ex / radius : Math.cos(field.orbitPhase[i]);
-        const sin = radius > 1e-5 ? ey / radius : Math.sin(field.orbitPhase[i]);
+        const cos =
+          radius > 1e-5
+            ? ex / radius
+            : Math.cos(fieldOrbitAngle(field.loop[i], field.orbitPhase[i]));
+        const sin =
+          radius > 1e-5
+            ? ey / radius
+            : Math.sin(fieldOrbitAngle(field.loop[i], field.orbitPhase[i]));
         const gx = cos / rx,
           gy = sin / ry;
         const gradientLength = Math.hypot(gx, gy);
@@ -521,7 +606,10 @@ export function integrateField(
         // 8 has a little more local texture; 0 stays noticeably smoother.
         const variation = field.loop[i] === 2 ? 0.055 : 0.12;
         const omega =
-          field.orbitSpeed[i] * (1 + Math.sin(t * 0.7 + sin * 1.4) * variation);
+          (field.orbitSpeed[i] *
+            (1 + Math.sin(t * 0.7 + sin * 1.4) * variation) *
+            LOOP_ARCS[field.loop[i]].meanRadius) /
+          Math.hypot(lane.rx * sin, lane.ry * cos);
         // Drag compensation supplies steady tangential flow, not position lerp.
         // Centripetal feed-forward avoids ballooning the faster circulation lanes.
         flowX =
