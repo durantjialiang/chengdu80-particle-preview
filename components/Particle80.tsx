@@ -540,6 +540,14 @@ function Particle80Surface({
       }
       // Enlarge the composition, not individual light points or their halos.
       const size = pointScale;
+      // Text itself is not scaled with the 80. Keep its protection region in
+      // the original screen footprint instead of dimming enlarged digit edges.
+      const maskMagnification = Math.min(
+        magnification,
+        width < 650 ? 1.3 : 1.6,
+      );
+      const labelHalfWidth = 0.85 / maskMagnification;
+      const labelHalfHeight = 0.32 / maskMagnification;
       if (spriteContext) {
         const sourceEnergy =
           smoothProgress((progress - 0.06) / 0.16) *
@@ -601,7 +609,8 @@ function Particle80Surface({
           Math.abs(projected.x + layout.sourceX),
         );
         const labelDy = Math.abs(projected.y - layout.sourceY);
-        const labelMask = labelDx < 0.85 && labelDy < 0.32 ? 0.12 : 1;
+        const labelMask =
+          labelDx < labelHalfWidth && labelDy < labelHalfHeight ? 0.12 : 1;
         const alpha = Math.min(
           1,
           projected.opacity *
