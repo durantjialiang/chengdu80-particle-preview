@@ -21,6 +21,14 @@ to keep both digits visible. Camera, typography, 7.2-second story and CTA are un
 Only 0.5% of existing stars are intense emitters: 24 desktop / 3 mobile, with
 independent slow glints and local halos, never screen-wide exposure or bloom.
 
+Density correction: each loop receives particles proportional to its perimeter.
+Each role/optical-size tier uses jittered equal-arc-length strata, rather than
+random polar angles. Large stars are no longer biased to the loop poles.
+The living flow converts distance speed to local angular speed, maintaining
+ellipse coverage without a seeded phase lock or changes to pointer/damping.
+The text-protection mask retains its unscaled screen footprint so enlarged
+digit edges do not appear to have missing particles.
+
 Development preview: `?fieldDebug=roles`, `vectors`, `flow`, or `telemetry`.
 Diagnostics and their explicit snapshot API are removed from production builds.
 
@@ -37,7 +45,7 @@ import Particle80 from '@/components/Particle80';
   noiseStrength={0.16}
   glowIntensity={0.55}
   formationDuration={7.2}
-/>
+/>;
 ```
 
 See [Particle80Intro.README.md](./Particle80Intro.README.md) for the full timeline,
