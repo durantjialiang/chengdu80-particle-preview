@@ -15,11 +15,19 @@ All roles have XY and depth motion, except intentional pause/reduced-motion mode
 Five size tiers and three cached optical types (dust/star/spark) create a long-tail
 luminance distribution. Colour is sampled from a coherent spatial temperature
 field, with a maximum ~2% champagne membership; no per-particle random colours.
-The luminous-density pass uses 4,800 desktop / 600 low-power particles. The Intro
+The stellar-radiance pass uses 9,600 desktop / 900 low-power particles. The Intro
 composition is 1.3× its previous size (viewScale 1.534), capped on narrow screens
 to keep both digits visible. Camera, typography, 7.2-second story and CTA are unchanged.
-Only 0.5% of existing stars are intense emitters: 24 desktop / 3 mobile, with
+Only 0.5% of existing stars are intense emitters: 48 desktop / 5 mobile, with
 independent slow glints and local halos, never screen-wide exposure or bloom.
+The default Intro brightness preset B uses structure 1.72 / flow 1.92 / ambient 1,
+with star gain capped at 1.6 and champagne at 1.3. A stays at 1.18 / 1.24 / 1.
+Cached point-spread sprites replace hard filled disks with a bright compact core,
+coloured shoulder and continuous radial falloff. Nearer particles have a subtle
+focus spread; only rare beacons have local radiance and a low-intensity glint.
+The emitter atlas costs one draw per ordinary particle, without per-frame
+gradients or arc tessellation. It rebakes only when halo intensity changes.
+Background source haze is reduced, not exposed upwards with the stars.
 
 Density correction: each loop receives particles proportional to its perimeter.
 Each role/optical-size tier uses jittered equal-arc-length strata, rather than
@@ -38,7 +46,7 @@ import Particle80 from '@/components/Particle80';
 <Particle80
   interactive
   background="dark"
-  particleCount={4800}
+  particleCount={9600}
   mouseForce={5.5}
   springStrength={13}
   damping={4.8}
