@@ -11,7 +11,7 @@ unchanged.
 import Particle80Intro from '@/components/Particle80Intro';
 
 <Particle80Intro
-  particleCount={4800}
+  particleCount={9600}
   mouseForce={5.5}
   springStrength={13}
   damping={4.8}
@@ -73,12 +73,12 @@ toward neutral outside that zone. Colours are not independently random per ID.
 diameter floor for mobile rasterisation, without enlarging stars. Optical types:
 sharp dust with a tiny low-energy fringe, compact soft stars, and rare radial-falloff sparks.
 Most luminance is low; rare large emitters carry the highlights. B alpha gain is
-1.50 for structure / 1.65 for flows / 1.00 for ambient, capped at 1.30 for larger
-stars and 1.20 for champagne. A remains 1.18 / 1.24 / 1.00 for review only.
-Star/spark sprites have brighter local falloff; dust optics and particle radii
+1.72 for structure / 1.92 for flows / 1.00 for ambient, capped at 1.60 for larger
+stars and 1.30 for champagne. A remains 1.18 / 1.24 / 1.00 for review only.
+Continuous point-spread sprites replace filled disks; particle radii and physics
 are unchanged. No global exposure, background lift or full-screen bloom.
 
-The top 0.5% of existing stars (24 desktop / 3 low-power) are intense emitters,
+The top 0.5% of existing stars (48 desktop / 5 low-power) are intense emitters,
 with a bright core and a local soft aura. Independent slow 10–12 second glints
 avoid synchronized flashing. Reduced motion retains steady light without pulses.
 The Intro is 1.3× its previous composition size: viewScale 1.534 (1.18 × 1.3).
@@ -114,7 +114,7 @@ no teleporting during a paused scrub. Appearance/dissolve can repaint while paus
 
 | Prop | Default | Range / purpose |
 | --- | --- | --- |
-| particleCount | 4800 | 180–4800 desktop; capped at 600 low power |
+| particleCount | 9600 | 180–9600 desktop; capped at 900 low power |
 | mouseForce | 5.5 | 0–12; low power applies 60% strength |
 | springStrength | 13 | 3–40; target attraction |
 | damping | 4.8 | 1.5–14; velocity dissipation |
@@ -153,11 +153,12 @@ transition. The original globe remains lazy-loaded and unmodified.
 
 ## Accessibility and performance
 
-- Single Canvas 2D with one cached 1536×144 colour/optical atlas, additive blending.
+- Single Canvas 2D with a cached 2048×192 emitter atlas and 1536×144 local-aura
+  atlas, additive blending. Both caches release backing memory on cleanup.
 - A quarter of flows plus a third of highlights have short velocity-derived trails.
 - Fixed typed buffers and reused output objects; no mesh per particle, per-frame
   particle arrays, external textures, video, audio, or heavy bloom dependencies.
-- Desktop draw budget: 60 fps / DPR ≤1.5. Mobile/low-power: 30 fps / 600 particles /
+- Desktop draw budget: 60 fps / DPR ≤1.5. Mobile/low-power: 30 fps / 900 particles /
   DPR ≤1. These are target caps, not measured real-device FPS claims.
 - Fine-pointer interaction only; normal touch scrolling is retained.
 - Hidden/offscreen/paused scenes suspend RAF and do not catch up hidden time.

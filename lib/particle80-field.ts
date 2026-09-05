@@ -7,9 +7,9 @@ import {
 
 /** Physical field coordinates are independent of the Canvas resolution. */
 export const FIELD_DEFAULTS = {
-  particleCount: 4800,
-  mobileCount: 600,
-  maxParticles: 4800,
+  particleCount: 9600,
+  mobileCount: 900,
+  maxParticles: 9600,
   mouseForce: 5.5,
   springStrength: 13,
   damping: 4.8,
