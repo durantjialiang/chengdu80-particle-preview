@@ -56,22 +56,24 @@
   right: 8%;
 }
 .acronym {
-  font-size: clamp(30px, 2.7vw, 46px);
+  font-size: clamp(37.5px, 3.375vw, 57.5px);
   letter-spacing: -0.025em;
   line-height: 1.1;
-  font-weight: 400;
+  font-weight: 700;
+  font-synthesis: none;
 }
 .fullName {
-  margin-top: 18px;
-  color: #8c9fb1;
-  font-size: 14px;
-  line-height: 1.65;
-  max-width: 205px;
-  margin-inline: auto;
-}
-.fic .fullName {
-  margin-left: auto;
-  max-width: 160px;
+  /* Accessible institutional context; deliberately absent from visible layout. */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 .field {
   position: absolute;
@@ -138,9 +140,6 @@
   .composition {
     min-height: 410px;
   }
-  .fullName {
-    font-size: 14px;
-  }
   .desktopBreak {
     display: none;
   }
@@ -167,13 +166,7 @@
     left: 5%;
   }
   .acronym {
-    font-size: 28px;
-  }
-  .fullName {
-    margin-top: 12px;
-    line-height: 1.55;
-    font-size: 14px;
-    max-width: 170px;
+    font-size: clamp(30px, 8.72vw, 34px);
   }
   .field {
     inset: 0;

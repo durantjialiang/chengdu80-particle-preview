@@ -41,7 +41,30 @@ export type Particle80State = {
   interactionEnabled: boolean;
 };
 
+/** Render-only review presets: no palette, geometry, timing or physics changes. */
+export const PARTICLE_80_BRIGHTNESS = {
+  baseline: { anchor: 1, runner: 1, ambient: 1 },
+  A: { anchor: 1.18, runner: 1.24, ambient: 1 },
+  B: { anchor: 1.28, runner: 1.34, ambient: 1 },
+} as const;
+export type Particle80Brightness = keyof typeof PARTICLE_80_BRIGHTNESS;
+
+function brightnessGain(
+  preset: Particle80Brightness,
+  role: number,
+  sizeClass: number,
+  color: number,
+) {
+  const settings = PARTICLE_80_BRIGHTNESS[preset];
+  if (role === 2) return settings.ambient;
+  const gain = role === 1 ? settings.runner : settings.anchor;
+  // Keep rare stars and champagne highlights from turning into white hotspots.
+  return Math.min(gain, sizeClass >= 2 ? 1.1 : color >= 7 ? 1.12 : gain);
+}
+
 export type Particle80Props = {
+  /** Render-only A/B review; the reusable motif retains its baseline by default. */
+  brightnessPreset?: Particle80Brightness;
   /** False unmounts the entire renderer, observers and animation loop. */
   enabled?: boolean;
   /** False freezes the motif, preserving its last phase. */
@@ -129,8 +152,10 @@ function get2dContext(surface: HTMLCanvasElement) {
 
 const Static80 = memo(function Static80({
   initialFormation,
+  brightnessPreset,
 }: {
   initialFormation: number;
+  brightnessPreset: Particle80Brightness;
 }) {
   const initialPoints = useMemo(
     () => fallbackPoints(initialFormation),
@@ -144,7 +169,18 @@ const Static80 = memo(function Static80({
         cy={Number(point.y.toFixed(6))}
         r={Number((point.size * 0.0065).toFixed(6))}
         fill={FIELD_PALETTE[fallbackField.color[i]]}
-        opacity={Number(point.opacity.toFixed(5))}
+        opacity={Number(
+          Math.min(
+            1,
+            point.opacity *
+              brightnessGain(
+                brightnessPreset,
+                fallbackField.role[i],
+                fallbackField.sizeClass[i],
+                fallbackField.color[i],
+              ),
+          ).toFixed(5),
+        )}
       />
     ));
   return (
@@ -161,6 +197,7 @@ const Static80 = memo(function Static80({
 });
 
 function Particle80Surface({
+  brightnessPreset = 'baseline',
   active = true,
   motion = 'auto',
   quality = 'auto',
@@ -241,6 +278,7 @@ function Particle80Surface({
     callback.current = onStateChange;
   }, [onStateChange]);
   const playback = useRef({
+    brightnessPreset,
     active,
     pageVisible,
     staticMotion,
@@ -271,6 +309,7 @@ function Particle80Surface({
       previous.staticMotion !== staticMotion ||
       (previous.rate === 0) !== (rate === 0);
     playback.current = {
+      brightnessPreset,
       active,
       pageVisible,
       staticMotion,
@@ -293,6 +332,7 @@ function Particle80Surface({
     };
     syncPlayback.current?.(resetTiming);
   }, [
+    brightnessPreset,
     active,
     pageVisible,
     staticMotion,
@@ -517,7 +557,17 @@ function Particle80Surface({
         );
         const labelDy = Math.abs(projected.y - layout.sourceY);
         const labelMask = labelDx < 0.85 && labelDy < 0.32 ? 0.12 : 1;
-        const alpha = projected.opacity * labelMask;
+        const alpha = Math.min(
+          1,
+          projected.opacity *
+            labelMask *
+            brightnessGain(
+              settings.brightnessPreset,
+              field.role[index],
+              field.sizeClass[index],
+              field.color[index],
+            ),
+        );
         if (alpha < 0.002) continue;
         const radius = projected.size * size;
         const color = FIELD_PALETTE[field.color[index]];
@@ -779,6 +829,7 @@ function Particle80Surface({
         } as CSSProperties
       }
       data-background={background}
+      data-brightness={brightnessPreset}
       data-quality={low ? 'low' : 'full'}
       data-static={staticMotion ? 'true' : 'false'}
       data-intro-duration={duration}
@@ -786,7 +837,10 @@ function Particle80Surface({
       role={label ? 'img' : undefined}
       aria-label={label}
     >
-      <Static80 initialFormation={initialFormation} />
+      <Static80
+        initialFormation={initialFormation}
+        brightnessPreset={brightnessPreset}
+      />
       <canvas
         ref={canvas}
         className={`${styles.surface} ${styles.canvas}`}

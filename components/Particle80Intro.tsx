@@ -160,6 +160,7 @@ function IntroSurface({
                 active={active && visit.ready && !leaving}
                 interactive={particleProps.interactive ?? true}
                 intensity={particleProps.intensity ?? 1.18}
+                brightnessPreset={particleProps.brightnessPreset ?? 'B'}
                 glow={particleProps.glow ?? FIELD_DEFAULTS.glowIntensity}
                 introEnabled={formationEnabled}
                 introDuration={duration}
