@@ -51,7 +51,7 @@ export type Particle80State = {
 export const PARTICLE_80_BRIGHTNESS = {
   baseline: { anchor: 1, runner: 1, ambient: 1 },
   A: { anchor: 1.18, runner: 1.24, ambient: 1 },
-  B: { anchor: 1.5, runner: 1.65, ambient: 1 },
+  B: { anchor: 1.72, runner: 1.92, ambient: 1 },
 } as const;
 export type Particle80Brightness = keyof typeof PARTICLE_80_BRIGHTNESS;
 
@@ -67,7 +67,7 @@ function brightnessGain(
   // Keep rare stars and champagne highlights from turning into white hotspots.
   return Math.min(
     gain,
-    sizeClass >= 3 ? 1.3 : color >= FIELD_ACCENT_START ? 1.2 : gain,
+    color >= FIELD_ACCENT_START ? 1.3 : sizeClass >= 3 ? 1.6 : gain,
   );
 }
 
@@ -444,6 +444,66 @@ function Particle80Surface({
         }
       });
     }
+    // Pre-baked point-spread functions: a continuous luminous core rather than
+    // a filled LED disk. Three rows preserve dust / star / spark optical scales.
+    // Halo is baked only when its setting changes. One atlas draw per particle
+    // replaces thousands of arc/fill/halo calls at the larger particle budget.
+    const emitters = document.createElement('canvas');
+    const cell = 64;
+    emitters.width = cell * FIELD_PALETTE.length;
+    emitters.height = cell * 3;
+    const emitterContext = get2dContext(emitters);
+    let emitterHalo = -1;
+    const bakeEmitters = (haloStrength: number) => {
+      if (!emitterContext || emitterHalo === haloStrength) return;
+      emitterHalo = haloStrength;
+      emitterContext.clearRect(0, 0, emitters.width, emitters.height);
+      FIELD_PALETTE.forEach((color, index) => {
+        const core = index >= FIELD_ACCENT_START ? '#fff3df' : '#f7fcff';
+        for (let optical = 0; optical < 3; optical++) {
+          const cx = index * cell + cell / 2;
+          const cy = optical * cell + cell / 2;
+          const extent = optical === 0 ? 1.45 : optical === 1 ? 4 : 5.5;
+          const coreRadius = cell / 2 / extent;
+          if (optical > 0 && haloStrength > 0) {
+            const glow = emitterContext.createRadialGradient(
+              cx,
+              cy,
+              0,
+              cx,
+              cy,
+              cell / 2,
+            );
+            glow.addColorStop(0, `${color}c0`);
+            glow.addColorStop(0.12, `${color}8c`);
+            glow.addColorStop(0.3, `${color}26`);
+            glow.addColorStop(0.6, `${color}08`);
+            glow.addColorStop(1, `${color}00`);
+            emitterContext.globalAlpha = haloStrength;
+            emitterContext.fillStyle = glow;
+            emitterContext.fillRect(index * cell, optical * cell, cell, cell);
+          }
+          const body = emitterContext.createRadialGradient(
+            cx,
+            cy,
+            0,
+            cx,
+            cy,
+            coreRadius * 1.45,
+          );
+          body.addColorStop(0, optical === 0 ? color : core);
+          body.addColorStop(0.14, optical === 0 ? `${color}dc` : `${core}ff`);
+          body.addColorStop(0.34, `${color}be`);
+          body.addColorStop(0.66, `${color}50`);
+          body.addColorStop(1, `${color}00`);
+          emitterContext.globalAlpha = 1;
+          emitterContext.globalCompositeOperation = 'lighter';
+          emitterContext.fillStyle = body;
+          emitterContext.fillRect(index * cell, optical * cell, cell, cell);
+          emitterContext.globalCompositeOperation = 'source-over';
+        }
+      });
+    };
     let width = 0;
     let height = 0;
     let scale = 0;
@@ -509,6 +569,7 @@ function Particle80Surface({
       context.clearRect(0, 0, width, height);
       context.globalCompositeOperation = 'lighter';
       const settings = playback.current;
+      bakeEmitters(settings.halo);
       if (
         (settings.staticMotion || !settings.introEnabled) &&
         settings.formation === undefined
@@ -568,7 +629,7 @@ function Particle80Surface({
           );
         }
         context.globalAlpha =
-          0.065 *
+          0.028 *
           smoothProgress((progress - 0.3) / 0.3) *
           settings.strength *
           (1 - settings.dissolve);
@@ -588,11 +649,13 @@ function Particle80Surface({
       for (let index = 0; index < count; index++) {
         const k = index * 3;
         fieldPoint(field, index, progress, settings.dissolve, point);
-        displacementEnergy += Math.hypot(
-          point.x - field.targetPosition[k],
-          point.y - field.targetPosition[k + 1],
-          point.z - field.targetPosition[k + 2],
-        );
+        // UI status only needs a representative sample, not 9,600 square roots.
+        if (index % 8 === 0)
+          displacementEnergy += Math.hypot(
+            point.x - field.targetPosition[k],
+            point.y - field.targetPosition[k + 1],
+            point.z - field.targetPosition[k + 2],
+          );
         projectSpatial(
           point,
           time + field.noiseSeed[index],
@@ -677,12 +740,12 @@ function Particle80Surface({
             : 0.25
           : 0;
         const starAlpha = beacon
-          ? Math.min(1, alpha * (1.5 + glint * 1.5))
+          ? Math.min(1, alpha * (1.7 + glint * 1.5))
           : alpha;
         if (beacon && settings.halo > 0 && spriteContext) {
           // Local, soft radiance on 0.5% of emitters, not screen-wide bloom.
-          const aura = (10 + radius * (6 + glint * 3)) * size;
-          context.globalAlpha = alpha * settings.halo * (0.35 + glint * 0.45);
+          const aura = (12 + radius * (7 + glint * 5)) * size;
+          context.globalAlpha = alpha * settings.halo * (0.48 + glint * 0.65);
           context.drawImage(
             sprite,
             field.color[index] * 48,
@@ -695,57 +758,39 @@ function Particle80Surface({
             aura * 2,
           );
         }
-        if (settings.halo > 0 && spriteContext) {
+        if (emitterContext) {
+          // Depth alters the PSF's focus, not the whole scene or camera.
+          const defocus = 1 + Math.max(0, point.z - 0.25) * 0.18;
           const extent =
-            (optical === FIELD_OPTICS.dust
-              ? 0.25 + radius * 2.1
-              : optical === FIELD_OPTICS.spark
-                ? 3.2 + radius * 3.1
-                : 1.6 + radius * 2.35) *
-            size *
-            (beacon ? 1.55 + glint * 0.9 : 1);
+            radius * defocus * (optical === 0 ? 1.45 : optical === 1 ? 4 : 5.5);
           context.globalAlpha =
-            starAlpha *
-            settings.halo *
-            (optical === FIELD_OPTICS.dust
-              ? 0.32
-              : optical === FIELD_OPTICS.spark
-                ? 1
-                : 0.82);
+            (starAlpha * (beacon ? 1 : optical === 0 ? 0.9 : 0.84)) / defocus;
           context.drawImage(
-            sprite,
-            field.color[index] * 48,
-            optical * 48,
-            48,
-            48,
+            emitters,
+            field.color[index] * cell,
+            optical * cell,
+            cell,
+            cell,
             x - extent,
             y - extent,
             extent * 2,
             extent * 2,
           );
-        }
-        // Larger stars have a soft colored body with a smaller cool-white core.
-        // Their full radius is not painted as a large opaque LED disk.
-        const star = optical !== FIELD_OPTICS.dust;
-        context.globalAlpha =
-          starAlpha *
-          (beacon ? 0.95 : star ? 0.58 : field.role[index] === 2 ? 0.65 : 1);
-        context.fillStyle = color;
-        context.beginPath();
-        context.arc(x, y, radius, 0, Math.PI * 2);
-        context.fill();
-        if (star) {
-          context.globalAlpha = starAlpha * 0.98;
-          context.fillStyle =
-            field.color[index] >= FIELD_ACCENT_START ? '#fff0d6' : '#f5fbff';
+          // Only the rare beacons receive a tiny optical diffraction glint.
+          // Slow rise/fall, no strobing; not attached to every star like an icon.
+          if (beacon && settings.halo > 0 && glint > 0.08) {
+            context.globalAlpha = starAlpha * glint * settings.halo * 0.22;
+            context.fillStyle = color;
+            const ray = radius * (2.5 + glint * 2);
+            context.fillRect(x - ray, y - 0.3, ray * 2, 0.6);
+            context.fillRect(x - 0.3, y - ray * 0.6, 0.6, ray * 1.2);
+          }
+        } else {
+          // Preserve context failure behavior if only the cache cannot allocate.
+          context.globalAlpha = alpha;
+          context.fillStyle = color;
           context.beginPath();
-          context.arc(
-            x,
-            y,
-            radius * (beacon ? 0.54 + glint * 0.16 : 0.42),
-            0,
-            Math.PI * 2,
-          );
+          context.arc(x, y, radius, 0, Math.PI * 2);
           context.fill();
         }
       }
@@ -761,7 +806,7 @@ function Particle80Surface({
         performance.now() - drawStarted,
       );
       if (element.dataset.canvas !== 'ready') element.dataset.canvas = 'ready';
-      const energy = (displacementEnergy / count).toFixed(4);
+      const energy = (displacementEnergy / Math.ceil(count / 8)).toFixed(4);
       if (element.dataset.displacement !== energy)
         element.dataset.displacement = energy;
       const pointerEnergy = pointer.strength.toFixed(2);
@@ -955,6 +1000,8 @@ function Particle80Surface({
       surface.height = 1;
       sprite.width = 1;
       sprite.height = 1;
+      emitters.width = 1;
+      emitters.height = 1;
     };
   }, [count, low, debugMode, magnification]);
 
