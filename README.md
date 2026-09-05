@@ -3,6 +3,14 @@
 An isolated interactive review of the SWUFE + FIC → CHENGDU 80 particle field.
 This repository does not deploy or replace the existing Chengdu 80 website.
 
+## Public preview
+
+Review URL: https://chengdu80-particle-preview.vercel.app/
+
+The circulation edition preserves the SWUFE / FIC composition while adding
+independent internal digit flows, role-based interaction and restrained color
+layers. Use Replay intro to review the full formation sequence.
+
 ## Run locally
 
 Requires Node.js 22.13+ and npm.
