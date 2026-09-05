@@ -52,7 +52,7 @@ try {
     return f;
   }
   await test('deterministic 50/25/18/7 roles, five size tiers, three optics and 2% champagne budget', () => {
-    for (const count of [180, 360, 1400, 2200]) {
+    for (const count of [180, 360, 600, 1400, 2800, 4800]) {
       const f = createParticleField(count),
         again = createParticleField(count);
       assert.deepEqual(f, again);
@@ -79,6 +79,10 @@ try {
         f.accent.filter((x) => x === 1).length,
         Math.round(count * 0.02),
       );
+      assert.equal(
+        f.beacon.filter((x) => x === 1).length,
+        Math.round(count * 0.005),
+      );
       for (const [bin, ratio] of [
         [0, 0.55],
         [1, 0.25],
@@ -102,6 +106,11 @@ try {
         assert.ok(FIELD_PALETTE[f.color[i]]);
         assert.equal(f.color[i] >= FIELD_ACCENT_START, f.accent[i] === 1);
         assert.equal(f.loop[i] === 255, f.role[i] === 2);
+        if (f.beacon[i]) {
+          assert.equal(f.sizeClass[i], 4, 'Beacons reuse rare large stars');
+          assert.equal(f.optical[i], 2);
+          assert.notEqual(f.role[i], 2, 'Ambient dust cannot become a beacon');
+        }
       }
       for (const optical of [0, 1, 2]) assert.ok(f.optical.includes(optical));
       // Luminance includes emitter area, not alpha alone: tiny dust stays faint.
@@ -128,8 +137,10 @@ try {
       ])
         assert.ok(f[key] instanceof Float32Array);
     }
-    assert.equal(fieldBudget(1e8, true), 360);
-    assert.equal(fieldBudget(1e8, false), 2200);
+    assert.equal(fieldBudget(1e8, true), 600);
+    assert.equal(fieldBudget(1e8, false), 4800);
+    assert.equal(fieldBudget(NaN, false), 4800);
+    assert.equal(fieldBudget(NaN, true), 600);
   });
   await test('all structural trajectories move; independent lanes with rare counter-current', () => {
     const f = createParticleField(1400);
@@ -479,9 +490,9 @@ try {
     assert.equal(fieldPoint(f, 0, 1, 1, p).opacity, 0);
   });
   const start = performance.now();
-  simulate(1400, 60, 8);
+  simulate(FIELD_DEFAULTS.particleCount, 60, 8);
   console.log(
-    `Physics-only 1400-particle / 480-frame simulation: ${Math.round(performance.now() - start)} ms (not browser FPS).`,
+    `Physics-only ${FIELD_DEFAULTS.particleCount}-particle / 480-frame simulation: ${Math.round(performance.now() - start)} ms (not browser FPS).`,
   );
 } finally {
   await server.close();

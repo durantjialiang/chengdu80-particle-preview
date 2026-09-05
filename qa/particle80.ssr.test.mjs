@@ -16,10 +16,10 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
     const { default: Particle80 } = await server.ssrLoadModule(
       '/components/Particle80.tsx',
     );
-    const { createParticleField, FIELD_PALETTE } = await server.ssrLoadModule(
-      '/lib/particle80-field.ts',
-    );
-    const fallbackRoles = createParticleField(360).role;
+    const { createParticleField, FIELD_PALETTE, FIELD_DEFAULTS } =
+      await server.ssrLoadModule('/lib/particle80-field.ts');
+    const fallbackCount = FIELD_DEFAULTS.mobileCount;
+    const fallbackRoles = createParticleField(fallbackCount).role;
     const render = (props) =>
       renderToStaticMarkup(createElement(Particle80, props));
     const first = render({});
@@ -39,21 +39,24 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
         baseline[i].replace(/opacity="[^"]+"/, ''),
         brighter[i].replace(/opacity="[^"]+"/, ''),
       );
-      if (fallbackRoles[i % 360] === 2) assert.equal(baseline[i], brighter[i]);
+      if (fallbackRoles[i % fallbackCount] === 2)
+        assert.equal(baseline[i], brighter[i]);
     }
     assert.notDeepEqual(baseline, brighter);
     assert.match(first, /<svg/);
     assert.match(first, /<canvas/);
     assert.match(first, /data-view-scale="1"/);
-    const enlarged = render({ motion: 'still', viewScale: 1.18 });
-    assert.match(enlarged, /data-view-scale="1.18"/);
+    const enlarged = render({ motion: 'still', viewScale: 1.534 });
+    assert.match(enlarged, /data-view-scale="1.534"/);
     assert.equal(
       [...enlarged.matchAll(/ r="([^"]+)"/g)].map((m) => m[1]).join(','),
-      [...render({ motion: 'still' }).matchAll(/ r="([^"]+)"/g)].map((m) => m[1]).join(','),
+      [...render({ motion: 'still' }).matchAll(/ r="([^"]+)"/g)]
+        .map((m) => m[1])
+        .join(','),
       'Display magnification must not enlarge the fallback light points',
     );
     assert.notEqual(enlarged, render({ motion: 'still' }));
-    assert.match(render({ viewScale: 99 }), /data-view-scale="1.3"/);
+    assert.match(render({ viewScale: 99 }), /data-view-scale="1.6"/);
     assert.match(render({ viewScale: NaN }), /data-view-scale="1"/);
     const fills = [...first.matchAll(/fill="(#[0-9a-f]{6})"/g)].map(
       (m) => m[1],
@@ -65,7 +68,7 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
     assert.ok(fills.every((color) => FIELD_PALETTE.includes(color)));
     assert.match(first, /aria-hidden="true"/);
     // Matching initial cloud plus a formed fallback for reduced motion/context failure.
-    assert.equal((first.match(/<circle/g) ?? []).length, 720);
+    assert.equal((first.match(/<circle/g) ?? []).length, fallbackCount * 2);
     assert.equal(render({ enabled: false }), '');
     assert.match(
       render({ label: 'Chengdu 80 motif' }),
@@ -107,7 +110,7 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
     assert.match(intro, /Fintech Innovation Center/);
     assert.match(intro, /data-intro-duration="7.2"/);
     assert.match(intro, /data-brightness="B"/);
-    assert.match(intro, /data-view-scale="1.18"/);
+    assert.match(intro, /data-view-scale="1.534"/);
     assert.match(intro, /Innovation ecosystem/);
     assert.match(
       render({
