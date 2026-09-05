@@ -20,6 +20,25 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
       renderToStaticMarkup(createElement(Particle80, props));
     const first = render({});
     assert.equal(first, render({}));
+    // Brightness remains render-only in the accessible SVG fallback, too.
+    const circles = (preset) =>
+      [
+        ...render({ motion: 'still', brightnessPreset: preset }).matchAll(
+          /<circle[^>]+>/g,
+        ),
+      ].map(([tag]) => tag);
+    const baseline = circles('baseline'),
+      brighter = circles('B');
+    assert.equal(baseline.length, brighter.length);
+    for (let i = 0; i < baseline.length; i++) {
+      assert.equal(
+        baseline[i].replace(/opacity="[^"]+"/, ''),
+        brighter[i].replace(/opacity="[^"]+"/, ''),
+      );
+      if (/#B8C7D9|#9FB3C8/.test(baseline[i]))
+        assert.equal(baseline[i], brighter[i]);
+    }
+    assert.notDeepEqual(baseline, brighter);
     assert.match(first, /<svg/);
     assert.match(first, /<canvas/);
     for (const color of ['#EAF4FF', '#8FDFFF', '#B8C7D9', '#D9B36C'])
@@ -67,6 +86,7 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
     assert.match(intro, /FIC/);
     assert.match(intro, /Fintech Innovation Center/);
     assert.match(intro, /data-intro-duration="7.2"/);
+    assert.match(intro, /data-brightness="B"/);
     assert.match(intro, /Innovation ecosystem/);
     assert.match(
       render({

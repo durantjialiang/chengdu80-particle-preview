@@ -10,6 +10,18 @@ import '../app/globals.css';
 import './particle80-intro.css';
 
 const Globe = lazy(() => import('../components/Globe'));
+// Local review only; Vite removes URL selection from the published bundle.
+const reviewPreset = import.meta.env.DEV
+  ? new URLSearchParams(window.location.search).get('brightness')
+  : null;
+const brightnessPreset =
+  reviewPreset === 'A'
+    ? 'A'
+    : reviewPreset === 'B'
+      ? 'B'
+      : reviewPreset === 'baseline'
+        ? 'baseline'
+        : undefined;
 function GlobeDestination() {
   const { reducedMotion, lowPower, pageVisible } = useScenePreferences();
   return (
@@ -52,6 +64,7 @@ function Study() {
   return (
     <main>
       <Particle80Intro
+        brightnessPreset={brightnessPreset}
         key={replay}
         repeatVisit={replay ? 'always' : 'short'}
         onStateChange={onStateChange}
