@@ -15,7 +15,11 @@ All roles have XY and depth motion, except intentional pause/reduced-motion mode
 Five size tiers and three cached optical types (dust/star/spark) create a long-tail
 luminance distribution. Colour is sampled from a coherent spatial temperature
 field, with a maximum ~2% champagne membership; no per-particle random colours.
-The particle budget, camera, typography, 7.2-second story and CTA are unchanged.
+The luminous-density pass uses 4,800 desktop / 600 low-power particles. The Intro
+composition is 1.3× its previous size (viewScale 1.534), capped on narrow screens
+to keep both digits visible. Camera, typography, 7.2-second story and CTA are unchanged.
+Only 0.5% of existing stars are intense emitters: 24 desktop / 3 mobile, with
+independent slow glints and local halos, never screen-wide exposure or bloom.
 
 Development preview: `?fieldDebug=roles`, `vectors`, `flow`, or `telemetry`.
 Diagnostics and their explicit snapshot API are removed from production builds.
@@ -26,7 +30,7 @@ import Particle80 from '@/components/Particle80';
 <Particle80
   interactive
   background="dark"
-  particleCount={1400}
+  particleCount={4800}
   mouseForce={5.5}
   springStrength={13}
   damping={4.8}

@@ -33,6 +33,7 @@ import {
   FIELD_ACCENT_START,
   FIELD_ROLE_RATIOS,
   FIELD_OPTICS,
+  FIELD_BEACON_RATIO,
   type FieldPhase,
   projectField as projectSpatial,
 } from '@/lib/particle80-field';
@@ -50,7 +51,7 @@ export type Particle80State = {
 export const PARTICLE_80_BRIGHTNESS = {
   baseline: { anchor: 1, runner: 1, ambient: 1 },
   A: { anchor: 1.18, runner: 1.24, ambient: 1 },
-  B: { anchor: 1.28, runner: 1.34, ambient: 1 },
+  B: { anchor: 1.5, runner: 1.65, ambient: 1 },
 } as const;
 export type Particle80Brightness = keyof typeof PARTICLE_80_BRIGHTNESS;
 
@@ -66,7 +67,7 @@ function brightnessGain(
   // Keep rare stars and champagne highlights from turning into white hotspots.
   return Math.min(
     gain,
-    sizeClass >= 3 ? 1.1 : color >= FIELD_ACCENT_START ? 1.12 : gain,
+    sizeClass >= 3 ? 1.3 : color >= FIELD_ACCENT_START ? 1.2 : gain,
   );
 }
 
@@ -121,7 +122,7 @@ export type Particle80Props = {
   label?: string;
 };
 
-const fallbackField = createParticleField(360);
+const fallbackField = createParticleField(FIELD_DEFAULTS.mobileCount);
 const spatialPoint = (): SpatialPoint => ({
   x: 0,
   y: 0,
@@ -254,7 +255,7 @@ function Particle80Surface({
   const low = lowPower || quality === 'low' || lowPowerMode === 'on';
   const count = fieldBudget(particleCount, low);
   const rate = bounded(speed, 0, 2, DEFAULTS.speed);
-  const magnification = bounded(viewScale, 0.8, 1.3, 1);
+  const magnification = bounded(viewScale, 0.8, 1.6, 1);
   const halo = bounded(
     glowIntensity ?? glow,
     0,
@@ -424,9 +425,19 @@ function Particle80Surface({
             0,
             index >= FIELD_ACCENT_START ? '#fff0d6d9' : '#f5fbffd9',
           );
-          gradient.addColorStop(0.1, `${color}${optical === 2 ? '9a' : '75'}`);
-          gradient.addColorStop(0.28, `${color}${optical === 2 ? '38' : '22'}`);
-          gradient.addColorStop(0.55, `${color}${optical === 2 ? '0c' : '05'}`);
+          // Raise local star radiance, not the background or a full-screen bloom.
+          gradient.addColorStop(
+            0.1,
+            `${color}${optical === 2 ? 'b8' : optical === 1 ? '95' : '75'}`,
+          );
+          gradient.addColorStop(
+            0.28,
+            `${color}${optical === 2 ? '48' : optical === 1 ? '32' : '22'}`,
+          );
+          gradient.addColorStop(
+            0.55,
+            `${color}${optical === 2 ? '12' : optical === 1 ? '0a' : '05'}`,
+          );
           gradient.addColorStop(1, `${color}00`);
           spriteContext.fillStyle = gradient;
           spriteContext.fillRect(left, top, 48, 48);
@@ -436,6 +447,7 @@ function Particle80Surface({
     let width = 0;
     let height = 0;
     let scale = 0;
+    let pointScale = 1;
     let dpr = 1;
     let frame = 0;
     let inView = true;
@@ -527,7 +539,7 @@ function Particle80Surface({
         integrateField(field, delta, time, pointer, settings);
       }
       // Enlarge the composition, not individual light points or their halos.
-      const size = bounded(scale / magnification / 170, 0.65, 1.25, 1);
+      const size = pointScale;
       if (spriteContext) {
         const sourceEnergy =
           smoothProgress((progress - 0.06) / 0.16) *
@@ -640,21 +652,57 @@ function Particle80Surface({
           }
         }
         const optical = field.optical[index];
+        const beacon = field.beacon[index] === 1;
+        // Slow independent glints, never strobes. Reduced motion has no pulse.
+        const glint = beacon
+          ? settings.twinkle && !settings.staticMotion
+            ? Math.pow(
+                0.5 +
+                  0.5 *
+                    Math.sin(
+                      time * (0.52 + field.noiseSeed[index] * 0.018) +
+                        field.noiseSeed[index] * 2.7,
+                    ),
+                8,
+              )
+            : 0.25
+          : 0;
+        const starAlpha = beacon
+          ? Math.min(1, alpha * (1.5 + glint * 1.5))
+          : alpha;
+        if (beacon && settings.halo > 0 && spriteContext) {
+          // Local, soft radiance on 0.5% of emitters, not screen-wide bloom.
+          const aura = (10 + radius * (6 + glint * 3)) * size;
+          context.globalAlpha = alpha * settings.halo * (0.35 + glint * 0.45);
+          context.drawImage(
+            sprite,
+            field.color[index] * 48,
+            96,
+            48,
+            48,
+            x - aura,
+            y - aura,
+            aura * 2,
+            aura * 2,
+          );
+        }
         if (settings.halo > 0 && spriteContext) {
           const extent =
             (optical === FIELD_OPTICS.dust
               ? 0.25 + radius * 2.1
               : optical === FIELD_OPTICS.spark
-                ? 2.2 + radius * 2.5
-                : 1.2 + radius * 1.9) * size;
+                ? 3.2 + radius * 3.1
+                : 1.6 + radius * 2.35) *
+            size *
+            (beacon ? 1.55 + glint * 0.9 : 1);
           context.globalAlpha =
-            alpha *
+            starAlpha *
             settings.halo *
             (optical === FIELD_OPTICS.dust
               ? 0.32
               : optical === FIELD_OPTICS.spark
-                ? 0.9
-                : 0.7);
+                ? 1
+                : 0.82);
           context.drawImage(
             sprite,
             field.color[index] * 48,
@@ -671,17 +719,24 @@ function Particle80Surface({
         // Their full radius is not painted as a large opaque LED disk.
         const star = optical !== FIELD_OPTICS.dust;
         context.globalAlpha =
-          alpha * (star ? 0.48 : field.role[index] === 2 ? 0.65 : 1);
+          starAlpha *
+          (beacon ? 0.95 : star ? 0.58 : field.role[index] === 2 ? 0.65 : 1);
         context.fillStyle = color;
         context.beginPath();
         context.arc(x, y, radius, 0, Math.PI * 2);
         context.fill();
         if (star) {
-          context.globalAlpha = alpha * 0.85;
+          context.globalAlpha = starAlpha * 0.98;
           context.fillStyle =
             field.color[index] >= FIELD_ACCENT_START ? '#fff0d6' : '#f5fbff';
           context.beginPath();
-          context.arc(x, y, radius * 0.42, 0, Math.PI * 2);
+          context.arc(
+            x,
+            y,
+            radius * (beacon ? 0.54 + glint * 0.16 : 0.42),
+            0,
+            Math.PI * 2,
+          );
           context.fill();
         }
       }
@@ -767,12 +822,13 @@ function Particle80Surface({
       surface.width = Math.max(1, Math.round(width * dpr));
       surface.height = Math.max(1, Math.round(height * dpr));
       const compact = width < 650;
-      scale =
-        magnification *
-        Math.min(
-          width / (compact ? 4.7 : FIELD_DEFAULTS.viewWidth),
-          height / (compact ? 5.6 : FIELD_DEFAULTS.viewHeight),
-        );
+      const baseScale = Math.min(
+        width / (compact ? 4.7 : FIELD_DEFAULTS.viewWidth),
+        height / (compact ? 5.6 : FIELD_DEFAULTS.viewHeight),
+      );
+      // Desktop is 1.3x the previous 1.18 composition. Phones preserve both digits.
+      scale = Math.min(magnification, compact ? 1.3 : 1.6) * baseScale;
+      pointScale = bounded(baseScale / 170, 0.65, 1.25, 1);
       layout.sourceX = (width * (compact ? 0.245 : 0.315)) / scale;
       layout.sourceY = compact ? (80 - height / 2) / scale : 0;
       element.dataset.dpr = dpr.toFixed(2);
@@ -791,6 +847,7 @@ function Particle80Surface({
           Math.round(count * FIELD_ROLE_RATIOS[2]),
       );
       element.dataset.accents = String(Math.round(count * 0.02));
+      element.dataset.beacons = String(Math.round(count * FIELD_BEACON_RATIO));
       sync();
     };
     const resizeObserver =

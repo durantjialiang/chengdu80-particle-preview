@@ -161,7 +161,7 @@ function IntroSurface({
                 interactive={particleProps.interactive ?? true}
                 intensity={particleProps.intensity ?? 1.18}
                 brightnessPreset={particleProps.brightnessPreset ?? 'B'}
-                viewScale={particleProps.viewScale ?? 1.18}
+                viewScale={particleProps.viewScale ?? 1.534}
                 glow={particleProps.glow ?? FIELD_DEFAULTS.glowIntensity}
                 introEnabled={formationEnabled}
                 introDuration={duration}
