@@ -24,6 +24,7 @@ try {
     FIELD_PALETTE,
     FIELD_LOOPS,
     fieldColorIndex,
+    fieldOrbitAngle,
     FIELD_ACCENT_START,
     projectField,
   } = await server.ssrLoadModule('/lib/particle80-field.ts');
@@ -141,6 +142,48 @@ try {
     assert.equal(fieldBudget(1e8, false), 4800);
     assert.equal(fieldBudget(NaN, false), 4800);
     assert.equal(fieldBudget(NaN, true), 600);
+  });
+  await test('equal-distance phases cover ellipse long sides, with seamless signed wrapping', () => {
+    const tau = Math.PI * 2;
+    for (let loop = 0; loop < 3; loop++) {
+      const lane = FIELD_LOOPS[loop],
+        segments = [];
+      for (let i = 0; i < 128; i++) {
+        const a = fieldOrbitAngle(loop, (i * tau) / 128);
+        const b = fieldOrbitAngle(loop, ((i + 1) * tau) / 128);
+        segments.push(
+          Math.hypot(
+            lane.rx * (Math.cos(b) - Math.cos(a)),
+            lane.ry * (Math.sin(b) - Math.sin(a)),
+          ),
+        );
+      }
+      assert.ok(Math.max(...segments) / Math.min(...segments) < 1.01);
+      assert.ok(
+        Math.abs(
+          fieldOrbitAngle(loop, -0.15) - fieldOrbitAngle(loop, tau - 0.15),
+        ) < 1e-6,
+      );
+    }
+  });
+  await test('jittered per-size strata cover every loop without empty initial sectors', () => {
+    const tau = Math.PI * 2;
+    for (const count of [600, 4800]) {
+      const f = createParticleField(count);
+      for (let loop = 0; loop < 3; loop++) {
+        const bins = Array(12).fill(0);
+        for (let i = 0; i < count; i++)
+          if (f.loop[i] === loop) {
+            const phase = ((f.orbitPhase[i] % tau) + tau) % tau;
+            bins[Math.min(11, Math.floor((phase / tau) * 12))]++;
+          }
+        const mean = bins.reduce((sum, n) => sum + n, 0) / bins.length;
+        assert.ok(
+          Math.min(...bins) / mean > (count === 600 ? 0.6 : 0.9),
+          `loop ${loop} count ${count}: ${bins.join(',')}`,
+        );
+      }
+    }
   });
   await test('all structural trajectories move; independent lanes with rare counter-current', () => {
     const f = createParticleField(1400);
