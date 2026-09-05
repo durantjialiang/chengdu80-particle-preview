@@ -39,13 +39,13 @@ try {
   );
   const field = page.locator('[data-particles]');
   assert.equal(await field.getAttribute('data-state'), 'animated');
-  assert.equal(await field.getAttribute('data-particles'), '4800');
-  assert.equal(await field.getAttribute('data-structures'), '2400');
-  assert.equal(await field.getAttribute('data-flows'), '1200');
-  assert.equal(await field.getAttribute('data-ambient'), '864');
-  assert.equal(await field.getAttribute('data-highlights'), '336');
-  assert.equal(await field.getAttribute('data-accents'), '96');
-  assert.equal(await field.getAttribute('data-beacons'), '24');
+  assert.equal(await field.getAttribute('data-particles'), '9600');
+  assert.equal(await field.getAttribute('data-structures'), '4800');
+  assert.equal(await field.getAttribute('data-flows'), '2400');
+  assert.equal(await field.getAttribute('data-ambient'), '1728');
+  assert.equal(await field.getAttribute('data-highlights'), '672');
+  assert.equal(await field.getAttribute('data-accents'), '192');
+  assert.equal(await field.getAttribute('data-beacons'), '48');
   assert.equal(await field.getAttribute('data-view-scale'), '1.534');
   const swufeBefore = await page
     .getByText('SWUFE', { exact: true })
@@ -163,7 +163,7 @@ try {
   );
   assert.equal(
     await mobilePage.locator('[data-particles]').getAttribute('data-particles'),
-    '600',
+    '900',
   );
   assert.ok(
     Number(await mobilePage.locator('[data-dpr]').getAttribute('data-dpr')) <=
@@ -181,7 +181,7 @@ try {
   );
   await mobilePage.screenshot({ path: `${output}/mobile-390x844.png` });
   checks.push({
-    check: '390x844, 600 particles, DPR1, visible CTA, no overflow',
+    check: '390x844, 900 particles, DPR1, visible CTA, no overflow',
   });
   await mobilePage.emulateMedia({ reducedMotion: 'reduce' });
   await mobilePage.waitForSelector('[data-state="static"]');
