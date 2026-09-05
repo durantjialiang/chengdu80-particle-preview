@@ -30,8 +30,11 @@ Use Replay to restart the sequence and the globe transition control to review
 the optional handoff. Mobile quality and reduced-motion preferences are supported.
 
 The particle field uses spring forces, damping, inertia and procedural noise;
-70% of particles form the structure, 20% provide nearby ambient motion and 10%
-are background dust. Rendering uses one lightweight Canvas, not one mesh per
+60% of particles anchor the silhouette, 22% circulate within its fixed volumes,
+and 18% are nearby/background ambient dust. The upper and lower 8 loops flow in
+opposite directions; the 0 has an independent slower clockwise flow. Cool-white,
+icy-blue and gray-blue roles are accented by only 2% champagne highlights.
+Rendering uses one lightweight Canvas and a cached color atlas, not one mesh per
 particle. The optional globe uses React Three Fiber and Three.js.
 
 ## Deploy to Vercel

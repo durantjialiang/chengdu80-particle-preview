@@ -22,6 +22,8 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
     assert.equal(first, render({}));
     assert.match(first, /<svg/);
     assert.match(first, /<canvas/);
+    for (const color of ['#EAF4FF', '#8FDFFF', '#B8C7D9', '#D9B36C'])
+      assert.ok(first.includes(color), `SVG fallback preserves ${color}`);
     assert.match(first, /aria-hidden="true"/);
     // Matching initial cloud plus a formed fallback for reduced motion/context failure.
     assert.equal((first.match(/<circle/g) ?? []).length, 720);

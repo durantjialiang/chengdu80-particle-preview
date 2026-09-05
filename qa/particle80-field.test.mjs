@@ -21,6 +21,8 @@ try {
     fieldPhase,
     fieldBudget,
     FIELD_DEFAULTS,
+    FIELD_PALETTE,
+    FIELD_LOOPS,
     projectField,
   } = await server.ssrLoadModule('/lib/particle80-field.ts');
   const config = { ...FIELD_DEFAULTS, pointerForce: FIELD_DEFAULTS.mouseForce };
@@ -47,23 +49,57 @@ try {
     }
     return f;
   }
-  await test('deterministic typed state with exact rounded 70/20/10 budgets', () => {
+  await test('deterministic 60/22/18 roles, exact size tiers and 2% champagne budget', () => {
     for (const count of [180, 360, 1400, 2200]) {
       const f = createParticleField(count),
         again = createParticleField(count);
       assert.deepEqual(f, again);
       assert.equal(
-        f.layer.filter((x) => x === 0).length,
-        Math.round(count * 0.7),
+        f.role.filter((x) => x === 0).length,
+        Math.round(count * 0.6),
       );
       assert.equal(
-        f.layer.filter((x) => x === 1).length,
-        Math.round(count * 0.2),
+        f.role.filter((x) => x === 1).length,
+        Math.round(count * 0.22),
       );
       assert.equal(
-        f.layer.filter((x) => x === 2).length,
-        count - Math.round(count * 0.7) - Math.round(count * 0.2),
+        f.role.filter((x) => x === 2).length,
+        count - Math.round(count * 0.6) - Math.round(count * 0.22),
       );
+      assert.equal(
+        f.color.filter((x) => x >= 7).length,
+        Math.round(count * 0.02),
+      );
+      for (const [bin, ratio] of [
+        [0, 0.65],
+        [1, 0.25],
+        [2, 0.08],
+      ])
+        assert.equal(
+          f.sizeClass.filter((x) => x === bin).length,
+          Math.round(count * ratio),
+        );
+      const radii = [
+        [0.5, 1],
+        [1, 1.75],
+        [2, 3],
+        [3, 4],
+      ];
+      for (let i = 0; i < count; i++) {
+        const [min, max] = radii[f.sizeClass[i]];
+        assert.ok(f.size[i] >= min && f.size[i] <= max);
+        assert.ok(FIELD_PALETTE[f.color[i]]);
+        if (f.color[i] < 7) {
+          assert.ok(
+            f.role[i] === 0
+              ? f.color[i] < 3
+              : f.role[i] === 1
+                ? f.color[i] >= 3 && f.color[i] <= 4
+                : f.color[i] >= 5,
+          );
+        }
+        assert.equal(f.loop[i] === 255, f.role[i] === 2);
+      }
       for (const key of [
         'position',
         'velocity',
@@ -72,11 +108,96 @@ try {
         'opacity',
         'depth',
         'noiseSeed',
+        'orbitPhase',
+        'orbitWidth',
+        'orbitSpeed',
       ])
         assert.ok(f[key] instanceof Float32Array);
     }
     assert.equal(fieldBudget(1e8, true), 360);
     assert.equal(fieldBudget(1e8, false), 2200);
+  });
+  await test('stable anchors; independent clockwise / counterclockwise / clockwise lanes', () => {
+    const f = createParticleField(1400);
+    const positions = f.position.slice();
+    for (const time of [0, 8, 27, 1800]) {
+      setFieldTargets(f, time, 1, layout, 0);
+      const before = f.targetPosition.slice();
+      setFieldTargets(f, time + 0.05, 1, layout, 0);
+      for (let i = 0; i < f.count; i++) {
+        const k = i * 3;
+        if (f.role[i] === 0) {
+          assert.deepEqual(
+            f.targetPosition.slice(k, k + 3),
+            f.rest.slice(k, k + 3),
+          );
+        } else if (f.role[i] === 1) {
+          const loop = FIELD_LOOPS[f.loop[i]];
+          const ax = before[k] - loop.x,
+            ay = before[k + 1] - loop.y;
+          const bx = f.targetPosition[k] - loop.x,
+            by = f.targetPosition[k + 1] - loop.y;
+          assert.equal(Math.sign(ax * by - ay * bx), Math.sign(loop.speed));
+          assert.ok(Math.abs(bx) <= loop.rx + 0.22);
+          assert.ok(Math.abs(by) <= loop.ry + 0.22);
+          assert.ok(Math.abs(f.targetPosition[k + 2]) < 0.65);
+        }
+      }
+    }
+    assert.deepEqual(f.position, positions); // Attractors never teleport live positions.
+    const speeds = [...new Set(f.orbitSpeed.filter((x) => x !== 0))];
+    assert.ok(speeds.length > 30); // No synchronized marquee phase/rate.
+    for (const role of [0, 1])
+      for (const loop of [0, 1, 2])
+        for (const side of [-1, 1])
+          assert.ok(
+            f.role.some(
+              (r, i) => r === role && f.loop[i] === loop && f.side[i] === side,
+            ),
+          );
+  });
+  await test('runner circulation is integrated while anchor silhouette stays fixed', () => {
+    const f = createParticleField(180);
+    setFieldTargets(f, 8, 1, layout, 0);
+    initializeField(f);
+    for (let frame = 0; frame < 360; frame++) {
+      const time = 8 + frame / 60;
+      setFieldTargets(f, time, 1, layout, 0);
+      integrateField(f, 1 / 60, time, off, quiet);
+    }
+    for (let i = 0; i < f.count; i++) {
+      const k = i * 3;
+      if (f.role[i] === 0)
+        assert.deepEqual(f.position.slice(k, k + 3), f.rest.slice(k, k + 3));
+      if (f.role[i] === 1) {
+        assert.ok(Math.hypot(f.velocity[k], f.velocity[k + 1]) > 0.04);
+        const lane = FIELD_LOOPS[f.loop[i]];
+        const cross =
+          (f.position[k] - lane.x) * f.velocity[k + 1] -
+          (f.position[k + 1] - lane.y) * f.velocity[k];
+        assert.equal(Math.sign(cross), Math.sign(lane.speed));
+      }
+    }
+  });
+  await test('pointer response is layered: ambient > runners > anchors, all spring back', () => {
+    const f = createParticleField(3);
+    f.role.set([0, 1, 2]);
+    f.position.fill(0);
+    f.targetPosition.fill(0);
+    f.velocity.fill(0);
+    for (let frame = 0; frame < 90; frame++)
+      integrateField(
+        f,
+        1 / 60,
+        frame / 60,
+        { x: -0.15, y: 0, strength: 1 },
+        { ...config, noiseStrength: 0 },
+      );
+    assert.ok(f.position[0] > 0 && f.position[0] < f.position[3]);
+    assert.ok(f.position[3] < f.position[6] && f.position[6] < 0.5);
+    for (let frame = 0; frame < 600; frame++)
+      integrateField(f, 1 / 60, frame / 60, off, quiet);
+    assert.ok(error(f) < 1e-8);
   });
   await test('two independent source populations converge through a central field, then a thick 80', () => {
     const f = createParticleField(1400);

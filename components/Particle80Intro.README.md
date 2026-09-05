@@ -33,7 +33,7 @@ import Particle80Intro from '@/components/Particle80Intro';
 | 2.02–4.03 s | The sources move inward and interleave through a counter-rotating central volume |
 | 4.03–6.48 s | A volumetric 80 emerges as particles physically pursue the final attractors |
 | 6.48–7.2 s | The field settles; slight overshoot dissipates |
-| After 7.2 s | Individual curl drift, quiet breathing and localized pointer response |
+| After 7.2 s | Anchored silhouette, internal counter-circulation, quiet breathing and layered pointer response |
 
 No essential button is gated by this sequence. Text only changes opacity; it is
 never moved by the simulation. Source locations adapt to the desktop side labels
@@ -47,13 +47,23 @@ versioned so visitors to the previous concept see this new narrative once.
 ## Real dynamics, not interpolated positions
 
 Each particle has typed-buffer position, velocity, targetPosition, size, opacity,
-depth and noiseSeed. Source membership is immutable. There are 70% structural
-particles, 20% surrounding ambient particles and 10% distant dust (rounded to
-whole particles). Both institutions contribute to both numerals.
+depth and noiseSeed. Source membership is immutable. Roles are 60% anchors,
+22% runners and 18% ambient (rounded to whole particles). The ambient role includes
+12% near-field dust and 6% distant dust. Both institutions contribute to every loop.
 
 The final structural attractors are sampled throughout filled 3D annular volumes,
-with uneven thickness/depth/density. There is no equal spacing along an outline,
-and the renderer does not use the old `spatialPosition` path-following system.
+with uneven thickness/depth/density. Anchors have time-invariant final targets.
+Runners pursue moving targets inside these fixed volumes, with different lane
+phases and speeds: upper 8 clockwise (~0.34 rad/s), lower 8 counterclockwise
+(~0.30 rad/s), 0 clockwise (~0.255 rad/s), each with ±12% individual variation.
+Mild analytic phase/width/depth variation keeps the motion organic, with no
+whole-symbol/group transform, loop reset or synchronized bright head.
+
+The fixed palette is in `FIELD_PALETTE`: cool-white anchors, icy-cyan runners,
+muted gray-blue ambient and exactly ~2% champagne highlights. `sizeClass` uses
+65/25/8/2% tiers with reference diameters 1–2/2–3.5/4–6/6–8 CSS px before depth
+and responsive scale. Larger stars favor curve turns and circulation lanes;
+they have softer colored bodies and smaller bright cores, not opaque disks.
 
 Attractor positions follow the narrative, but actual particles never lerp to them:
 
@@ -68,6 +78,9 @@ budget per paint and a vector speed limit. The default system is underdamped:
 small overshoot is real inertia. Noise is continuous and independently seeded,
 not new randomness each frame. The pointer uses a smooth radius falloff in the
 same projected coordinates as rendering, with no artificial depth kick.
+Pointer multipliers are anchor .3, runner 1, ambient 1.4; respective spring
+multipliers are 1.25, 1, .55. The silhouette resists displacement while outer dust
+responds first. Global pointer/noise/spring/damping props still apply to all roles.
 
 Only initialization or static accessibility mode sets position directly to targets.
 Changing controlled `formationProgress` changes attractors, not positions.
@@ -89,7 +102,7 @@ no teleporting during a paused scrub. Appearance/dissolve can repaint while paus
 Existing `pointerForce`, `glow`, and `introDuration` are retained as aliases.
 `pointerForce` wins over `mouseForce`; `glowIntensity` wins over `glow`;
 `formationDuration` wins over `introDuration`.
-`ambientParticleRatio` is deprecated: this narrative fixes the split at 70/20/10.
+`ambientParticleRatio` is deprecated: roles use the fixed 60/22/18 split.
 
 Existing `enabled`, `active`, `speed`, `formationProgress`, `dissolveProgress`,
 `intensity`, `interactive`, `twinkle`, `trails`, `trailLength`, `quality`,
@@ -110,8 +123,8 @@ transition. The original globe remains lazy-loaded and unmodified.
 
 ## Accessibility and performance
 
-- Single Canvas 2D, white/blue-white cores, cached halo sprite, additive blending.
-- Approximately 6% of particles have very short velocity-derived fading trails.
+- Single Canvas 2D with one cached 432×48 color-atlas sprite, additive blending.
+- One third of runners (~7.3% overall) have short velocity-derived fading trails.
 - Fixed typed buffers and reused output objects; no mesh per particle, per-frame
   particle arrays, external textures, video, audio, or heavy bloom dependencies.
 - Desktop draw budget: 60 fps / DPR ≤1.5. Mobile/low-power: 30 fps / 360 particles /
@@ -126,7 +139,7 @@ transition. The original globe remains lazy-loaded and unmodified.
 ## Files and checks
 
 - `lib/particle80-field.ts`: source choreography, volumetric distribution, physical
-  state/integration, perspective and timeline.
+  state/integration, role/color/size budgets, circulation lanes, perspective and timeline.
 - `components/Particle80.tsx`: lifecycle, field rendering, pointer input and fallback.
 - `components/Particle80Intro.tsx` / `.module.css`: stable institution typography,
   first/repeat visit story, responsive field and handoff.
@@ -150,5 +163,6 @@ npm run build:particle-preview
 Preview: http://127.0.0.1:4174/qa/particle80.html
 
 The existing Vercel configuration publishes only the isolated review build.
-Remote GitHub/Vercel publication still needs the repository/account connection
-described in PREVIEW-PUBLISH.md; a successful local build does not publish it.
+GitHub/Vercel is connected at `durantjialiang/chengdu80-particle-preview`.
+Public review: https://chengdu80-particle-preview.vercel.app/ . A local build alone
+does not update it; the validated standalone source must be pushed and deployed.

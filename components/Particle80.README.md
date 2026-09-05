@@ -1,12 +1,15 @@
 # Particle80 — physical innovation field
 
 The current renderer implements the narrative **SWUFE + FIC → CHENGDU 80**.
-It no longer animates evenly spaced particles along the digit paths.
+The silhouette stays anchored while a smaller population circulates inside it.
 
 Use `Particle80Intro` for the complete institutional composition, or the bare
 `Particle80` as a reusable field. The shared implementation uses actual
-position/velocity integration, a 70/20/10 volumetric distribution, soft pointer
-repulsion and procedural curl forces.
+position/velocity integration, 60% anchors / 22% runners / 18% ambient particles,
+role-sensitive pointer repulsion and procedural curl forces. Cool-white anchors,
+icy-blue runners, gray-blue ambient dust and 2% champagne points add restrained
+color depth. The upper/lower 8 loops circulate in opposite directions; the 0 has
+its own slower clockwise flow. There is no whole-digit rotation.
 
 ```tsx
 import Particle80 from '@/components/Particle80';

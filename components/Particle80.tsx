@@ -28,6 +28,7 @@ import {
   fieldPhase,
   fieldBudget,
   FIELD_DEFAULTS,
+  FIELD_PALETTE,
   type FieldPhase,
   projectField as projectSpatial,
 } from '@/lib/particle80-field';
@@ -49,7 +50,7 @@ export type Particle80Props = {
   motion?: 'auto' | 'still';
   quality?: 'auto' | 'low';
   particleCount?: number;
-  /** @deprecated The field's narrative uses a fixed 70 / 20 / 10 distribution. */
+  /** @deprecated Roles now use fixed 60% anchor / 22% runner / 18% ambient budgets. */
   ambientParticleRatio?: number;
   pointerForce?: number;
   mouseForce?: number;
@@ -142,7 +143,7 @@ const Static80 = memo(function Static80({
         cx={Number(point.x.toFixed(6))}
         cy={Number(point.y.toFixed(6))}
         r={Number((point.size * 0.0065).toFixed(6))}
-        fill="#e3f1ff"
+        fill={FIELD_PALETTE[fallbackField.color[i]]}
         opacity={Number(point.opacity.toFixed(5))}
       />
     ));
@@ -337,25 +338,29 @@ function Particle80Surface({
     const projected = { x: 0, y: 0, size: 0, opacity: 0 };
     const projectedTail = { x: 0, y: 0, size: 0, opacity: 0 };
     const sprite = document.createElement('canvas');
-    sprite.width = 48;
+    // One tiny pre-rendered color atlas; no gradients/color parsing in the RAF.
+    sprite.width = 48 * FIELD_PALETTE.length;
     sprite.height = 48;
     const spriteContext = get2dContext(sprite);
     if (spriteContext) {
-      const gradient = spriteContext.createRadialGradient(
-        24,
-        24,
-        0,
-        24,
-        24,
-        24,
-      );
-      gradient.addColorStop(0, 'rgba(245,251,255,.85)');
-      gradient.addColorStop(0.09, 'rgba(230,248,255,.55)');
-      gradient.addColorStop(0.24, 'rgba(154,210,240,.15)');
-      gradient.addColorStop(0.5, 'rgba(117,167,215,.035)');
-      gradient.addColorStop(1, 'rgba(117,167,215,0)');
-      spriteContext.fillStyle = gradient;
-      spriteContext.fillRect(0, 0, 48, 48);
+      FIELD_PALETTE.forEach((color, index) => {
+        const left = index * 48;
+        const gradient = spriteContext.createRadialGradient(
+          left + 24,
+          24,
+          0,
+          left + 24,
+          24,
+          24,
+        );
+        gradient.addColorStop(0, '#f5fbffd9');
+        gradient.addColorStop(0.1, `${color}85`);
+        gradient.addColorStop(0.28, `${color}2b`);
+        gradient.addColorStop(0.55, `${color}09`);
+        gradient.addColorStop(1, `${color}00`);
+        spriteContext.fillStyle = gradient;
+        spriteContext.fillRect(left, 0, 48, 48);
+      });
     }
     let width = 0;
     let height = 0;
@@ -459,6 +464,10 @@ function Particle80Surface({
             0.075 * sourceEnergy * settings.strength * (1 - settings.dissolve);
           context.drawImage(
             sprite,
+            2 * 48,
+            0,
+            48,
+            48,
             width / 2 + side * layout.sourceX * scale - scale,
             height / 2 + layout.sourceY * scale - scale * 0.65,
             scale * 2,
@@ -472,6 +481,10 @@ function Particle80Surface({
           (1 - settings.dissolve);
         context.drawImage(
           sprite,
+          2 * 48,
+          0,
+          48,
+          48,
           width / 2 - scale * 1.5,
           height / 2 - scale,
           scale * 3,
@@ -507,6 +520,7 @@ function Particle80Surface({
         const alpha = projected.opacity * labelMask;
         if (alpha < 0.002) continue;
         const radius = projected.size * size;
+        const color = FIELD_PALETTE[field.color[index]];
         if (
           settings.trails &&
           settings.tailLength > 0 &&
@@ -514,13 +528,13 @@ function Particle80Surface({
           !settings.staticMotion
         ) {
           context.lineWidth = 0.55 * size;
-          context.strokeStyle = '#b5d9f3';
+          context.strokeStyle = color;
           let endX = x,
             endY = y;
           for (let j = 1; j <= 3; j++) {
-            tail.x = point.x - field.velocity[k] * j * 0.025;
-            tail.y = point.y - field.velocity[k + 1] * j * 0.025;
-            tail.z = point.z - field.velocity[k + 2] * j * 0.025;
+            tail.x = point.x - field.velocity[k] * j * 0.06;
+            tail.y = point.y - field.velocity[k + 1] * j * 0.06;
+            tail.z = point.z - field.velocity[k + 2] * j * 0.06;
             tail.size = point.size;
             tail.opacity = point.opacity;
             projectSpatial(tail, time, 1, false, projectedTail);
@@ -542,17 +556,32 @@ function Particle80Surface({
           context.globalAlpha = alpha * settings.halo;
           context.drawImage(
             sprite,
+            field.color[index] * 48,
+            0,
+            48,
+            48,
             x - extent,
             y - extent,
             extent * 2,
             extent * 2,
           );
         }
-        context.globalAlpha = alpha * (field.layer[index] === 1 ? 0.75 : 1);
-        context.fillStyle = '#edf8ff';
+        // Larger stars have a soft colored body with a smaller cool-white core.
+        // Their full radius is not painted as a large opaque LED disk.
+        const star = field.sizeClass[index] >= 2;
+        context.globalAlpha =
+          alpha * (star ? 0.35 : field.role[index] === 2 ? 0.65 : 1);
+        context.fillStyle = color;
         context.beginPath();
         context.arc(x, y, radius, 0, Math.PI * 2);
         context.fill();
+        if (star) {
+          context.globalAlpha = alpha * 0.85;
+          context.fillStyle = field.color[index] >= 7 ? '#fff0d6' : '#f5fbff';
+          context.beginPath();
+          context.arc(x, y, radius * 0.42, 0, Math.PI * 2);
+          context.fill();
+        }
       }
       context.globalAlpha = 1;
       context.globalCompositeOperation = 'source-over';
@@ -635,6 +664,9 @@ function Particle80Surface({
       layout.sourceY = compact ? (80 - height / 2) / scale : 0;
       element.dataset.dpr = dpr.toFixed(2);
       element.dataset.particles = String(count);
+      element.dataset.anchors = String(Math.round(count * 0.6));
+      element.dataset.runners = String(Math.round(count * 0.22));
+      element.dataset.accents = String(Math.round(count * 0.02));
       sync();
     };
     const resizeObserver =

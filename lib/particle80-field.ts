@@ -29,6 +29,30 @@ export type FieldConfig = {
   pointerForce: number;
 };
 export type FieldPointer = { x: number; y: number; strength: number };
+/** Shared by Canvas and SVG; colors are assigned once, never random per frame. */
+export const FIELD_PALETTE = [
+  '#FFFFFF',
+  '#EAF4FF',
+  '#CFE8FF', // Anchors: cool-white body.
+  '#8FDFFF',
+  '#6FD3FF', // Runners: visible, restrained icy circulation.
+  '#B8C7D9',
+  '#9FB3C8', // Ambient: quieter gray-blue depth.
+  '#D9B36C',
+  '#F1C978', // Exactly ~2% champagne highlights.
+] as const;
+export const FIELD_ROLES = { anchor: 0, runner: 1, ambient: 2 } as const;
+export const FIELD_ROLE_RESPONSE = [
+  { spring: 1.25, pointer: 0.3, noise: 0.55 },
+  { spring: 1, pointer: 1, noise: 0.85 },
+  { spring: 0.55, pointer: 1.4, noise: 1 },
+] as const;
+/** Canvas y points down: positive angular velocity is visually clockwise. */
+export const FIELD_LOOPS = [
+  { x: -0.87, y: -0.53, rx: 0.49, ry: 0.49, speed: 0.34 },
+  { x: -0.87, y: 0.52, rx: 0.55, ry: 0.54, speed: -0.3 },
+  { x: 0.87, y: 0, rx: 0.58, ry: 1.08, speed: 0.255 },
+] as const;
 export type ParticleField = {
   count: number;
   position: Float32Array;
@@ -41,8 +65,17 @@ export type ParticleField = {
   depth: Float32Array;
   noiseSeed: Float32Array;
   side: Int8Array;
-  /** 0: structure (70%), 1: ambient (20%), 2: distant dust (10%). */
+  /** 60% anchors / 22% runners / remaining 18% ambient. */
+  role: Uint8Array;
+  /** 0: anchors + runners, 1: near ambient, 2: distant ambient. */
   layer: Uint8Array;
+  /** 0: upper 8, 1: lower 8, 2: 0; 255: no digit (ambient). */
+  loop: Uint8Array;
+  orbitPhase: Float32Array;
+  orbitWidth: Float32Array;
+  orbitSpeed: Float32Array;
+  color: Uint8Array;
+  sizeClass: Uint8Array;
   trail: Uint8Array;
 };
 
@@ -93,56 +126,100 @@ export function createParticleField(count: number): ParticleField {
     depth: new Float32Array(count),
     noiseSeed: new Float32Array(count),
     side: new Int8Array(count),
+    role: new Uint8Array(count),
     layer: new Uint8Array(count),
+    loop: new Uint8Array(count),
+    orbitPhase: new Float32Array(count),
+    orbitWidth: new Float32Array(count),
+    orbitSpeed: new Float32Array(count),
+    color: new Uint8Array(count),
+    sizeClass: new Uint8Array(count),
     trail: new Uint8Array(count),
   };
-  const structures = Math.round(count * 0.7);
-  const ambient = Math.round(count * 0.2);
+  const anchors = Math.round(count * 0.6);
+  const runners = Math.round(count * 0.22);
+  const structures = anchors + runners;
+  const nearAmbient = Math.round(count * 0.12);
+  const sizeOrder = Array.from({ length: count }, (_, i) => i);
+  const hotspot = new Float32Array(count);
   for (let i = 0; i < count; i++) {
     const k = i * 3;
-    const layer = i < structures ? 0 : i < structures + ambient ? 1 : 2;
+    const role = i < anchors ? 0 : i < structures ? 1 : 2;
+    const layer = i < structures ? 0 : i < structures + nearAmbient ? 1 : 2;
+    field.role[i] = role;
     field.layer[i] = layer;
     const angle = random() * Math.PI * 2;
     // Filled 3D annular volumes: uneven density across their thickness and depth.
-    const thickness = normal() * 0.19;
+    const thickness = normal() * (role === 1 ? 0.095 : 0.17);
+    field.orbitPhase[i] = angle;
+    field.orbitWidth[i] = thickness;
     if (layer === 0) {
-      if (i % 10 < 5) {
-        const upper = i % 2 === 0;
-        field.rest[k] =
-          -0.87 + Math.cos(angle) * ((upper ? 0.49 : 0.55) + thickness);
-        field.rest[k + 1] =
-          (upper ? -0.53 : 0.52) +
-          Math.sin(angle) * ((upper ? 0.49 : 0.54) + thickness);
-      } else {
-        field.rest[k] = 0.87 + Math.cos(angle) * (0.58 + thickness);
-        field.rest[k + 1] = Math.sin(angle) * (1.08 + thickness);
-      }
-      field.rest[k + 2] = normal() * 0.38;
+      // Independent of side/parity: both SWUFE and FIC seed every loop.
+      const local = role === 1 ? i - anchors : i;
+      const loop = local % 4 === 0 ? 0 : local % 4 === 1 ? 1 : 2;
+      field.loop[i] = loop;
+      const lane = FIELD_LOOPS[loop];
+      field.orbitSpeed[i] = lane.speed * (0.88 + random() * 0.24);
+      field.rest[k] = lane.x + Math.cos(angle) * (lane.rx + thickness);
+      field.rest[k + 1] = lane.y + Math.sin(angle) * (lane.ry + thickness);
+      field.rest[k + 2] = normal() * (role === 1 ? 0.22 : 0.34);
     } else {
+      field.loop[i] = 255;
       field.rest[k] = (random() - 0.5) * (layer === 1 ? 4.8 : 8.6);
       field.rest[k + 1] = (random() - 0.5) * (layer === 1 ? 2.9 : 4.5);
       field.rest[k + 2] = layer === 1 ? normal() * 0.9 : -1.5 - random() * 1.5;
     }
-    field.side[i] = i % 2 ? 1 : -1;
+    field.side[i] = Math.floor(i / 4) % 2 ? 1 : -1;
     field.source[k] = normal() * 0.62;
     field.source[k + 1] = normal() * 0.72;
     field.source[k + 2] = normal() * 0.85;
     field.noiseSeed[i] = random() * Math.PI * 2;
-    field.size[i] =
-      layer === 2 ? 0.35 + random() * 0.45 : 0.45 + random() ** 3 * 1.45;
+    field.color[i] =
+      role === 0 ? i % 3 : role === 1 ? 3 + (i % 2) : 5 + (i % 2);
     field.opacity[i] =
-      layer === 0
-        ? 0.22 + random() * 0.54
-        : layer === 1
-          ? 0.08 + random() * 0.2
-          : 0.055 + random() * 0.1;
-    if (i % 71 === 0) {
-      field.size[i] *= 1.15;
-      field.opacity[i] *= 1.25;
-    }
+      role === 1
+        ? 0.43 + random() * 0.34
+        : layer === 0
+          ? 0.24 + random() * 0.42
+          : layer === 1
+            ? 0.08 + random() * 0.2
+            : 0.055 + random() * 0.1;
+    hotspot[i] =
+      random() +
+      (role === 1 ? 0.3 : role === 2 ? -0.45 : 0) +
+      (layer === 0 ? Math.abs(Math.sin(angle)) ** 6 * 0.35 : 0);
     field.depth[i] = field.rest[k + 2];
-    field.trail[i] = layer !== 2 && i % 17 === 0 ? 1 : 0;
+    field.trail[i] = role === 1 && i % 3 === 0 ? 1 : 0;
   }
+  // Exact rounded size budgets, biased toward circulation/turning-point hotspots.
+  // Values are radii: reference diameters 1–2 / 2–3.5 / 4–6 / 6–8 CSS px.
+  sizeOrder.sort((a, b) => hotspot[a] - hotspot[b]);
+  const small = Math.round(count * 0.65);
+  const medium = small + Math.round(count * 0.25);
+  const bright = medium + Math.round(count * 0.08);
+  for (let rank = 0; rank < count; rank++) {
+    const i = sizeOrder[rank];
+    const bin = rank < small ? 0 : rank < medium ? 1 : rank < bright ? 2 : 3;
+    field.sizeClass[i] = bin;
+    field.size[i] =
+      bin === 0
+        ? 0.5 + random() * 0.5
+        : bin === 1
+          ? 1 + random() * 0.75
+          : bin === 2
+            ? 2 + random()
+            : 3 + random();
+  }
+  // Warm points are rare independent highlights, never an entire circulation lane.
+  const accentOrder = sizeOrder.filter(
+    (i) => field.layer[i] !== 2 && field.sizeClass[i] < 3,
+  );
+  for (let i = accentOrder.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [accentOrder[i], accentOrder[j]] = [accentOrder[j], accentOrder[i]];
+  }
+  for (let i = 0; i < Math.round(count * 0.02); i++)
+    field.color[accentOrder[i]] = 7 + (i % 2);
   setFieldTargets(field, 0, 0, { sourceX: 2.65, sourceY: 0 }, 0);
   initializeField(field);
   return field;
@@ -183,12 +260,25 @@ export function setFieldTargets(
     const mixedX = sourceX * (1 - merge) + mergeX * merge;
     const mixedY = sourceY * (1 - merge) + mergeY * merge;
     const mixedZ = sourceZ * (1 - merge) + mergeZ * merge;
-    const restX =
+    let restX =
       field.rest[k] + (layer === 1 ? Math.sin(time * 0.16 + phase) * 0.16 : 0);
-    const restY =
+    let restY =
       field.rest[k + 1] +
       (layer === 1 ? Math.cos(time * 0.12 + phase) * 0.14 : 0);
-    const restZ = field.rest[k + 2];
+    let restZ = field.rest[k + 2];
+    if (field.role[i] === FIELD_ROLES.runner) {
+      const lane = FIELD_LOOPS[field.loop[i]];
+      // Move attractors inside fixed digit volumes, never rotate a digit/group.
+      // Analytic phase modulation has no seam/reset and never reverses a lane.
+      const orbit =
+        field.orbitPhase[i] +
+        time * field.orbitSpeed[i] +
+        (Math.sin(time * 0.41 + phase) - Math.sin(phase)) * 0.09;
+      const width = field.orbitWidth[i] + Math.sin(time * 0.33 + phase) * 0.016;
+      restX = lane.x + Math.cos(orbit) * (lane.rx + width);
+      restY = lane.y + Math.sin(orbit) * (lane.ry + width);
+      restZ += Math.sin(orbit + phase) * 0.13;
+    }
     // Distant dust exists throughout, independently of either institution.
     field.targetPosition[k] =
       (layer === 2 ? restX : mixedX * (1 - form) + restX * form) +
@@ -246,8 +336,8 @@ export function integrateField(
       const seed = field.noiseSeed[i];
       const directionX = distance > 1e-4 ? dx / distance : Math.cos(seed);
       const directionY = distance > 1e-4 ? dy / distance : Math.sin(seed);
-      const layerScale =
-        field.layer[i] === 2 ? 0.25 : field.layer[i] === 1 ? 0.65 : 1;
+      const response = FIELD_ROLE_RESPONSE[field.role[i]];
+      const layerScale = response.spring;
       const localSpring = spring * layerScale;
       const drag = Math.exp(-damping * Math.sqrt(layerScale) * dt);
       const t = time * (0.31 + (i % 7) * 0.013) + seed;
@@ -261,8 +351,9 @@ export function integrateField(
         const push =
           force *
           (axis === 0 ? directionX : axis === 1 ? directionY : 0) *
-          (field.layer[i] === 2 ? 0.2 : 1);
-        const procedural = (axis === 0 ? nx : axis === 1 ? ny : nz) * noise;
+          response.pointer;
+        const procedural =
+          (axis === 0 ? nx : axis === 1 ? ny : nz) * noise * response.noise;
         const acceleration =
           localSpring * (field.targetPosition[index] - field.position[index]) +
           push +
@@ -323,7 +414,11 @@ export function projectField(
   const depth = bounded(point.z, -2.5, 2.5, 0);
   const perspective = 6.5 / (6.5 - depth);
   const breath = twinkle
-    ? 1 - shimmer + shimmer * Math.sin(time * 0.57 + point.x * 2.4 + point.z)
+    ? 1 -
+      shimmer +
+      shimmer *
+        (Math.sin(time * 0.57 + point.x * 2.4 + point.z) * 0.82 +
+          Math.sin(time * 1.73 + point.y * 4.1 - point.z) * 0.18)
     : 1;
   out.x = point.x * perspective;
   out.y = point.y * perspective;
