@@ -8,6 +8,7 @@ import { INTRO, RADIUS, reveal, sphereVertex, type LayerProps } from './scene-co
 
 const globeFragment = `
   uniform float uReveal;
+  uniform float uOpacity;
   varying vec3 vNormal;
   varying vec3 vWorld;
   varying vec3 vLocal;
@@ -27,27 +28,28 @@ const globeFragment = `
     vec2 edge = abs(fract(grid + 0.5) - 0.5) / max(fwidth(grid), vec2(0.0001));
     float line = 1.0 - smoothstep(0.0, 0.85, min(edge.x, edge.y));
     color += vec3(0.12, 0.34, 0.46) * line * (0.07 + 0.09 * light) * smoothstep(0.0, 0.25, ndv);
-    gl_FragColor = vec4(color * uReveal, 1.0);
+    gl_FragColor = vec4(color * uReveal, uOpacity);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
   }
 `;
 
-export default function Globe({ lowPower, clock }: LayerProps) {
+export default function Globe({ lowPower, clock, opening }: LayerProps) {
   const points = useMemo(() => landPositions(lowPower), [lowPower]);
-  const uniforms = useMemo(() => ({ uReveal: { value: 0 } }), []);
+  const uniforms = useMemo(() => ({ uReveal: { value: 0 }, uOpacity: { value: 1 } }), []);
   const surface = useRef<THREE.ShaderMaterial>(null);
   const land = useRef<THREE.ShaderMaterial>(null);
   useFrame(() => {
-    const value = 0.28 + 0.72 * reveal(clock.current.elapsed, INTRO.globe);
+    const value = opening ? reveal(opening.current.frame.globeRevealProgress, 0.12, 0.7) : 0.28 + 0.72 * reveal(clock.current.elapsed, INTRO.globe);
     if (surface.current) surface.current.uniforms.uReveal.value = value;
+    if (surface.current) surface.current.uniforms.uOpacity.value = opening ? value : 1;
     if (land.current) land.current.uniforms.uReveal.value = value;
   });
   return (
     <group>
       <mesh>
         <sphereGeometry args={[RADIUS, lowPower ? 48 : 96, lowPower ? 32 : 64]} />
-        <shaderMaterial ref={surface} vertexShader={sphereVertex} fragmentShader={globeFragment} uniforms={uniforms} />
+        <shaderMaterial ref={surface} vertexShader={sphereVertex} fragmentShader={globeFragment} uniforms={uniforms} transparent={Boolean(opening)} />
       </mesh>
       <points>
         <bufferGeometry><bufferAttribute attach="attributes-position" args={[points, 3]} /></bufferGeometry>

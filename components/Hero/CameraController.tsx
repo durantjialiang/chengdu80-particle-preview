@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import * as THREE from 'three';
 import { INITIAL_TILT, type ControllerProps } from './scene-config';
 
-export default function CameraController({ active, reducedMotion, lowPower, clock, globe, pointer }: ControllerProps) {
+export default function CameraController({ active, reducedMotion, lowPower, clock, globe, pointer, opening }: ControllerProps) {
   const { camera, invalidate } = useThree();
   useEffect(() => {
     camera.position.set(-0.62, 0.46, lowPower ? 5.95 : 6.45);
@@ -14,6 +14,15 @@ export default function CameraController({ active, reducedMotion, lowPower, cloc
   }, [camera, invalidate, lowPower]);
   /* oxlint-disable react/react-compiler -- Imperative R3F camera/transform updates are outside React rendering. */
   useFrame((_, delta) => {
+    if (opening && opening.current.frame.state !== 'GLOBE_ACTIVE') {
+      clock.current.elapsed = opening.current.frame.globeRevealProgress * 4.2;
+      clock.current.motion = 0;
+      pointer.current.x = 0; pointer.current.y = 0;
+      globe.current?.rotation.set(...INITIAL_TILT);
+      camera.position.set(-0.62, 0.46, lowPower ? 5.95 : 6.45);
+      camera.lookAt(0, 0, 0);
+      return;
+    }
     if (reducedMotion) {
       clock.current.elapsed = 10; clock.current.motion = 0;
       globe.current?.rotation.set(...INITIAL_TILT);

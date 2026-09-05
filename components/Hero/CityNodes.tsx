@@ -11,7 +11,7 @@ export type LabelElements = RefObject<Map<string, HTMLDivElement>>;
 type OriginBounds = RefObject<{ x: number; y: number; width: number; height: number }>;
 type CityProps = LayerProps & { city: CityNode; labels: LabelElements; originBounds: OriginBounds };
 
-function City({ city, lowPower, reducedMotion, clock, labels, originBounds }: CityProps) {
+function City({ city, lowPower, reducedMotion, clock, labels, originBounds, opening }: CityProps) {
   const marker = useRef<THREE.Group>(null);
   const core = useRef<THREE.MeshBasicMaterial>(null);
   const halo = useRef<THREE.MeshBasicMaterial>(null);
@@ -28,17 +28,19 @@ function City({ city, lowPower, reducedMotion, clock, labels, originBounds }: Ci
   useFrame(({ camera, size }) => {
     if (!marker.current) return;
     const elapsed = clock.current.elapsed;
-    const appearance = reveal(elapsed, origin ? INTRO.origin : INTRO.routes, 0.45);
+    const activation = opening?.current.frame.activationProgress ?? 1;
+    const appearance = opening ? reveal(opening.current.frame.globeRevealProgress, 0.2, 0.5) * (origin ? 0.38 + 0.62 * activation : 1) : reveal(elapsed, origin ? INTRO.origin : INTRO.routes, 0.45);
     marker.current.getWorldPosition(world);
     normal.copy(world).normalize(); view.copy(camera.position).sub(world).normalize();
     const facing = normal.dot(view);
     const visibility = THREE.MathUtils.smoothstep(facing, 0.04, 0.24) * appearance;
     const pulse = reducedMotion ? 0 : Math.sin(clock.current.motion * 1.2) * 0.08;
     if (core.current) core.current.opacity = appearance * (origin ? 1 : 0.66 + (hover.current ? 0.22 : 0));
-    if (halo.current) halo.current.opacity = appearance * (origin ? 0.1 + pulse * 0.2 : 0.035);
+    const activationPulse = opening && !reducedMotion ? Math.sin(activation * Math.PI) : 0;
+    if (halo.current) halo.current.opacity = appearance * (origin ? 0.1 + pulse * 0.2 + activationPulse * 0.16 : 0.035);
     for (let i = 0; i < rings.current.length; i++) {
       const ring = rings.current[i]; if (!ring) continue;
-      const progress = reducedMotion ? 0.25 + i * 0.3 : ((Math.max(0, elapsed - INTRO.origin) * 0.19 + i * 0.5) % 1);
+      const progress = reducedMotion ? 0.25 + i * 0.3 : opening && activation < 1 ? Math.min(1, activation * 1.25 + i * 0.18) : ((Math.max(0, elapsed - INTRO.origin) * 0.19 + i * 0.5) % 1);
       ring.scale.setScalar(1 + progress * 2.1);
       (ring.material as THREE.MeshBasicMaterial).opacity = appearance * (1 - progress) ** 2 * (origin ? 0.42 : 0.08);
     }
@@ -67,7 +69,7 @@ function City({ city, lowPower, reducedMotion, clock, labels, originBounds }: Ci
 
   return (
     <group ref={marker} position={position} quaternion={orientation}>
-      <mesh onPointerOver={() => { hover.current = true; }} onPointerOut={() => { hover.current = false; }}>
+      <mesh onPointerOver={() => { hover.current = !opening || opening.current.frame.interactionOwner === 'globe'; }} onPointerOut={() => { hover.current = false; }}>
         <sphereGeometry args={[origin ? 0.031 : 0.016, 12, 10]} />
         <meshBasicMaterial ref={core} color={origin ? '#d5b391' : '#91cbdc'} transparent opacity={0} toneMapped={false} />
       </mesh>

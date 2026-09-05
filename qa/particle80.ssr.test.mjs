@@ -56,7 +56,7 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
       'Display magnification must not enlarge the fallback light points',
     );
     assert.notEqual(enlarged, render({ motion: 'still' }));
-    assert.match(render({ viewScale: 99 }), /data-view-scale="1.6"/);
+    assert.match(render({ viewScale: 99 }), /data-view-scale="1.8"/);
     assert.match(render({ viewScale: NaN }), /data-view-scale="1"/);
     const fills = [...first.matchAll(/fill="(#[0-9a-f]{6})"/g)].map(
       (m) => m[1],
@@ -108,9 +108,13 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
     assert.match(intro, /Finance and Economics/);
     assert.match(intro, /FIC/);
     assert.match(intro, /Fintech Innovation Center/);
-    assert.match(intro, /data-intro-duration="7.2"/);
+    assert.match(intro, /data-intro-duration="2.2"/);
+    assert.match(intro, /data-intro-state="INTRO_IDLE"/);
+    assert.match(intro, /data-hold-duration="2.2"/);
+    assert.match(intro, /data-dissolve-duration="2.8"/);
+    assert.match(intro, /data-globe-reveal-duration="2.6"/);
     assert.match(intro, /data-brightness="B"/);
-    assert.match(intro, /data-view-scale="1.534"/);
+    assert.match(intro, /data-view-scale="1.72"/);
     assert.match(intro, /Innovation ecosystem/);
     assert.match(
       render({

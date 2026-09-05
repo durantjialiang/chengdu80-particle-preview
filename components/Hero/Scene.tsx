@@ -12,6 +12,7 @@ import { networkCities } from './geometry';
 import { INITIAL_TILT, type GlobeProps, type SceneClock } from './scene-config';
 import styles from './Scene.module.css';
 import StaticNetwork from './StaticNetwork';
+import OpeningTargets from './OpeningTargets';
 
 class SceneBoundary extends Component<{ children: ReactNode; onFailure: () => void }, { failed: boolean }> {
   state = { failed: false };
@@ -60,7 +61,7 @@ function Runtime({ host, onReady, onFailure, onDegrade, active, reducedMotion }:
   return null;
 }
 
-export default function Scene({ lowPower, reducedMotion, active }: GlobeProps) {
+export default function Scene({ lowPower, reducedMotion, active, opening }: GlobeProps) {
   const host = useRef<HTMLDivElement>(null);
   const globe = useRef<THREE.Group>(null);
   const pointer = useRef({ x: 0, y: 0 });
@@ -70,17 +71,25 @@ export default function Scene({ lowPower, reducedMotion, active }: GlobeProps) {
   const [failed, setFailed] = useState(false);
   const [degraded, setDegraded] = useState(false);
   const qualityLow = lowPower || degraded;
-  const onReady = useCallback(() => { setReady(true); }, []);
-  const onFailure = useCallback(() => { setFailed(true); }, []);
+  /* oxlint-disable react/react-compiler -- Readiness is an imperative cross-renderer handshake, not React state mutation. */
+  const onReady = useCallback(() => { setReady(true); if (opening) opening.current.ready = true; }, [opening]);
+  const onFailure = useCallback(() => { setFailed(true); if (opening) { opening.current.ready = true; opening.current.fallback = true; } }, [opening]);
+  /* oxlint-enable react/react-compiler */
   const onDegrade = useCallback(() => { setDegraded(true); }, []);
-  const props = { lowPower: qualityLow, reducedMotion, active, clock };
+  const props = { lowPower: qualityLow, reducedMotion, active, clock, opening };
+  // Canvas' unsupported-WebGL fallback does not throw into a React boundary.
+  useEffect(() => {
+    if (!opening || ready || failed) return;
+    const timeout = window.setTimeout(() => { if (!opening.current.ready) onFailure(); }, 8000);
+    return () => window.clearTimeout(timeout);
+  }, [opening, ready, failed, onFailure]);
 
   return (
     <div ref={host} className={`globe-canvas ${styles.scene}`}
       data-spatial-ready={ready && !failed} data-quality={qualityLow ? 'low' : 'full'}
       data-render-state={failed ? 'fallback' : !active ? 'paused' : reducedMotion ? 'static' : 'animated'}
       onPointerMove={event => {
-        if (reducedMotion || event.pointerType === 'touch') return;
+        if (reducedMotion || event.pointerType === 'touch' || (opening && opening.current.frame.interactionOwner !== 'globe')) return;
         const rect = event.currentTarget.getBoundingClientRect();
         pointer.current.x = THREE.MathUtils.clamp(((event.clientX - rect.left) / rect.width - 0.5) * 2, -1, 1);
         pointer.current.y = THREE.MathUtils.clamp(((event.clientY - rect.top) / rect.height - 0.5) * 2, -1, 1);
@@ -92,7 +101,7 @@ export default function Scene({ lowPower, reducedMotion, active }: GlobeProps) {
         <Canvas camera={{ position: [-0.62, 0.46, 6.15], fov: lowPower ? 42 : 37, near: 0.1, far: 30 }}
           dpr={degraded ? 0.85 : qualityLow ? 1 : [1, 1.5]}
           gl={{ antialias: !lowPower, alpha: true, powerPreference: lowPower ? 'low-power' : 'high-performance', stencil: false }}
-          frameloop={!active ? 'never' : reducedMotion ? 'demand' : 'always'}
+          frameloop={!active || (reducedMotion && (!opening || opening.current.frame.state === 'GLOBE_ACTIVE')) ? 'demand' : 'always'}
           fallback={<div />}
           onCreated={({ gl }) => {
             gl.setClearColor('#020711', 0);
@@ -111,6 +120,7 @@ export default function Scene({ lowPower, reducedMotion, active }: GlobeProps) {
               <ParticleNetwork {...props} labels={labels} />
             </group>
             <Runtime host={host} onReady={onReady} onFailure={onFailure} onDegrade={onDegrade} active={active} reducedMotion={reducedMotion} />
+            {opening ? <OpeningTargets opening={opening} globe={globe} host={host} lowPower={qualityLow} /> : null}
           </Suspense>
         </Canvas>
       </SceneBoundary> : null}

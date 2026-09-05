@@ -5,12 +5,12 @@ import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { INTRO, RADIUS, reveal, sphereVertex, type LayerProps } from './scene-config';
 
-export default function Atmosphere({ lowPower, clock }: LayerProps) {
+export default function Atmosphere({ lowPower, clock, opening }: LayerProps) {
   const uniforms = useMemo(() => ({ uReveal: { value: 0 } }), []);
   const outer = useRef<THREE.ShaderMaterial>(null);
   const inner = useRef<THREE.ShaderMaterial>(null);
   useFrame(() => {
-    const value = reveal(clock.current.elapsed, INTRO.atmosphere, 0.8);
+    const value = opening ? reveal(opening.current.frame.globeRevealProgress, 0, 0.6) : reveal(clock.current.elapsed, INTRO.atmosphere, 0.8);
     if (outer.current) outer.current.uniforms.uReveal.value = value;
     if (inner.current) inner.current.uniforms.uReveal.value = value;
   });

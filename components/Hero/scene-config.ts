@@ -1,10 +1,11 @@
 import type { RefObject } from 'react';
 import type { Group } from 'three';
+import type { OpeningBridgeRef } from '@/lib/brand-opening';
 
 export const RADIUS = 1.62;
 export const INITIAL_TILT = [0.14, 0.08, -0.2] as const;
 export const INTRO = { particles: 0.5, globe: 1, atmosphere: 1.5, origin: 2, routes: 2.5 };
-export type GlobeProps = { lowPower: boolean; reducedMotion: boolean; active: boolean };
+export type GlobeProps = { lowPower: boolean; reducedMotion: boolean; active: boolean; opening?: OpeningBridgeRef };
 export type ScenePointer = { x: number; y: number };
 export type SceneClock = { elapsed: number; motion: number };
 export type LayerProps = GlobeProps & { clock: RefObject<SceneClock> };
