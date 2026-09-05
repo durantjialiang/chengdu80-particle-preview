@@ -1,15 +1,24 @@
 # Particle80 — physical innovation field
 
 The current renderer implements the narrative **SWUFE + FIC → CHENGDU 80**.
-The silhouette stays anchored while a smaller population circulates inside it.
+The silhouette stays readable while **every particle** moves at its own scale.
 
 Use `Particle80Intro` for the complete institutional composition, or the bare
 `Particle80` as a reusable field. The shared implementation uses actual
-position/velocity integration, 60% anchors / 22% runners / 18% ambient particles,
-role-sensitive pointer repulsion and procedural curl forces. Cool-white anchors,
-icy-blue runners, gray-blue ambient dust and 2% champagne points add restrained
-color depth. The upper/lower 8 loops circulate in opposite directions; the 0 has
-its own slower clockwise flow. There is no whole-digit rotation.
+position/velocity integration: 50% slow structure, 25% circulating flow,
+18% ambient dust and 7% freer highlights. Living particles are constrained toward
+orbit tubes along their normals and propelled tangentially, with no phase lock
+to a seeded point. Pointer disturbances retain inertia and rejoin the current
+orbit. The upper/lower 8 circulate in opposite directions; the 0 is smoother.
+All roles have XY and depth motion, except intentional pause/reduced-motion modes.
+
+Five size tiers and three cached optical types (dust/star/spark) create a long-tail
+luminance distribution. Colour is sampled from a coherent spatial temperature
+field, with a maximum ~2% champagne membership; no per-particle random colours.
+The particle budget, camera, typography, 7.2-second story and CTA are unchanged.
+
+Development preview: `?fieldDebug=roles`, `vectors`, `flow`, or `telemetry`.
+Diagnostics and their explicit snapshot API are removed from production builds.
 
 ```tsx
 import Particle80 from '@/components/Particle80';

@@ -22,6 +22,16 @@ const brightnessPreset =
       : reviewPreset === 'baseline'
         ? 'baseline'
         : undefined;
+const debugQuery = import.meta.env.DEV
+  ? new URLSearchParams(window.location.search).get('fieldDebug')
+  : null;
+const fieldDebug =
+  debugQuery === 'roles' ||
+  debugQuery === 'vectors' ||
+  debugQuery === 'flow' ||
+  debugQuery === 'telemetry'
+    ? debugQuery
+    : 'off';
 function GlobeDestination() {
   const { reducedMotion, lowPower, pageVisible } = useScenePreferences();
   return (
@@ -65,6 +75,7 @@ function Study() {
     <main>
       <Particle80Intro
         brightnessPreset={brightnessPreset}
+        debug={fieldDebug}
         key={replay}
         repeatVisit={replay ? 'always' : 'short'}
         onStateChange={onStateChange}

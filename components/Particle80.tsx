@@ -23,15 +23,20 @@ import {
   setFieldTargets,
   initializeField,
   integrateField,
+  updateFieldColors,
   fieldPoint,
   fieldProgress,
   fieldPhase,
   fieldBudget,
   FIELD_DEFAULTS,
   FIELD_PALETTE,
+  FIELD_ACCENT_START,
+  FIELD_ROLE_RATIOS,
+  FIELD_OPTICS,
   type FieldPhase,
   projectField as projectSpatial,
 } from '@/lib/particle80-field';
+import { createFieldDebug, type FieldDebugMode } from '@/lib/particle80-debug';
 
 export type Particle80State = {
   phase?: FieldPhase;
@@ -59,12 +64,17 @@ function brightnessGain(
   if (role === 2) return settings.ambient;
   const gain = role === 1 ? settings.runner : settings.anchor;
   // Keep rare stars and champagne highlights from turning into white hotspots.
-  return Math.min(gain, sizeClass >= 2 ? 1.1 : color >= 7 ? 1.12 : gain);
+  return Math.min(
+    gain,
+    sizeClass >= 3 ? 1.1 : color >= FIELD_ACCENT_START ? 1.12 : gain,
+  );
 }
 
 export type Particle80Props = {
   /** Render-only A/B review; the reusable motif retains its baseline by default. */
   brightnessPreset?: Particle80Brightness;
+  /** Development only. Production builds remove diagnostics and telemetry. */
+  debug?: FieldDebugMode;
   /** False unmounts the entire renderer, observers and animation loop. */
   enabled?: boolean;
   /** False freezes the motif, preserving its last phase. */
@@ -73,7 +83,7 @@ export type Particle80Props = {
   motion?: 'auto' | 'still';
   quality?: 'auto' | 'low';
   particleCount?: number;
-  /** @deprecated Roles now use fixed 60% anchor / 22% runner / 18% ambient budgets. */
+  /** @deprecated Fixed 50/25/18/7 structure / flow / ambient / highlight budgets. */
   ambientParticleRatio?: number;
   pointerForce?: number;
   mouseForce?: number;
@@ -128,16 +138,18 @@ function fallbackPoints(formation: number) {
     0,
   );
   initializeField(fallbackField);
+  updateFieldColors(fallbackField, 0);
   const point = spatialPoint();
-  return Array.from({ length: fallbackField.count }, (_, i) =>
-    projectSpatial(
+  return Array.from({ length: fallbackField.count }, (_, i) => ({
+    ...projectSpatial(
       fieldPoint(fallbackField, i, formation, 0, point),
       0,
       1,
       false,
       { x: 0, y: 0, size: 0, opacity: 0 },
     ),
-  );
+    color: fallbackField.color[i],
+  }));
 }
 const stillPoints = fallbackPoints(1);
 
@@ -168,7 +180,7 @@ const Static80 = memo(function Static80({
         cx={Number(point.x.toFixed(6))}
         cy={Number(point.y.toFixed(6))}
         r={Number((point.size * 0.0065).toFixed(6))}
-        fill={FIELD_PALETTE[fallbackField.color[i]]}
+        fill={FIELD_PALETTE[point.color]}
         opacity={Number(
           Math.min(
             1,
@@ -177,7 +189,7 @@ const Static80 = memo(function Static80({
                 brightnessPreset,
                 fallbackField.role[i],
                 fallbackField.sizeClass[i],
-                fallbackField.color[i],
+                point.color,
               ),
           ).toFixed(5),
         )}
@@ -198,6 +210,7 @@ const Static80 = memo(function Static80({
 
 function Particle80Surface({
   brightnessPreset = 'baseline',
+  debug = 'off',
   active = true,
   motion = 'auto',
   quality = 'auto',
@@ -273,6 +286,7 @@ function Particle80Surface({
     ),
   );
   const callback = useRef(onStateChange);
+  const debugMode = process.env.NODE_ENV === 'development' ? debug : 'off';
   const lastReported = useRef<Particle80State | null>(null);
   useEffect(() => {
     callback.current = onStateChange;
@@ -371,6 +385,10 @@ function Particle80Surface({
       return;
     }
     const field = createParticleField(count);
+    const diagnostics =
+      process.env.NODE_ENV === 'development' && debugMode !== 'off'
+        ? createFieldDebug(field, debugMode)
+        : null;
     let initialized = false;
     const layout = { sourceX: 2.65, sourceY: 0 };
     const point = spatialPoint();
@@ -378,28 +396,35 @@ function Particle80Surface({
     const projected = { x: 0, y: 0, size: 0, opacity: 0 };
     const projectedTail = { x: 0, y: 0, size: 0, opacity: 0 };
     const sprite = document.createElement('canvas');
-    // One tiny pre-rendered color atlas; no gradients/color parsing in the RAF.
+    // Three optical rows: quiet dust, compact stars, rare soft sparks.
+    // Cached once, no per-frame gradients, textures or color-string allocation.
     sprite.width = 48 * FIELD_PALETTE.length;
-    sprite.height = 48;
+    sprite.height = 48 * 3;
     const spriteContext = get2dContext(sprite);
     if (spriteContext) {
       FIELD_PALETTE.forEach((color, index) => {
         const left = index * 48;
-        const gradient = spriteContext.createRadialGradient(
-          left + 24,
-          24,
-          0,
-          left + 24,
-          24,
-          24,
-        );
-        gradient.addColorStop(0, '#f5fbffd9');
-        gradient.addColorStop(0.1, `${color}85`);
-        gradient.addColorStop(0.28, `${color}2b`);
-        gradient.addColorStop(0.55, `${color}09`);
-        gradient.addColorStop(1, `${color}00`);
-        spriteContext.fillStyle = gradient;
-        spriteContext.fillRect(left, 0, 48, 48);
+        for (let optical = 0; optical < 3; optical++) {
+          const top = optical * 48;
+          const gradient = spriteContext.createRadialGradient(
+            left + 24,
+            top + 24,
+            0,
+            left + 24,
+            top + 24,
+            24,
+          );
+          gradient.addColorStop(
+            0,
+            index >= FIELD_ACCENT_START ? '#fff0d6d9' : '#f5fbffd9',
+          );
+          gradient.addColorStop(0.1, `${color}${optical === 2 ? '9a' : '75'}`);
+          gradient.addColorStop(0.28, `${color}${optical === 2 ? '38' : '22'}`);
+          gradient.addColorStop(0.55, `${color}${optical === 2 ? '0c' : '05'}`);
+          gradient.addColorStop(1, `${color}00`);
+          spriteContext.fillStyle = gradient;
+          spriteContext.fillRect(left, top, 48, 48);
+        }
       });
     }
     let width = 0;
@@ -461,6 +486,7 @@ function Particle80Surface({
 
     const drawFrame = () => {
       if (disposed || lost || width <= 0 || height <= 0) return;
+      const drawStarted = diagnostics ? performance.now() : 0;
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
       context.clearRect(0, 0, width, height);
       context.globalCompositeOperation = 'lighter';
@@ -504,8 +530,8 @@ function Particle80Surface({
             0.075 * sourceEnergy * settings.strength * (1 - settings.dissolve);
           context.drawImage(
             sprite,
-            2 * 48,
-            0,
+            18 * 48,
+            48,
             48,
             48,
             width / 2 + side * layout.sourceX * scale - scale,
@@ -521,8 +547,8 @@ function Particle80Surface({
           (1 - settings.dissolve);
         context.drawImage(
           sprite,
-          2 * 48,
-          0,
+          18 * 48,
+          48,
           48,
           48,
           width / 2 - scale * 1.5,
@@ -569,7 +595,12 @@ function Particle80Surface({
             ),
         );
         if (alpha < 0.002) continue;
-        const radius = projected.size * size;
+        // Keep subpixel dust readable on DPR1 phones without enlarging stars.
+        // 0.35 px radius is the specified 0.7 px lower dust diameter.
+        const radius =
+          field.optical[index] === FIELD_OPTICS.dust
+            ? Math.max(0.35, projected.size * size)
+            : projected.size * size;
         const color = FIELD_PALETTE[field.color[index]];
         if (
           settings.trails &&
@@ -601,13 +632,26 @@ function Particle80Surface({
             endY = tailY;
           }
         }
+        const optical = field.optical[index];
         if (settings.halo > 0 && spriteContext) {
-          const extent = (4 + radius * 3) * size;
-          context.globalAlpha = alpha * settings.halo;
+          const extent =
+            (optical === FIELD_OPTICS.dust
+              ? 0.25 + radius * 2.1
+              : optical === FIELD_OPTICS.spark
+                ? 2.2 + radius * 2.5
+                : 1.2 + radius * 1.9) * size;
+          context.globalAlpha =
+            alpha *
+            settings.halo *
+            (optical === FIELD_OPTICS.dust
+              ? 0.32
+              : optical === FIELD_OPTICS.spark
+                ? 0.9
+                : 0.7);
           context.drawImage(
             sprite,
             field.color[index] * 48,
-            0,
+            optical * 48,
             48,
             48,
             x - extent,
@@ -618,16 +662,17 @@ function Particle80Surface({
         }
         // Larger stars have a soft colored body with a smaller cool-white core.
         // Their full radius is not painted as a large opaque LED disk.
-        const star = field.sizeClass[index] >= 2;
+        const star = optical !== FIELD_OPTICS.dust;
         context.globalAlpha =
-          alpha * (star ? 0.35 : field.role[index] === 2 ? 0.65 : 1);
+          alpha * (star ? 0.48 : field.role[index] === 2 ? 0.65 : 1);
         context.fillStyle = color;
         context.beginPath();
         context.arc(x, y, radius, 0, Math.PI * 2);
         context.fill();
         if (star) {
           context.globalAlpha = alpha * 0.85;
-          context.fillStyle = field.color[index] >= 7 ? '#fff0d6' : '#f5fbff';
+          context.fillStyle =
+            field.color[index] >= FIELD_ACCENT_START ? '#fff0d6' : '#f5fbff';
           context.beginPath();
           context.arc(x, y, radius * 0.42, 0, Math.PI * 2);
           context.fill();
@@ -635,6 +680,15 @@ function Particle80Surface({
       }
       context.globalAlpha = 1;
       context.globalCompositeOperation = 'source-over';
+      diagnostics?.draw(
+        context,
+        pointer,
+        width,
+        height,
+        scale,
+        time,
+        performance.now() - drawStarted,
+      );
       if (element.dataset.canvas !== 'ready') element.dataset.canvas = 'ready';
       const energy = (displacementEnergy / count).toFixed(4);
       if (element.dataset.displacement !== energy)
@@ -714,8 +768,19 @@ function Particle80Surface({
       layout.sourceY = compact ? (80 - height / 2) / scale : 0;
       element.dataset.dpr = dpr.toFixed(2);
       element.dataset.particles = String(count);
-      element.dataset.anchors = String(Math.round(count * 0.6));
-      element.dataset.runners = String(Math.round(count * 0.22));
+      element.dataset.structures = String(
+        Math.round(count * FIELD_ROLE_RATIOS[0]),
+      );
+      element.dataset.flows = String(Math.round(count * FIELD_ROLE_RATIOS[1]));
+      element.dataset.ambient = String(
+        Math.round(count * FIELD_ROLE_RATIOS[2]),
+      );
+      element.dataset.highlights = String(
+        count -
+          Math.round(count * FIELD_ROLE_RATIOS[0]) -
+          Math.round(count * FIELD_ROLE_RATIOS[1]) -
+          Math.round(count * FIELD_ROLE_RATIOS[2]),
+      );
       element.dataset.accents = String(Math.round(count * 0.02));
       sync();
     };
@@ -794,6 +859,7 @@ function Particle80Surface({
     resize();
     return () => {
       disposed = true;
+      diagnostics?.dispose();
       syncPlayback.current = null;
       cancelAnimationFrame(frame);
       elapsed.current = clock.time;
@@ -815,7 +881,7 @@ function Particle80Surface({
       sprite.width = 1;
       sprite.height = 1;
     };
-  }, [count, low]);
+  }, [count, low, debugMode]);
 
   return (
     <div
@@ -830,6 +896,7 @@ function Particle80Surface({
       }
       data-background={background}
       data-brightness={brightnessPreset}
+      data-field-debug={debugMode === 'off' ? undefined : debugMode}
       data-quality={low ? 'low' : 'full'}
       data-static={staticMotion ? 'true' : 'false'}
       data-intro-duration={duration}
