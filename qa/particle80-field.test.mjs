@@ -53,7 +53,7 @@ try {
     return f;
   }
   await test('deterministic 50/25/18/7 roles, five size tiers, three optics and 2% champagne budget', () => {
-    for (const count of [180, 360, 600, 1400, 2800, 4800]) {
+    for (const count of [180, 360, 600, 900, 1400, 2800, 4800, 9600]) {
       const f = createParticleField(count),
         again = createParticleField(count);
       assert.deepEqual(f, again);
@@ -138,10 +138,10 @@ try {
       ])
         assert.ok(f[key] instanceof Float32Array);
     }
-    assert.equal(fieldBudget(1e8, true), 600);
-    assert.equal(fieldBudget(1e8, false), 4800);
-    assert.equal(fieldBudget(NaN, false), 4800);
-    assert.equal(fieldBudget(NaN, true), 600);
+    assert.equal(fieldBudget(1e8, true), 900);
+    assert.equal(fieldBudget(1e8, false), 9600);
+    assert.equal(fieldBudget(NaN, false), 9600);
+    assert.equal(fieldBudget(NaN, true), 900);
   });
   await test('equal-distance phases cover ellipse long sides, with seamless signed wrapping', () => {
     const tau = Math.PI * 2;
@@ -168,7 +168,7 @@ try {
   });
   await test('jittered per-size strata cover every loop without empty initial sectors', () => {
     const tau = Math.PI * 2;
-    for (const count of [600, 4800]) {
+    for (const count of [600, 900, 4800, 9600]) {
       const f = createParticleField(count);
       for (let loop = 0; loop < 3; loop++) {
         const bins = Array(12).fill(0);
@@ -179,7 +179,7 @@ try {
           }
         const mean = bins.reduce((sum, n) => sum + n, 0) / bins.length;
         assert.ok(
-          Math.min(...bins) / mean > (count === 600 ? 0.6 : 0.9),
+          Math.min(...bins) / mean > (count <= 900 ? 0.6 : 0.9),
           `loop ${loop} count ${count}: ${bins.join(',')}`,
         );
       }
