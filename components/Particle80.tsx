@@ -73,6 +73,8 @@ function brightnessGain(
 export type Particle80Props = {
   /** Render-only A/B review; the reusable motif retains its baseline by default. */
   brightnessPreset?: Particle80Brightness;
+  /** Display-only composition magnification; preserves world-space physics. */
+  viewScale?: number;
   /** Development only. Production builds remove diagnostics and telemetry. */
   debug?: FieldDebugMode;
   /** False unmounts the entire renderer, observers and animation loop. */
@@ -165,9 +167,11 @@ function get2dContext(surface: HTMLCanvasElement) {
 const Static80 = memo(function Static80({
   initialFormation,
   brightnessPreset,
+  viewScale,
 }: {
   initialFormation: number;
   brightnessPreset: Particle80Brightness;
+  viewScale: number;
 }) {
   const initialPoints = useMemo(
     () => fallbackPoints(initialFormation),
@@ -177,8 +181,8 @@ const Static80 = memo(function Static80({
     points.map((point, i) => (
       <circle
         key={i}
-        cx={Number(point.x.toFixed(6))}
-        cy={Number(point.y.toFixed(6))}
+        cx={Number((point.x * viewScale).toFixed(6))}
+        cy={Number((point.y * viewScale).toFixed(6))}
         r={Number((point.size * 0.0065).toFixed(6))}
         fill={FIELD_PALETTE[point.color]}
         opacity={Number(
@@ -210,6 +214,7 @@ const Static80 = memo(function Static80({
 
 function Particle80Surface({
   brightnessPreset = 'baseline',
+  viewScale = 1,
   debug = 'off',
   active = true,
   motion = 'auto',
@@ -249,6 +254,7 @@ function Particle80Surface({
   const low = lowPower || quality === 'low' || lowPowerMode === 'on';
   const count = fieldBudget(particleCount, low);
   const rate = bounded(speed, 0, 2, DEFAULTS.speed);
+  const magnification = bounded(viewScale, 0.8, 1.3, 1);
   const halo = bounded(
     glowIntensity ?? glow,
     0,
@@ -520,7 +526,8 @@ function Particle80Surface({
       } else {
         integrateField(field, delta, time, pointer, settings);
       }
-      const size = bounded(scale / 170, 0.65, 1.25, 1);
+      // Enlarge the composition, not individual light points or their halos.
+      const size = bounded(scale / magnification / 170, 0.65, 1.25, 1);
       if (spriteContext) {
         const sourceEnergy =
           smoothProgress((progress - 0.06) / 0.16) *
@@ -760,10 +767,12 @@ function Particle80Surface({
       surface.width = Math.max(1, Math.round(width * dpr));
       surface.height = Math.max(1, Math.round(height * dpr));
       const compact = width < 650;
-      scale = Math.min(
-        width / (compact ? 4.7 : FIELD_DEFAULTS.viewWidth),
-        height / (compact ? 5.6 : FIELD_DEFAULTS.viewHeight),
-      );
+      scale =
+        magnification *
+        Math.min(
+          width / (compact ? 4.7 : FIELD_DEFAULTS.viewWidth),
+          height / (compact ? 5.6 : FIELD_DEFAULTS.viewHeight),
+        );
       layout.sourceX = (width * (compact ? 0.245 : 0.315)) / scale;
       layout.sourceY = compact ? (80 - height / 2) / scale : 0;
       element.dataset.dpr = dpr.toFixed(2);
@@ -881,7 +890,7 @@ function Particle80Surface({
       sprite.width = 1;
       sprite.height = 1;
     };
-  }, [count, low, debugMode]);
+  }, [count, low, debugMode, magnification]);
 
   return (
     <div
@@ -896,6 +905,7 @@ function Particle80Surface({
       }
       data-background={background}
       data-brightness={brightnessPreset}
+      data-view-scale={magnification}
       data-field-debug={debugMode === 'off' ? undefined : debugMode}
       data-quality={low ? 'low' : 'full'}
       data-static={staticMotion ? 'true' : 'false'}
@@ -907,6 +917,7 @@ function Particle80Surface({
       <Static80
         initialFormation={initialFormation}
         brightnessPreset={brightnessPreset}
+        viewScale={magnification}
       />
       <canvas
         ref={canvas}
