@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 700" fill="none">
+  <defs>
+    <radialGradient id="sphere" cx="30%" cy="23%" r="82%"><stop stop-color="#244757"/><stop offset=".52" stop-color="#10283b"/><stop offset="1" stop-color="#050f21"/></radialGradient>
+    <radialGradient id="halo"><stop offset=".81" stop-color="#448ab1" stop-opacity="0"/><stop offset=".9" stop-color="#77c4e9" stop-opacity=".14"/><stop offset="1" stop-color="#448ab1" stop-opacity="0"/></radialGradient>
+    <clipPath id="body"><circle cx="400" cy="350" r="246"/></clipPath>
+  </defs>
+  <circle cx="400" cy="350" r="272" fill="url(#halo)"/>
+  <ellipse cx="400" cy="350" rx="312" ry="104" transform="rotate(-27 400 350)" stroke="#638ca1" stroke-opacity=".2"/>
+  <circle cx="400" cy="350" r="246" fill="url(#sphere)" stroke="#79b5d1" stroke-opacity=".35"/>
+  <g clip-path="url(#body)" stroke="#84b8cc" stroke-opacity=".13" transform="rotate(-13 400 350)">
+    <ellipse cx="400" cy="350" rx="180" ry="246"/><ellipse cx="400" cy="350" rx="92" ry="246"/>
+    <ellipse cx="400" cy="350" rx="246" ry="82"/><ellipse cx="400" cy="286" rx="238" ry="58"/>
+    <ellipse cx="400" cy="423" rx="235" ry="70"/><ellipse cx="400" cy="207" rx="204" ry="40"/>
+    <path d="M164 350H646M400 104V596"/>
+  </g>
+</svg>

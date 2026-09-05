@@ -1,0 +1,54 @@
+.motif {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  aspect-ratio: 8 / 5;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint;
+}
+.motif[data-background='dark'] {
+  background: radial-gradient(
+    ellipse at 50% 48%,
+    #0b1828 0%,
+    #050c17 46%,
+    #030913 82%
+  );
+}
+.surface {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.canvas {
+  opacity: 0;
+}
+.fallback {
+  opacity: var(--particle80-fallback-opacity, 1);
+}
+.formedFallback {
+  display: none;
+}
+.motif[data-state='fallback'] .initialCloud,
+.motif[data-static='true'] .initialCloud {
+  display: none;
+}
+.motif[data-state='fallback'] .formedFallback,
+.motif[data-static='true'] .formedFallback {
+  display: inline;
+}
+@media (prefers-reduced-motion: reduce) {
+  .initialCloud {
+    display: none;
+  }
+  .formedFallback {
+    display: inline;
+  }
+}
+.motif[data-canvas='ready'] .canvas {
+  opacity: 1;
+}
+.motif[data-canvas='ready'] .fallback {
+  opacity: 0;
+}

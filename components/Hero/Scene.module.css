@@ -1,0 +1,38 @@
+.scene { isolation: isolate; clip-path: inset(0); }
+.scene > div:not(.fallback):not(.labels) { z-index: 1; }
+.scene .fallback {
+  position: absolute;
+  inset: 0;
+  background: url('/globe-spatial-fallback.svg') center / contain no-repeat;
+  pointer-events: none;
+  opacity: 1;
+}
+.scene[data-spatial-ready='true'] > .fallback { opacity: 0; }
+/* Replace only the obsolete decorative sphere; no Hero layout selectors change. */
+:global(.globe-entry):has(.scene) > :global(.globe-fallback) { opacity: 0; }
+.labels { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
+.origin, .city { position: absolute; left: 0; top: 0; opacity: 0; will-change: transform; white-space: nowrap; }
+.origin {
+  width: 182px;
+  padding: 9px 11px;
+  border-left: 1px solid rgb(205 165 124 / 64%);
+  background: linear-gradient(90deg, rgb(5 17 28 / 86%), rgb(5 17 28 / 6%));
+  color: #d8edf2;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.045em;
+  line-height: 1.5;
+}
+.origin i { color: #d0ac87; font-style: normal; }
+.origin small { display: block; margin-top: 3px; color: #72929f; font-size: 7px; letter-spacing: 0.11em; }
+.city { width: 82px; color: #90b2c0; font-size: 10px; letter-spacing: 0.025em; text-shadow: 0 1px 5px #03101e; }
+.scene[data-render-state='fallback'] .labels { display: none; }
+.scene[data-quality='low'] .origin { width: 152px; padding: 7px 8px; font-size: 8px; }
+.scene[data-quality='low'] .origin small { font-size: 6px; }
+@media (max-width: 767px) {
+  .origin { width: 152px; padding: 7px 8px; font-size: 8px; }
+  .origin small { font-size: 6px; }
+  .city { font-size: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .origin, .city { will-change: auto; } }

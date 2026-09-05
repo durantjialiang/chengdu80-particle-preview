@@ -1,0 +1,61 @@
+.intro-study-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 24px;
+  gap: 26px;
+  background: #07111d;
+  color: #a7bfd2;
+  font-size: 14px;
+  border-top: 1px solid #839fb22b;
+}
+.intro-study-controls label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.intro-study-controls output {
+  width: 100%;
+  text-align: center;
+  color: #8299ac;
+  font-size: 12px;
+}
+.intro-globe-destination {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 64px;
+  background: #030810;
+  color: #dceafa;
+}
+.intro-globe-copy p {
+  font-size: 14px;
+  letter-spacing: 0.13em;
+}
+.intro-globe-copy h2 {
+  font-size: clamp(36px, 4vw, 64px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  margin: 30px 0;
+}
+.intro-globe-copy a {
+  font-size: 16px;
+  color: #d0b28e;
+}
+.intro-globe-scene {
+  width: 100%;
+  height: min(75vh, 760px);
+  position: relative;
+}
+@media (max-width: 640px) {
+  .intro-globe-destination {
+    grid-template-columns: 1fr;
+    padding: 36px 24px;
+  }
+  .intro-globe-scene {
+    height: 380px;
+  }
+}

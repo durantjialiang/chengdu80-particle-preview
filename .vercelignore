@@ -1,0 +1,10 @@
+.git
+.openai
+.env*
+node_modules
+dist
+out
+outputs
+work
+qa/artifacts
+*.tsbuildinfo
