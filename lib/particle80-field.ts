@@ -7,9 +7,9 @@ import {
 
 /** Physical field coordinates are independent of the Canvas resolution. */
 export const FIELD_DEFAULTS = {
-  particleCount: 1400,
-  mobileCount: 360,
-  maxParticles: 2200,
+  particleCount: 4800,
+  mobileCount: 600,
+  maxParticles: 4800,
   mouseForce: 5.5,
   springStrength: 13,
   damping: 4.8,
@@ -57,6 +57,8 @@ export const FIELD_ROLES = {
 } as const;
 export const FIELD_ROLE_RATIOS = [0.5, 0.25, 0.18, 0.07] as const;
 export const FIELD_OPTICS = { dust: 0, star: 1, spark: 2 } as const;
+/** Only one in 200 particles is an intense emitter; this is an optical budget. */
+export const FIELD_BEACON_RATIO = 0.005;
 export const FIELD_POINTER_RADIUS = 0.65;
 export const FIELD_ROLE_RESPONSE = [
   { spring: 1.25, pointer: 0.3, noise: 0.32, drag: 1, depth: 0.045 },
@@ -149,12 +151,18 @@ export type ParticleField = {
   accent: Uint8Array;
   optical: Uint8Array;
   sizeClass: Uint8Array;
+  beacon: Uint8Array;
   trail: Uint8Array;
 };
 
 export function fieldBudget(requested: number, low: boolean) {
   return Math.round(
-    bounded(requested, 180, low ? 360 : 2200, low ? 360 : 1400),
+    bounded(
+      requested,
+      180,
+      low ? FIELD_DEFAULTS.mobileCount : FIELD_DEFAULTS.maxParticles,
+      low ? FIELD_DEFAULTS.mobileCount : FIELD_DEFAULTS.particleCount,
+    ),
   );
 }
 export function fieldPhase(progress: number): FieldPhase {
@@ -210,6 +218,7 @@ export function createParticleField(count: number): ParticleField {
     accent: new Uint8Array(count),
     optical: new Uint8Array(count),
     sizeClass: new Uint8Array(count),
+    beacon: new Uint8Array(count),
     trail: new Uint8Array(count),
   };
   const anchors = Math.round(count * FIELD_ROLE_RATIOS[0]);
@@ -323,6 +332,13 @@ export function createParticleField(count: number): ParticleField {
         0.48 + random() ** 2 * 0.35,
       );
   }
+  // Reuse the rarest existing stars. No added particles, size changes or forces.
+  for (
+    let rank = count - Math.round(count * FIELD_BEACON_RATIO);
+    rank < count;
+    rank++
+  )
+    field.beacon[sizeOrder[rank]] = 1;
   // A spatial zone, not independent random paint. Sparse membership is capped;
   // its warmth fades as the particle advects outside the champagne region.
   const accentOrder = sizeOrder.filter(
