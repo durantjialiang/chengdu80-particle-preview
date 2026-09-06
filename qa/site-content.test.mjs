@@ -163,7 +163,10 @@ await test('site content and static archive contracts', async (t) => {
         );
         const fixture = await mkdtemp(join(tmpdir(), 'cd80-media-gate-test-'));
         try {
-          checkPublicHistoryMedia(fixture);
+          assert.throws(
+            () => checkPublicHistoryMedia(fixture),
+            /Approved history asset missing/,
+          );
           await mkdir(join(fixture, 'history-media'));
           await writeFile(
             join(fixture, 'history-media', 'unapproved.webp'),
@@ -183,7 +186,25 @@ await test('site content and static archive contracts', async (t) => {
       async () => {
         const { publicArchiveImages, isPubliclyUsable, imageFit } =
           await server.ssrLoadModule('/content/archive-media.ts');
-        assert.equal(publicArchiveImages.length, 0);
+        assert.equal(publicArchiveImages.length, 13);
+        assert.equal(
+          publicArchiveImages.filter((i) => i.eventYear === 2019).length,
+          8,
+        );
+        assert.equal(
+          publicArchiveImages.filter((i) => i.eventYear === 2024).length,
+          5,
+        );
+        for (const item of publicArchiveImages) {
+          assert.equal(item.permission.basis, 'project-owner-confirmation');
+          assert.equal(item.projectId, null);
+          assert.equal(item.photographer, null);
+          assert.equal(isPubliclyUsable(item), true);
+          assert.ok(
+            (await readFile(`public${item.localAssetPath}`)).length > 0,
+          );
+          assert.ok((await readFile(`public${item.thumbnailPath}`)).length > 0);
+        }
         const image = {
           usageStatus: 'approved',
           permission: {

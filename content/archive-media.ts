@@ -1,5 +1,6 @@
 import type { Localized } from './competition';
 import type { UniversityId } from './universities';
+import approvedImages from './archive-media-approved.json';
 
 export type ImageType =
   | 'event-recap'
@@ -32,6 +33,8 @@ export type ArchiveImage = {
     newWebsite: boolean;
     publicPreview: boolean;
     evidenceRef: string;
+    basis?: 'project-owner-confirmation';
+    confirmedAt?: string;
   } | null;
   localAssetPath: string | null;
   thumbnailPath: string | null;
@@ -62,9 +65,10 @@ export function isPubliclyUsable(image: ArchiveImage): boolean {
   );
 }
 
-// No reuse authorizations have been supplied. Do not put pending source photos here.
-// The opt-in loopback review uses a separate, untracked manifest outside this checkout.
-export const archiveImages: readonly ArchiveImage[] = [];
+// The project owner approved these 13 sample-page photographs on 2026-09-06.
+// This records that confirmation, not an independently issued publisher licence.
+// Pending candidates and research originals remain outside the public checkout.
+export const archiveImages = approvedImages as readonly ArchiveImage[];
 export const publicArchiveImages = archiveImages.filter(isPubliclyUsable);
 export const imageFit = (type: ImageType) =>
   type === 'event-recap' ? 'cover' : 'contain';

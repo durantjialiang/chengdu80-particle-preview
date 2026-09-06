@@ -4,8 +4,8 @@ This phase extends the existing Vite/React archive, not the Particle80 or Globe 
 
 ## Routes and data
 
-- `/history/2019/`: annual-detail-first challenge and university records; final/closing date from the separate official review; 8 captioned university team photographs in local review.
-- `/history/2024/`: official seventh-edition SWUFE News report; 30 October final/awards separated from 31 October publication; 5 event photographs in local review.
+- `/history/2019/`: annual-detail-first challenge and university records; final/closing date from the separate official review; 8 captioned university team photographs approved by the project owner for publication.
+- `/history/2024/`: official seventh-edition SWUFE News report; 30 October final/awards separated from 31 October publication; 5 event photographs approved by the project owner for publication.
 - `/winners/dragon-search/` and `/winners/data-queens-report/`: stable project routes, with independent source links. No annual photograph is assigned to either project without explicit association evidence.
 - `content/history-evidence.ts`: source dates and official award group records.
 - `content/archive.ts`: editions, projects and stable album/photo references.
@@ -18,7 +18,7 @@ Historical routes, project IDs and existing filter keys remain. Data Queens reta
 
 `content/archive-media.ts` defines source page, original image URL, edition year, bilingual caption, optional verified university/project IDs, image type, photographer, credit, usage status, authorization evidence, local/full and thumbnail paths, and dimensions.
 
-Currently **zero images have an explicit dual-scope permission record**. `archiveImages` therefore has no public photographs. Do not copy the private manifest or research originals into this repository.
+The project owner approved the **13 photographs integrated into the 2019/2024 samples** for publication on 2026-09-06. Their records are in `content/archive-media-approved.json`; the confirmation scope and limits are documented in [media-authorization.md](media-authorization.md). This records project-owner confirmation, not an independently obtained publisher licence. The remaining 28 candidate records stay unpublished. Do not copy the private manifest or research originals into this repository.
 
 For eventual publication, each image must have:
 
@@ -39,7 +39,7 @@ CHENGDU80_HISTORY_REVIEW_DIR='/absolute/path/to/private/research' \
   --mode history-review --host 127.0.0.1 --port 4182 --strictPort
 ```
 
-Open `/history/2019/?lang=zh` or `/history/2024/?lang=zh` on that server. The page visibly identifies the photographs as local review only. A normal `npm run dev` / public build shows the honest permission-pending photo status instead.
+Open `/history/2019/?lang=zh` or `/history/2024/?lang=zh` on that server. Publicly approved records take precedence by stable ID, so the same photograph is not rendered twice. Future pending review-only records retain the visible local-review label. A normal `npm run dev` / public build displays only the approved photographs, or a permission-pending status when none are approved.
 
 The gallery provides a real cover, lazy thumbnails, native-dialog viewer, previous/next and arrow keys, Escape/focus restoration, source links and an unavailable-image state. Product interfaces and team/group photographs use `contain`; event recap thumbnails can use `cover`. Full viewer images always use `contain`. This sample has no verified product screenshot, so none is invented to demonstrate that category.
 
@@ -54,6 +54,6 @@ node scripts/check-history-review.mjs '/absolute/path/to/private/research' http:
 node scripts/check-history-build.mjs '/absolute/path/to/private/research'
 ```
 
-The last command checks record/ID integrity, actual HTTP delivery and React server-rendered markup. It does **not** verify browser layout, modal operation, WebGL, pointer interaction or FPS. Browser tests and screenshots must be reported separately.
+The review check covers record/ID integrity, actual HTTP delivery and React server-rendered markup; the build check scans the static artifact against the publication allowlist. Neither verifies browser layout, modal operation, WebGL, pointer interaction or FPS. Browser tests and screenshots must be reported separately.
 
-The existing static build remains `out/particle-preview`; do not change frameworks to package this work. No deployment or Git push is part of this rights-review handoff. The old official site and production domain remain untouched.
+The existing static build remains `out/particle-preview`; do not change frameworks to package this work. Following the project owner's explicit upload confirmation, publish the approved derivatives and source to the existing GitHub/Vercel preview project. The old SWUFE official site is not modified, and the full research package is not published.

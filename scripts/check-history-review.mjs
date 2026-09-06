@@ -47,6 +47,11 @@ try {
   const { universities } = await server.ssrLoadModule(
     '/content/universities.ts',
   );
+  const { publicArchiveImages } = await server.ssrLoadModule(
+    '/content/archive-media.ts',
+  );
+  const publishedIds = new Set(publicArchiveImages.map((image) => image.id));
+  results.approved = publicArchiveImages.length;
   const { HistoryPage, WinnersPage } = await server.ssrLoadModule(
     '/components/site/ArchivePages.tsx',
   );
@@ -103,7 +108,13 @@ try {
       count + 1,
       'cover plus album',
     );
-    assert.match(html, /Local photo review/);
+    if (
+      images
+        .filter((i) => i.eventYear === year)
+        .every((i) => publishedIds.has(i.id))
+    )
+      assert.doesNotMatch(html, /Local photo review/);
+    else assert.match(html, /Local photo review/);
     assert.match(html, /loading="lazy"/);
     assert.match(html, /width="\d+" height="\d+"/);
     const response = await fetch(`${origin}/history/${year}/?lang=zh`);
@@ -121,7 +132,7 @@ try {
     );
     assert.doesNotMatch(
       html,
-      /_history-review/,
+      /_history-review|history-media/,
       'do not borrow annual photographs as project photos',
     );
   }
@@ -140,11 +151,14 @@ try {
     const { HistoryPage: PublicHistory } = await publicMode.ssrLoadModule(
       '/components/site/ArchivePages.tsx',
     );
-    for (const year of [2019, 2024])
-      assert.doesNotMatch(
-        renderToString(React.createElement(PublicHistory, { year })),
-        /_history-review|<img /,
-      );
+    for (const year of [2019, 2024]) {
+      const html = renderToString(React.createElement(PublicHistory, { year }));
+      assert.doesNotMatch(html, /_history-review|Local photo review/);
+      const count = publicArchiveImages.filter(
+        (i) => i.eventYear === year,
+      ).length;
+      assert.equal((html.match(/<img /g) ?? []).length, count ? count + 1 : 0);
+    }
   } finally {
     await publicMode.close();
   }

@@ -1,0 +1,366 @@
+[
+  {
+    "id": "cd80-2019-01",
+    "albumId": "edition-2019",
+    "sourcePage": "https://cd80.swufe.edu.cn/info/1031/1091.htm",
+    "originalImageUrl": "https://cd80.swufe.edu.cn/__local/6/CC/66/94D9784E6E6CF96908D0F218CA0_D7C84F02_E48C.png?e=.png",
+    "eventYear": 2019,
+    "caption": {
+      "en": "University of California, Berkeley · team group, as labelled in the annual page",
+      "zh": "加州大学伯克利分校 · 年度页面标注的团队合影"
+    },
+    "universityId": "berkeley",
+    "projectId": null,
+    "imageType": "team-photo",
+    "photographer": null,
+    "credit": "来源：成都八零旧官网 / Chengdu 80 official archive",
+    "width": 1000,
+    "height": 488,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-06",
+      "evidenceRef": "docs/media-authorization.md#project-confirmation-2026-09-06"
+    },
+    "localAssetPath": "/history-media/cd80-2019-01-full.webp",
+    "thumbnailPath": "/history-media/cd80-2019-01-thumb.webp"
+  },
+  {
+    "id": "cd80-2019-02",
+    "albumId": "edition-2019",
+    "sourcePage": "https://cd80.swufe.edu.cn/info/1031/1091.htm",
+    "originalImageUrl": "https://cd80.swufe.edu.cn/__local/7/84/1C/163E04308CE700DFDD3045134ED_6CBF1A31_DDF7.png?e=.png",
+    "eventYear": 2019,
+    "caption": {
+      "en": "Peking University · team group, as labelled in the annual page",
+      "zh": "北京大学 · 年度页面标注的团队合影"
+    },
+    "universityId": "pku",
+    "projectId": null,
+    "imageType": "team-photo",
+    "photographer": null,
+    "credit": "来源：成都八零旧官网 / Chengdu 80 official archive",
+    "width": 1000,
+    "height": 488,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-06",
+      "evidenceRef": "docs/media-authorization.md#project-confirmation-2026-09-06"
+    },
+    "localAssetPath": "/history-media/cd80-2019-02-full.webp",
+    "thumbnailPath": "/history-media/cd80-2019-02-thumb.webp"
+  },
+  {
+    "id": "cd80-2019-03",
+    "albumId": "edition-2019",
+    "sourcePage": "https://cd80.swufe.edu.cn/info/1031/1091.htm",
+    "originalImageUrl": "https://cd80.swufe.edu.cn/__local/B/CE/DA/8842914AA3D1F511ECBC83EA139_91F51294_18C0E.jpg?e=.jpg",
+    "eventYear": 2019,
+    "caption": {
+      "en": "National University of Singapore · team group, as labelled in the annual page",
+      "zh": "新加坡国立大学 · 年度页面标注的团队合影"
+    },
+    "universityId": "nus",
+    "projectId": null,
+    "imageType": "team-photo",
+    "photographer": null,
+    "credit": "来源：成都八零旧官网 / Chengdu 80 official archive",
+    "width": 1022,
+    "height": 499,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-06",
+      "evidenceRef": "docs/media-authorization.md#project-confirmation-2026-09-06"
+    },
+    "localAssetPath": "/history-media/cd80-2019-03-full.webp",
+    "thumbnailPath": "/history-media/cd80-2019-03-thumb.webp"
+  },
+  {
+    "id": "cd80-2019-04",
+    "albumId": "edition-2019",
+    "sourcePage": "https://cd80.swufe.edu.cn/info/1031/1091.htm",
+    "originalImageUrl": "https://cd80.swufe.edu.cn/__local/5/9B/C2/A0F67F8BCD1D00967C1766D8A78_5A0B49B8_CA05.png?e=.png",
+    "eventYear": 2019,
+    "caption": {
+      "en": "Tsinghua University · team group, as labelled in the annual page",
+      "zh": "清华大学 · 年度页面标注的团队合影"
+    },
+    "universityId": "tsinghua",
+    "projectId": null,
+    "imageType": "team-photo",
+    "photographer": null,
+    "credit": "来源：成都八零旧官网 / Chengdu 80 official archive",
+    "width": 1000,
+    "height": 488,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-06",
+      "evidenceRef": "docs/media-authorization.md#project-confirmation-2026-09-06"
+    },
+    "localAssetPath": "/history-media/cd80-2019-04-full.webp",
+    "thumbnailPath": "/history-media/cd80-2019-04-thumb.webp"
+  },
+  {
+    "id": "cd80-2019-05",
+    "albumId": "edition-2019",
+    "sourcePage": "https://cd80.swufe.edu.cn/info/1031/1091.htm",
+    "originalImageUrl": "https://cd80.swufe.edu.cn/__local/E/59/75/13CD0432E0C85523E10BD0578CA_C0EA287B_7EBCB.png?e=.png",
+    "eventYear": 2019,
+    "caption": {
+      "en": "The University of Hong Kong · team group, as labelled in the annual page",
+      "zh": "香港大学 · 年度页面标注的团队合影"
+    },
+    "universityId": "hku",
+    "projectId": null,
+    "imageType": "team-photo",
+    "photographer": null,
+    "credit": "来源：成都八零旧官网 / Chengdu 80 official archive",
+    "width": 1000,
+    "height": 488,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-06",
+      "evidenceRef": "docs/media-authorization.md#project-confirmation-2026-09-06"
+    },
+    "localAssetPath": "/history-media/cd80-2019-05-full.webp",
+    "thumbnailPath": "/history-media/cd80-2019-05-thumb.webp"
+  },
+  {
+    "id": "cd80-2019-06",
+    "albumId": "edition-2019",
+    "sourcePage": "https://cd80.swufe.edu.cn/info/1031/1091.htm",
+    "originalImageUrl": "https://cd80.swufe.edu.cn/__local/1/9D/4B/232063BF6D178B98D28ADF4EB86_B8701C94_7CF65.png?e=.png",
+    "eventYear": 2019,
+    "caption": {
+      "en": "Southwestern University of Finance and Economics · team group, as labelled in the annual page",
+      "zh": "西南财经大学 · 年度页面标注的团队合影"
+    },
+    "universityId": "swufe",
+    "projectId": null,
+    "imageType": "team-photo",
+    "photographer": null,
+    "credit": "来源：成都八零旧官网 / Chengdu 80 official archive",
+    "width": 1000,
+    "height": 488,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-06",
+      "evidenceRef": "docs/media-authorization.md#project-confirmation-2026-09-06"
+    },
+    "localAssetPath": "/history-media/cd80-2019-06-full.webp",
+    "thumbnailPath": "/history-media/cd80-2019-06-thumb.webp"
+  },
+  {
+    "id": "cd80-2019-07",
+    "albumId": "edition-2019",
+    "sourcePage": "https://cd80.swufe.edu.cn/info/1031/1091.htm",
+    "originalImageUrl": "https://cd80.swufe.edu.cn/__local/F/FE/16/C38C78D3F8EB3521216490F59D1_710C0C2D_CEDE.png?e=.png",
+    "eventYear": 2019,
+    "caption": {
+      "en": "Shanghai Jiao Tong University · team group, as labelled in the annual page",
+      "zh": "上海交通大学 · 年度页面标注的团队合影"
+    },
+    "universityId": "sjtu",
+    "projectId": null,
+    "imageType": "team-photo",
+    "photographer": null,
+    "credit": "来源：成都八零旧官网 / Chengdu 80 official archive",
+    "width": 1000,
+    "height": 488,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-06",
+      "evidenceRef": "docs/media-authorization.md#project-confirmation-2026-09-06"
+    },
+    "localAssetPath": "/history-media/cd80-2019-07-full.webp",
+    "thumbnailPath": "/history-media/cd80-2019-07-thumb.webp"
+  },
+  {
+    "id": "cd80-2019-08",
+    "albumId": "edition-2019",
+    "sourcePage": "https://cd80.swufe.edu.cn/info/1031/1091.htm",
+    "originalImageUrl": "https://cd80.swufe.edu.cn/__local/6/96/34/9B633A4D96CAF14A09D18996B68_268B08A5_D8CC.png?e=.png",
+    "eventYear": 2019,
+    "caption": {
+      "en": "University of Toronto · team group, as labelled in the annual page",
+      "zh": "多伦多大学 · 年度页面标注的团队合影"
+    },
+    "universityId": "toronto",
+    "projectId": null,
+    "imageType": "team-photo",
+    "photographer": null,
+    "credit": "来源：成都八零旧官网 / Chengdu 80 official archive",
+    "width": 1000,
+    "height": 488,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-06",
+      "evidenceRef": "docs/media-authorization.md#project-confirmation-2026-09-06"
+    },
+    "localAssetPath": "/history-media/cd80-2019-08-full.webp",
+    "thumbnailPath": "/history-media/cd80-2019-08-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-01",
+    "albumId": "edition-2024",
+    "sourcePage": "https://news.swufe.edu.cn/info/1003/109791.htm",
+    "originalImageUrl": "https://news.swufe.edu.cn/__local/C/C3/83/315A035F7BF86B13A6EB636B1C5_BB33F0FD_483783.jpg",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Group on the ceremony stage · no individual school attribution",
+      "zh": "颁奖晚会舞台合影 · 不绑定具体学校"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-group",
+    "photographer": null,
+    "credit": "来源：西财新闻网 / SWUFE News",
+    "width": 1800,
+    "height": 1200,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-06",
+      "evidenceRef": "docs/media-authorization.md#project-confirmation-2026-09-06"
+    },
+    "localAssetPath": "/history-media/cd80-2024-01-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-01-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-02",
+    "albumId": "edition-2024",
+    "sourcePage": "https://news.swufe.edu.cn/info/1003/109791.htm",
+    "originalImageUrl": "https://news.swufe.edu.cn/__local/F/CB/77/400763C3F9110783CA2A7C0648F_62763051_F40D5.jpg",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Lectern speech at the event · person not identified",
+      "zh": "赛事现场讲台发言 · 不作人物身份推断"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "来源：西财新闻网 / SWUFE News",
+    "width": 1800,
+    "height": 1200,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-06",
+      "evidenceRef": "docs/media-authorization.md#project-confirmation-2026-09-06"
+    },
+    "localAssetPath": "/history-media/cd80-2024-02-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-02-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-03",
+    "albumId": "edition-2024",
+    "sourcePage": "https://news.swufe.edu.cn/info/1003/109791.htm",
+    "originalImageUrl": "https://news.swufe.edu.cn/__local/F/5F/24/562FA84E280453ED1C70BB5F171_E5EC4063_6AF38.jpg",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Lectern speech at the event · person not identified",
+      "zh": "赛事现场讲台发言 · 不作人物身份推断"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "来源：西财新闻网 / SWUFE News",
+    "width": 1800,
+    "height": 1200,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-06",
+      "evidenceRef": "docs/media-authorization.md#project-confirmation-2026-09-06"
+    },
+    "localAssetPath": "/history-media/cd80-2024-03-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-03-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-04",
+    "albumId": "edition-2024",
+    "sourcePage": "https://news.swufe.edu.cn/info/1003/109791.htm",
+    "originalImageUrl": "https://news.swufe.edu.cn/__local/9/95/E1/B43BD1083B78E05B38AB7099F88_C7AD19F9_33AB4A.jpg",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Computer-based collaboration during the event · team not identified",
+      "zh": "赛事中的电脑协作画面 · 具体团队未确认"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "来源：西财新闻网 / SWUFE News",
+    "width": 1800,
+    "height": 1200,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-06",
+      "evidenceRef": "docs/media-authorization.md#project-confirmation-2026-09-06"
+    },
+    "localAssetPath": "/history-media/cd80-2024-04-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-04-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-05",
+    "albumId": "edition-2024",
+    "sourcePage": "https://news.swufe.edu.cn/info/1003/109791.htm",
+    "originalImageUrl": "https://news.swufe.edu.cn/__local/C/5A/84/EC9269817E4EE6C882152179D07_6AB6DAE9_411401.jpg",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Chengdu 80 incubator launch ceremony",
+      "zh": "成都八零孵化器启动仪式"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "来源：西财新闻网 / SWUFE News",
+    "width": 1800,
+    "height": 1200,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-06",
+      "evidenceRef": "docs/media-authorization.md#project-confirmation-2026-09-06"
+    },
+    "localAssetPath": "/history-media/cd80-2024-05-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-05-thumb.webp"
+  }
+]

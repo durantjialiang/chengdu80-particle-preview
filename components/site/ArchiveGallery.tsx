@@ -12,7 +12,11 @@ import { getUniversity } from '@/content/universities';
 import { universityName } from '@/content/university-i18n';
 import styles from './ArchiveGallery.module.css';
 
-const images = [...publicArchiveImages, ...reviewImages];
+const publishedIds = new Set(publicArchiveImages.map((image) => image.id));
+const images = [
+  ...publicArchiveImages,
+  ...reviewImages.filter((image) => !publishedIds.has(image.id)),
+];
 
 function Photo({
   image,
@@ -83,7 +87,11 @@ function Viewer({
       className={styles.viewer}
       aria-labelledby="archive-viewer-caption"
       data-particle-no-force
-      onClose={onClose}
+      onClose={(event) => {
+        // StrictMode reopens the dialog after effect cleanup. Ignore the
+        // queued close event from that cleanup when the dialog is open again.
+        if (!event.currentTarget.open) onClose();
+      }}
       onKeyDown={(event) => {
         if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
           event.preventDefault();
