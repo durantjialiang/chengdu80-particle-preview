@@ -88,7 +88,7 @@ Run `npm ci`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`.
 
 The automated suite includes 35 tests: 60/120-second hold sampling, no active timed-exit call chain, reversible absolute scroll, zero-spread force identity, stable side seeds, reading-lane projection at 1440/390/320 widths, pointer response at 0/25/50/100%, recovery into moving side constraints, fast-reversal finite-state/velocity bounds, preserved old particle tests, SSR content and university contracts.
 
-Actual browser acceptance and exact limitations are recorded in the separately exported REVIEW.md. The desktop operating sequence is a timestamp-preserving ~39-second real browser capture, sampled at approximately 5–6fps and encoded at 30fps. It is not a native 30/60fps screen recording or a performance benchmark. The pointer ring marks real input and is development-only.
+Actual browser acceptance and exact limitations are recorded in the separately exported REVIEW.md. The desktop operating sequence is a timestamp-preserving ~42-second real browser capture, sampled at approximately 5–6fps and encoded at 30fps. It is not a native 30/60fps screen recording or a performance benchmark. The pointer ring marks real input and is development-only.
 
 Local development: `npm run dev`. Review queries: `?visit=first&fieldDebug=telemetry&record=1`, `?motion=reduced&renderer=svg`. These overrides/diagnostics are eliminated from the public bundle. The existing below-fold preview switches remain.
 
