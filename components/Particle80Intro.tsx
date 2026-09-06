@@ -17,10 +17,11 @@ export type Particle80IntroProps = Particle80Props & Partial<OpeningConfig> & {
   onContinue?: () => void; onHandoffComplete?: () => void;
   onOpeningProgress?: (frame: OpeningFrame) => void;
   introduction?: ReactNode;
+  headerContent?: ReactNode;
 };
 
 function IntroSurface({
-  repeatVisit = 'short', onContinue, introduction,
+  repeatVisit = 'short', onContinue, introduction, headerContent,
   onOpeningProgress, onStateChange, introEnabled = true, introDuration,
   leadInDuration, formationDuration, settleDuration, holdDuration,
   dissolveDuration, globeRevealDuration, transitionDuration,
@@ -78,7 +79,7 @@ function IntroSurface({
       </div>
     </div>
     <section ref={hero} className={styles.intro} aria-label="Chengdu 80 signature introduction">
-      <header className={styles.header}><h1>CHENGDU 80</h1><span>2026</span></header>
+      <header className={styles.header}>{headerContent ?? <><h1>CHENGDU 80</h1><span>2026</span></>}</header>
       <div ref={composition} className={styles.composition}>
         <div className={styles.identity + ' ' + styles.swufe}>
           <p className={styles.acronym}>SWUFE</p>

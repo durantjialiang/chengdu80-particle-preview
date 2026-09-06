@@ -10,6 +10,10 @@ import '../app/globals.css';
 import './particle80-intro.css';
 import OpeningReviewCursor from './OpeningReviewCursor';
 import GlobalUniversityNetwork from '../components/network/GlobalUniversityNetwork';
+import { SiteLanguageProvider, useSiteLanguage } from '@/hooks/use-site-language';
+import { SiteNavigation, SiteFooter } from '@/components/site/SiteChrome';
+import { currentCompetition, bilingual as b } from '@/content/competition';
+import introStyles from '@/components/Particle80Intro.module.css';
 
 // Local review only; Vite removes URL selection from the published bundle.
 const reviewPreset = import.meta.env.DEV
@@ -37,6 +41,7 @@ const reviewQuery = import.meta.env.DEV
   ? new URLSearchParams(window.location.search)
   : null;
 function Study() {
+  const { t, href } = useSiteLanguage();
   const [replay, setReplay] = useState(0);
   const [still, setStill] = useState(reviewQuery?.get('motion') === 'reduced');
   const [low, setLow] = useState(false);
@@ -50,11 +55,19 @@ function Study() {
     interactionEnabled,
   } = useParticleIntro();
   return (
-    <main>
+    <><main id="main-content">
       {import.meta.env.DEV && reviewQuery?.get('record') === '1' ? (
         <OpeningReviewCursor />
       ) : null}
       <Particle80Intro
+        headerContent={<SiteNavigation embedded />}
+        introduction={<>
+          <p className={introStyles.eyebrow}>{t(b('AN 80-HOUR GLOBAL FINTECH HACKATHON', '80小时全球金融科技创新挑战'))}</p>
+          <h2 id="event-introduction-title">{t(b('Build the Future of Finance.', '共创金融未来。'))}</h2>
+          <p className={introStyles.officialName}>{t(b('Chengdu 80 Global FinTech Product Design & Development Competition', '“成都八零”全球金融科技产品设计与研发大赛'))}</p>
+          <p className={introStyles.description}>{t(currentCompetition.dateLabel)}</p>
+          <div className={introStyles.actions}><a href={href('/competition/')}>{t(b('2026 Competition', '2026赛事信息'))} ↗</a><a href="#global-network">{t(b('Explore the university network', '探索高校网络'))} ↓</a></div>
+        </>}
         brightnessPreset={brightnessPreset}
         debug={fieldDebug}
         key={replay}
@@ -104,13 +117,13 @@ function Study() {
           {openingFrame?.state ?? 'INTRO_IDLE'} · Native scroll story
         </output>
       </section>
-    </main>
+    </main><SiteFooter /></>
   );
 }
 const root = createRoot(document.getElementById('root')!);
 root.render(
   <StrictMode>
-    <Study />
+    <SiteLanguageProvider><Study /></SiteLanguageProvider>
   </StrictMode>,
 );
 if (import.meta.hot) import.meta.hot.dispose(() => root.unmount());

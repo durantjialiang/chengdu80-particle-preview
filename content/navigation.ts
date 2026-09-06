@@ -1,3 +1,5 @@
+import { currentCompetition } from './competition';
+
 export const navigation = [
   {
     label: 'About',
@@ -32,12 +34,11 @@ export const navigation = [
 ] as const;
 
 export const registration = {
-  label: 'Join the Challenge',
+  label: '2026 Competition',
   // This is an informative destination, never a non-functional registration button.
   href: '/competition#join',
   applicationUrl: null as string | null,
   status: 'Details to be announced',
   compactStatus: 'DETAILS TO FOLLOW',
-  description:
-    'Confirmed dates, eligibility, and the official application link will be published here when available.',
+  description: currentCompetition.dateLabel.en + ' Eligibility and application arrangements will be published when confirmed.',
 } as const;

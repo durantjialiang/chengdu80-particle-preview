@@ -1,12 +1,13 @@
 import { globeNodes } from './network';
 import { registration } from './navigation';
+import { currentCompetition } from './competition';
 export type { CityNode } from './network';
 
 export const siteContent = {
   hero: {
     eyebrow: 'AN 80-HOUR GLOBAL FINTECH HACKATHON',
     title: 'CHENGDU 80',
-    year: '2026',
+    year: String(currentCompetition.year),
     tagline: 'Build the Future of Finance.',
     competitionName: [
       'Chengdu 80 Global FinTech',
