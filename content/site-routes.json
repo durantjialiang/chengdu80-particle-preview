@@ -1,3 +1,21 @@
 [
-  { "path": "/competition/", "title": "2026 Competition", "zh": "2026赛事信息" }
+  { "path": "/competition/", "title": "2026 Competition", "zh": "2026赛事信息" },
+  { "path": "/history/", "title": "History", "zh": "历届赛事" },
+  { "path": "/winners/", "title": "Winners & Projects", "zh": "成果档案" },
+  { "path": "/history/2018/", "title": "2018 edition", "zh": "2018赛事" },
+  { "path": "/history/2019/", "title": "2019 edition", "zh": "2019赛事" },
+  { "path": "/history/2020/", "title": "2020 edition", "zh": "2020赛事" },
+  { "path": "/history/2021/", "title": "2021 edition", "zh": "2021赛事" },
+  { "path": "/history/2022/", "title": "2022 edition", "zh": "2022赛事" },
+  { "path": "/history/2023/", "title": "2023 edition", "zh": "2023赛事" },
+  { "path": "/history/2024/", "title": "2024 published record", "zh": "2024报道档案" },
+  { "path": "/history/2025/", "title": "2025 not held", "zh": "2025未举办" },
+  { "path": "/history/2026/", "title": "2026 upcoming", "zh": "2026即将举办" },
+  { "path": "/winners/nushadow/", "title": "NuShadow", "zh": "NuShadow" },
+  { "path": "/winners/dragon-search/", "title": "Dragon Search", "zh": "Dragon Search" },
+  { "path": "/winners/pisces/", "title": "Pisces", "zh": "Pisces" },
+  { "path": "/winners/panda/", "title": "Panda", "zh": "Panda" },
+  { "path": "/winners/giraffe/", "title": "Giraffe", "zh": "Giraffe" },
+  { "path": "/winners/apollo-2023/", "title": "Apollo team record", "zh": "Apollo团队成果" },
+  { "path": "/winners/data-queens-report/", "title": "Data Queens report", "zh": "Data Queens报道档案" }
 ]

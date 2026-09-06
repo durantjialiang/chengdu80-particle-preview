@@ -14,6 +14,7 @@ function NetworkPage() {
     <>
       <header className="network-page-navigation"><SiteNavigation /></header>
       <main>
+        <h1 className="sr-only">Global University Network — Chengdu 80</h1>
         <GlobalUniversityNetwork
           standalone
           forceReducedMotion={review?.get('motion') === 'reduced'}

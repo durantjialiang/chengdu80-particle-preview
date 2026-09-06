@@ -55,7 +55,7 @@ function Study() {
     interactionEnabled,
   } = useParticleIntro();
   return (
-    <><main id="main-content">
+    <><main id="main-content"><h1 className="sr-only">CHENGDU 80</h1>
       {import.meta.env.DEV && reviewQuery?.get('record') === '1' ? (
         <OpeningReviewCursor />
       ) : null}

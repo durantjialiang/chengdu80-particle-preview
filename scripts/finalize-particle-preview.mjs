@@ -24,7 +24,7 @@ await copyFile(
 );
 const siteHtml = await readFile(new URL('qa/site.html', output), 'utf8');
 for (const route of [...routes, { path: '/404.html', title: 'Page not found' }]) {
-  assert.match(route.path, /^\/[a-z0-9\-/]+(?:\.html)?$/);
+  assert.match(route.path, /^(?:\/[a-z0-9-]+(?:\/[a-z0-9-]+)*\/|\/404\.html)$/);
   const destination = route.path.endsWith('.html') ? route.path.slice(1) : route.path.slice(1) + 'index.html';
   const file = new URL(destination, output);
   await mkdir(new URL('.', file), { recursive: true });

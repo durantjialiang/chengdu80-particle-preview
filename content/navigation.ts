@@ -1,4 +1,8 @@
 import { currentCompetition } from './competition';
+import siteRoutes from './site-routes.json';
+
+// Keep future navigation labels without publishing links to unfinished routes.
+export const navigationReady = (href: string) => href === '/global-network' || siteRoutes.some(route => route.path === href + '/');
 
 export const navigation = [
   {

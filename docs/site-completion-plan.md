@@ -20,8 +20,11 @@
 
 ## Execution queue
 1. **Batch 1 — complete locally:** unified 2025/2026 config, shared chrome, Competition and accessible FAQ, static output routes. Lint/typecheck, existing 35 tests and build passed. Desktop/mobile screenshot; native menu Escape and focus restoration verified. Other nav destinations remain Batch 2/3 work, not claimed complete.
-2. **Batch 2 — in progress:** evidence-backed History / Winners lists and details, URL filters, share links, source associations.
+2. **Batch 2 — release checkpoint:** History / Winners lists and details, year/school URL filters, copy links and source associations implemented. Browser search/empty/clear/language/reload/back/forward/copy-success checked. Further school-directory integration remains Batch 3.
 3. **Batch 3 — queued:** About / Partners, network directory, CN/EN, available downloads, global search last.
 4. **Batch 4 — queued:** route, accessibility, responsive, particle/globe regression, screenshots/recording/build report.
 
-Each batch receives real checks and a local commit. Missing noncritical information is recorded without fabricating it. No public deployment is authorized by this phase.
+Each batch receives real checks and a local commit. Missing noncritical information is recorded without fabricating it.
+
+## Publication authorization update
+On 2026-09-06 the user explicitly requested pushing GitHub, publishing the existing Vercel preview, and recording the website. This authorizes the current Batch 1/2 preview checkpoint, not the official SWUFE site or DNS. About/Partners remain non-clickable “Soon” labels until Batch 3; other implemented routes are available. No claim of completing all four batches.
