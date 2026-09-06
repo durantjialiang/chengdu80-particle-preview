@@ -40,7 +40,7 @@ Intro 保留开场编排和首屏测量；portal 组件拥有渲染器。没有�
 | `qa/particle80-intro.tsx`、`.css` | 下方控制区保留真实功能，允许其两侧看到背景 |
 | `qa/global-network.tsx` | 独立网络页复用同一 ambient 组件 |
 | `qa/particle-story.test.mjs`、`qa/particle80.ssr.test.mjs` | 新页面生命周期、投影、指针和非对称布局回归；portal 的 SSR 契约 |
-| `qa/particle80-intro.browser.mjs`、`qa/particle80-living.browser.mjs` | 替换过时 handoff/卸载验收与错误 CTA role；独立 CLI 浏览器脚本本轮未运行 |
+| `qa/particle80-intro.browser.mjs`、`qa/particle80-living.browser.mjs` | 前者替换过时 handoff/卸载验收；后者仅修正 CTA role；独立 CLI 浏览器脚本本轮未运行 |
 | `BRAND_OPENING.md`、`README.md`、`components/Particle80Intro.README.md`、本报告 | 更新“章节结束淡出/暂停”等过时说明 |
 
 物理核心 `lib/particle80-field.ts`、`lib/particle80.ts`、`content/`、`package.json`、锁文件相对基线无 diff。没有增加学校、奖项、统计、规则、报名服务或依赖。
@@ -85,9 +85,9 @@ Intro 保留开场编排和首屏测量；portal 组件拥有渲染器。没有�
 
 - `A-…` 到 `G-…`：桌面各滚动位置；`before-…`：基线桌面。
 - `mobile-…`、`svg-fallback-…`：手机与静态降级。
-- `chengdu80-persistent-background.mp4`：单次连续真实操作，约 55.03 秒，0 次拼接，含真实输入位置环；从首访汇聚到 Globe、Footer 两侧拨动，再回顶部。
+- `chengdu80-persistent-background.mp4`：单次连续真实操作，采集时长 55.01 秒、编码后约 55.03 秒，0 次拼接，含真实输入位置环；从首访汇聚到 Globe、Footer 两侧拨动，再回顶部。
 - `continuous-recording.json` / `video-manifest.json`：原始时间戳、动作顺序和采样说明。416 个实际浏览器截图帧，约 7.56 帧/秒；H.264 容器标为 30fps，通过重复采样帧保持原始时间，不代表网站真实 FPS。没有用静态图冒充运行录屏。
-- `browser-checks.json`、`final-validation.log`：实际状态与构建记录。早期定位截图的失败/重试状态保留在日志里，最终 A–G 文件已按真实位置保存。
+- `browser-checks.json`、`production-behavior.json`、`final-validation.log`：实际状态与构建记录。production-behavior 指本地启动最终生产构建后的实测，不是 Vercel 线上交互录制。早期定位截图的失败/重试状态保留在日志里，最终 A–G 文件已按真实位置保存。
 
 ## 未实测与边界
 
