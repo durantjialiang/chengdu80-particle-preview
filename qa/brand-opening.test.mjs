@@ -3,13 +3,21 @@ import { test } from 'node:test';
 import { createServer } from 'vite';
 
 await test('brand-opening timeline and render bridge contracts', async (t) => {
-  const server = await createServer({ configFile: 'qa/particle80.vite.config.ts', server: { middlewareMode: true, hmr: false, watch: null }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
+  const server = await createServer({ configFile: 'qa/particle80.vite.config.ts', cacheDir: 'node_modules/.vite-brand-opening-tests', server: { middlewareMode: true, hmr: false, watch: null }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
   try {
     const { openingConfig, sampleOpening, departureProgress, createOpeningBridge } = await server.ssrLoadModule('/lib/brand-opening.ts');
     const { createParticleHandoff } = await server.ssrLoadModule('/lib/particle80-handoff.ts');
     const config = openingConfig();
     await t.test('first-visit boundaries and monotonic bounded progress', () => {
-      for (const [time, expected] of [[0,'INTRO_IDLE'],[0.299,'INTRO_IDLE'],[0.3,'FORMING_80'],[2.5,'FORMING_80'],[3.199,'FORMING_80'],[3.2,'HOLDING_80'],[5.399,'HOLDING_80'],[5.4,'DISSOLVING_80'],[7.3,'HANDOFF_TO_GLOBE'],[9.2,'GLOBE_ACTIVE']]) assert.equal(sampleOpening(time,config).state, expected, String(time));
+      assert.equal(config.autoTransitionEnabled, false);
+      for (const [time, expected] of [[0,'INTRO_IDLE'],[0.299,'INTRO_IDLE'],[0.3,'FORMING_80'],[2.5,'FORMING_80'],[3.199,'FORMING_80'],[3.2,'HOLDING_80'],[5,'HOLDING_80'],[30,'HOLDING_80'],[60,'HOLDING_80'],[120,'HOLDING_80']]) assert.equal(sampleOpening(time,config).state, expected, String(time));
+      for (const time of [5,30,60,120]) {
+        const held = sampleOpening(time, config);
+        assert.equal(held.dissolveProgress, 0);
+        assert.equal(held.globeRevealProgress, 0);
+        assert.equal(held.pointerWeight, 1);
+        assert.equal(held.interactionOwner, 'particles');
+      }
       assert.equal(sampleOpening(2.5, config).formationProgress, 1);
       assert.equal(sampleOpening(2.9, config).pointerWeight, 0);
       assert.equal(sampleOpening(3.2, config).pointerWeight, 1);
@@ -20,7 +28,7 @@ await test('brand-opening timeline and render bridge contracts', async (t) => {
         prev = next;
       }
     });
-    await t.test('manual hold, early CTA and ownership release', () => {
+    await t.test('legacy isolated handoff adapter remains compatible, not used by the scroll story', () => {
       const manual = openingConfig({autoTransitionEnabled:false});
       assert.equal(sampleOpening(120, manual).state, 'HOLDING_80');
       for (const at of [0,1,4,120]) {
@@ -36,7 +44,7 @@ await test('brand-opening timeline and render bridge contracts', async (t) => {
       const reduced = openingConfig({},false,true);
       assert.equal(sampleOpening(0,reduced,null,true).formationProgress,1);
       assert.equal(sampleOpening(0,reduced,null,true).interactionOwner,'none');
-      assert.equal(sampleOpening(2,reduced,null,true).state,'GLOBE_ACTIVE');
+      assert.equal(sampleOpening(60,reduced,null,true).state,'HOLDING_80');
       for (const value of [NaN, Infinity,-9,0]) {
         const c = openingConfig({formationDuration:value,holdDuration:value,transitionDuration:value,dissolveDuration:value,globeRevealDuration:value});
         for (const at of [0,1,5,100]) assert.ok(Object.values(sampleOpening(at,c)).filter(v=>typeof v==='number').every(Number.isFinite));

@@ -1,7 +1,9 @@
 .container {
-  --opening-departure: 0;
-  --opening-reveal: 0;
-  --opening-transition: 0;
+  --story-identity: 1;
+  --story-particles: 1;
+  --story-height: max(700px, 100svh);
+  --particle-top: 103px;
+  --particle-height: calc(var(--story-height) - 360px);
   position: relative;
   isolation: isolate;
   background: #030810;
@@ -10,6 +12,7 @@
   background: radial-gradient(ellipse at 50% 49%, #0b1826 0%, #050c16 37%, #030810 72%);
 }
 .intro {
+  margin-top: calc(-1 * var(--story-height));
   min-height: 700px;
   min-height: max(700px, 100svh);
   display: flex;
@@ -18,7 +21,6 @@
   position: relative;
   z-index: 2;
   pointer-events: none;
-  user-select: none;
 }
 .header {
   position: relative;
@@ -52,7 +54,7 @@
   left: 4%;
   z-index: 1;
   text-align: center;
-  opacity: clamp(0, calc(1 - var(--opening-departure) * 2.1), 1);
+  opacity: var(--story-identity);
 }
 .fic {
   left: auto;
@@ -74,10 +76,6 @@
   letter-spacing: 0.005em;
   color: #96a9ba;
 }
-.field {
-  position: absolute;
-  inset: 0;
-}
 .particles {
   position: absolute;
   inset: 0;
@@ -85,7 +83,6 @@
   height: 100%;
 }
 .footer {
-  opacity: clamp(0, calc(1 - var(--opening-transition) * 1.5), 1);
   position: relative;
   z-index: 1;
   display: flex;
@@ -110,6 +107,10 @@
   color: #8299ae;
 }
 .continue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   pointer-events: auto;
   min-height: 44px;
   padding: 0 22px;
@@ -129,22 +130,62 @@
   font-size: 12px;
   letter-spacing: 0.04em;
 }
-.destination {
-  position: absolute;
-  inset: 0;
-  outline: none;
-  z-index: 1;
+.sharedBackground {
+  position: sticky;
+  top: 0;
+  height: var(--story-height);
   pointer-events: none;
+  z-index: 0;
+  opacity: var(--story-particles);
 }
-.container[data-intro-finished='true'] .destination {
+.sharedField {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: var(--particle-top);
+  height: var(--particle-height);
+}
+.scrollPrompt {
   pointer-events: auto;
+  display: inline-flex;
+  gap: 16px;
+  color: #95aabb;
+  font-size: 12px;
+  text-decoration: none;
 }
-.container[data-intro-finished='true'] .footer {
-  visibility: hidden;
+.introduction {
+  position: relative;
+  z-index: 2;
+  padding: clamp(100px, 14svh, 160px) 24px clamp(110px, 16svh, 180px);
+  scroll-margin-top: 32px;
+  outline: none;
 }
-.container[data-reduced='true'] .field {
-  opacity: calc(1 - var(--opening-departure));
+.introductionContent {
+  width: min(100%, 600px);
+  margin-inline: auto;
+  text-align: center;
 }
+.eyebrow {
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: 0.13em;
+  color: #9dafc1;
+}
+.introduction h2 {
+  font-size: clamp(40px, 5.4vw, 76px);
+  font-weight: 450;
+  letter-spacing: -0.05em;
+  line-height: 1.08;
+  margin: 30px 0;
+  text-wrap: balance;
+}
+.officialName { font-size: 18px; line-height: 1.65; color: #c2d1de; }
+.description { font-size: 16px; line-height: 1.8; color: #91a5b8; margin-top: 24px; }
+.actions { display: flex; flex-wrap: wrap; gap: 20px 28px; justify-content: center; margin-top: 38px; }
+.actions a { color: #c4e2ed; font-size: 14px; text-decoration: none; padding-block: 10px; }
+.actions a:last-child { color: #bba98e; }
+.actions a:hover { text-decoration: underline; text-underline-offset: 6px; }
+.container a:focus-visible { outline: 2px solid #a4d8ee; outline-offset: 6px; }
 @media (max-width: 900px) {
   .composition {
     min-height: 410px;
@@ -154,6 +195,7 @@
   }
 }
 @media (max-width: 640px) {
+  .container { --story-height: max(720px, 100svh); }
   .intro {
     min-height: max(720px, 100svh);
   }
@@ -183,9 +225,6 @@
     max-width: 165px;
     margin-top: 9px;
   }
-  .field {
-    inset: 0;
-  }
   .particles {
     inset: 0;
     width: 100%;
@@ -195,7 +234,7 @@
     right: 5%;
   }
   .footer {
-    gap: 20px;
+    gap: 16px;
     padding-bottom: max(28px, env(safe-area-inset-bottom));
   }
   .caption {
@@ -204,6 +243,9 @@
   .pointerHint {
     display: none;
   }
+  .introduction { padding: 90px 24px 100px; }
+  .officialName { font-size: 16px; }
+  .actions { flex-direction: column; gap: 6px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .identity {

@@ -147,7 +147,7 @@ export function updateFieldColors(
   time: number,
   useRest = false,
 ) {
-  const positions = useRest ? field.rest : field.position;
+  const positions = useRest ? field.rest : field.spreadMix > 0 ? field.targetPosition : field.position;
   for (let i = 0; i < field.count; i++) {
     const k = i * 3;
     field.color[i] = fieldColorIndex(
@@ -164,6 +164,10 @@ export type ParticleField = {
   count: number;
   /** Formation hands over continuously to phase-free orbit constraints. */
   flowMix: number;
+  /** Reversible layout blend. Zero is the original digit solver, bit-for-bit. */
+  spreadMix: number;
+  sideSeed: Float32Array;
+  sideTarget: Float32Array;
   position: Float32Array;
   velocity: Float32Array;
   targetPosition: Float32Array;
@@ -234,6 +238,9 @@ export function createParticleField(count: number): ParticleField {
   const field: ParticleField = {
     count,
     flowMix: 0,
+    spreadMix: 0,
+    sideSeed: new Float32Array(count * 3),
+    sideTarget: new Float32Array(count * 3),
     position: new Float32Array(count * 3),
     velocity: new Float32Array(count * 3),
     targetPosition: new Float32Array(count * 3),
@@ -431,6 +438,17 @@ export function createParticleField(count: number): ParticleField {
   accentOrder.sort((a, b) => zone(b) - zone(a));
   for (let i = 0; i < Math.round(count * 0.02); i++)
     field.accent[accentOrder[i]] = 1;
+  // Independent deterministic hashes: never advance the existing optical RNG.
+  const hash = (n: number) => {
+    let value = Math.imul(n ^ 802026, 0x45d9f3b);
+    value = Math.imul(value ^ (value >>> 16), 0x45d9f3b);
+    return ((value ^ (value >>> 16)) >>> 0) / 4294967296;
+  };
+  for (let i = 0; i < count; i++) {
+    field.sideSeed[i * 3] = hash(i * 3 + 1);
+    field.sideSeed[i * 3 + 1] = hash(i * 3 + 2) * 2 - 1;
+    field.sideSeed[i * 3 + 2] = hash(i * 3 + 3) * 2 - 1;
+  }
   updateFieldColors(field, 0, true);
   setFieldTargets(field, 0, 0, { sourceX: 2.65, sourceY: 0 }, 0);
   initializeField(field);
@@ -518,6 +536,9 @@ export function setFieldTargets(
 /** For setup/static accessibility only. Never called for an animated frame. */
 export function initializeField(field: ParticleField) {
   field.position.set(field.targetPosition);
+  if (field.spreadMix > 0) for (let i = 0; i < field.position.length; i++) {
+    field.position[i] += (field.sideTarget[i] - field.position[i]) * field.spreadMix;
+  }
   field.velocity.fill(0);
   for (let i = 0; i < field.count; i++)
     field.depth[i] = field.position[i * 3 + 2];
@@ -631,10 +652,17 @@ export function integrateField(
           (axis === 0 ? nx : axis === 1 ? ny : nz) * noise * response.noise;
         const restoring =
           localSpring * (field.targetPosition[index] - field.position[index]);
-        const acceleration =
+        const digitAcceleration =
           (axis === 2
             ? restoring
-            : restoring * (1 - blend) + (axis === 0 ? flowX : flowY) * blend) +
+            : restoring * (1 - blend) + (axis === 0 ? flowX : flowY) * blend);
+        // Complementary weights: two full-strength springs never fight. Pointer,
+        // noise, drag, inertia and the existing velocity cap are applied ONCE.
+        const layoutAcceleration = field.spreadMix > 0
+          ? digitAcceleration * (1 - field.spreadMix) +
+            localSpring * (field.sideTarget[index] - field.position[index]) * field.spreadMix
+          : digitAcceleration;
+        const acceleration = layoutAcceleration +
           push +
           procedural * (1 + bounded(z * 0.15, -0.2, 0.2, 0));
         field.velocity[index] =

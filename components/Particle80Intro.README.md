@@ -1,7 +1,7 @@
 # SWUFE + FIC → CHENGDU 80: innovation field
 
 The Particle80 concept is now a physical field, not a path-following dotted logo.
-The independent preview retains its existing entry and optional globe handoff.
+The independent preview retains its entry and now uses a reversible native-scroll story.
 The public Hero, Globe, navigation, package dependencies and Sites deployment are
 unchanged.
 
@@ -17,23 +17,22 @@ import Particle80Intro from '@/components/Particle80Intro';
   damping={4.8}
   noiseStrength={0.16}
   glowIntensity={0.55}
-  formationDuration={7.2}
+  formationDuration={2.2}
 />
 
-// Existing Hero is mounted only after the immediately usable CTA is pressed.
-<Particle80Intro handoffContent={<Hero />} />
+// The network is below the story, never a replacement layer.
+<Particle80Intro />
+<GlobalUniversityNetwork />
 ```
 
 ## First-visit story
 
 | Active time at speed 1 | Story |
 | --- | --- |
-| 0–0.72 s | Sparse distant dust; a dark spatial environment |
-| 0.72–2.02 s | Crisp SWUFE / FIC labels fade in; two independent source fields gather around them |
-| 2.02–4.03 s | The sources move inward and interleave through a counter-rotating central volume |
-| 4.03–6.48 s | A volumetric 80 emerges as particles physically pursue the final attractors |
-| 6.48–7.2 s | The field settles; slight overshoot dissipates |
-| After 7.2 s | All roles flow at different scales within a calm, readable silhouette |
+| 0–0.3 s | Spatial field and crisp SWUFE / FIC identity |
+| 0.3–2.5 s | Existing source convergence and volumetric formation |
+| 2.5–3.2 s | Existing settling and pointer activation |
+| After 3.2 s | Permanent interactive 80; only native scrolling changes the layout |
 
 No essential button is gated by this sequence. Text only changes opacity; it is
 never moved by the simulation. Source locations adapt to the desktop side labels
@@ -81,8 +80,8 @@ are unchanged. No global exposure, background lift or full-screen bloom.
 The top 0.5% of existing stars (48 desktop / 5 low-power) are intense emitters,
 with a bright core and a local soft aura. Independent slow 10–12 second glints
 avoid synchronized flashing. Reduced motion retains steady light without pulses.
-The Intro is 1.3× its previous composition size: viewScale 1.534 (1.18 × 1.3).
-Narrow Canvas views cap effective magnification at 1.3 to avoid cropping the digits.
+The Intro retains its approved viewScale 1.72.
+Narrow Canvas views cap effective magnification at 1.38 to avoid cropping the digits.
 Point size and world-space motion remain independent of display magnification.
 
 Attractor positions follow the narrative, but actual particles never lerp to them:
@@ -120,7 +119,7 @@ no teleporting during a paused scrub. Appearance/dissolve can repaint while paus
 | damping | 4.8 | 1.5–14; velocity dissipation |
 | noiseStrength | .16 | 0–.6; continuous procedural force |
 | glowIntensity | .55 on Intro | 0–1; soft additive halos, no post-processing |
-| formationDuration | 7.2 | .5–16 active seconds at speed 1 |
+| formationDuration | Intro 2.2; bare Particle80 7.2 | Active formation seconds; not an exit timer |
 
 Existing `pointerForce`, `glow`, and `introDuration` are retained as aliases.
 `pointerForce` wins over `mouseForce`; `glowIntensity` wins over `glow`;
@@ -139,7 +138,7 @@ Existing `enabled`, `active`, `speed`, `formationProgress`, `dissolveProgress`,
 `lowPowerMode`, `motion`, and `reducedMotionMode` remain available.
 Bare Particle80 requires `interactive`; Particle80Intro enables it by default.
 
-## State and handoff
+## State and scroll integration
 
 `useParticleIntro()` exposes `phase` (`space | sources | merging | forming | living`),
 `introStarted`, `formationProgress`, `settled`, `interactionEnabled`, and the stable
@@ -147,9 +146,12 @@ Bare Particle80 requires `interactive`; Particle80Intro enables it by default.
 not through React state on every frame. `settled` means the formation story
 completed, not that procedural motion or every physical velocity has stopped.
 
-`handoffContent` still uses a user-triggered 850 ms dissolve, then unmounts the
-particle renderer and focuses the destination. Static/reduced motion skips this
-transition. The original globe remains lazy-loaded and unmodified.
+Particle80Intro keeps the renderer mounted across native down/up scrolling.
+Its CTA is a normal introduction anchor; one GlobalUniversityNetwork follows it.
+`handoffContent` is supported only as fallback content when `enabled={false}`.
+It no longer starts an exit, and `autoTransitionEnabled` is ignored/forced false
+by this published intro. See [BRAND_OPENING.md](../BRAND_OPENING.md) for the
+scroll bridge, actual mixed forces, side-cloud parameters and acceptance tests.
 
 ## Accessibility and performance
 
@@ -174,7 +176,7 @@ transition. The original globe remains lazy-loaded and unmodified.
 - `components/Particle80.tsx`: lifecycle, field rendering, pointer input and fallback.
 - `lib/particle80-debug.ts`: development-only role/vector/flow diagnostics.
 - `components/Particle80Intro.tsx` / `.module.css`: stable institution typography,
-  first/repeat visit story, responsive field and handoff.
+  first/repeat visit story, responsive field and reversible scroll layout.
 - `qa/particle80-intro.tsx`: existing isolated study, now exposes phase status.
 - `qa/particle80-field.test.mjs`: distribution, staged targets, true inertia,
   overshoot, recovery, frame-rate stability, extreme inputs, static contracts.

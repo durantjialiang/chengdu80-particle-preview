@@ -19,6 +19,8 @@ export function createFieldDebug(field: ParticleField, mode: FieldDebugMode) {
     snapshot: () => ({
       time: frameTime,
       flowMix: field.flowMix,
+      spreadMix: field.spreadMix,
+      sideTarget: Array.from(field.sideTarget),
       pointer: { ...pointerSnapshot },
       position: Array.from(field.position),
       velocity: Array.from(field.velocity),
@@ -28,6 +30,7 @@ export function createFieldDebug(field: ParticleField, mode: FieldDebugMode) {
       optical: Array.from(field.optical),
       size: Array.from(field.size),
       opacity: Array.from(field.opacity),
+      targetPosition: Array.from(field.targetPosition),
       orbitSpeed: Array.from(field.orbitSpeed),
       orbitWidth: Array.from(field.orbitWidth),
       frameCosts: Array.from(frameCosts).filter((v) => v > 0),

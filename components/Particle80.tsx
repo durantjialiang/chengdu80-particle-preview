@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type RefObject,
 } from 'react';
 import { useScenePreferences } from '@/hooks/use-scene-preferences';
 import {
@@ -40,6 +41,8 @@ import {
 import { createFieldDebug, type FieldDebugMode } from '@/lib/particle80-debug';
 import type { OpeningBridgeRef } from '@/lib/brand-opening';
 import { createParticleHandoff } from '@/lib/particle80-handoff';
+import { PARTICLE_STORY_DEFAULTS, type ParticleStoryRef } from '@/lib/particle-story';
+import { configureSideField, setSideFieldTargets, type SideFieldLayout } from '@/lib/particle80-story-field';
 
 export type Particle80State = {
   phase?: FieldPhase;
@@ -74,6 +77,8 @@ function brightnessGain(
 }
 
 export type Particle80Props = {
+  story?: ParticleStoryRef;
+  pointerHost?: RefObject<HTMLElement | null>;
   /** Optional brand-opening choreography; never changes the field simulation. */
   opening?: OpeningBridgeRef;
   /** Render-only A/B review; the reusable motif retains its baseline by default. */
@@ -219,6 +224,8 @@ const Static80 = memo(function Static80({
 
 function Particle80Surface({
   opening,
+  story,
+  pointerHost,
   brightnessPreset = 'baseline',
   viewScale = 1,
   debug = 'off',
@@ -403,6 +410,7 @@ function Particle80Surface({
         : null;
     let initialized = false;
     const layout = { sourceX: 2.65, sourceY: 0 };
+    const sideLayout: SideFieldLayout = { halfWidth: 4.2, halfHeight: 2.3, safeHalfWidth: 1.8, edge: 0.12, compact: false };
     const point = spatialPoint();
     const tail = spatialPoint();
     const projected = { x: 0, y: 0, size: 0, opacity: 0 };
@@ -520,7 +528,7 @@ function Particle80Surface({
     let lost = false;
     let lastPhysicsTime = elapsed.current;
     const pointer = { x: 0, y: 0, strength: 0 };
-    const pointerTarget = { x: 0, y: 0, active: false };
+    const pointerTarget = { x: 0, y: 0, active: false, clientX: 0, clientY: 0, present: false };
     const handoff = createParticleHandoff(count);
     const finePointer = window.matchMedia('(any-pointer: fine)');
     const clock: MotionClock = {
@@ -534,6 +542,7 @@ function Particle80Surface({
       playback.current.pageVisible &&
       document.visibilityState === 'visible' &&
       inView &&
+      (!story || (story.current.inView && story.current.particleStageVisibility > 0.01)) &&
       !playback.current.staticMotion &&
       playback.current.rate > 0 &&
       playback.current.strength > 0 &&
@@ -577,7 +586,7 @@ function Particle80Surface({
       context.globalCompositeOperation = 'lighter';
       const settings = playback.current;
       const openingFrame = opening?.current.frame;
-      const physicalDissolve = opening ? 0 : settings.dissolve;
+      const physicalDissolve = opening || story ? 0 : settings.dissolve;
       const handoffRect = openingFrame && openingFrame.dissolveProgress > 0 ? element.getBoundingClientRect() : null;
       bakeEmitters(settings.halo);
       if (
@@ -590,6 +599,8 @@ function Particle80Surface({
       const delta = Math.min(0.075, Math.max(0, time - lastPhysicsTime));
       lastPhysicsTime = time;
       const interaction = canInteract();
+      // Re-read the live rect even for a stationary mouse while sticky content scrolls.
+      if (pointerTarget.present) updatePointerCoordinates();
       const pointerMix = 1 - Math.exp(-10 * delta);
       pointer.x += (pointerTarget.x - pointer.x) * pointerMix;
       pointer.y += (pointerTarget.y - pointer.y) * pointerMix;
@@ -603,6 +614,10 @@ function Particle80Surface({
         settings.duration,
       );
       setFieldTargets(field, time, progress, layout, physicalDissolve);
+      if (story) {
+        configureSideField(sideLayout, width, height, scale, story.current.contentWidth);
+        setSideFieldTargets(field, time, settings.staticMotion ? 0 : story.current.spreadProgress, sideLayout);
+      }
       if (!initialized || settings.staticMotion) {
         initializeField(field);
         initialized = true;
@@ -642,7 +657,7 @@ function Particle80Surface({
           0.028 *
           smoothProgress((progress - 0.3) / 0.3) *
           settings.strength *
-          (1 - settings.dissolve);
+          (1 - settings.dissolve) * (1 - field.spreadMix);
         context.drawImage(
           sprite,
           18 * 48,
@@ -676,7 +691,7 @@ function Particle80Surface({
         );
         let x = width / 2 + projected.x * scale;
         let y = height / 2 + projected.y * scale;
-        const flight = opening && handoffRect ? handoff.project(index, field.role[index], x, y, opening.current, handoffRect.left, handoffRect.top, width) : null;
+        const flight = !story && opening && handoffRect ? handoff.project(index, field.role[index], x, y, opening.current, handoffRect.left, handoffRect.top, width) : null;
         if (flight) { x = flight.x; y = flight.y; }
         // The field surrounds each origin label, but doesn't wash out its crisp type.
         const labelDx = Math.min(
@@ -684,13 +699,20 @@ function Particle80Surface({
           Math.abs(projected.x + layout.sourceX),
         );
         const labelDy = Math.abs(projected.y - layout.sourceY);
-        const labelMask =
-          labelDx < labelHalfWidth && labelDy < labelHalfHeight ? 0.12 : 1;
+        const identityWeight = story?.current.identityOpacity ?? 1;
+        const labelMask = labelDx < labelHalfWidth && labelDy < labelHalfHeight ? 1 - 0.88 * identityWeight : 1;
+        const edgeBrightness = width < 650 ? PARTICLE_STORY_DEFAULTS.mobileSideBrightness : PARTICLE_STORY_DEFAULTS.sideBrightness;
+        // Soft vertical reading corridor, never a hard rectangular cutout.
+        const safePixels = (story?.current.contentWidth ?? 0) / 2;
+        const textProtection = story ? smoothProgress(field.spreadMix / 0.85) *
+          (1 - smoothProgress((Math.abs(x - width / 2) - safePixels + 24) / 70)) : 0;
+        const storyMask = (1 - field.spreadMix * (1 - edgeBrightness)) * (1 - textProtection * 0.98);
         const alpha = Math.min(
           1,
           projected.opacity *
             (flight?.opacity ?? 1) *
             labelMask *
+            storyMask *
             brightnessGain(
               settings.brightnessPreset,
               field.role[index],
@@ -827,6 +849,8 @@ function Particle80Surface({
       if (element.dataset.pointerStrength !== pointerEnergy)
         element.dataset.pointerStrength = pointerEnergy;
       element.dataset.phase = fieldPhase(progress);
+      element.dataset.spread = field.spreadMix.toFixed(4);
+      element.dataset.simulationTime = time.toFixed(3);
       report(progress);
     };
     const draw = () => {
@@ -958,37 +982,48 @@ function Particle80Surface({
       resize();
     };
     const syncVisibility = () => sync();
+    const updatePointerCoordinates = () => {
+      const rect = element.getBoundingClientRect();
+      const inside = pointerTarget.clientX >= rect.left && pointerTarget.clientX <= rect.right &&
+        pointerTarget.clientY >= rect.top && pointerTarget.clientY <= rect.bottom;
+      pointerTarget.active = inside && pointerTarget.present;
+      if (inside && scale > 0) {
+        pointerTarget.x = (pointerTarget.clientX - rect.left - width / 2) / scale;
+        pointerTarget.y = (pointerTarget.clientY - rect.top - height / 2) / scale;
+      }
+    };
     const pointerMove = (event: PointerEvent) => {
-      if (!canInteract() || event.pointerType === 'touch' || scale <= 0) {
+      const control = event.target instanceof Element && event.target.closest('a,button,input,select,textarea,video,[role="dialog"],dialog,[data-particle-no-force],[data-particle-reading-region]');
+      if (!canInteract() || event.pointerType === 'touch' || scale <= 0 || control || document.getSelection()?.type === 'Range') {
+        pointerTarget.present = false;
         pointerTarget.active = false;
         return;
       }
-      const rect = element.getBoundingClientRect();
-      const inside =
-        event.clientX >= rect.left &&
-        event.clientX <= rect.right &&
-        event.clientY >= rect.top &&
-        event.clientY <= rect.bottom;
-      pointerTarget.active = inside;
-      if (inside) {
-        pointerTarget.x = (event.clientX - rect.left - width / 2) / scale;
-        pointerTarget.y = (event.clientY - rect.top - height / 2) / scale;
-      }
+      pointerTarget.clientX = event.clientX; pointerTarget.clientY = event.clientY;
+      pointerTarget.present = true;
+      updatePointerCoordinates();
     };
     const pointerLeave = () => {
       pointerTarget.active = false;
+      pointerTarget.present = false;
     };
+    const viewportLeave = (event: PointerEvent) => { if (!event.relatedTarget) pointerLeave(); };
     syncPlayback.current = sync;
     watchResolution();
     surface.addEventListener('contextlost', contextLost);
     surface.addEventListener('contextrestored', contextRestored);
     resizeObserver?.observe(element);
-    visibilityObserver?.observe(element);
+    visibilityObserver?.observe(pointerHost?.current ?? element);
     window.addEventListener('resize', resize);
     document.addEventListener('visibilitychange', syncVisibility);
-    window.addEventListener('pointermove', pointerMove, { passive: true });
-    window.addEventListener('pointerout', pointerLeave, { passive: true });
+    const pointerSurface = pointerHost?.current ?? window;
+    pointerSurface.addEventListener('pointermove', pointerMove as EventListener, { passive: true });
+    pointerSurface.addEventListener('pointerleave', pointerLeave, { passive: true });
+    const syncStory = () => sync(false);
+    const storyListeners = story?.current.listeners;
+    storyListeners?.add(syncStory);
     window.addEventListener('blur', pointerLeave);
+    window.addEventListener('pointerout', viewportLeave, { passive: true });
     finePointer.addEventListener('change', syncVisibility);
     resize();
     return () => {
@@ -1002,9 +1037,11 @@ function Particle80Surface({
       resolutionQuery?.removeEventListener('change', resolutionChanged);
       window.removeEventListener('resize', resize);
       document.removeEventListener('visibilitychange', syncVisibility);
-      window.removeEventListener('pointermove', pointerMove);
-      window.removeEventListener('pointerout', pointerLeave);
+      pointerSurface.removeEventListener('pointermove', pointerMove as EventListener);
+      pointerSurface.removeEventListener('pointerleave', pointerLeave);
+      storyListeners?.delete(syncStory);
       window.removeEventListener('blur', pointerLeave);
+      window.removeEventListener('pointerout', viewportLeave);
       finePointer.removeEventListener('change', syncVisibility);
       surface.removeEventListener('contextlost', contextLost);
       surface.removeEventListener('contextrestored', contextRestored);
@@ -1017,7 +1054,7 @@ function Particle80Surface({
       emitters.width = 1;
       emitters.height = 1;
     };
-  }, [count, low, debugMode, magnification, opening]);
+  }, [count, low, debugMode, magnification, opening, story, pointerHost]);
 
   return (
     <div

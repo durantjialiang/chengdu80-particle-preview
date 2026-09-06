@@ -9,6 +9,7 @@ import { renderToString } from 'react-dom/server';
 await test('shared university ecosystem contracts', async (t) => {
   const server = await createServer({
     configFile: 'qa/particle80.vite.config.ts',
+    cacheDir: 'node_modules/.vite-university-tests',
     server: { middlewareMode: true, hmr: false, watch: null },
     appType: 'custom',
     optimizeDeps: { noDiscovery: true, include: [] },

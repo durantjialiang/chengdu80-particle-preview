@@ -1,66 +1,105 @@
-# Chengdu 80 brand opening
+# Chengdu 80: reversible particle scroll story
 
-This release refines the existing intro; it does not replace the particle engine.
+This release replaces the timed Particle80-to-globe handoff. It retains the existing Canvas 2D particle engine, optics, particle budgets, 8/0 circulation and pointer physics.
 
-## Sequence and integration
+## Published page contract
 
-`INTRO_IDLE → FORMING_80 → HOLDING_80 → DISSOLVING_80 → HANDOFF_TO_GLOBE → GLOBE_ACTIVE`
+`Particle80 hero → EventIntroduction → one GlobalUniversityNetwork`
 
-One visibility-aware timeline owns formation, hold, dissolve, globe reveal and activation. Runners depart first, ambient particles take atmospheric endpoints, selected highlights converge on university nodes, and anchors preserve the 80 until the late handoff. Endpoints come from the existing globe's university registry, geographic routes, world transform and actual camera projection. The Canvas renderer reads 320 preallocated projected endpoints; the original springs, inertia, orbit velocities, palette and light-point optics are unchanged.
+- First visit: 0.3s lead-in + 2.2s formation + 0.7s settling on desktop; mobile: 0.15 + 1.5 + 0.4s.
+- Then HOLDING_80 indefinitely. At 5, 30, 60 and 120 seconds it does not dissolve or reveal a globe.
+- Return visits shorten formation to 0.1 + 1.0 + 0.3s. The visit record never skips the hero.
+- Explore Chengdu 80 is a native `#event-introduction` anchor. The introduction and network exist in the DOM immediately; neither waits for animation or renderer readiness.
+- Scrolling early or restoring a scrolled position completes formation and follows the current scroll location. Returning upward does not replay formation or reverse simulation time.
+- `autoTransitionEnabled` defaults to false in the configuration, is forced false by Particle80Intro and useBrandOpening, and is explicitly false at the preview entry.
+- Legacy hold/dissolve/reveal props and isolated handoff types remain source-compatible, but do not drive this published story. `sampleOpening` and the old render adapter retain isolated legacy tests for other consumers; the story renderer explicitly bypasses the adapter. No requestHandoff, readiness gate, replacement layer or terminal unmount remains in this page.
 
-Interaction ownership: the held 80 owns pointer input; during transition its input decays over 0.65 seconds and the globe stays locked; only the active globe owns camera parallax. No OrbitControls, scroll hijacking, video background or new runtime dependency was added.
+## Two independent controls
 
-## Configuration (seconds)
+`useBrandOpening` now owns only formation and settling. Its choreography RAF stops once formed. The existing physical clock continues circulation, inertia, pointer response and light breathing.
 
-| Setting | Desktop first visit | Mobile | Reduced motion |
-| --- | --- | --- | --- |
-| leadInDuration | 0.3 | 0.15 | 0 |
-| formationDuration | 2.2 | 1.5 | 0 |
-| settleDuration | 0.7 | 0.4 | 0 |
-| holdDuration | 2.2 | 1.6 | 1.2 |
-| dissolveDuration | 2.8 | 1.6 | 0.22 |
-| globeRevealDuration | 2.6 | 1.5 | 0.22 |
-| transitionDuration | 3.4 | 2.0 | 0.22 |
+`useParticleStoryScroll` derives layout from the story section's current bounding rectangle. A passive scroll listener coalesces updates into one RAF; resize, pageshow and viewport changes remeasure the actual hero, composition and content. No per-frame React scroll state, wheel interception, body lock, snap or queued scroll animation is added.
 
-`autoTransitionEnabled` defaults to true. False keeps the 80 interactive until Explore Chengdu 80 is clicked. Return visits use a 0.1 + 1.0 + 0.3-second shortened opening. Replay always shows the first-visit sequence. Changing settings does not rebuild the engine. Values are bounded; non-finite values use defaults.
+The background is sticky only inside the hero plus content. The hero is about one viewport; the introduction height is determined by its real text. A negative margin overlays the normal-flow hero on the sticky background's footprint, without an empty multi-screen runway. The network is a separate normal-flow section.
 
-Globe reveal overlaps dissolve, with a 0.34-second desktop / 0.2-second mobile lead-in. The whole desktop transition is approximately 3.74 seconds. Geometry readiness gates the exit; unsupported WebGL uses the existing static SVG network instead of a blank destination. A single 8-second renderer-boot watchdog handles a context that never becomes ready; animation phases do not use timeouts.
+A fresh URL containing an explicit introduction/network fragment is honored once after React mounts, only when the browser has not already restored a scroll offset. Reload/back navigation and later preference changes are never forced to that fragment.
 
-The bridge exposes formationProgress, holdProgress, dissolveProgress, globeRevealProgress, transitionProgress, activationProgress and interactionOwner. `onOpeningProgress` reports quantized progress; renderers read the stable ref each frame. `onHandoffComplete` fires once. Automatic progression does not steal focus; a manual CTA transfers focus without scrolling.
+## Layout parameters
 
-## Composition
+| Parameter | Current value | Purpose |
+| --- | --- | --- |
+| spreadViewport | 0.78 | Main redistribution distance, as a fraction of viewport height |
+| identityExitProgress | 0.5 | SWUFE/FIC and subtitles have faded at halfway spread |
+| content width | max 600 CSS px | Measured from actual DOM; mobile remains full width minus padding |
+| contentPadding | 42 CSS px desktop / 14 mobile | Additional side-cloud clearance outside the reading column |
+| edgePadding | 22 CSS px desktop / 6 mobile | Outer viewport clearance |
+| sideBrightness | 0.58 desktop / 0.20 mobile | Side-layout alpha only; no first-screen optical changes |
+| canvas footprint | actual composition rectangle | Preserves the original 80 display area |
+| introduction padding | responsive 100–160 / 110–180 px; mobile 90 / 100 | Real content spacing, not scroll runway |
 
-- Desktop 80 display scale: 1.534 → 1.72 (+12.1%), without scaling point sizes.
-- Mobile cap: 1.38, preserving both digits and a first-screen CTA.
-- SWUFE/FIC: restrained 500 weight, matching sizes and baselines, no glow.
-- Visible institutional subtitles restored only in this intro.
-- Header, CTA destination and existing preview controls preserved.
+Adjust these in `lib/particle-story.ts`, `lib/particle80-story-field.ts` and `Particle80Intro.module.css`. Progress is absolute and bounded; a quintic smoothstep is used for the physical constraint mix. Identity and section visibility have independent progress values. Reduced motion fades the static background out instead of spreading it.
 
-## Performance and accessibility
+## Real reversible constraints
 
-Desktop remains 9,600 particles (60fps particle scheduling); mobile remains 900 (30fps scheduling). DPR caps remain 1.5 / 1.0. These are scheduling targets, not guaranteed device FPS. The existing globe is dynamically imported and prewarms with demand frames, then renders only during handoff / active viewing. When hidden, neither animation advances its story clock. Manual hold does not run the choreography clock indefinitely. Reduced motion shows a complete static 80, uses a short 0.22-second reveal, then switches the globe to demand rendering. During that short reveal only, R3F paints progress frames. Static SVG fallbacks remain available.
+Two new typed arrays, `sideSeed` and `sideTarget`, are allocated once per field. A separate deterministic seed generator leaves the original random sequence, particle IDs, roles, sizes and optical membership untouched.
 
-The existing R3F/Three lazy chunk remains large (~909KB uncompressed); Vite's chunk-size warning is informational, not a failed build. No new post-processing or duplicate rendering library was introduced.
+The upper/lower 8 populations go mainly left and the 0 goes right; ambient particles use their immutable source side. The new distribution is a seeded volumetric cloud with curved, tapered density and slow analytical drift, not the translated digits or two replacement images. Each frame evaluates drift from the same seeds; it never generates a new random cloud.
 
-## Modified modules
+At the integrator, for each axis:
 
-- `lib/brand-opening.ts`, `hooks/use-brand-opening.ts`: explicit timeline, finite progress and visibility-safe orchestration.
-- `lib/particle80-handoff.ts`, `components/Particle80.tsx`: render-only role departure and projected curved trajectories; no simulation rewrite.
-- `components/Particle80Intro.tsx`, `.module.css`: composition, institutional type, lifecycle and CTA continuity.
-- `components/Hero/OpeningTargets.tsx`, `scene-config.ts`, `Scene.tsx`, `CameraController.tsx`: real globe endpoint bridge, prewarm/fallback and exclusive input ownership.
-- `components/Hero/Globe.tsx`, `Atmosphere.tsx`, `CityNodes.tsx`, `DataStreams.tsx`: progressive material reveal and a restrained Chengdu activation.
-- `qa/particle80-intro.tsx`, `.css`, `OpeningReviewCursor.tsx`: existing preview integration and a development-only real-pointer recording marker.
-- `qa/brand-opening.test.mjs`, `qa/particle80.ssr.test.mjs`, `package.json`: timeline/bridge tests, updated SSR contracts; no dependency additions.
+```text
+layoutForce = originalDigitForce × (1 − spreadMix)
+            + sideRestoringForce × spreadMix
 
-## Verification and review
+totalForce  = layoutForce + existingPointer + existingNoise
+velocity    = existing damped semi-implicit integration
+position   += velocity × dt
+```
 
-Run `npm ci`, then `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`.
-The review was performed in the macOS Codex in-app Chromium browser at 1440×900, 390×844 and 320×740. Screenshots and an actual timestamp-preserving browser capture are delivered separately. The capture is sampled at approximately 8–10fps and encoded at 30fps; it is not a native 60fps OS recording and must not be used as a performance benchmark. Pointer rings in that capture mark real drag/move events and are excluded from production.
+The original orbit-normal restoring force and tangential circulation remain exact at zero spread. At full spread, restoration is to moving side-cloud constraints, not the old digits. Pointer force, procedural noise and drag are each applied once; they are not duplicated by the blend. The original 120Hz substeps and velocity limit remain.
 
-Development URLs support `?visit=first`, `?autoTransition=0`, `?motion=reduced`, and `?record=1`. These URL overrides and the cursor marker are removed from the production bundle. Existing below-fold preview switches remain available in the preview site. The older standalone browser scripts are not the new acceptance harness; this release was verified through the real app browser, alongside Node/SSR tests.
+Side targets are placed in CSS-pixel-derived projected lanes, then perspective is undone into physical world coordinates. Foreground depth cannot push their projected targets into the reading column. Canvas bounds are reread for live pointer coordinates, including stationary-pointer scroll/resize. A soft central luminance guard protects actual content width, and the old label mask fades with the identity rather than leaving invisible holes.
 
-Untested: physical iOS/Android hardware, Safari/Firefox, deliberate GPU context loss, and slow-network device matrices. Responsive viewport checks are not claimed as physical-phone testing. Existing university data is reused without adding names, awards or statistics. The final “global university innovation network” sentence is descriptive brand copy, not a newly verified partnership claim.
+The shared parent receives passive pointer events; the canvas is not a transparent click shield. Links, controls, dialogs, reading content and active text selections suppress pointer force. The native page remains selectable and clickable. Pointer leaving the story, viewport or window clears influence.
 
-## Static deployment / local preview
+## Lifecycle and accessibility
 
-Build output: `out/particle-preview/`. Vercel uses the existing `vercel.json` and GitHub main branch. To preview a supplied build locally, run `python3 -m http.server 4176 --directory out/particle-preview`, then open `http://127.0.0.1:4176/`. No server-side runtime or environment secrets are required. The build includes JS, CSS and the globe fallback SVG.
+- Same mounted particle instance throughout down/up scrolling; never removed because a globe state was reached.
+- Simulation pauses when the whole story is offscreen, its stage has faded out, the page is hidden, or the user pauses it. On return, the existing capped clock prevents catch-up jumps.
+- The network retains its own lazy globe and visibility logic; only a short section boundary can overlap.
+- Desktop: unchanged 9,600 particles, DPR cap 1.5; mobile: unchanged 900, DPR cap 1.0. These are budgets, not measured FPS claims.
+- Reduced motion: complete static 80, no circulation or wide spatial morph. All introduction text, anchors, cards and the network remain normal DOM.
+- Existing SVG fallbacks remain. No dependency, physics engine, video, audio, school record, award, statistic, domain or globe implementation was changed.
+
+## Files
+
+- `lib/brand-opening.ts`, `hooks/use-brand-opening.ts`: formation-only published lifecycle.
+- `lib/particle-story.ts`, `hooks/use-particle-story-scroll.ts`: native reversible scroll bridge and layout measurement.
+- `lib/particle80-story-field.ts`, `lib/particle80-field.ts`: seeded side-cloud constraints and weighted real forces.
+- `components/Particle80.tsx`, `lib/particle80-debug.ts`: retained rendering, live pointer conversion, reading protection and story-aware pause.
+- `components/Particle80Intro.tsx`, `.module.css`: shared background, original identity, normal-flow introduction and native anchors.
+- `qa/particle80-intro.tsx`, `.css`, `particle80.html`: remove the duplicate GlobeDestination and stale styling, keep one network, update page description.
+- `qa/particle-story.test.mjs`, `qa/brand-opening.test.mjs`, `qa/particle80.ssr.test.mjs`, `qa/university-network.test.mjs`, `package.json`: reversible physics, indefinite hold, SSR content and isolated test caches. The lockfile/dependencies are unchanged.
+- This document and `components/Particle80Intro.README.md`: replace obsolete timed-handoff instructions.
+
+## Validation and local review
+
+Run `npm ci`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`.
+
+The automated suite includes 35 tests: 60/120-second hold sampling, no active timed-exit call chain, reversible absolute scroll, zero-spread force identity, stable side seeds, reading-lane projection at 1440/390/320 widths, pointer response at 0/25/50/100%, recovery into moving side constraints, fast-reversal finite-state/velocity bounds, preserved old particle tests, SSR content and university contracts.
+
+Actual browser acceptance and exact limitations are recorded in the separately exported REVIEW.md. The desktop operating sequence is a timestamp-preserving ~39-second real browser capture, sampled at approximately 5–6fps and encoded at 30fps. It is not a native 30/60fps screen recording or a performance benchmark. The pointer ring marks real input and is development-only.
+
+Local development: `npm run dev`. Review queries: `?visit=first&fieldDebug=telemetry&record=1`, `?motion=reduced&renderer=svg`. These overrides/diagnostics are eliminated from the public bundle. The existing below-fold preview switches remain.
+
+Tests use separate Vite cache directories so running tests does not invalidate the live preview's optimized imports. If an old dev session predates this change and has a blank root, restart its Vite process with `--force`; this was a dev-cache issue, not a production-build failure.
+
+## Deployment
+
+Same public destination: https://chengdu80-particle-preview.vercel.app/
+
+Same repository: https://github.com/durantjialiang/chengdu80-particle-preview
+
+Static output: `out/particle-preview/`. The existing Vercel configuration deploys GitHub main. The standalone network route remains `/global-network/`.
+
+To view a supplied build without Vite: `python3 -m http.server 4176 --directory out/particle-preview`, then open http://127.0.0.1:4176/. No server runtime, tokens or environment files are needed.

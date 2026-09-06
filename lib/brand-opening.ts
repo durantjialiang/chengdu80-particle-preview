@@ -15,7 +15,7 @@ export type OpeningFrame = {
 export const OPENING_DEFAULTS: OpeningConfig = {
   leadInDuration: 0.3, formationDuration: 2.2, settleDuration: 0.7,
   holdDuration: 2.2, dissolveDuration: 2.8, globeRevealDuration: 2.6,
-  transitionDuration: 3.4, autoTransitionEnabled: true,
+  transitionDuration: 3.4, autoTransitionEnabled: false,
 };
 const unit = (n: number) => Math.max(0, Math.min(1, n));
 export const easeOpening = (n: number) => { const t = unit(n); return t * t * (3 - 2 * t); };
@@ -27,7 +27,7 @@ export function openingConfig(input: Partial<OpeningConfig> = {}, mobile = false
     const value = input[key];
     if (typeof value === 'number' && Number.isFinite(value)) config[key] = Math.max(0, Math.min(60, value));
   }
-  config.autoTransitionEnabled = input.autoTransitionEnabled ?? true;
+  config.autoTransitionEnabled = input.autoTransitionEnabled ?? false;
   if (reduced) Object.assign(config, { leadInDuration: 0, formationDuration: 0, settleDuration: 0, holdDuration: 1.2, dissolveDuration: 0.22, globeRevealDuration: 0.22, transitionDuration: 0.22 });
   return config;
 }

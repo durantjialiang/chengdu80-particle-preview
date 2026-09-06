@@ -116,6 +116,13 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
     assert.match(intro, /data-brightness="B"/);
     assert.match(intro, /data-view-scale="1.72"/);
     assert.match(intro, /Innovation ecosystem/);
+    assert.match(intro, /href="#event-introduction"/);
+    assert.match(intro, /id="event-introduction"/);
+    assert.match(intro, /Build the Future of Finance/);
+    assert.equal((intro.match(/<canvas/g) ?? []).length, 1);
+    const legacyOverride = renderToStaticMarkup(createElement(Intro, { autoTransitionEnabled: true }));
+    assert.match(legacyOverride, /data-auto-transition="false"/);
+    assert.match(legacyOverride, /id="event-introduction"/);
     assert.match(
       render({
         formationDuration: 9,
