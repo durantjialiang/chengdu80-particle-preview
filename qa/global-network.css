@@ -1,0 +1,23 @@
+.network-page-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  padding: 25px max(24px, calc((100% - 1328px) /2));
+  background: #030a10;
+  color: #d2e4ec;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+}
+.network-page-navigation > span {
+  color: #93aaba;
+  font-size: 0.75rem;
+}
+@media (max-width: 640px) {
+  .network-page-navigation {
+    padding: 22px 18px;
+  }
+  .network-page-navigation > span:first-of-type {
+    display: none;
+  }
+}

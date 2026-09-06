@@ -10,7 +10,7 @@
     "build": "npm run build:particle-preview",
     "build:particle-preview": "vite build --config qa/particle80.vite.config.ts --mode public-preview && node scripts/finalize-particle-preview.mjs",
     "start": "vite preview --config qa/particle80.vite.config.ts --mode public-preview --host 127.0.0.1",
-    "test": "node --test --test-concurrency=1 qa/particle80-field.test.mjs qa/particle80.ssr.test.mjs qa/brand-opening.test.mjs",
+    "test": "node --test --test-concurrency=1 qa/particle80-field.test.mjs qa/particle80.ssr.test.mjs qa/brand-opening.test.mjs qa/university-network.test.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint",
     "format": "oxfmt"

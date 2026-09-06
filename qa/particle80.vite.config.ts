@@ -17,7 +17,10 @@ export default defineConfig(({ mode }) => ({
     outDir: mode === 'public-preview' ? 'out/particle-preview' : 'dist',
     sourcemap: false,
     rolldownOptions: {
-      input: fileURLToPath(new URL('particle80.html', import.meta.url)),
+      input: {
+        particle80: fileURLToPath(new URL('particle80.html', import.meta.url)),
+        network: fileURLToPath(new URL('global-network.html', import.meta.url)),
+      },
     },
   },
 }));

@@ -50,7 +50,19 @@
   font-size: 16px;
   color: #d0b28e;
 }
-.intro-globe-copy .intro-network-label { font-size: 14px; line-height: 1.7; letter-spacing: 0; color: #96adbf; margin: 0 0 28px; }
+.intro-globe-copy .intro-explore-network {
+  display: block;
+  margin-top: 18px;
+  color: #b5d8e3;
+  font-size: 14px;
+}
+.intro-globe-copy .intro-network-label {
+  font-size: 14px;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: #96adbf;
+  margin: 0 0 28px;
+}
 .intro-globe-scene {
   position: absolute;
   width: 57%;
@@ -66,10 +78,20 @@
     left: 7%;
     width: 86%;
   }
-  .intro-globe-copy h2 { font-size: 34px; margin: 16px 0; }
-  .intro-globe-copy .intro-network-label { font-size: 12px; margin-bottom: 18px; }
-  .intro-globe-copy > p { font-size: 11px; }
-  .intro-globe-copy a { font-size: 14px; }
+  .intro-globe-copy h2 {
+    font-size: 34px;
+    margin: 16px 0;
+  }
+  .intro-globe-copy .intro-network-label {
+    font-size: 12px;
+    margin-bottom: 18px;
+  }
+  .intro-globe-copy > p {
+    font-size: 11px;
+  }
+  .intro-globe-copy a {
+    font-size: 14px;
+  }
   .intro-globe-scene {
     width: 100%;
     height: 47%;
