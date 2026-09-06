@@ -47,6 +47,7 @@ export function createFieldDebug(field: ParticleField, mode: FieldDebugMode) {
       scale: number,
       time: number,
       cost: number,
+      originY = height / 2,
     ) {
       frameCosts[cursor++ % frameCosts.length] = cost;
       frameTime = time;
@@ -61,7 +62,7 @@ export function createFieldDebug(field: ParticleField, mode: FieldDebugMode) {
         const perspective =
           6.5 / (6.5 - Math.max(-2.5, Math.min(2.5, field.position[k + 2])));
         const x = width / 2 + field.position[k] * perspective * scale;
-        const y = height / 2 + field.position[k + 1] * perspective * scale;
+        const y = originY + field.position[k + 1] * perspective * scale;
         ctx.strokeStyle = ctx.fillStyle = roleColors[field.role[i]];
         ctx.globalAlpha = 0.75;
         if (mode === 'roles') {
@@ -106,7 +107,7 @@ export function createFieldDebug(field: ParticleField, mode: FieldDebugMode) {
       ctx.beginPath();
       ctx.arc(
         width / 2 + pointer.x * scale,
-        height / 2 + pointer.y * scale,
+        originY + pointer.y * scale,
         FIELD_POINTER_RADIUS * scale,
         0,
         Math.PI * 2,

@@ -34,8 +34,9 @@ npm start
 
 Watch SWUFE and FIC contribute particles to a shared spatial field. Move the
 pointer through the light to gently displace particles, then watch them settle.
-Use Replay to restart the sequence and the globe transition control to review
-the optional handoff. Mobile quality and reduced-motion preferences are supported.
+Use Replay to restart intentionally. Native scroll opens the 80 into persistent
+side dust through the network and footer; returning up restores it without replay.
+Mobile quality and reduced-motion preferences are supported.
 
 The particle field uses spring forces, damping, inertia and procedural noise;
 60% of particles anchor the silhouette, 22% circulate within its fixed volumes,

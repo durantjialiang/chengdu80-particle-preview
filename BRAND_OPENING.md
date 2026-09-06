@@ -20,7 +20,7 @@ This release replaces the timed Particle80-to-globe handoff. It retains the exis
 
 `useParticleStoryScroll` derives layout from the story section's current bounding rectangle. A passive scroll listener coalesces updates into one RAF; resize, pageshow and viewport changes remeasure the actual hero, composition and content. No per-frame React scroll state, wheel interception, body lock, snap or queued scroll animation is added.
 
-The background is sticky only inside the hero plus content. The hero is about one viewport; the introduction height is determined by its real text. A negative margin overlays the normal-flow hero on the sticky background's footprint, without an empty multi-screen runway. The network is a separate normal-flow section.
+`PersistentParticleBackdrop` portals one fixed, viewport-sized surface directly into `body`, outside Intro transforms/clipping. Intro owns identity, choreography and measurements; the backdrop owns the renderer. Normal document content has z-index 1 above the pointer-transparent background at 0. No negative z-index, oversized canvas, sticky runway or wheel interception. The same background remains behind introduction, network, controls and footer.
 
 A fresh URL containing an explicit introduction/network fragment is honored once after React mounts, only when the browser has not already restored a scroll offset. Reload/back navigation and later preference changes are never forced to that fragment.
 
@@ -30,14 +30,14 @@ A fresh URL containing an explicit introduction/network fragment is honored once
 | --- | --- | --- |
 | spreadViewport | 0.78 | Main redistribution distance, as a fraction of viewport height |
 | identityExitProgress | 0.5 | SWUFE/FIC and subtitles have faded at halfway spread |
-| content width | max 600 CSS px | Measured from actual DOM; mobile remains full width minus padding |
+| reading region | actual visible left/right | Dominant visible marked content; supports wide/asymmetric layouts |
 | contentPadding | 42 CSS px desktop / 14 mobile | Additional side-cloud clearance outside the reading column |
 | edgePadding | 22 CSS px desktop / 6 mobile | Outer viewport clearance |
 | sideBrightness | 0.58 desktop / 0.20 mobile | Side-layout alpha only; no first-screen optical changes |
-| canvas footprint | actual composition rectangle | Preserves the original 80 display area |
+| canvas footprint | viewport | Original composition still controls top 80 scale/center; side targets span viewport height |
 | introduction padding | responsive 100–160 / 110–180 px; mobile 90 / 100 | Real content spacing, not scroll runway |
 
-Adjust these in `lib/particle-story.ts`, `lib/particle80-story-field.ts` and `Particle80Intro.module.css`. Progress is absolute and bounded; a quintic smoothstep is used for the physical constraint mix. Identity and section visibility have independent progress values. Reduced motion fades the static background out instead of spreading it.
+Adjust layout in `lib/particle-story.ts`, `lib/particle80-story-field.ts` and `lib/particle80-projection.ts`. Progress is absolute, bounded and stays at 1 below the Hero. Hero/Intro visibility is geometry-only telemetry, not a render/pointer gate. Reduced motion draws a complete static 80 at top and a static side field below; it never fades the entire background out.
 
 ## Real reversible constraints
 
@@ -60,15 +60,15 @@ The original orbit-normal restoring force and tangential circulation remain exac
 
 Side targets are placed in CSS-pixel-derived projected lanes, then perspective is undone into physical world coordinates. Foreground depth cannot push their projected targets into the reading column. Canvas bounds are reread for live pointer coordinates, including stationary-pointer scroll/resize. A soft central luminance guard protects actual content width, and the old label mask fades with the identity rather than leaving invisible holes.
 
-The shared parent receives passive pointer events; the canvas is not a transparent click shield. Links, controls, dialogs, reading content and active text selections suppress pointer force. The native page remains selectable and clickable. Pointer leaving the story, viewport or window clears influence.
+Window receives passive pointer events; the canvas is not a click shield. Client coordinates use the current fixed canvas rect, world scale and interpolated projection origin, never scrollY. Every draw rechecks the current element under a stationary pointer once, protecting links, controls, dialogs, reading regions, Globe and selection. Only leaving the viewport/window clears presence; leaving Intro does not.
 
 ## Lifecycle and accessibility
 
 - Same mounted particle instance throughout down/up scrolling; never removed because a globe state was reached.
-- Simulation pauses when the whole story is offscreen, its stage has faded out, the page is hidden, or the user pauses it. On return, the existing capped clock prevents catch-up jumps.
-- The network retains its own lazy globe and visibility logic; only a short section boundary can overlap.
+- Simulation pauses for document hidden, explicit pause, reduced motion, disabled background or lost context, never because Hero/Intro is offscreen. On return the capped clock prevents catch-up jumps.
+- The network retains its own lazy Globe visibility/modal pause. Offscreen Globe is not kept rendering just because the particle background persists.
 - Desktop: unchanged 9,600 particles, DPR cap 1.5; mobile: unchanged 900, DPR cap 1.0. These are budgets, not measured FPS claims.
-- Reduced motion: complete static 80, no circulation or wide spatial morph. All introduction text, anchors, cards and the network remain normal DOM.
+- Reduced motion: static layout follows native scroll without circulation or animated convergence. All text, anchors, cards and the network remain normal DOM.
 - Existing SVG fallbacks remain. No dependency, physics engine, video, audio, school record, award, statistic, domain or globe implementation was changed.
 
 ## Files
@@ -76,8 +76,9 @@ The shared parent receives passive pointer events; the canvas is not a transpare
 - `lib/brand-opening.ts`, `hooks/use-brand-opening.ts`: formation-only published lifecycle.
 - `lib/particle-story.ts`, `hooks/use-particle-story-scroll.ts`: native reversible scroll bridge and layout measurement.
 - `lib/particle80-story-field.ts`, `lib/particle80-field.ts`: seeded side-cloud constraints and weighted real forces.
-- `components/Particle80.tsx`, `lib/particle80-debug.ts`: retained rendering, live pointer conversion, reading protection and story-aware pause.
-- `components/Particle80Intro.tsx`, `.module.css`: shared background, original identity, normal-flow introduction and native anchors.
+- `components/Particle80.tsx`, `lib/particle80-debug.ts`: retained rendering, viewport pointer conversion, current reading-region protection and page lifecycle.
+- `components/Particle80Intro.tsx`, `.module.css`: original identity, measurements, normal-flow introduction and native anchors.
+- `components/PersistentParticleBackdrop.tsx`, `.module.css`: single body portal and lighter ambient-only reuse for static content documents. Cross-document navigation creates a new instance; this is not an SPA.
 - `qa/particle80-intro.tsx`, `.css`, `particle80.html`: remove the duplicate GlobeDestination and stale styling, keep one network, update page description.
 - `qa/particle-story.test.mjs`, `qa/brand-opening.test.mjs`, `qa/particle80.ssr.test.mjs`, `qa/university-network.test.mjs`, `package.json`: reversible physics, indefinite hold, SSR content and isolated test caches. The lockfile/dependencies are unchanged.
 - This document and `components/Particle80Intro.README.md`: replace obsolete timed-handoff instructions.
@@ -86,9 +87,9 @@ The shared parent receives passive pointer events; the canvas is not a transpare
 
 Run `npm ci`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`.
 
-The automated suite includes 35 tests: 60/120-second hold sampling, no active timed-exit call chain, reversible absolute scroll, zero-spread force identity, stable side seeds, reading-lane projection at 1440/390/320 widths, pointer response at 0/25/50/100%, recovery into moving side constraints, fast-reversal finite-state/velocity bounds, preserved old particle tests, SSR content and university contracts.
+The automated suite includes 43 tests: 60/120-second hold sampling, page runtime independent of offscreen Intro, exact original projection preservation, fixed-rect pointer conversion, asymmetric full-height lanes, reversible absolute scroll, zero-spread force identity, stable side seeds, reading projection at 1440/390/320 widths, pointer/recovery at 0/25/50/100%, fast reversal, retained physical tests, SSR and content contracts.
 
-Actual browser acceptance and exact limitations are recorded in the separately exported REVIEW.md. The desktop operating sequence is a timestamp-preserving ~42-second real browser capture, sampled at approximately 5–6fps and encoded at 30fps. It is not a native 30/60fps screen recording or a performance benchmark. The pointer ring marks real input and is development-only.
+Current browser evidence and recording metadata are in `docs/persistent-backdrop-review.md` and the separately exported review folder. Previous release recordings are historical evidence, not acceptance for this page-wide release. A sampled browser recording is not a native FPS benchmark. The pointer ring marks real input and is development-only.
 
 Local development: `npm run dev`. Review queries: `?visit=first&fieldDebug=telemetry&record=1`, `?motion=reduced&renderer=svg`. These overrides/diagnostics are eliminated from the public bundle. The existing below-fold preview switches remain.
 

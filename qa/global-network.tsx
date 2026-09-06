@@ -5,6 +5,7 @@ import '../app/globals.css';
 import './global-network.css';
 import { SiteLanguageProvider } from '@/hooks/use-site-language';
 import { SiteNavigation, SiteFooter } from '@/components/site/SiteChrome';
+import { AmbientParticleBackdrop } from '@/components/PersistentParticleBackdrop';
 
 function NetworkPage() {
   const review = import.meta.env.DEV
@@ -12,6 +13,7 @@ function NetworkPage() {
     : null;
   return (
     <>
+      <AmbientParticleBackdrop />
       <header className="network-page-navigation"><SiteNavigation /></header>
       <main>
         <h1 className="sr-only">Global University Network — Chengdu 80</h1>

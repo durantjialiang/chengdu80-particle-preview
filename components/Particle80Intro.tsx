@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import Particle80, { type Particle80Props, type Particle80State } from './Particle80';
+import { type Particle80Props, type Particle80State } from './Particle80';
+import PersistentParticleBackdrop from './PersistentParticleBackdrop';
 import { useScenePreferences } from '@/hooks/use-scene-preferences';
 import { useBrandOpening } from '@/hooks/use-brand-opening';
 import { useParticleStoryScroll } from '@/hooks/use-particle-story-scroll';
@@ -68,16 +69,12 @@ function IntroSurface({
     data-auto-transition={config.autoTransitionEnabled} data-formation-duration={config.formationDuration}
     data-hold-duration={config.holdDuration} data-dissolve-duration={config.dissolveDuration}
     data-globe-reveal-duration={config.globeRevealDuration}>
-    <div className={styles.sharedBackground} aria-hidden="true">
-      <div className={styles.sharedField}>
-        <Particle80 {...particleProps} opening={bridge} story={story} pointerHost={host}
+        <PersistentParticleBackdrop {...particleProps} opening={bridge} story={story}
           active={active && visit.ready} interactive={particleProps.interactive ?? true}
           intensity={particleProps.intensity ?? 1.18} brightnessPreset={particleProps.brightnessPreset ?? 'B'}
           viewScale={particleProps.viewScale ?? 1.72} introEnabled={introEnabled}
           introDuration={config.formationDuration || 0.5} onStateChange={reportParticle}
-          className={styles.particles} />
-      </div>
-    </div>
+        />
     <section ref={hero} className={styles.intro} aria-label="Chengdu 80 signature introduction">
       <header className={styles.header}>{headerContent ?? <><h1>CHENGDU 80</h1><span>2026</span></>}</header>
       <div ref={composition} className={styles.composition}>

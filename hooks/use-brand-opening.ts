@@ -21,7 +21,7 @@ export function useBrandOpening(config: OpeningConfig, options: {
     const run = (now: number) => {
       frameId = 0;
       const s = settings.current;
-      if (!s.active || document.hidden || !s.story.current.inView) { previous = 0; return; }
+      if (!s.active || document.hidden) { previous = 0; return; }
       const dt = previous ? Math.min((now - previous) / 1000, 0.06) : 0;
       previous = now;
       const timer = clock.current;

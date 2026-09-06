@@ -6,6 +6,7 @@
   padding: 76px max(24px, calc((100% - 1328px) / 2)) 50px;
   border-top: 1px solid #b3d4de20;
 }
+:global(body[data-particle-backdrop='true']) .network { background: transparent; }
 .header {
   margin-bottom: 38px;
   position: relative;

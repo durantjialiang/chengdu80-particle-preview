@@ -163,7 +163,8 @@ scroll bridge, actual mixed forces, side-cloud parameters and acceptance tests.
 - Desktop draw budget: 60 fps / DPR ≤1.5. Mobile/low-power: 30 fps / 900 particles /
   DPR ≤1. These are target caps, not measured real-device FPS claims.
 - Fine-pointer interaction only; normal touch scrolling is retained.
-- Hidden/offscreen/paused scenes suspend RAF and do not catch up hidden time.
+- Hidden documents and explicitly paused scenes suspend RAF without hidden-time
+  catch-up. Hero/Introduction offscreen never pauses the page-wide background.
 - Reduced motion shows a complete static field and crisp labels. Turning it off
   does not restart the cinematic formation.
 - Unavailable/lost Canvas reveals a complete deterministic inline SVG; phase

@@ -105,7 +105,7 @@ try {
       ),
     );
     const cta = await page
-      .getByRole('button', { name: 'Explore Chengdu 80' })
+      .getByRole('link', { name: 'Explore Chengdu 80' })
       .boundingBox();
     assert.ok(cta && cta.y + cta.height <= height);
     await page.screenshot({ path: `${output}/${width}-living.png` });

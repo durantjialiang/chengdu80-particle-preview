@@ -52,3 +52,9 @@
 .motif[data-canvas='ready'] .fallback {
   opacity: 0;
 }
+.fallbackSides { opacity: calc(var(--fallback-spread, 0) * var(--particle80-fallback-opacity, 1)); }
+.motif[data-visibility-scope='page'] .fallback {
+  top: var(--fallback-top, 90px); height: var(--fallback-height, 540px);
+  opacity: calc((1 - var(--fallback-spread, 0)) * var(--particle80-fallback-opacity, 1));
+}
+.motif[data-canvas='ready'] :is(.fallback, .fallbackSides) { opacity: 0; }

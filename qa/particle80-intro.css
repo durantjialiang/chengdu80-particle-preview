@@ -10,6 +10,11 @@
   font-size: 14px;
   border-top: 1px solid #839fb22b;
 }
+body[data-particle-backdrop='true'] .intro-study-controls { background: transparent; }
+.intro-study-controls-inner {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 26px; width: min(1100px, 100%);
+}
 .intro-study-controls label {
   display: flex;
   align-items: center;

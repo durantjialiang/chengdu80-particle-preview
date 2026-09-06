@@ -6,6 +6,9 @@
   color: #e5eef5;
   min-height: 100svh;
 }
+:global(body[data-particle-backdrop='true']) .site,
+:global(body[data-particle-backdrop='true']) .footer { background: transparent; }
+.footerInner { width: 100%; }
 .sourceList {
   display: grid;
   gap: 12px;

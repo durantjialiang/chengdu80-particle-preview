@@ -4,6 +4,7 @@ import { navigation, navigationReady } from '@/content/navigation';
 import { currentCompetition, bilingual as b } from '@/content/competition';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import styles from './Site.module.css';
+import { AmbientParticleBackdrop } from '@/components/PersistentParticleBackdrop';
 
 const navChinese: Record<string, string> = {
   About: '关于赛事',
@@ -106,6 +107,7 @@ export function SiteFooter() {
   const { t, href, language } = useSiteLanguage();
   return (
     <footer className={styles.footer}>
+      <div data-particle-reading-region className={styles.footerInner}>
       <div>
         <a className={styles.wordmark} href={href('/')}>
           CHENGDU 80
@@ -133,6 +135,7 @@ export function SiteFooter() {
         </span>
         <LanguageSwitch />
       </div>
+      </div>
     </footer>
   );
 }
@@ -140,6 +143,7 @@ export function TextPage({ children }: { children: ReactNode }) {
   const { t } = useSiteLanguage();
   return (
     <div className={styles.site}>
+      <AmbientParticleBackdrop />
       <a className={styles.skip} href="#main-content">
         {t(b('Skip to content', '跳转正文'))}
       </a>
@@ -147,7 +151,7 @@ export function TextPage({ children }: { children: ReactNode }) {
         <SiteNavigation />
       </header>
       <main id="main-content" tabIndex={-1} className={styles.content}>
-        {children}
+        <div data-particle-reading-region>{children}</div>
       </main>
       <SiteFooter />
     </div>

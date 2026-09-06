@@ -5,7 +5,8 @@ import { createServer } from 'vite';
 
 const server = await createServer({ configFile: 'qa/particle80.vite.config.ts', cacheDir: 'node_modules/.vite-story-tests', server: { middlewareMode: true, hmr: false, watch: null }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
 try {
-  const { sampleParticleStory } = await server.ssrLoadModule('/lib/particle-story.ts');
+  const { sampleParticleStory, createParticleStory, backgroundCanAnimate, pointerToField } = await server.ssrLoadModule('/lib/particle-story.ts');
+  const { particleProjection } = await server.ssrLoadModule('/lib/particle80-projection.ts');
   const { configureSideField, setSideFieldTargets } = await server.ssrLoadModule('/lib/particle80-story-field.ts');
   const { createParticleField, setFieldTargets, initializeField, integrateField, FIELD_DEFAULTS, FIELD_LOOPS } = await server.ssrLoadModule('/lib/particle80-field.ts');
   const config = { ...FIELD_DEFAULTS, pointerForce: FIELD_DEFAULTS.mouseForce };
@@ -29,9 +30,50 @@ try {
     assert.deepEqual(states[2], states[4]);
     assert.equal(states[3].spreadProgress, 1);
     assert.equal(states[0].identityOpacity, 1); assert.equal(states[3].identityOpacity, 0);
-    assert.equal(sampleParticleStory(-2000, -1, 900).inView, false);
-    assert.equal(sampleParticleStory(-850, 850, 900).inView, true, 'Hero is offscreen, story remains active');
-    assert.equal(sampleParticleStory(-900, 800, 900, true).particleStageVisibility, 0);
+    assert.equal(sampleParticleStory(-2000, -1, 900).introInView, false);
+    assert.equal(sampleParticleStory(-950, 850, 900).heroInView, false);
+    assert.equal(sampleParticleStory(-950, 850, 900).introInView, true);
+    assert.equal(sampleParticleStory(-900, 800, 900, true).spreadProgress, 1);
+    assert.equal(sampleParticleStory(-20000, -10000, 900).spreadProgress, 1);
+    assert.ok(!('particleStageVisibility' in sampleParticleStory(-20000, -10000, 900)));
+  });
+  await test('page runtime respects explicit pauses, never original section geometry', () => {
+    const page = { enabled: true, visible: true, paused: false, reduced: false, contextAvailable: true };
+    for (const top of [0, -900, -4000, -10000]) {
+      const story = sampleParticleStory(top, top + 1800, 900);
+      assert.equal(backgroundCanAnimate({ ...story, ...page }), true);
+    }
+    for (const change of [{enabled:false},{visible:false},{paused:true},{reduced:true},{contextAvailable:false}]) assert.equal(backgroundCanAnimate({...page,...change}), false);
+  });
+  await test('viewport expands without changing original 80 scale, point size or origin', () => {
+    for (const width of [1440,390,320]) {
+      const story = {...createParticleStory(), compositionTop:103, compositionHeight:540};
+      const original = particleProjection(width,540,1.72);
+      const full = particleProjection(width,900,1.72,story);
+      assert.equal(full.scale,original.scale); assert.equal(full.pointScale,original.pointScale);
+      assert.equal(full.originY,373); assert.equal(full.sourceY,original.sourceY);
+      assert.equal(particleProjection(width,844,1.72,{...story,spreadProgress:1}).originY,422);
+    }
+  });
+  await test('pointer uses fixed client rect and actual projection, independent of scrollY', () => {
+    const target = {x:0,y:0};
+    assert.equal(pointerToField(80,700,{left:0,top:0,width:1440,height:900},100,450,target),true);
+    assert.deepEqual(target,{x:-6.4,y:2.5});
+    assert.equal(pointerToField(80,700,{left:0,top:0,width:1440,height:900},100,450,target),true);
+    assert.equal(pointerToField(80,900,{left:0,top:0,width:1440,height:844},100,422,target),false);
+  });
+  await test('asymmetric reading regions keep deterministic full-height side lanes', () => {
+    const f = field(), seeds = f.sideSeed.slice(), local = {};
+    configureSideField(local,1440,900,130,880,160,1040,450);
+    assert.notEqual(-local.safeLeft,local.safeRight);
+    setSideFieldTargets(f,12,1,local);
+    let minY=Infinity,maxY=-Infinity;
+    for (let i=0;i<f.count;i++) {
+      const k=i*3,p=6.5/(6.5-f.sideTarget[k+2]),x=f.sideTarget[k]*p;
+      assert.ok(x<=local.safeLeft+.001 || x>=local.safeRight-.001);
+      minY=Math.min(minY,f.sideTarget[k+1]*p*130);maxY=Math.max(maxY,f.sideTarget[k+1]*p*130);
+    }
+    assert.ok(maxY-minY>750); assert.deepEqual(seeds,f.sideSeed);
   });
   await test('zero spread adds no force and preserves all optical identities', () => {
     const a = field(), b = field();

@@ -82,7 +82,7 @@ export default function GlobalUniversityNetwork({
       data-reduced-motion={reducedMotion}
       aria-labelledby="network-title"
     >
-      <header className={styles.header}>
+      <header className={styles.header} data-particle-reading-region>
         <p className={styles.eyebrow}>CHENGDU 80 / GLOBAL UNIVERSITY NETWORK</p>
         <h2 id="network-title">
           Global minds.
@@ -105,8 +105,8 @@ export default function GlobalUniversityNetwork({
           </a>
         ) : null}
       </header>
-      <div className={styles.workspace}>
-        <div ref={mapPanel} className={styles.mapPanel}>
+      <div className={styles.workspace} data-particle-reading-region>
+        <div ref={mapPanel} className={styles.mapPanel} data-particle-no-force>
           <div className={styles.mapHeading}>
             <span>EXPLORE THE CONNECTIONS</span>
             <span className={styles.hubMark}>HUB / CHENGDU</span>
@@ -192,7 +192,7 @@ export default function GlobalUniversityNetwork({
           </div>
         </div>
       </div>
-      <div className={styles.legend}>
+      <div className={styles.legend} data-particle-reading-region>
         <span>
           <i />
           Historical competition link
@@ -202,7 +202,7 @@ export default function GlobalUniversityNetwork({
           Wider SWUFE ecosystem exchange
         </span>
       </div>
-      <p className={styles.notice}>{networkNotice}</p>
+      <p className={styles.notice} data-particle-reading-region>{networkNotice}</p>
       {selection.detailId ? (
         <UniversityDetailPanel
           university={getUniversity(selection.detailId)}

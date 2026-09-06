@@ -86,6 +86,7 @@ function Study() {
         className="intro-study-controls"
         aria-label="Intro preview controls"
       >
+        <div className="intro-study-controls-inner" data-particle-reading-region>
         <Button variant="outline" onClick={() => setReplay((n) => n + 1)}>
           Replay intro
         </Button>
@@ -116,6 +117,7 @@ function Study() {
           {' · '}
           {openingFrame?.state ?? 'INTRO_IDLE'} · Native scroll story
         </output>
+        </div>
       </section>
     </main><SiteFooter /></>
   );

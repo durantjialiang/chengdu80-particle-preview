@@ -41,7 +41,8 @@ import {
 import { createFieldDebug, type FieldDebugMode } from '@/lib/particle80-debug';
 import type { OpeningBridgeRef } from '@/lib/brand-opening';
 import { createParticleHandoff } from '@/lib/particle80-handoff';
-import { PARTICLE_STORY_DEFAULTS, type ParticleStoryRef } from '@/lib/particle-story';
+import { backgroundCanAnimate, pointerToField, PARTICLE_UI_SELECTOR, PARTICLE_STORY_DEFAULTS, type ParticleStoryRef } from '@/lib/particle-story';
+import { particleProjection } from '@/lib/particle80-projection';
 import { configureSideField, setSideFieldTargets, type SideFieldLayout } from '@/lib/particle80-story-field';
 
 export type Particle80State = {
@@ -77,6 +78,8 @@ function brightnessGain(
 }
 
 export type Particle80Props = {
+  /** Page backdrops do not inherit an Intro/section visibility boundary. */
+  visibilityScope?: 'element' | 'page';
   story?: ParticleStoryRef;
   pointerHost?: RefObject<HTMLElement | null>;
   /** Optional brand-opening choreography; never changes the field simulation. */
@@ -164,6 +167,10 @@ function fallbackPoints(formation: number) {
   }));
 }
 const stillPoints = fallbackPoints(1);
+let engineSequence = 0;
+const liveEngines = new Set<number>();
+const pendingFrames = new Set<number>();
+const pointerBindings = new Set<number>();
 
 function get2dContext(surface: HTMLCanvasElement) {
   try {
@@ -226,6 +233,7 @@ function Particle80Surface({
   opening,
   story,
   pointerHost,
+  visibilityScope = 'element',
   brightnessPreset = 'baseline',
   viewScale = 1,
   debug = 'off',
@@ -275,7 +283,9 @@ function Particle80Surface({
     FIELD_DEFAULTS.glowIntensity,
   );
   const strength = bounded(intensity, 0, 1.5, DEFAULTS.intensity);
-  const dissolve = bounded(dissolveProgress, 0, 1, 0);
+  // A page story never uses the legacy terminal dissolve, including its pause
+  // and SVG opacity gates. Bare/legacy consumers retain the controlled prop.
+  const dissolve = story ? 0 : bounded(dissolveProgress, 0, 1, 0);
   const formation =
     formationProgress === undefined
       ? undefined
@@ -334,6 +344,20 @@ function Particle80Surface({
   });
   const syncPlayback = useRef<((resetTiming?: boolean) => void) | null>(null);
 
+  // The fallback has the same viewport/hero split even without a Canvas context.
+  useEffect(() => {
+    const element = host.current;
+    if (!element || visibilityScope !== 'page' || !story) return;
+    const update = () => {
+      element.style.setProperty('--fallback-top', `${story.current.compositionTop}px`);
+      element.style.setProperty('--fallback-height', `${story.current.compositionHeight}px`);
+      element.style.setProperty('--fallback-spread', String(smoothProgress(story.current.spreadProgress)));
+    };
+    const listeners = story.current.listeners;
+    listeners.add(update); update();
+    return () => { listeners.delete(update); };
+  }, [story, visibilityScope]);
+
   useEffect(() => {
     const previous = playback.current;
     const resetTiming =
@@ -391,7 +415,7 @@ function Particle80Surface({
     const element = host.current;
     const surface = canvas.current;
     if (!element || !surface) return;
-    const context = get2dContext(surface);
+    const context = process.env.NODE_ENV === 'development' && new URLSearchParams(location.search).get('particleRenderer') === 'svg' ? null : get2dContext(surface);
     if (!context) {
       element.dataset.state = 'fallback';
       callback.current?.({
@@ -404,6 +428,19 @@ function Particle80Surface({
       return;
     }
     const field = createParticleField(count);
+    const engineId = ++engineSequence;
+    liveEngines.add(engineId);
+    element.dataset.engineId = String(engineId);
+    const requestFrame = (callback: FrameRequestCallback) => {
+      const id = requestAnimationFrame((time) => { pendingFrames.delete(id); callback(time); });
+      pendingFrames.add(id);
+      if (process.env.NODE_ENV === 'development') element.dataset.pendingRafs = String(pendingFrames.size);
+      return id;
+    };
+    const cancelFrame = (id: number) => {
+      pendingFrames.delete(id); cancelAnimationFrame(id);
+      if (process.env.NODE_ENV === 'development') element.dataset.pendingRafs = String(pendingFrames.size);
+    };
     const diagnostics =
       process.env.NODE_ENV === 'development' && debugMode !== 'off'
         ? createFieldDebug(field, debugMode)
@@ -520,6 +557,8 @@ function Particle80Surface({
     let width = 0;
     let height = 0;
     let scale = 0;
+    let originY = 0;
+    let readingLeft = NaN, readingRight = NaN;
     let pointScale = 1;
     let dpr = 1;
     let frame = 0;
@@ -538,12 +577,9 @@ function Particle80Surface({
     };
     const interval = 1000 / (low ? 30 : 60);
     const isAnimating = () =>
-      playback.current.active &&
-      playback.current.pageVisible &&
-      document.visibilityState === 'visible' &&
-      inView &&
-      (!story || (story.current.inView && story.current.particleStageVisibility > 0.01)) &&
-      !playback.current.staticMotion &&
+      backgroundCanAnimate({ enabled: visibilityScope === 'page' || inView,
+        visible: playback.current.pageVisible && document.visibilityState === 'visible',
+        paused: !playback.current.active, reduced: playback.current.staticMotion, contextAvailable: !lost }) &&
       playback.current.rate > 0 &&
       playback.current.strength > 0 &&
       playback.current.dissolve < 1 &&
@@ -598,6 +634,15 @@ function Particle80Surface({
       const time = clock.time;
       const delta = Math.min(0.075, Math.max(0, time - lastPhysicsTime));
       lastPhysicsTime = time;
+      const projection = particleProjection(width, height, magnification, story?.current);
+      scale = projection.scale; pointScale = projection.pointScale; originY = projection.originY;
+      layout.sourceX = projection.sourceX; layout.sourceY = projection.sourceY;
+      if (story) {
+        const mix = !Number.isFinite(readingLeft) || settings.staticMotion ? 1 : 1 - Math.exp(-6 * delta);
+        const move = (current: number, target: number) => mix === 1 ? target : current + Math.max(-900 * delta, Math.min(900 * delta, (target - current) * mix));
+        readingLeft = move(readingLeft, story.current.readingLeft);
+        readingRight = move(readingRight, story.current.readingRight);
+      }
       const interaction = canInteract();
       // Re-read the live rect even for a stationary mouse while sticky content scrolls.
       if (pointerTarget.present) updatePointerCoordinates();
@@ -615,10 +660,12 @@ function Particle80Surface({
       );
       setFieldTargets(field, time, progress, layout, physicalDissolve);
       if (story) {
-        configureSideField(sideLayout, width, height, scale, story.current.contentWidth);
-        setSideFieldTargets(field, time, settings.staticMotion ? 0 : story.current.spreadProgress, sideLayout);
+        configureSideField(sideLayout, width, height, scale, story.current.contentWidth, readingLeft, readingRight, originY);
+        setSideFieldTargets(field, time, story.current.spreadProgress, sideLayout);
       }
       if (!initialized || settings.staticMotion) {
+        // Existing initialization already applies spreadMix, including deep
+        // links and reduced motion. Never blend a second time here.
         initializeField(field);
         initialized = true;
       } else {
@@ -648,7 +695,7 @@ function Particle80Surface({
             48,
             48,
             width / 2 + side * layout.sourceX * scale - scale,
-            height / 2 + layout.sourceY * scale - scale * 0.65,
+            originY + layout.sourceY * scale - scale * 0.65,
             scale * 2,
             scale * 1.3,
           );
@@ -665,12 +712,17 @@ function Particle80Surface({
           48,
           48,
           width / 2 - scale * 1.5,
-          height / 2 - scale,
+          originY - scale,
           scale * 3,
           scale * 2,
         );
       }
       let displacementEnergy = 0;
+      // Wide workspaces leave narrow gutters. Deterministic render-only thinning
+      // avoids compressing the full cloud into two bright walls; IDs/physics stay.
+      const minimumDensity = width < 650 ? 0.65 : 0.12;
+      const leftDensity = story ? Math.max(minimumDensity, Math.min(1, (readingLeft - 12) / 210)) : 1;
+      const rightDensity = story ? Math.max(minimumDensity, Math.min(1, (width - readingRight - 12) / 210)) : 1;
       for (let index = 0; index < count; index++) {
         const k = index * 3;
         fieldPoint(field, index, progress, physicalDissolve, point);
@@ -690,7 +742,11 @@ function Particle80Surface({
           settings.shimmer,
         );
         let x = width / 2 + projected.x * scale;
-        let y = height / 2 + projected.y * scale;
+        let y = originY + projected.y * scale;
+        const density = x < width / 2 ? leftDensity : rightDensity;
+        const threshold = 1 - field.spreadMix * (1 - density);
+        const densityAlpha = threshold >= 1 ? 1 : 1 - smoothProgress(((index * 0.61803398875) % 1 - threshold + 0.025) / 0.05);
+        if (densityAlpha === 0) continue;
         const flight = !story && opening && handoffRect ? handoff.project(index, field.role[index], x, y, opening.current, handoffRect.left, handoffRect.top, width) : null;
         if (flight) { x = flight.x; y = flight.y; }
         // The field surrounds each origin label, but doesn't wash out its crisp type.
@@ -703,9 +759,8 @@ function Particle80Surface({
         const labelMask = labelDx < labelHalfWidth && labelDy < labelHalfHeight ? 1 - 0.88 * identityWeight : 1;
         const edgeBrightness = width < 650 ? PARTICLE_STORY_DEFAULTS.mobileSideBrightness : PARTICLE_STORY_DEFAULTS.sideBrightness;
         // Soft vertical reading corridor, never a hard rectangular cutout.
-        const safePixels = (story?.current.contentWidth ?? 0) / 2;
         const textProtection = story ? smoothProgress(field.spreadMix / 0.85) *
-          (1 - smoothProgress((Math.abs(x - width / 2) - safePixels + 24) / 70)) : 0;
+          (1 - smoothProgress((Math.max(readingLeft - x, x - readingRight) + 24) / 70)) : 0;
         const storyMask = (1 - field.spreadMix * (1 - edgeBrightness)) * (1 - textProtection * 0.98);
         const alpha = Math.min(
           1,
@@ -713,6 +768,7 @@ function Particle80Surface({
             (flight?.opacity ?? 1) *
             labelMask *
             storyMask *
+            densityAlpha *
             brightnessGain(
               settings.brightnessPreset,
               field.role[index],
@@ -747,7 +803,7 @@ function Particle80Surface({
             tail.opacity = point.opacity;
             projectSpatial(tail, time, 1, false, projectedTail);
             const tailX = width / 2 + projectedTail.x * scale;
-            const tailY = height / 2 + projectedTail.y * scale;
+            const tailY = originY + projectedTail.y * scale;
             if (Math.hypot(tailX - x, tailY - y) > settings.tailLength * size)
               break;
             context.globalAlpha = alpha * (4 - j) * 0.08;
@@ -840,6 +896,7 @@ function Particle80Surface({
         scale,
         time,
         performance.now() - drawStarted,
+        originY,
       );
       if (element.dataset.canvas !== 'ready') element.dataset.canvas = 'ready';
       const energy = (displacementEnergy / Math.ceil(count / 8)).toFixed(4);
@@ -851,6 +908,17 @@ function Particle80Surface({
       element.dataset.phase = fieldPhase(progress);
       element.dataset.spread = field.spreadMix.toFixed(4);
       element.dataset.simulationTime = time.toFixed(3);
+      if (process.env.NODE_ENV === 'development') {
+        element.dataset.liveEngines = String(liveEngines.size);
+        element.dataset.pendingRafs = String(pendingFrames.size);
+        element.dataset.pointerListenerSets = String(pointerBindings.size);
+        element.dataset.pointerX = pointer.x.toFixed(3);
+        element.dataset.pointerY = pointer.y.toFixed(3);
+        element.dataset.readingLeft = readingLeft.toFixed(1);
+        element.dataset.readingRight = readingRight.toFixed(1);
+        element.dataset.originY = originY.toFixed(1);
+        element.dataset.scale = scale.toFixed(3);
+      }
       report(progress);
     };
     const draw = () => {
@@ -859,7 +927,7 @@ function Particle80Surface({
       } catch {
         // Some browsers throw before emitting contextlost. Stop and reveal SVG.
         lost = true;
-        cancelAnimationFrame(frame);
+        cancelFrame(frame);
         frame = 0;
         delete element.dataset.canvas;
         element.dataset.state = 'fallback';
@@ -872,12 +940,12 @@ function Particle80Surface({
       frame = 0;
       if (!isAnimating() || disposed) return;
       if (stepMotionClock(clock, now, interval, playback.current.rate)) draw();
-      if (isAnimating()) frame = requestAnimationFrame(tick);
+      if (isAnimating()) frame = requestFrame(tick);
     };
     const sync = (resetTiming = true) => {
       if (disposed) return;
       if (resetTiming || !isAnimating()) {
-        cancelAnimationFrame(frame);
+        cancelFrame(frame);
         frame = 0;
         clock.previous = null;
         clock.remainder = 0;
@@ -893,7 +961,7 @@ function Particle80Surface({
           : isAnimating()
             ? 'animated'
             : 'paused';
-      if (isAnimating() && !frame) frame = requestAnimationFrame(tick);
+      if (isAnimating() && !frame) frame = requestFrame(tick);
     };
     const resize = () => {
       if (disposed) return;
@@ -911,18 +979,9 @@ function Particle80Surface({
         1800 / width,
         1200 / height,
       );
-      surface.width = Math.max(1, Math.round(width * dpr));
-      surface.height = Math.max(1, Math.round(height * dpr));
-      const compact = width < 650;
-      const baseScale = Math.min(
-        width / (compact ? 4.7 : FIELD_DEFAULTS.viewWidth),
-        height / (compact ? 5.6 : FIELD_DEFAULTS.viewHeight),
-      );
-      // Desktop is 1.3x the previous 1.18 composition. Phones preserve both digits.
-      scale = Math.min(magnification, compact ? 1.38 : 1.8) * baseScale;
-      pointScale = bounded(baseScale / 170, 0.65, 1.25, 1);
-      layout.sourceX = (width * (compact ? 0.245 : 0.315)) / scale;
-      layout.sourceY = compact ? (80 - height / 2) / scale : 0;
+      const pixelWidth = Math.max(1, Math.round(width * dpr)), pixelHeight = Math.max(1, Math.round(height * dpr));
+      if (surface.width !== pixelWidth) surface.width = pixelWidth;
+      if (surface.height !== pixelHeight) surface.height = pixelHeight;
       element.dataset.dpr = dpr.toFixed(2);
       element.dataset.particles = String(count);
       element.dataset.structures = String(
@@ -945,7 +1004,7 @@ function Particle80Surface({
     const resizeObserver =
       typeof ResizeObserver !== 'undefined' ? new ResizeObserver(resize) : null;
     const visibilityObserver =
-      typeof IntersectionObserver !== 'undefined'
+      visibilityScope !== 'page' && typeof IntersectionObserver !== 'undefined'
         ? new IntersectionObserver(
             ([entry]) => {
               inView = entry.isIntersecting;
@@ -984,17 +1043,13 @@ function Particle80Surface({
     const syncVisibility = () => sync();
     const updatePointerCoordinates = () => {
       const rect = element.getBoundingClientRect();
-      const inside = pointerTarget.clientX >= rect.left && pointerTarget.clientX <= rect.right &&
-        pointerTarget.clientY >= rect.top && pointerTarget.clientY <= rect.bottom;
-      pointerTarget.active = inside && pointerTarget.present;
-      if (inside && scale > 0) {
-        pointerTarget.x = (pointerTarget.clientX - rect.left - width / 2) / scale;
-        pointerTarget.y = (pointerTarget.clientY - rect.top - height / 2) / scale;
-      }
+      const inside = pointerToField(pointerTarget.clientX, pointerTarget.clientY, rect, scale, originY, pointerTarget);
+      const hit = inside ? document.elementFromPoint(pointerTarget.clientX, pointerTarget.clientY) : null;
+      const blocked = hit?.closest(PARTICLE_UI_SELECTOR) || document.querySelector('dialog[open], [role="dialog"][aria-modal="true"]') || document.getSelection()?.type === 'Range';
+      pointerTarget.active = inside && pointerTarget.present && !blocked;
     };
     const pointerMove = (event: PointerEvent) => {
-      const control = event.target instanceof Element && event.target.closest('a,button,input,select,textarea,video,[role="dialog"],dialog,[data-particle-no-force],[data-particle-reading-region]');
-      if (!canInteract() || event.pointerType === 'touch' || scale <= 0 || control || document.getSelection()?.type === 'Range') {
+      if (!canInteract() || event.pointerType === 'touch' || scale <= 0) {
         pointerTarget.present = false;
         pointerTarget.active = false;
         return;
@@ -1016,7 +1071,7 @@ function Particle80Surface({
     visibilityObserver?.observe(pointerHost?.current ?? element);
     window.addEventListener('resize', resize);
     document.addEventListener('visibilitychange', syncVisibility);
-    const pointerSurface = pointerHost?.current ?? window;
+    const pointerSurface = visibilityScope === 'page' ? window : pointerHost?.current ?? window;
     pointerSurface.addEventListener('pointermove', pointerMove as EventListener, { passive: true });
     pointerSurface.addEventListener('pointerleave', pointerLeave, { passive: true });
     const syncStory = () => sync(false);
@@ -1024,13 +1079,15 @@ function Particle80Surface({
     storyListeners?.add(syncStory);
     window.addEventListener('blur', pointerLeave);
     window.addEventListener('pointerout', viewportLeave, { passive: true });
+    pointerBindings.add(engineId);
     finePointer.addEventListener('change', syncVisibility);
     resize();
     return () => {
       disposed = true;
+      liveEngines.delete(engineId);
       diagnostics?.dispose();
       syncPlayback.current = null;
-      cancelAnimationFrame(frame);
+      cancelFrame(frame);
       elapsed.current = clock.time;
       resizeObserver?.disconnect();
       visibilityObserver?.disconnect();
@@ -1042,6 +1099,7 @@ function Particle80Surface({
       storyListeners?.delete(syncStory);
       window.removeEventListener('blur', pointerLeave);
       window.removeEventListener('pointerout', viewportLeave);
+      pointerBindings.delete(engineId);
       finePointer.removeEventListener('change', syncVisibility);
       surface.removeEventListener('contextlost', contextLost);
       surface.removeEventListener('contextrestored', contextRestored);
@@ -1054,7 +1112,7 @@ function Particle80Surface({
       emitters.width = 1;
       emitters.height = 1;
     };
-  }, [count, low, debugMode, magnification, opening, story, pointerHost]);
+  }, [count, low, debugMode, magnification, opening, story, pointerHost, visibilityScope]);
 
   return (
     <div
@@ -1068,6 +1126,7 @@ function Particle80Surface({
         } as CSSProperties
       }
       data-background={background}
+      data-visibility-scope={visibilityScope}
       data-brightness={brightnessPreset}
       data-view-scale={magnification}
       data-field-debug={debugMode === 'off' ? undefined : debugMode}
@@ -1083,6 +1142,16 @@ function Particle80Surface({
         brightnessPreset={brightnessPreset}
         viewScale={magnification}
       />
+      {visibilityScope === 'page' ? (
+        <svg className={`${styles.surface} ${styles.fallbackSides}`} viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+          {stillPoints.filter((_, i) => i % 3 === 0).map((point, i) => {
+            const seed = fallbackField.sideSeed[i * 3];
+            const left = 4 + seed * 32;
+            return <circle key={i} cx={i % 2 ? 1000 - left : left} cy={22 + (fallbackField.sideSeed[i * 3 + 1] + 1) * 478}
+              r={Math.min(1.6, Math.max(0.45, point.size * 0.5))} fill={FIELD_PALETTE[point.color]} opacity={Math.min(0.6, point.opacity * 0.58)} />;
+          })}
+        </svg>
+      ) : null}
       <canvas
         ref={canvas}
         className={`${styles.surface} ${styles.canvas}`}

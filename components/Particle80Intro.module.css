@@ -1,18 +1,14 @@
 .container {
   --story-identity: 1;
-  --story-particles: 1;
   --story-height: max(700px, 100svh);
   --particle-top: 103px;
   --particle-height: calc(var(--story-height) - 360px);
   position: relative;
   isolation: isolate;
-  background: #030810;
   color: #e6eff6;
   overflow: clip;
-  background: radial-gradient(ellipse at 50% 49%, #0b1826 0%, #050c16 37%, #030810 72%);
 }
 .intro {
-  margin-top: calc(-1 * var(--story-height));
   min-height: 700px;
   min-height: max(700px, 100svh);
   display: flex;
@@ -129,21 +125,6 @@
   color: #718597;
   font-size: 12px;
   letter-spacing: 0.04em;
-}
-.sharedBackground {
-  position: sticky;
-  top: 0;
-  height: var(--story-height);
-  pointer-events: none;
-  z-index: 0;
-  opacity: var(--story-particles);
-}
-.sharedField {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  top: var(--particle-top);
-  height: var(--particle-height);
 }
 .scrollPrompt {
   pointer-events: auto;

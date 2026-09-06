@@ -108,18 +108,21 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
     assert.match(intro, /Finance and Economics/);
     assert.match(intro, /FIC/);
     assert.match(intro, /Fintech Innovation Center/);
-    assert.match(intro, /data-intro-duration="2.2"/);
+    assert.match(intro, /data-formation-duration="2.2"/);
     assert.match(intro, /data-intro-state="INTRO_IDLE"/);
     assert.match(intro, /data-hold-duration="2.2"/);
     assert.match(intro, /data-dissolve-duration="2.8"/);
     assert.match(intro, /data-globe-reveal-duration="2.6"/);
-    assert.match(intro, /data-brightness="B"/);
-    assert.match(intro, /data-view-scale="1.72"/);
+    const pageSurface = render({visibilityScope:'page',brightnessPreset:'B',viewScale:1.72});
+    assert.match(pageSurface, /data-brightness="B"/);
+    assert.match(pageSurface, /data-view-scale="1.72"/);
     assert.match(intro, /Innovation ecosystem/);
     assert.match(intro, /href="#event-introduction"/);
     assert.match(intro, /id="event-introduction"/);
     assert.match(intro, /Build the Future of Finance/);
-    assert.equal((intro.match(/<canvas/g) ?? []).length, 1);
+    // The page viewport portal mounts after hydration, outside Intro clipping.
+    assert.equal((intro.match(/<canvas/g) ?? []).length, 0);
+    assert.match(render({ visibilityScope: 'page' }), /data-visibility-scope="page"/);
     const legacyOverride = renderToStaticMarkup(createElement(Intro, { autoTransitionEnabled: true }));
     assert.match(legacyOverride, /data-auto-transition="false"/);
     assert.match(legacyOverride, /id="event-introduction"/);

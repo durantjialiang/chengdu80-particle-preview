@@ -1,0 +1,11 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 49%, #0b1826 0%, #050c16 37%, #030810 72%);
+}
+.field { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; }
+/* Direct body child: no transformed or clipped section ancestor. */
+:global(body[data-particle-backdrop='true']) :global(#root) { position: relative; z-index: 1; }
