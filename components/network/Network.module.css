@@ -92,6 +92,7 @@
   height: 100%;
 }
 .mapFooter {
+  justify-content: flex-end;
   border-top: 1px solid #b3d4de14;
   font-size: 0.875rem;
   letter-spacing: 0;

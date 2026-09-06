@@ -75,14 +75,14 @@ function Study() {
           replay || reviewQuery?.get('visit') === 'first' ? 'always' : 'short'
         }
         autoTransitionEnabled={false}
-        onOpeningProgress={setOpeningFrame}
-        onStateChange={onStateChange}
+        onOpeningProgress={import.meta.env.DEV ? setOpeningFrame : undefined}
+        onStateChange={import.meta.env.DEV ? onStateChange : undefined}
         reducedMotionMode={still ? 'static' : 'system'}
         lowPowerMode={low ? 'on' : 'auto'}
         interactive={interactive}
       />
       <GlobalUniversityNetwork forceReducedMotion={still} staticPreview={reviewQuery?.get('renderer') === 'svg'} />
-      <section
+      {import.meta.env.DEV && <section
         className="intro-study-controls"
         aria-label="Intro preview controls"
       >
@@ -118,7 +118,7 @@ function Study() {
           {openingFrame?.state ?? 'INTRO_IDLE'} · Native scroll story
         </output>
         </div>
-      </section>
+      </section>}
     </main><SiteFooter /></>
   );
 }

@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useInView } from 'framer-motion';
-import { ArrowDownLeft, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import {
   universities,
   getUniversity,
@@ -140,42 +140,10 @@ export default function GlobalUniversityNetwork({
             aria-live="polite"
             aria-atomic="true"
           >
-            <span className={styles.readoutLabel}>
-              {selected.id === 'swufe'
-                ? t(b('THE CONVERGENCE POINT', '汇聚点'))
-                : t(b('SELECTED UNIVERSITY', '当前高校'))}
-            </span>
-            <strong>
-              {selected.shortName}
-              {selected.id !== 'swufe' ? (
-                <>
-                  <ArrowDownLeft size={18} />
-                  <span>{t(b('Chengdu', '成都'))}</span>
-                </>
-              ) : (
-                <span> / {t(b('Chengdu', '成都'))}</span>
-              )}
-            </strong>
-            <span>
-              {universityLocation(selected, language)} ·{' '}
-              {selected.relationshipType === 'ecosystem'
-                ? t(
-                    b(
-                      'SWUFE ecosystem exchange · not confirmed participation',
-                      '西财生态交流 · 参赛尚未确认',
-                    ),
-                  )
-                : selected.verification === 'documented'
-                  ? t(b('Historical competition record', '历史赛事记录'))
-                  : t(b('Participation not verified', '参赛尚未核实'))}
-            </span>
+            <strong>{selected.shortName}</strong>
+            <span>{universityLocation(selected, language)}</span>
           </div>
           <div className={styles.mapFooter}>
-            <span>
-              {t(
-                b('Hover a card. Select a node.', '悬停卡片，或选择地球节点。'),
-              )}
-            </span>
             <span>SWUFE × FIC</span>
           </div>
         </div>
@@ -222,27 +190,6 @@ export default function GlobalUniversityNetwork({
           <i />
           {t(b('Wider SWUFE ecosystem exchange', '西财生态交流'))}
         </span>
-      </div>
-      <div className={styles.notice} data-particle-reading-region>
-        <p>
-          {t(
-            b(
-              'Selected historical records, not a confirmed 2026 roster or a complete archive.',
-              '精选历史记录，不是2026确认名单，也不是完整档案。',
-            ),
-          )}
-        </p>
-        <details className={styles.auditNotes}>
-          <summary>{t(b('Sources & record notes', '资料来源与说明'))}</summary>
-          <p>
-            {t(
-              b(
-                'Each university links to its evidence. Pins show approximate campus locations, not travel records. Dashed routes mean ecosystem exchange, not confirmed competition participation. Publication dates and event dates are kept separate.',
-                '每所高校详情均列出依据。节点是近似校区位置，不表示历史行程；虚线仅代表生态交流，不代表已确认参赛。报道日期与赛事日期分别记录。',
-              ),
-            )}
-          </p>
-        </details>
       </div>
       {selection.detailId ? (
         <UniversityDetailPanel

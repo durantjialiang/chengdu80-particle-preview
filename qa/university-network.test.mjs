@@ -274,6 +274,24 @@ await test('shared university ecosystem contracts', async (t) => {
       },
     );
     await t.test(
+      'network summary keeps school and location without review instructions',
+      async () => {
+        const { default: Network } = await server.ssrLoadModule(
+          '/components/network/GlobalUniversityNetwork.tsx',
+        );
+        const html = renderToString(React.createElement(Network, { staticPreview: true }));
+        const summary = html.match(/<div[^>]*aria-live="polite"[^>]*>([\s\S]*?)<\/div>/)?.[1];
+        assert.ok(summary, 'Selection retains its accessible live region');
+        assert.match(summary, /<strong>SWUFE<\/strong>/);
+        assert.match(summary, /Chengdu/);
+        assert.match(summary, /China/);
+        assert.doesNotMatch(summary, /<svg|Historical competition record|THE CONVERGENCE POINT|SELECTED UNIVERSITY/);
+        assert.doesNotMatch(html, /Hover a card\. Select a node\.|Selected historical records, not a confirmed 2026 roster|Sources &amp; record notes/);
+        assert.match(html, /University cards/);
+        assert.match(html, /university-card-uestc/);
+      },
+    );
+    await t.test(
       'all 18 cards and details SSR without browser APIs; unknown records are not fabricated',
       async () => {
         const { default: Card } = await server.ssrLoadModule(
