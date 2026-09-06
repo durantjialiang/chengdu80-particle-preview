@@ -1,14 +1,30 @@
-.pendingNav { display: inline-flex; gap: 5px; align-items: baseline; color: #8195a5; }
-.pendingNav small { font-size: 12px; color: #708697; }
-.menu nav .pendingNav { padding: 18px 0; border-bottom: 1px solid #9bb4c621; font-size: 22px; }
+.pendingNav {
+  display: inline-flex;
+  gap: 5px;
+  align-items: baseline;
+  color: #8195a5;
+}
+.pendingNav small {
+  font-size: 12px;
+  color: #708697;
+}
+.menu nav .pendingNav {
+  padding: 18px 0;
+  border-bottom: 1px solid #9bb4c621;
+  font-size: 22px;
+}
 .site {
   background: #030a12;
   color: #e5eef5;
   min-height: 100svh;
 }
 :global(body[data-particle-backdrop='true']) .site,
-:global(body[data-particle-backdrop='true']) .footer { background: transparent; }
-.footerInner { width: 100%; }
+:global(body[data-particle-backdrop='true']) .footer {
+  background: transparent;
+}
+.footerInner {
+  width: 100%;
+}
 .sourceList {
   display: grid;
   gap: 12px;
@@ -633,4 +649,30 @@
     scroll-behavior: auto !important;
     transition: none !important;
   }
+}
+.sourceDate {
+  margin-top: 6px;
+  font-size: 13px !important;
+  color: #8aa2b5 !important;
+}
+.archiveSources summary {
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1.4;
+  color: #c4dce9;
+}
+.archiveSources > p {
+  margin-top: 20px;
+  max-width: 850px;
+}
+.archiveRecap {
+  margin-top: 24px;
+  max-width: 820px;
+}
+.awardSource {
+  display: inline-block;
+  margin-left: 18px;
+  font-size: 13px;
+  color: #9bbdd0;
+  text-decoration: underline;
 }

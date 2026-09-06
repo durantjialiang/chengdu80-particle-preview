@@ -8,28 +8,47 @@ import {
   editionUniversities,
   type SourceId,
   type Project,
+  type ArchiveSource,
 } from '@/content/archive';
 import { universities, getUniversity } from '@/content/universities';
 import { bilingual as b, type Localized } from '@/content/competition';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import { useUrlFilters } from '@/hooks/use-url-filters';
 import styles from './Site.module.css';
+import ArchiveGallery from './ArchiveGallery';
+import { universityName } from '@/content/university-i18n';
 
 export function Sources({ ids }: { ids: readonly SourceId[] }) {
   const { t } = useSiteLanguage();
   return (
     <div className={styles.sourceList}>
-      {ids.map((id) => (
-        <a
-          key={id}
-          className={styles.source}
-          href={sources[id].url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {t(sources[id].title)} ↗
-        </a>
-      ))}
+      {ids.map((id) => {
+        const source: ArchiveSource = sources[id];
+        return (
+          <div key={id}>
+            <a
+              key={id}
+              className={styles.source}
+              href={sources[id].url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t(sources[id].title)} ↗
+            </a>
+            {source.publishedDate !== undefined && (
+              <p className={styles.sourceDate}>
+                {t(
+                  source.dateBasis === 'url-path'
+                    ? b('Date in source URL', '来源网址所示日期')
+                    : b('Page publication date', '网页发布日期'),
+                )}
+                : {source.publishedDate ?? t(b('Not stated', '未标明'))}
+                {source.dateNote ? ` · ${t(source.dateNote)}` : ''}
+              </p>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -75,7 +94,7 @@ export function CopyLink() {
   );
 }
 export function HistoryPage({ year }: { year?: number }) {
-  const { t, href } = useSiteLanguage();
+  const { t, href, language } = useSiteLanguage();
   const record = editions.find((e) => e.year === year);
   if (record) {
     const index = editions.indexOf(record);
@@ -83,7 +102,9 @@ export function HistoryPage({ year }: { year?: number }) {
     const schedule: [Localized, string | null][] = [
       [
         b('Event dates', '活动日期'),
-        record.startDate ? `${record.startDate} — ${record.endDate}` : null,
+        record.startDate
+          ? `${record.startDate}${record.endDate && record.endDate !== record.startDate ? ` — ${record.endDate}` : ''}`
+          : null,
       ],
       [b('Development start', '开发开始'), record.developmentStart],
       [b('Development end', '开发结束'), record.developmentEnd],
@@ -109,6 +130,18 @@ export function HistoryPage({ year }: { year?: number }) {
             : t(statusLabels[record.status])}
         </h1>
         <p className={styles.lead}>{t(record.dateNote)}</p>
+        <ArchiveGallery
+          year={record.year}
+          albumId={`edition-${record.year}`}
+          coverId={record.coverImageId}
+          coverOnly
+        />
+        {record.recap && (
+          <section className={styles.section}>
+            <h2>{t(b('Edition review', '赛事回顾'))}</h2>
+            <p className={styles.archiveRecap}>{t(record.recap)}</p>
+          </section>
+        )}
         {record.status === 'upcoming' ? (
           <a className={styles.primary} href={href('/competition/')}>
             {t(b('2026 Competition', '2026赛事信息'))} →
@@ -132,6 +165,48 @@ export function HistoryPage({ year }: { year?: number }) {
             ))}
           </dl>
         </section>
+        {record.awardResults?.length ? (
+          <section className={styles.section}>
+            <h2>{t(b('Award record', '获奖结果'))}</h2>
+            <p className={styles.note}>
+              {t(
+                b(
+                  'Names follow the cited record. Award recipients are not all described as champions.',
+                  '奖项依据原始记录，不将所有获奖高校统称为冠军。',
+                ),
+              )}
+            </p>
+            <dl className={styles.facts}>
+              {record.awardResults.map((result) => (
+                <div key={result.id}>
+                  <dt>{t(result.label)}</dt>
+                  <dd>
+                    {result.universityIds.map((id, index) => (
+                      <span key={id}>
+                        {index > 0 ? ' / ' : ''}
+                        <a
+                          href={href(
+                            `/global-network/?university=${id}#university-card-${id}`,
+                          )}
+                        >
+                          {universityName(getUniversity(id), language)}
+                        </a>
+                      </span>
+                    ))}
+                    <a
+                      className={styles.awardSource}
+                      href={sources[result.sourceRef].url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {t(b('Source', '依据'))} ↗
+                    </a>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        ) : null}
         {related.length ? (
           <section className={styles.section}>
             <h2>{t(b('Documented results', '有据可查的成果'))}</h2>
@@ -175,25 +250,48 @@ export function HistoryPage({ year }: { year?: number }) {
                     `/global-network/?university=${u.id}#university-card-${u.id}`,
                   )}
                 >
-                  {u.shortName} ↗
+                  {language === 'zh'
+                    ? universityName(u, language)
+                    : u.shortName}{' '}
+                  ↗
                 </a>
               ))}
             </div>
           </section>
         ) : null}
+        {(record.year === 2019 ||
+          record.year === 2024 ||
+          record.media.length > 0) && (
+          <ArchiveGallery
+            year={record.year}
+            albumId={`edition-${record.year}`}
+          />
+        )}
         <section className={styles.section}>
-          <h2>{t(b('Sources', '资料来源'))}</h2>
-          <Sources ids={record.sourceRefs} />
-          {!record.sourceRefs.length ? (
+          <details className={styles.archiveSources}>
+            <summary>
+              {t(b('Sources & record notes', '资料来源与说明'))}
+            </summary>
             <p>
               {t(
                 b(
-                  'Project owner supplied. No public announcement is claimed.',
-                  '由项目负责人提供，不作为公开公告表述。',
+                  'Publication dates are not event dates. Photographs are categorized from source context, never used to identify a person or school by appearance. Reuse permission is separate from factual verification.',
+                  '网页发布日期不等于赛事日期。照片按原文上下文分类，不凭人物外观识别学校或个人。事实核实与图片复用授权分别处理。',
                 ),
               )}
             </p>
-          ) : null}
+            <Sources ids={record.sourceRefs} />
+            {!record.sourceRefs.length ? (
+              <p>
+                {t(
+                  b(
+                    'Project owner supplied. No public announcement is claimed.',
+                    '由项目负责人提供，不作为公开公告表述。',
+                  ),
+                )}
+              </p>
+            ) : null}
+          </details>
           <CopyLink />
         </section>
         <nav
@@ -278,7 +376,7 @@ export function WinnerCard({ project: p }: { project: Project }) {
 }
 const winnerKeys = ['year', 'university'] as const;
 export function WinnersPage({ projectId }: { projectId?: string }) {
-  const { t, href } = useSiteLanguage();
+  const { t, href, language } = useSiteLanguage();
   const [query, setQuery] = useState('');
   const { filters, change } = useUrlFilters(winnerKeys);
   const record = projects.find((p) => p.projectId === projectId);
@@ -296,6 +394,16 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
         </div>
         <h1>{t(projectTitle(record))}</h1>
         <p className={styles.lead}>{t(record.summary)}</p>
+        {record.verificationNote && (
+          <p className={styles.note}>{t(record.verificationNote)}</p>
+        )}
+        {record.year && (
+          <ArchiveGallery
+            year={record.year}
+            projectId={record.projectId}
+            coverOnly
+          />
+        )}
         <section className={styles.section}>
           <dl className={styles.facts}>
             <div>
@@ -306,7 +414,8 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
                     `/global-network/?university=${record.universityId}#university-card-${record.universityId}`,
                   )}
                 >
-                  {getUniversity(record.universityId).name} ↗
+                  {universityName(getUniversity(record.universityId), language)}{' '}
+                  ↗
                 </a>
               </dd>
             </div>
@@ -351,6 +460,9 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
             )}
           </p>
         </section>
+        {record.year && (
+          <ArchiveGallery year={record.year} projectId={record.projectId} />
+        )}
         <section className={styles.section}>
           <h2>{t(b('Original reporting', '原始报道'))}</h2>
           <Sources ids={record.sourceRefs} />
@@ -389,6 +501,7 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
         p.teamName,
         getUniversity(p.universityId).name,
         getUniversity(p.universityId).shortName,
+        universityName(getUniversity(p.universityId), 'zh'),
         p.summary.en,
         p.summary.zh,
       ]
@@ -450,7 +563,9 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
               .filter((u) => projects.some((p) => p.universityId === u.id))
               .map((u) => (
                 <option value={u.id} key={u.id}>
-                  {u.shortName}
+                  {language === 'zh'
+                    ? universityName(u, language)
+                    : u.shortName}
                 </option>
               ))}
           </select>

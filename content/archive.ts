@@ -9,7 +9,17 @@ import {
   universitySources,
   type UniversityId,
 } from './universities';
+import {
+  confirmed2019Awards,
+  edition2019Source,
+  recap2019Source,
+  confirmed2024Awards,
+  edition2024Source,
+} from './history-evidence';
 export const sources = {
+  event2019: edition2019Source,
+  recap2019: recap2019Source,
+  event2024: edition2024Source,
   history: {
     title: b(
       'SWUFE · historical review in the 2023 preview',
@@ -45,6 +55,12 @@ export const sources = {
       '女王大学 · Data Queens报道（发表于2024）',
     ),
     url: universitySources.queens2024,
+    publishedDate: '2024-11-26',
+    dateBasis: 'url-path' as const,
+    dateNote: b(
+      'Date in the article URL; page timestamp not independently recovered.',
+      '文章路径日期；页面时间字段尚未独立恢复。',
+    ),
   },
   about: {
     title: b(
@@ -55,6 +71,13 @@ export const sources = {
   },
 };
 export type SourceId = keyof typeof sources;
+export type ArchiveSource = {
+  title: Localized;
+  url: string;
+  publishedDate?: string | null;
+  dateNote?: Localized;
+  dateBasis?: 'page-field' | 'url-path';
+};
 export type Project = {
   projectId: string;
   year: number | null;
@@ -64,6 +87,7 @@ export type Project = {
   projectName: string | null;
   challenge: Localized | null;
   awardId: string;
+  editionAwardId?: string;
   awardLabel: Localized;
   summary: Localized;
   image: string | null;
@@ -71,6 +95,7 @@ export type Project = {
   repositoryUrl: string | null;
   sourceRefs: SourceId[];
   verificationStatus: 'documented' | 'event-year-unconfirmed';
+  verificationNote?: Localized;
 };
 const media = { image: null, demoUrl: null, repositoryUrl: null };
 const topAward = b('开创者奖 (source wording)', '开创者奖');
@@ -108,7 +133,11 @@ export const projects: readonly Project[] = [
       'A search tool organizing financial research and visualizing academic connections.',
       '组织金融研究文献、展示学术关联的检索工具。',
     ),
-    sourceRefs: ['history'],
+    sourceRefs: ['event2019', 'history'],
+    verificationNote: b(
+      'The annual detail establishes the challenge and participants; the later SWUFE historical review names Dragon Search. Team photographs in the annual page do not establish a project-photo association.',
+      '年度详情用于核实赛题与参赛高校，后续西财历史回顾用于核实Dragon Search专名。年度页面中的合影未明确关联该产品，不作为项目或冠军照片。',
+    ),
     verificationStatus: 'documented',
     ...media,
   },
@@ -188,7 +217,7 @@ export const projects: readonly Project[] = [
   },
   {
     projectId: 'data-queens-report',
-    year: null,
+    year: 2024,
     reportedYear: 2024,
     universityId: 'queens',
     teamName: 'Data Queens',
@@ -198,16 +227,22 @@ export const projects: readonly Project[] = [
       '自动驾驶车辆保险问题',
     ),
     awardId: 'first-place',
+    // Preserve the existing filter key; link the evidence-backed edition award by stable ID.
+    editionAwardId: '2024-kaichuangzhe',
     awardLabel: b(
-      'First place / Trailblazer’s Award (Queen’s wording)',
-      '第一名 / Trailblazer’s Award（女王大学原文）',
+      '开创者奖 (SWUFE); first place / Trailblazer’s Award (Queen’s)',
+      '开创者奖（西财正式报道）；女王大学专文称第一名',
     ),
     summary: b(
-      'A prototype addressing autonomous-vehicle problems for a hypothetical insurer. Queen’s reports the Data Queens team’s first-place finish, but does not explicitly state the event year.',
-      '面向假设保险公司的自动驾驶车辆问题原型。女王大学报道Data Queens团队获第一名，但未明确赛事年份。',
+      'Data Queens built an autonomous-vehicle insurance prototype in 80 hours. SWUFE’s seventh-edition report confirms Queen’s highest award; the university report identifies the team. A product name is not established.',
+      'Data Queens在80小时内开发自动驾驶车辆保险原型。西财第七届正式报道确认女王大学获最高奖项，校方专文补充团队信息。产品专名尚未明确。',
     ),
-    sourceRefs: ['queensReport'],
-    verificationStatus: 'event-year-unconfirmed',
+    sourceRefs: ['event2024', 'queensReport'],
+    verificationStatus: 'documented',
+    verificationNote: b(
+      'Cross-source association uses institution, award, insurance topic and publication context. The Queen’s article alone does not explicitly date the edition; Data Queens is a team name, not a confirmed product name.',
+      '按学校、奖项、保险赛题与发表背景交叉关联。女王大学专文正文单独不能确定届次；Data Queens是团队名，不是已确认产品专名。',
+    ),
     ...media,
   },
 ];
@@ -225,6 +260,14 @@ export type Edition = {
   dateNote: Localized;
   sourceRefs: SourceId[];
   media: readonly string[];
+  coverImageId?: string;
+  recap?: Localized;
+  awardResults?: readonly {
+    id: string;
+    label: Localized;
+    universityIds: readonly UniversityId[];
+    sourceRef: SourceId;
+  }[];
 };
 const unknownDates = {
   startDate: null,
@@ -237,7 +280,7 @@ const unknownDates = {
 // happens to be first in a filtered or reordered result list.
 const editionChallenges: Record<number, Localized> = {
   2018: b('Personal IPO pricing and issuance', '个人IPO定价与发行'),
-  2019: b('Discovering financial academic research', '金融学者科研探索发现平台'),
+  2019: b('Financial Academic Explorer', '金融学者科研探索发现平台'),
   2020: b('Explainable investment strategies', '可解释的投资策略'),
   2021: b('Enterprise risk assessment', '企业风险评估'),
   2022: b('Automated credit-risk modelling', '自动化信贷风控建模系统'),
@@ -249,8 +292,20 @@ export const editions: readonly Edition[] = [
       year,
       edition: year - 2017,
       status: 'held',
-      datePrecision: year === 2020 || year === 2023 ? 'day' : 'year',
+      datePrecision:
+        year === 2019 || year === 2020 || year === 2023 ? 'day' : 'year',
       ...unknownDates,
+      ...(year === 2019
+        ? {
+            finalDate: '2019-11-03',
+            coverImageId: 'cd80-2019-01',
+            awardResults: confirmed2019Awards,
+            recap: b(
+              'The annual detail presents Financial Academic Explorer, a visual research-discovery platform for finance scholars, and eight university teams. The separate official review records the final and closing ceremony at SWUFE on 3 November, with demonstrations and questions. The photographs are captioned university team groups, not product screenshots or award portraits.',
+              '年度详情介绍Financial Academic Explorer赛题：面向金融学者的可视化科研探索发现平台，并列出八所高校团队。独立赛事回顾记载11月3日在西财举行决赛闭幕式，包含展示与问答。照片为原页面标注高校的团队合影，不是产品截图或获奖名次照片。',
+            ),
+          }
+        : {}),
       ...(year === 2020
         ? { startDate: '2020-10-26', endDate: '2020-10-29' }
         : {}),
@@ -264,44 +319,73 @@ export const editions: readonly Edition[] = [
         : {}),
       challenge: editionChallenges[year] ?? null,
       dateNote:
-        year === 2023
+        year === 2019
           ? b(
-              'HKU reports the broader event as 27 October–3 November. The event recap records the competition opening on 29 October and the final on 2 November. These are different schedule scopes.',
-              '港大报道的整体活动为10月27日至11月3日；赛事回顾记载比赛10月29日启动、11月2日决赛。不同口径分别保留。',
+              'The official review explicitly dates the final/closing ceremony to 3 November 2019. The annual detail was published on 16 November 2019; the recap page on 23 September 2020. Broader NUS/HKU schedule accounts differ, so no full event range or exact development window is asserted here.',
+              '官方回顾明确决赛闭幕式为2019年11月3日；年度详情网页日期为2019年11月16日，回顾网页日期为2020年9月23日。NUS与HKU的整体行程记载存在差异，本页不合并为确定活动范围，也不推算精确开发时段。',
             )
-          : year === 2020
-            ? b(
-                'NUS reports the online competition as 26–29 October. Precise development timestamps are not supplied.',
-                '新加坡国立大学记载线上比赛为10月26—29日，未提供精确开发起止时间。',
-              )
-            : b(
-                'Year verified; exact event, development and final dates are not established in this record.',
-                '年份已核实，本档案尚未建立活动、开发和决赛的准确日期。',
-              ),
-      sourceRefs:
-        year === 2020
-          ? ['nus2020', 'history']
           : year === 2023
-            ? ['event2023', 'hku2023']
-            : year === 2022
-              ? ['history', 'event2022']
-              : ['history'],
-      media: [],
+            ? b(
+                'HKU reports the broader event as 27 October–3 November. The event recap records the competition opening on 29 October and the final on 2 November. These are different schedule scopes.',
+                '港大报道的整体活动为10月27日至11月3日；赛事回顾记载比赛10月29日启动、11月2日决赛。不同口径分别保留。',
+              )
+            : year === 2020
+              ? b(
+                  'NUS reports the online competition as 26–29 October. Precise development timestamps are not supplied.',
+                  '新加坡国立大学记载线上比赛为10月26—29日，未提供精确开发起止时间。',
+                )
+              : b(
+                  'Year verified; exact event, development and final dates are not established in this record.',
+                  '年份已核实，本档案尚未建立活动、开发和决赛的准确日期。',
+                ),
+      sourceRefs:
+        year === 2019
+          ? ['event2019', 'recap2019', 'history']
+          : year === 2020
+            ? ['nus2020', 'history']
+            : year === 2023
+              ? ['event2023', 'hku2023']
+              : year === 2022
+                ? ['history', 'event2022']
+                : ['history'],
+      media:
+        year === 2019
+          ? Array.from(
+              { length: 8 },
+              (_, i) => `cd80-2019-${String(i + 1).padStart(2, '0')}`,
+            )
+          : [],
     }),
   ),
   {
     year: 2024,
-    edition: null,
-    status: 'record-only',
-    datePrecision: 'unknown',
+    edition: 7,
+    status: 'held',
+    datePrecision: 'day',
     ...unknownDates,
-    challenge: null,
-    dateNote: b(
-      'A university report was published in 2024. Its event year is not explicitly confirmed; no seventh-edition claim is made.',
-      '2024年有高校报道发表，但其赛事年份未明确确认；本档案不据此推定“第七届”。',
+    finalDate: '2024-10-30',
+    challenge: b(
+      'Redefining auto insurance: challenges from intelligent driving',
+      '重定义汽车保险：来自智能驾驶的挑战',
     ),
-    sourceRefs: ['queensReport'],
-    media: [],
+    dateNote: b(
+      'The seventh-edition pitch, judging and awards evening took place on 30 October 2024. SWUFE published its report on 31 October. Precise development start/end times are not supplied.',
+      '第七届路演评选暨颁奖晚会于2024年10月30日举行；西财报道发表于10月31日。现有来源未给出精确开发起止时间。',
+    ),
+    recap: b(
+      'SWUFE and Chengdu Jiaozi Financial Holding Group hosted the event. The final evening took place at Sichuan Radio and Television. Teams addressed insurance product design in the autonomous-driving era, and the event launched the Chengdu 80 incubator.',
+      '西南财经大学与成都交子金融控股集团联合主办，路演评选与颁奖晚会在四川广播电视台举行。参赛队伍围绕智能驾驶时代的保险产品设计展开研发，现场启动了“成都八零”孵化器。',
+    ),
+    sourceRefs: ['event2024', 'queensReport'],
+    media: [
+      'cd80-2024-01',
+      'cd80-2024-02',
+      'cd80-2024-03',
+      'cd80-2024-04',
+      'cd80-2024-05',
+    ],
+    coverImageId: 'cd80-2024-01',
+    awardResults: confirmed2024Awards,
   },
   {
     ...year2025,

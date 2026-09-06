@@ -1,6 +1,7 @@
 /** Shared by Hero, explorer and cards. Historical records are not a 2026 roster.
  * Coordinates are approximate campus pins for an illustrative map, not surveyed boundaries.
  */
+import { confirmed2024Awards, edition2024Source } from './history-evidence';
 export type RelationshipType =
   | 'participant'
   | 'winner'
@@ -23,13 +24,15 @@ export type UniversityId =
   | 'eth'
   | 'uzh'
   | 'tau'
-  | 'emlyon';
+  | 'emlyon'
+  | 'unsw';
 export type Evidence = { title: string; url: string; years: readonly number[] };
 export type Achievement = {
   year: number | null;
   reportedYear?: number;
   name: string;
   sourceUrl: string;
+  projectId?: string;
 };
 export type University = {
   id: UniversityId;
@@ -48,6 +51,7 @@ export type University = {
   verification: 'documented' | 'pending';
   evidence: readonly Evidence[];
   recordNote: string;
+  recordNoteZh?: string;
   logoSource?: string;
   logoSurface?: 'dark' | 'light';
 };
@@ -71,7 +75,7 @@ export const universitySources = {
     'https://msba.nus.edu.sg/news/nus-msba-students-clinches-first-runner-up-at-fintech80-chengdu-hackathon/',
   emlyon: 'https://www.em-lyon.com.cn/news/view/530',
 } as const;
-export const universities: readonly University[] = [
+const universityRecords: readonly University[] = [
   {
     id: 'swufe',
     name: 'Southwestern University of Finance and Economics',
@@ -190,11 +194,13 @@ export const universities: readonly University[] = [
       {
         year: 2021,
         name: 'Panda',
+        projectId: 'panda',
         sourceUrl: 'https://lab.swufe.edu.cn/info/1035/1020.htm',
       },
       {
         year: 2022,
         name: 'Giraffe',
+        projectId: 'giraffe',
         sourceUrl: 'https://lab.swufe.edu.cn/info/1035/1020.htm',
       },
     ],
@@ -515,11 +521,13 @@ export const universities: readonly University[] = [
       {
         year: 2019,
         name: 'Dragon Search',
+        projectId: 'dragon-search',
         sourceUrl: 'https://lab.swufe.edu.cn/info/1035/1020.htm',
       },
       {
         year: 2023,
         name: 'Apollo · team',
+        projectId: 'apollo-2023',
         sourceUrl:
           'https://www.cs.hku.hk/news-events/news-and-announcements/20231106-chengdu80-pioneer-award-2023',
       },
@@ -602,6 +610,7 @@ export const universities: readonly University[] = [
       {
         year: 2018,
         name: 'NuShadow',
+        projectId: 'nushadow',
         sourceUrl: 'https://lab.swufe.edu.cn/info/1035/1020.htm',
       },
       {
@@ -613,6 +622,7 @@ export const universities: readonly University[] = [
       {
         year: 2020,
         name: 'Pisces',
+        projectId: 'pisces',
         sourceUrl: 'https://www.comp.nus.edu.sg/news/2020-chengdu80-win/',
       },
       {
@@ -676,12 +686,28 @@ export const universities: readonly University[] = [
     longitude: -122.258,
     logo: '/university-logos/uc-berkeley.png',
     website: 'https://www.berkeley.edu/',
-    participationYears: [2018, 2020],
-    awards: [],
+    participationYears: [2018, 2019, 2020],
+    awards: [
+      {
+        year: 2019,
+        name: 'Pioneer (2019 official recap wording)',
+        sourceUrl: 'https://cd80.swufe.edu.cn/info/1081/1071.htm',
+      },
+    ],
     projects: [],
-    relationshipType: 'participant',
+    relationshipType: 'winner',
     verification: 'documented',
     evidence: [
+      {
+        title: '2019 annual detail · Berkeley named below its team photograph',
+        url: 'https://cd80.swufe.edu.cn/info/1031/1091.htm',
+        years: [2019],
+      },
+      {
+        title: '2019 official results · Berkeley, Pioneer (source wording)',
+        url: 'https://cd80.swufe.edu.cn/info/1081/1071.htm',
+        years: [2019],
+      },
       {
         title: 'SWUFE historical participation and awards review',
         url: 'https://lab.swufe.edu.cn/info/1035/1020.htm',
@@ -740,12 +766,29 @@ export const universities: readonly University[] = [
     longitude: -79.395,
     logo: '/university-logos/toronto.svg',
     website: 'https://www.utoronto.ca/',
-    participationYears: [],
-    awards: [],
+    participationYears: [2019],
+    awards: [
+      {
+        year: 2019,
+        name: 'Innovator (2019 official recap wording)',
+        sourceUrl: 'https://cd80.swufe.edu.cn/info/1081/1071.htm',
+      },
+    ],
     projects: [],
-    relationshipType: 'participant',
+    relationshipType: 'winner',
     verification: 'documented',
     evidence: [
+      {
+        title:
+          '2019 annual detail · University of Toronto named below its team photograph',
+        url: 'https://cd80.swufe.edu.cn/info/1031/1091.htm',
+        years: [2019],
+      },
+      {
+        title: '2019 official results · Toronto, Innovator (source wording)',
+        url: 'https://cd80.swufe.edu.cn/info/1081/1071.htm',
+        years: [2019],
+      },
       {
         title: 'Official Chengdu 80 historical university directory',
         url: 'https://cd80.swufe.edu.cn/ABOUT.htm',
@@ -753,7 +796,9 @@ export const universities: readonly University[] = [
       },
     ],
     recordNote:
-      'Historical participation is documented; the cited source does not specify individual years.',
+      'The 2019 annual detail explicitly names Toronto; the later 2019 recap records Innovator using its English wording. Other individual participation years and project names remain unconfirmed.',
+    recordNoteZh:
+      '2019年度详情明确列出多伦多大学，独立回顾记载Innovator奖项，保留该英文原文而不套用其他年份的冲突翻译。其他具体参赛年份和产品专名仍未核实。',
     logoSource: 'https://www.utoronto.ca/',
     logoSurface: 'light',
   },
@@ -767,7 +812,7 @@ export const universities: readonly University[] = [
     longitude: -76.495,
     logo: '/university-logos/queens.svg',
     website: 'https://www.queensu.ca/',
-    participationYears: [2022, 2023],
+    participationYears: [2022, 2023, 2024],
     awards: [
       {
         year: 2022,
@@ -775,17 +820,16 @@ export const universities: readonly University[] = [
         sourceUrl: 'https://cd80.swufe.edu.cn/info/1081/1831.htm',
       },
       {
-        year: null,
-        name: 'First place',
-        sourceUrl:
-          'https://www.cs.queensu.ca/news/2024/11/26/data-queens-brings-home-1st-place-trophy-from-the-fintech-hackathon-in-china/',
-        reportedYear: 2024,
+        year: 2024,
+        name: '开创者奖',
+        sourceUrl: edition2024Source.url,
       },
     ],
     projects: [
       {
-        year: null,
+        year: 2024,
         name: 'Data Queens · team',
+        projectId: 'data-queens-report',
         sourceUrl:
           'https://www.cs.queensu.ca/news/2024/11/26/data-queens-brings-home-1st-place-trophy-from-the-fintech-hackathon-in-china/',
         reportedYear: 2024,
@@ -811,7 +855,9 @@ export const universities: readonly University[] = [
       },
     ],
     recordNote:
-      'Participation is explicit for 2022 and 2023. A Queen’s report published in November 2024 records a Data Queens first-place finish; its body does not state the competition year.',
+      'SWUFE confirms Queen’s highest award in the 2024 seventh edition. The university team report is cross-linked by institution, award, insurance challenge and publication context; its body alone does not explicitly date the edition. The product name is not established.',
+    recordNoteZh:
+      '西财正式报道确认女王大学获2024第七届最高奖项。团队专文按学校、奖项、保险赛题与发表背景交叉关联，不能仅凭专文正文确定届次。产品专名仍未明确。',
     logoSource: 'https://www.queensu.ca/',
     logoSurface: 'dark',
   },
@@ -929,12 +975,23 @@ export const universities: readonly University[] = [
     longitude: 4.836,
     logo: '/university-logos/emlyon-business-school.svg',
     website: 'https://em-lyon.com/',
-    participationYears: [],
+    participationYears: [2022],
     awards: [],
     projects: [],
-    relationshipType: 'ecosystem',
+    relationshipType: 'participant',
     verification: 'documented',
     evidence: [
+      {
+        title:
+          'Official booklet · PDF p.70 / printed p.63 · 2022 EMLYON Business School participant roster',
+        url: universitySources.booklet,
+        years: [2022],
+      },
+      {
+        title: 'Official 2022 recap · Lyon School of Business online team',
+        url: universitySources.edition2022,
+        years: [2022],
+      },
       {
         title: 'emlyon · joint fintech forum with SWUFE (2021)',
         url: 'https://www.em-lyon.com.cn/news/view/530',
@@ -942,11 +999,83 @@ export const universities: readonly University[] = [
       },
     ],
     recordNote:
-      'Ecosystem exchange: emlyon and SWUFE co-hosted a fintech forum in 2021. Chengdu 80 participation is not confirmed. The 2022 event report names “Lyon School of Business” without a definitive institutional identifier.',
+      '2022 online participant: the official booklet explicitly pairs 法国里昂商学院 with EMLYON Business School, cross-checked against the event recap’s Lyon School of Business. No award or named project is established.',
+    recordNoteZh:
+      '2022线上参赛高校。专刊将“法国里昂商学院”与“EMLYON Business School”并列，和年度报道的“Lyon School of Business”交叉核对。尚未核实奖项或具名项目。',
     logoSource: 'https://em-lyon.com/',
     logoSurface: 'dark',
   },
+  {
+    id: 'unsw',
+    name: 'University of New South Wales',
+    shortName: 'UNSW',
+    city: 'Sydney',
+    country: 'Australia',
+    latitude: -33.917689,
+    longitude: 151.231022,
+    logo: null,
+    website: 'https://www.unsw.edu.au/',
+    participationYears: [2020],
+    awards: [],
+    projects: [],
+    relationshipType: 'participant',
+    verification: 'documented',
+    evidence: [
+      {
+        title:
+          'Official booklet · PDF pp.42,44 / printed pp.35,37 · 2020 participant roster',
+        url: universitySources.booklet,
+        years: [2020],
+      },
+      {
+        title: 'UNSW official name',
+        url: 'https://www.unsw.edu.au/assurance-integrity/legal-compliance/access-to-information',
+        years: [],
+      },
+      {
+        title:
+          'UNSW official Kensington campus map · representative map-centre pin',
+        url: 'https://www.unsw.edu.au/maps/campus-maps',
+        years: [],
+      },
+    ],
+    recordNote:
+      'The official booklet lists 新南威尔士大学 among the 2020 participants. No individual award or named project is established. The approximate pin follows the official Kensington campus map centre; logo reuse permission is not supplied.',
+    recordNoteZh:
+      '官方专刊明确列入2020参赛高校。尚未核实具体奖项或具名项目。地图节点采用官方Kensington主校区地图中心的近似坐标；本轮未取得标识复用许可，使用文字显示。',
+  },
 ];
+// One evidence-backed award registry feeds both the edition archive and campus records.
+export const universities: readonly University[] = universityRecords.map(
+  (university) => {
+    const result = confirmed2024Awards.find((award) =>
+      award.universityIds.includes(university.id),
+    );
+    if (!result) return university;
+    return {
+      ...university,
+      participationYears: [
+        ...new Set([...university.participationYears, 2024]),
+      ].sort((a, b) => a - b),
+      awards: [
+        ...university.awards.filter(
+          (a) => !(a.year === 2024 && a.name === result.label.zh),
+        ),
+        { year: 2024, name: result.label.zh, sourceUrl: edition2024Source.url },
+      ],
+      evidence: [
+        ...university.evidence,
+        {
+          title: edition2024Source.title.en,
+          url: edition2024Source.url,
+          years: [2024],
+        },
+      ],
+      relationshipType:
+        university.relationshipType === 'organizer' ? 'organizer' : 'winner',
+    };
+  },
+);
 export const relationshipLabels: Record<RelationshipType, string> = {
   organizer: 'Organizer',
   winner: 'Award recipient',

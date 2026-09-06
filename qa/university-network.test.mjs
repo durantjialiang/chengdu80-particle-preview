@@ -24,7 +24,7 @@ await test('shared university ecosystem contracts', async (t) => {
       '/components/Hero/scene-config.ts',
     );
     await t.test(
-      'all 17 requested institutions have unique shared records and real bounded coordinates',
+      'all 18 evidence-linked institutions have unique shared records and real bounded coordinates',
       () => {
         const ids = [
           'swufe',
@@ -44,12 +44,13 @@ await test('shared university ecosystem contracts', async (t) => {
           'uzh',
           'tau',
           'emlyon',
+          'unsw',
         ];
         assert.deepEqual(
           universities.map((u) => u.id),
           ids,
         );
-        assert.equal(new Set(ids).size, 17);
+        assert.equal(new Set(ids).size, 18);
         assert.equal(siteContent.cities, globeNodes);
         for (const u of universities) {
           const node = globeNodes.find((n) => n.id === u.id);
@@ -94,17 +95,22 @@ await test('shared university ecosystem contracts', async (t) => {
             else assert.ok(Number.isInteger(a.reportedYear));
           }
         }
-        assert.deepEqual(getUniversity('toronto').participationYears, []);
-        assert.equal(getUniversity('emlyon').relationshipType, 'ecosystem');
-        assert.deepEqual(getUniversity('emlyon').participationYears, []);
+        assert.deepEqual(getUniversity('toronto').participationYears, [2019]);
+        assert.ok(getUniversity('berkeley').participationYears.includes(2019));
+        assert.equal(getUniversity('emlyon').relationshipType, 'participant');
+        assert.deepEqual(getUniversity('emlyon').participationYears, [2022]);
+        assert.deepEqual(getUniversity('unsw').participationYears, [2020]);
+        assert.equal(getUniversity('unsw').awards.length, 0);
+        assert.equal(getUniversity('unsw').projects.length, 0);
+        assert.equal(getUniversity('unsw').logo, null);
         assert.ok(
           getUniversity('queens').awards.some(
-            (a) => a.year === null && a.reportedYear === 2024,
+            (a) => a.year === 2024 && a.name === '开创者奖',
           ),
         );
         assert.equal(
           globeNodes.find((n) => n.id === 'emlyon').isEcosystem,
-          true,
+          false,
         );
       },
     );
@@ -130,10 +136,16 @@ await test('shared university ecosystem contracts', async (t) => {
           'tau.ac.il',
           'em-lyon.com',
           'em-lyon.com.cn',
+          'unsw.edu.au',
         ];
         for (const u of universities) {
-          assert.match(u.logo, /^\/university-logos\/[a-z-]+\.(svg|png|jpg)$/);
-          assert.ok((await stat(`public${u.logo}`)).size > 100);
+          if (u.logo) {
+            assert.match(
+              u.logo,
+              /^\/university-logos\/[a-z-]+\.(svg|png|jpg)$/,
+            );
+            assert.ok((await stat(`public${u.logo}`)).size > 100);
+          } else assert.equal(u.id, 'unsw');
           for (const url of [u.website, ...u.evidence.map((e) => e.url)]) {
             const parsed = new URL(url);
             assert.equal(parsed.protocol, 'https:');
@@ -146,7 +158,7 @@ await test('shared university ecosystem contracts', async (t) => {
               url,
             );
           }
-          if (u.logo.endsWith('.svg'))
+          if (u.logo?.endsWith('.svg'))
             assert.doesNotMatch(
               await readFile(`public${u.logo}`, 'utf8'),
               /<script|onload=|javascript:/i,
@@ -230,12 +242,12 @@ await test('shared university ecosystem contracts', async (t) => {
         for (const low of [false, true]) {
           assert.equal(
             networkCities(low, true).length,
-            17,
+            universities.length,
             'mobile explorer retains all schools',
           );
           const cities = networkCities(low, true);
           const routes = networkRoutes(low, true);
-          assert.equal(routes.length, 16);
+          assert.equal(routes.length, universities.length - 1);
           const origin = cities.find((c) => c.isOrigin);
           const start = latLon(
             origin.latitude,
@@ -262,7 +274,7 @@ await test('shared university ecosystem contracts', async (t) => {
       },
     );
     await t.test(
-      'all 17 cards and details SSR without browser APIs; unknown records are not fabricated',
+      'all 18 cards and details SSR without browser APIs; unknown records are not fabricated',
       async () => {
         const { default: Card } = await server.ssrLoadModule(
           '/components/network/UniversityCard.tsx',

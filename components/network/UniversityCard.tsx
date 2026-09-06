@@ -1,10 +1,18 @@
 'use client';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
-import { relationshipLabels, type University } from '@/content/network';
+import { type University } from '@/content/network';
+import {
+  universityName,
+  universityLocation,
+  universityRole,
+} from '@/content/university-i18n';
+import { useSiteLanguage } from '@/hooks/use-site-language';
+import { bilingual as b } from '@/content/competition';
 import styles from './Network.module.css';
 
 export function UniversityLogo({ university }: { university: University }) {
+  const { t } = useSiteLanguage();
   // Local, size-bounded static assets: this Vite preview has no Next image server.
   /* oxlint-disable next/no-img-element */
   return (
@@ -12,7 +20,7 @@ export function UniversityLogo({ university }: { university: University }) {
       {university.logo ? (
         <img
           src={university.logo}
-          alt={`${university.shortName} official logo`}
+          alt={`${university.shortName} ${t(b('official logo', '官方标识'))}`}
           loading="lazy"
           width={132}
           height={44}
@@ -20,7 +28,7 @@ export function UniversityLogo({ university }: { university: University }) {
       ) : (
         <span
           className={styles.monogram}
-          aria-label={`${university.shortName}, official logo not supplied`}
+          aria-label={`${university.shortName}, ${t(b('official logo not supplied', '官方标识待补'))}`}
         >
           {university.shortName}
         </span>
@@ -49,6 +57,7 @@ export default function UniversityCard({
   onHover: (hovering: boolean) => void;
   onDetails: () => void;
 }) {
+  const { t, language } = useSiteLanguage();
   const years = university.participationYears;
   const latest = university.awards.at(-1);
   return (
@@ -79,7 +88,7 @@ export default function UniversityCard({
       <button
         className={styles.cardMain}
         onClick={onDetails}
-        aria-label={`View details for ${university.name}`}
+        aria-label={`${t(b('View details for', '查看高校详情：'))} ${universityName(university, language)}`}
         aria-haspopup="dialog"
       >
         <UniversityLogo university={university} />
@@ -88,38 +97,36 @@ export default function UniversityCard({
           data-role={university.relationshipType}
         >
           {university.verification === 'pending'
-            ? 'Record under review'
-            : relationshipLabels[university.relationshipType]}
+            ? t(b('Record under review', '资料待核'))
+            : universityRole(university.relationshipType, language)}
         </span>
-        <h4>{university.name}</h4>
-        <p>
-          {university.city}
-          {university.city === university.country
-            ? ''
-            : `, ${university.country}`}
-        </p>
+        <h4>{universityName(university, language)}</h4>
+        <p>{universityLocation(university, language)}</p>
         <div className={styles.years}>
           <span>
             {university.relationshipType === 'ecosystem'
-              ? 'Competition participation'
-              : 'Documented participation'}
+              ? t(b('Competition participation', '赛事参与'))
+              : t(b('Documented participation', '有据可查的参赛年份'))}
           </span>
           <strong>
             {years.length
               ? years.join(' · ')
               : university.verification === 'pending' ||
                   university.relationshipType === 'ecosystem'
-                ? 'Not yet verified'
-                : 'Year not specified'}
+                ? t(b('Not yet verified', '尚未核实'))
+                : t(b('Year not specified', '具体年份待核'))}
           </strong>
         </div>
         {latest ? (
           <p className={styles.achievement}>
-            {latest.year ?? `Reported ${latest.reportedYear}`} / {latest.name}
+            {latest.year ??
+              `${t(b('Reported', '报道发表于'))} ${latest.reportedYear}`}{' '}
+            / {latest.name}
           </p>
         ) : null}
         <span className={styles.detailAction}>
-          View Details <ArrowRight size={15} aria-hidden="true" />
+          {t(b('View Details', '查看详情'))}{' '}
+          <ArrowRight size={15} aria-hidden="true" />
         </span>
       </button>
       <a
@@ -127,9 +134,10 @@ export default function UniversityCard({
         href={university.website}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={`Visit ${university.name} official website (opens in a new tab)`}
+        aria-label={`${universityName(university, language)} · ${t(b('official website (opens in a new tab)', '官方网站（新标签页打开）'))}`}
       >
-        Visit Website <ArrowUpRight size={14} aria-hidden="true" />
+        {t(b('Visit Website', '访问官网'))}{' '}
+        <ArrowUpRight size={14} aria-hidden="true" />
       </a>
     </motion.article>
   );

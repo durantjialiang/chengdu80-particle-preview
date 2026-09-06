@@ -1,0 +1,238 @@
+.cover {
+  margin: 42px 0 54px;
+}
+.cover > button {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: clamp(240px, 48vw, 570px);
+  background: #07121d;
+  border: 1px solid #a9c4d326;
+  cursor: zoom-in;
+}
+.cover img {
+  width: 100%;
+  height: 100%;
+}
+.cover figcaption,
+.grid figcaption {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #c4d6e1;
+  padding: 14px 0;
+}
+.cover figcaption > span,
+.grid figcaption > span {
+  display: block;
+  font-size: 13px;
+  color: #8199ac;
+  margin-top: 5px;
+}
+.schoolLink {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #b7dcf0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.expand {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  background: #07101cdd;
+  color: #d7e9f2;
+  font-size: 14px;
+  border: 1px solid #b1cede3a;
+  border-radius: 3px;
+}
+.album,
+.pending {
+  padding: 44px 0 56px;
+  border-top: 1px solid #a9c4d326;
+}
+.albumTitle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+}
+.albumTitle > span {
+  font-size: 14px;
+  color: #a6bcca;
+}
+.album > p,
+.pending > p {
+  max-width: 740px;
+  margin: 18px 0 30px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px 24px;
+  margin-top: 30px;
+}
+.grid button {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #09121b;
+  border: 1px solid #a9c4d326;
+  cursor: zoom-in;
+}
+.grid img {
+  width: 100%;
+  height: 100%;
+}
+.grid figure[data-image-type='product-interface'] button {
+  background: #e8edf0;
+}
+.rights {
+  font-size: 14px !important;
+  line-height: 1.6;
+  color: #c7b28b !important;
+}
+.viewer {
+  position: fixed;
+  inset: 0;
+  width: min(1380px, calc(100% - 48px));
+  max-width: none;
+  max-height: calc(100dvh - 40px);
+  margin: auto;
+  padding: 20px 24px;
+  background: #08111b;
+  color: #e0edf6;
+  border: 1px solid #b2cbd33d;
+  overflow: auto;
+}
+.viewer::backdrop {
+  background: #02060ded;
+}
+.viewerBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #acbecd;
+  margin-bottom: 12px;
+}
+.viewer button {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid #b0c7d330;
+  cursor: pointer;
+  background: #121e28;
+  border-radius: 4px;
+}
+.fullImage {
+  width: 100%;
+  height: min(60dvh, 710px);
+  display: grid;
+  place-items: center;
+  background: #040b12;
+}
+.fullImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.viewerBottom {
+  display: flex;
+  gap: 28px;
+  justify-content: space-between;
+  padding-top: 20px;
+}
+.caption h3 {
+  font-size: 18px;
+  line-height: 1.6;
+  font-weight: 500;
+  margin: 0 0 7px;
+}
+.caption p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #9bb2c2;
+  margin: 5px 0;
+}
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #b7dcf0;
+}
+.links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.controls {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.viewer :is(a, button):focus-visible,
+.album button:focus-visible,
+.cover button:focus-visible {
+  outline: 2px solid #a4dcf0;
+  outline-offset: 4px;
+}
+.failed {
+  display: grid;
+  height: 100%;
+  place-items: center;
+  padding: 25px;
+  color: #a9bfcb;
+  font-size: 14px;
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  overflow: hidden;
+}
+@media (max-width: 850px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 500px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .cover > button {
+    height: 250px;
+  }
+  .viewer {
+    width: calc(100% - 16px);
+    padding: 12px;
+    max-height: calc(100dvh - 16px);
+  }
+  .fullImage {
+    height: 45dvh;
+  }
+  .viewerBottom {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .controls {
+    justify-content: space-between;
+  }
+  .album,
+  .pending {
+    padding-block: 32px 40px;
+  }
+}
