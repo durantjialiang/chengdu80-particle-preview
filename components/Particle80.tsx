@@ -35,6 +35,7 @@ import {
   FIELD_ROLE_RATIOS,
   FIELD_OPTICS,
   FIELD_BEACON_RATIO,
+  fieldStarScale,
   type FieldPhase,
   projectField as projectSpatial,
 } from '@/lib/particle80-field';
@@ -70,10 +71,13 @@ function brightnessGain(
   const settings = PARTICLE_80_BRIGHTNESS[preset];
   if (role === 2) return settings.ambient;
   const gain = role === 1 ? settings.runner : settings.anchor;
-  // Keep rare stars and champagne highlights from turning into white hotspots.
+  // Local stellar emphasis only; ordinary particles keep their existing gain.
+  const cap = color >= FIELD_ACCENT_START
+    ? sizeClass >= 3 ? 1.65 : 1.3
+    : sizeClass >= 3 ? 1.8 : gain;
   return Math.min(
     gain,
-    color >= FIELD_ACCENT_START ? 1.3 : sizeClass >= 3 ? 1.6 : gain,
+    cap,
   );
 }
 
@@ -200,7 +204,7 @@ const Static80 = memo(function Static80({
         key={i}
         cx={Number((point.x * viewScale).toFixed(6))}
         cy={Number((point.y * viewScale).toFixed(6))}
-        r={Number((point.size * 0.0065).toFixed(6))}
+        r={Number((point.size * 0.0065 * fieldStarScale(fallbackField.role[i], fallbackField.sizeClass[i], point.color)).toFixed(6))}
         fill={FIELD_PALETTE[point.color]}
         opacity={Number(
           Math.min(
@@ -509,7 +513,7 @@ function Particle80Surface({
       emitterHalo = haloStrength;
       emitterContext.clearRect(0, 0, emitters.width, emitters.height);
       FIELD_PALETTE.forEach((color, index) => {
-        const core = index >= FIELD_ACCENT_START ? '#fff3df' : '#f7fcff';
+        const core = index >= FIELD_ACCENT_START ? '#fff4dc' : '#f7fcff';
         for (let optical = 0; optical < 3; optical++) {
           const cx = index * cell + cell / 2;
           const cy = optical * cell + cell / 2;
@@ -542,12 +546,15 @@ function Particle80Surface({
             coreRadius * 1.45,
           );
           body.addColorStop(0, optical === 0 ? color : core);
-          body.addColorStop(0.14, optical === 0 ? `${color}dc` : `${core}ff`);
-          body.addColorStop(0.34, `${color}be`);
+          // A tiny hot center plus a coloured shoulder. Bake source-over so
+          // the internal halo cannot bleach blue/gold before the scene blend.
+          body.addColorStop(0.08, optical === 0 ? `${color}dc` : `${core}ff`);
+          body.addColorStop(0.24, `${color}${optical === 2 ? 'f0' : 'dc'}`);
+          body.addColorStop(0.42, `${color}a8`);
           body.addColorStop(0.66, `${color}50`);
           body.addColorStop(1, `${color}00`);
           emitterContext.globalAlpha = 1;
-          emitterContext.globalCompositeOperation = 'lighter';
+          emitterContext.globalCompositeOperation = 'source-over';
           emitterContext.fillStyle = body;
           emitterContext.fillRect(index * cell, optical * cell, cell, cell);
           emitterContext.globalCompositeOperation = 'source-over';
@@ -673,14 +680,6 @@ function Particle80Surface({
       }
       // Enlarge the composition, not individual light points or their halos.
       const size = pointScale;
-      // Text itself is not scaled with the 80. Keep its protection region in
-      // the original screen footprint instead of dimming enlarged digit edges.
-      const maskMagnification = Math.min(
-        magnification,
-        width < 650 ? 1.38 : 1.8,
-      );
-      const labelHalfWidth = 0.85 / maskMagnification;
-      const labelHalfHeight = 0.32 / maskMagnification;
       if (spriteContext) {
         const sourceEnergy =
           smoothProgress((progress - 0.06) / 0.16) *
@@ -749,14 +748,9 @@ function Particle80Surface({
         if (densityAlpha === 0) continue;
         const flight = !story && opening && handoffRect ? handoff.project(index, field.role[index], x, y, opening.current, handoffRect.left, handoffRect.top, width) : null;
         if (flight) { x = flight.x; y = flight.y; }
-        // The field surrounds each origin label, but doesn't wash out its crisp type.
-        const labelDx = Math.min(
-          Math.abs(projected.x - layout.sourceX),
-          Math.abs(projected.x + layout.sourceX),
-        );
-        const labelDy = Math.abs(projected.y - layout.sourceY);
-        const identityWeight = story?.current.identityOpacity ?? 1;
-        const labelMask = labelDx < labelHalfWidth && labelDy < labelHalfHeight ? 1 - 0.88 * identityWeight : 1;
+        // Identity text sits above the light field. Do not punch dim rectangular
+        // holes into the particles behind SWUFE/FIC; retain only the reading
+        // corridor that fades in after scrolling down to body content.
         const edgeBrightness = width < 650 ? PARTICLE_STORY_DEFAULTS.mobileSideBrightness : PARTICLE_STORY_DEFAULTS.sideBrightness;
         // Soft vertical reading corridor, never a hard rectangular cutout.
         const textProtection = story ? smoothProgress(field.spreadMix / 0.85) *
@@ -766,7 +760,6 @@ function Particle80Surface({
           1,
           projected.opacity *
             (flight?.opacity ?? 1) *
-            labelMask *
             storyMask *
             densityAlpha *
             brightnessGain(
@@ -782,7 +775,7 @@ function Particle80Surface({
         const radius =
           field.optical[index] === FIELD_OPTICS.dust
             ? Math.max(0.35, projected.size * size)
-            : projected.size * size;
+            : projected.size * size * fieldStarScale(field.role[index], field.sizeClass[index], field.color[index]);
         const color = FIELD_PALETTE[field.color[index]];
         if (
           settings.trails &&

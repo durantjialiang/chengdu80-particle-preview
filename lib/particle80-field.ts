@@ -46,8 +46,8 @@ const colorRamp = (a: number[], b: number[], count: number) =>
 export const FIELD_ACCENT_START = 24;
 export const FIELD_PALETTE = [
   ...colorRamp([255, 245, 232], [234, 244, 255], 16),
-  ...colorRamp([219, 239, 255], [143, 223, 255], 8),
-  ...colorRamp([247, 242, 231], [217, 179, 108], 8),
+  ...colorRamp([199, 230, 255], [112, 200, 255], 8),
+  ...colorRamp([246, 217, 167], [239, 184, 89], 8),
 ] as const;
 export const FIELD_ROLES = {
   structure: 0,
@@ -59,6 +59,13 @@ export const FIELD_ROLE_RATIOS = [0.5, 0.25, 0.18, 0.07] as const;
 export const FIELD_OPTICS = { dust: 0, star: 1, spark: 2 } as const;
 /** Only one in 200 particles is an intense emitter; this is an optical budget. */
 export const FIELD_BEACON_RATIO = 0.005;
+/** Render-only emphasis on existing coloured stars, never ambient dust. */
+export function fieldStarScale(role: number, sizeClass: number, color: number) {
+  if (role === FIELD_ROLES.ambient || color < 16 || sizeClass < 3) return 1;
+  // Ease into the blue ramp instead of popping in size at its first colour bin.
+  const colourWeight = color >= FIELD_ACCENT_START ? 1 : Math.min(1, (color - 15) / 4);
+  return 1 + (sizeClass === 4 ? 0.3 : 0.16) * colourWeight;
+}
 export const FIELD_POINTER_RADIUS = 0.65;
 export const FIELD_ROLE_RESPONSE = [
   { spring: 1.25, pointer: 0.3, noise: 0.32, drag: 1, depth: 0.045 },
@@ -424,8 +431,9 @@ export function createParticleField(count: number): ParticleField {
       }
     }
   }
-  // A spatial zone, not independent random paint. Sparse membership is capped;
-  // its warmth fades as the particle advects outside the champagne region.
+  // Keep the exact 2% champagne budget, but reserve one quarter for existing
+  // large stars (including a few beacons). Selection follows the same spatial
+  // zone; no new emitters, random samples, position changes or forces.
   const accentOrder = sizeOrder.filter(
     (i) => field.layer[i] === 0 && field.sizeClass[i] < 4,
   );
@@ -436,7 +444,21 @@ export function createParticleField(count: number): ParticleField {
       field.rest[i * 3 + 2],
     );
   accentOrder.sort((a, b) => zone(b) - zone(a));
-  for (let i = 0; i < Math.round(count * 0.02); i++)
+  const accentCount = Math.round(count * 0.02);
+  const largeAccentCount = Math.round(accentCount * 0.25);
+  const beaconAccents = sizeOrder
+    .filter((i) => field.beacon[i] === 1)
+    .sort((a, b) => zone(b) - zone(a))
+    .slice(
+      0,
+      Math.min(largeAccentCount, Math.max(1, Math.round(count * 0.001))),
+    );
+  const largeAccents = sizeOrder
+    .filter((i) => field.layer[i] === 0 && field.sizeClass[i] === 4 && !field.beacon[i])
+    .sort((a, b) => zone(b) - zone(a))
+    .slice(0, largeAccentCount - beaconAccents.length);
+  for (const i of [...beaconAccents, ...largeAccents]) field.accent[i] = 1;
+  for (let i = 0; i < accentCount - largeAccentCount; i++)
     field.accent[accentOrder[i]] = 1;
   // Independent deterministic hashes: never advance the existing optical RNG.
   const hash = (n: number) => {

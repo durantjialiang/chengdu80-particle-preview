@@ -16,12 +16,12 @@ Five size tiers and three cached optical types (dust/star/spark) create a long-t
 luminance distribution. Colour is sampled from a coherent spatial temperature
 field, with a maximum ~2% champagne membership; no per-particle random colours.
 The stellar-radiance pass uses 9,600 desktop / 900 low-power particles. The Intro
-composition is 1.3× its previous size (viewScale 1.534), capped on narrow screens
+composition retains its current viewScale 1.72, capped on narrow screens
 to keep both digits visible. Camera, typography, 7.2-second story and CTA are unchanged.
 Only 0.5% of existing stars are intense emitters: 48 desktop / 5 mobile, with
 independent slow glints and local halos, never screen-wide exposure or bloom.
 The default Intro brightness preset B uses structure 1.72 / flow 1.92 / ambient 1,
-with star gain capped at 1.6 and champagne at 1.3. A stays at 1.18 / 1.24 / 1.
+with local star caps described below. A stays at 1.18 / 1.24 / 1.
 Cached point-spread sprites replace hard filled disks with a bright compact core,
 coloured shoulder and continuous radial falloff. Nearer particles have a subtle
 focus spread; only rare beacons have local radiance and a low-intensity glint.
@@ -34,8 +34,19 @@ Each role/optical-size tier uses jittered equal-arc-length strata, rather than
 random polar angles. Large stars are no longer biased to the loop poles.
 The living flow converts distance speed to local angular speed, maintaining
 ellipse coverage without a seeded phase lock or changes to pointer/damping.
-The text-protection mask retains its unscaled screen footprint so enlarged
-digit edges do not appear to have missing particles.
+The SWUFE/FIC rectangular particle-dimming masks have been removed. Typography
+sits over the continuous field, without dark cutouts. The scroll-driven reading
+corridor for body content remains unchanged.
+
+Local stellar polish: the existing icy-blue and champagne ramps retain more
+colour, with a tiny white-hot center and coloured shoulder baked without internal
+additive bleaching. Only existing coloured size-class 3/4 stars receive 1.16/1.30
+render-radius multipliers; dust and ambient particles keep their size. The exact
+2% gold budget now reserves one quarter for existing large stars, including a few
+beacons selected from the same spatial warmth zone. No particles were added.
+Star gain caps are 1.8 for neutral/blue and 1.65 for large gold; ordinary gold
+retains 1.3. Physics buffers, random samples, paths, size-class budgets, choreography
+and pointer forces are unchanged. Reduced motion uses steady illumination.
 
 Development preview: `?fieldDebug=roles`, `vectors`, `flow`, or `telemetry`.
 Diagnostics and their explicit snapshot API are removed from production builds.

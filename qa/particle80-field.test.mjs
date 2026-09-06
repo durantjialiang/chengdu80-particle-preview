@@ -25,6 +25,7 @@ try {
     FIELD_LOOPS,
     fieldColorIndex,
     fieldOrbitAngle,
+    fieldStarScale,
     FIELD_ACCENT_START,
     projectField,
   } = await server.ssrLoadModule('/lib/particle80-field.ts');
@@ -163,6 +164,48 @@ try {
         Math.abs(
           fieldOrbitAngle(loop, -0.15) - fieldOrbitAngle(loop, tau - 0.15),
         ) < 1e-6,
+      );
+    }
+  });
+  await test('coloured large stars stay sparse; optical scaling never enlarges dust or ambient', () => {
+    for (const count of [180, 900, 9600]) {
+      const field = createParticleField(count);
+      const largeGold = Array.from(field.accent).filter(
+        (accent, i) => accent && field.sizeClass[i] === 4,
+      ).length;
+      assert.equal(largeGold, Math.round(Math.round(count * 0.02) * 0.25));
+      assert.ok(field.accent.some((accent, i) => accent && field.beacon[i]));
+      assert.ok(
+        field.color.some(
+          (color, i) =>
+            color >= 16 &&
+            color < FIELD_ACCENT_START &&
+            field.sizeClass[i] >= 3,
+        ),
+      );
+      for (let i = 0; i < count; i++) {
+        const scale = fieldStarScale(
+          field.role[i],
+          field.sizeClass[i],
+          field.color[i],
+        );
+        assert.ok(scale >= 1 && scale <= 1.3);
+        if (
+          field.role[i] === 2 ||
+          field.sizeClass[i] < 3 ||
+          field.color[i] < 16
+        )
+          assert.equal(scale, 1);
+      }
+    }
+    assert.equal(fieldStarScale(3, 4, 20), 1.3);
+    assert.equal(fieldStarScale(3, 4, 30), 1.3);
+    assert.equal(fieldStarScale(1, 3, 20), 1.16);
+    for (const color of FIELD_PALETTE.slice(FIELD_ACCENT_START)) {
+      const channels = color.match(/[0-9a-f]{2}/g).map((v) => parseInt(v, 16));
+      assert.ok(
+        channels[0] - channels[2] >= 70,
+        'Gold must retain a coloured shoulder, not an off-white ramp',
       );
     }
   });
