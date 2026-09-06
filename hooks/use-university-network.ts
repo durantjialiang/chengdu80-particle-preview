@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { UniversityId } from '@/content/network';
 import { universities } from '@/content/network';
 
@@ -17,6 +17,18 @@ export function useUniversityNetwork(reducedMotion: boolean) {
   const [nodeHover, setNodeHover] = useState<UniversityId | null>(null);
   const [detailId, setDetailId] = useState<UniversityId | null>(null);
   const cards = useRef(new Map<UniversityId, HTMLElement>());
+  const pendingNodeScroll = useRef<UniversityId | null>(null);
+  // A compact directory may mount the selected card only after state commits.
+  useEffect(() => {
+    const id = pendingNodeScroll.current;
+    if (!id) return;
+    cards.current.get(id)?.scrollIntoView({
+      behavior: reducedMotion ? 'instant' : 'smooth',
+      block: 'nearest',
+      inline: 'nearest',
+    });
+    pendingNodeScroll.current = null;
+  }, [selectedId, reducedMotion]);
   // Keep the inspected campus facing forward when crossing from a card to the map.
   // Resetting on pointer-leave moves labels out from under the approaching cursor.
   const setCardHover = useCallback((id: UniversityId | null) => {
@@ -25,6 +37,7 @@ export function useUniversityNetwork(reducedMotion: boolean) {
   }, []);
   const selectFromNode = useCallback(
     (id: UniversityId) => {
+      pendingNodeScroll.current = cards.current.has(id) ? null : id;
       setSelectedId(id);
       setFocusId(id);
       updateCardHover(null);

@@ -21,7 +21,7 @@ export const navigation = [
     description: 'Explore the editions since 2018.',
   },
   {
-    label: 'Winners',
+    label: 'Projects & Awards',
     href: '/winners',
     description: 'Discover the teams behind the ideas.',
   },
@@ -31,9 +31,9 @@ export const navigation = [
     description: 'University innovation across borders.',
   },
   {
-    label: 'Partners',
+    label: 'Partners & Impact',
     href: '/partners',
-    description: 'The organisations behind the next edition.',
+    description: 'Historical collaboration and industry connections.',
   },
 ] as const;
 

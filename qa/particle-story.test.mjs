@@ -137,7 +137,7 @@ try {
   });
   await test('published composition has one network and no timed exit or scroll interception', async () => {
     const [entry, hook, intro, scroll] = await Promise.all(['qa/particle80-intro.tsx','hooks/use-brand-opening.ts','components/Particle80Intro.tsx','hooks/use-particle-story-scroll.ts'].map(p=>readFile(p,'utf8')));
-    assert.equal((entry.match(/<GlobalUniversityNetwork /g)??[]).length, 1);
+    assert.equal((entry.match(/<GlobalUniversityNetwork\b/g)??[]).length, 1);
     assert.doesNotMatch(entry, /GlobeDestination|handoffContent=|autoTransitionEnabled=\{true\}/);
     assert.doesNotMatch(hook, /requestHandoff|exitAt|GLOBE_ACTIVE/);
     assert.match(intro, /autoTransitionEnabled: false/);

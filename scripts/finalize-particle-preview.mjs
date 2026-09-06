@@ -23,12 +23,38 @@ await copyFile(
   new URL('global-network/index.html', output),
 );
 const siteHtml = await readFile(new URL('qa/site.html', output), 'utf8');
-for (const route of [...routes, { path: '/404.html', title: 'Page not found' }]) {
+const escapeHtml = (value) =>
+  value
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+for (const route of [
+  ...routes,
+  { path: '/404.html', title: 'Page not found' },
+]) {
   assert.match(route.path, /^(?:\/[a-z0-9-]+(?:\/[a-z0-9-]+)*\/|\/404\.html)$/);
-  const destination = route.path.endsWith('.html') ? route.path.slice(1) : route.path.slice(1) + 'index.html';
+  const destination = route.path.endsWith('.html')
+    ? route.path.slice(1)
+    : route.path.slice(1) + 'index.html';
   const file = new URL(destination, output);
   await mkdir(new URL('.', file), { recursive: true });
-  await writeFile(file, siteHtml.replace('<title>Chengdu 80</title>', `<title>${route.title} | Chengdu 80</title>`));
+  const title = escapeHtml(`${route.title} | Chengdu 80`);
+  const description = escapeHtml(
+    route.description ??
+      `${route.title}: historical records and competition information from Chengdu 80.`,
+  );
+  const social = `<meta property="og:title" content="${title}" /><meta property="og:description" content="${description}" /><meta property="og:url" content="https://chengdu80-particle-preview.vercel.app${route.path}" /><meta name="twitter:card" content="${route.image ? 'summary_large_image' : 'summary'}" />${route.image ? `<meta property="og:image" content="https://chengdu80-particle-preview.vercel.app${route.image}" />` : ''}`;
+  await writeFile(
+    file,
+    siteHtml
+      .replace('<title>Chengdu 80</title>', `<title>${title}</title>`)
+      .replace(
+        /<meta name="description" content="[^"]*"\s*\/>/,
+        `<meta name="description" content="${description}" />`,
+      )
+      .replace('</head>', social + '</head>'),
+  );
 }
 console.log(
   'Standalone particle preview ready: out/particle-preview/index.html',

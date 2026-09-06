@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { Language, Localized } from '@/content/competition';
+import siteRoutes from '@/content/site-routes.json';
 type LanguageContext = {
   language: Language;
   setLanguage: (language: Language) => void;
@@ -44,6 +45,18 @@ export function SiteLanguageProvider({ children }: { children: ReactNode }) {
   }, []);
   useEffect(() => {
     document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
+    const path = location.pathname.replace(/\/$/, '') + '/';
+    const route = siteRoutes.find(item => item.path === path);
+    if (route) {
+      const title = `${language === 'zh' ? route.zh : route.title} | Chengdu 80`;
+      document.title = title;
+      document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
+      const description = language === 'zh' ? route.descriptionZh : route.description;
+      if (description) {
+        document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+        document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
+      }
+    }
   }, [language]);
   useEffect(() => {
     const restore = () => {

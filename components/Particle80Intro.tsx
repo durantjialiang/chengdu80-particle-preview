@@ -19,10 +19,11 @@ export type Particle80IntroProps = Particle80Props & Partial<OpeningConfig> & {
   onOpeningProgress?: (frame: OpeningFrame) => void;
   introduction?: ReactNode;
   headerContent?: ReactNode;
+  footerContent?: ReactNode;
 };
 
 function IntroSurface({
-  repeatVisit = 'short', onContinue, introduction, headerContent,
+  repeatVisit = 'short', onContinue, introduction, headerContent, footerContent,
   onOpeningProgress, onStateChange, introEnabled = true, introDuration,
   leadInDuration, formationDuration, settleDuration, holdDuration,
   dissolveDuration, globeRevealDuration, transitionDuration,
@@ -88,12 +89,14 @@ function IntroSurface({
         </div>
       </div>
       <footer className={styles.footer}>
+        {footerContent ?? <>
         <div className={styles.caption}><p>CHENGDU 80</p><span>Innovation ecosystem</span></div>
         <a className={styles.continue} href="#event-introduction" onClick={() => onContinue?.()}>
           Explore Chengdu 80 <span aria-hidden="true">↓</span>
         </a>
         <p className={styles.pointerHint}>Move gently through the light</p>
         <a className={styles.scrollPrompt} href="#event-introduction">Scroll to explore <span aria-hidden="true">↓</span></a>
+        </>}
       </footer>
     </section>
     <section id="event-introduction" className={styles.introduction} aria-labelledby="event-introduction-title" tabIndex={-1}>

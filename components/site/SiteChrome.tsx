@@ -10,9 +10,9 @@ const navChinese: Record<string, string> = {
   About: '关于赛事',
   Competition: '参赛信息',
   History: '历届赛事',
-  Winners: '成果档案',
+  'Projects & Awards': '作品与奖项',
   'Global Network': '高校网络',
-  Partners: '组织与支持',
+  'Partners & Impact': '合作与成果',
 };
 export function LanguageSwitch() {
   const { language, setLanguage } = useSiteLanguage();
@@ -120,6 +120,7 @@ export function SiteFooter() {
             {language === 'zh' ? navChinese[n.label] : n.label}
           </a>
         ))}
+        <a href={href('/media/')}>{t(b('Media & Resources', '媒体与资源'))}</a>
       </nav>
       <div className={styles.footerBottom}>
         <a href={href('/competition/#resources')}>

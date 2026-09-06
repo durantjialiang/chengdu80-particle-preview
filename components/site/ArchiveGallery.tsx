@@ -18,7 +18,7 @@ const images = [
   ...reviewImages.filter((image) => !publishedIds.has(image.id)),
 ];
 
-function Photo({
+export function Photo({
   image,
   full = false,
   eager = false,
@@ -56,7 +56,7 @@ function Photo({
   /* oxlint-enable next/no-img-element */
 }
 
-function Viewer({
+export function Viewer({
   items,
   initial,
   onClose,

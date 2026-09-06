@@ -10,9 +10,13 @@ import { HistoryPage, WinnersPage } from '@/components/site/ArchivePages';
 import { editions, projects } from '@/content/archive';
 import { bilingual as b } from '@/content/competition';
 import '../app/globals.css';
+import { AboutPage, PartnersPage, MediaPage } from '@/components/site/EcosystemContent';
 function SitePage() {
   const { t, href } = useSiteLanguage();
   const path = location.pathname.replace(/\/$/, '');
+  if (path === '/about') return <TextPage><AboutPage /></TextPage>;
+  if (path === '/partners') return <TextPage><PartnersPage /></TextPage>;
+  if (path === '/media') return <TextPage><MediaPage /></TextPage>;
   if (
     path === '/history' ||
     editions.some((e) => path === `/history/${e.year}`)

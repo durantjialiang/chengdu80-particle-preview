@@ -43,10 +43,12 @@ export default function GlobalUniversityNetwork({
   standalone = false,
   forceReducedMotion = false,
   staticPreview = false,
+  compact = false,
 }: {
   standalone?: boolean;
   forceReducedMotion?: boolean;
   staticPreview?: boolean;
+  compact?: boolean;
 }) {
   const { t, href, language } = useSiteLanguage();
   const host = useRef<HTMLElement>(null);
@@ -60,6 +62,17 @@ export default function GlobalUniversityNetwork({
   const reducedMotion = systemReducedMotion || forceReducedMotion;
   const selection = useUniversityNetwork(reducedMotion);
   const selected = getUniversity(selection.highlightedId);
+  // Keep all geographic nodes interactive; bring any selected node into the
+  // compact homepage directory without removing records from the full explorer.
+  const featuredIds = ['swufe', 'hku', 'nus', 'tsinghua', 'berkeley', 'queens'];
+  const visibleUniversities = compact
+    ? universities.filter(
+        (u) =>
+          featuredIds.includes(u.id) ||
+          u.id === selection.highlightedId ||
+          u.id === selection.selectedId,
+      )
+    : universities;
   const mapSelection = useMemo(
     () => ({
       focusId: selection.focusId,
@@ -149,17 +162,29 @@ export default function GlobalUniversityNetwork({
         </div>
         <div className={styles.directory}>
           <div className={styles.directoryHeading}>
-            <h3>{t(b('University directory', '高校目录'))}</h3>
+            <h3>
+              {t(
+                compact
+                  ? b('Selected university records', '精选高校记录')
+                  : b('University directory', '高校目录'),
+              )}
+            </h3>
             <span>
-              {documentedUniversities.length}{' '}
-              {t(b('documented records', '条有来源记录'))}
+              {compact
+                ? visibleUniversities.length
+                : documentedUniversities.length}{' '}
+              {t(
+                compact
+                  ? b('shown here', '条概览')
+                  : b('documented records', '条有来源记录'),
+              )}
             </span>
           </div>
           <div
             className={styles.grid}
             aria-label={t(b('University cards', '高校卡片'))}
           >
-            {universities.map((university, index) => (
+            {visibleUniversities.map((university, index) => (
               <UniversityCard
                 key={university.id}
                 university={university}

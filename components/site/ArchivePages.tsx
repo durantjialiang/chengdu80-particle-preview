@@ -17,6 +17,13 @@ import { useUrlFilters } from '@/hooks/use-url-filters';
 import styles from './Site.module.css';
 import ArchiveGallery from './ArchiveGallery';
 import { universityName } from '@/content/university-i18n';
+import {
+  projectStudies,
+  projectDirections,
+  projectDirectionById,
+} from '@/content/project-studies';
+import EditorialMedia from './EditorialMedia';
+import editorial from './Editorial.module.css';
 
 export function Sources({ ids }: { ids: readonly SourceId[] }) {
   const { t } = useSiteLanguage();
@@ -374,12 +381,13 @@ export function WinnerCard({ project: p }: { project: Project }) {
     </article>
   );
 }
-const winnerKeys = ['year', 'university'] as const;
+const winnerKeys = ['year', 'university', 'direction'] as const;
 export function WinnersPage({ projectId }: { projectId?: string }) {
   const { t, href, language } = useSiteLanguage();
   const [query, setQuery] = useState('');
   const { filters, change } = useUrlFilters(winnerKeys);
   const record = projects.find((p) => p.projectId === projectId);
+  const study = record ? projectStudies[record.projectId] : undefined;
   if (record)
     return (
       <>
@@ -394,6 +402,65 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
         </div>
         <h1>{t(projectTitle(record))}</h1>
         <p className={styles.lead}>{t(record.summary)}</p>
+        {study && (
+          <section
+            className={styles.section}
+            data-project-study={record.projectId}
+          >
+            <div className={editorial.twoColumns}>
+              <article>
+                <h2>{t(b('The problem', '问题与场景'))}</h2>
+                <p>{t(study.problem)}</p>
+              </article>
+              <article>
+                <h2>{t(b('Who it was for', '面向谁'))}</h2>
+                <p>{t(study.users)}</p>
+              </article>
+            </div>
+            <div className={editorial.section}>
+              <h2>{t(b('The approach', '方案与原型'))}</h2>
+              <p className={styles.lead}>{t(study.solution)}</p>
+              <ul className={editorial.featureList}>
+                {study.features.map((feature) => (
+                  <li className={editorial.feature} key={feature.en}>
+                    {t(feature)}
+                  </li>
+                ))}
+              </ul>
+              <details className={editorial.details}>
+                <summary>{t(b('Technical record', '技术记录'))}</summary>
+                <p>{t(study.technical)}</p>
+              </details>
+              <a
+                className={styles.source}
+                href={study.evidenceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t(study.evidenceLabel)} ↗
+              </a>
+              <p className={styles.note}>
+                {t(
+                  study.illustrationStatus === 'not-established' ? b(
+                    'Historical prototype. An original product illustration and its reuse permission have not yet been established.',
+                    '历史原型记录。原始产品配图及其复用授权尚未确认。',
+                  ) : b(
+                    'Historical prototype. The original illustration can be consulted at the publisher; project-image reuse permission is not established in this website’s media collection.',
+                    '历史原型记录。原始作品配图可到发布方查阅；本站媒体库尚未确认该作品图片的复用授权。',
+                  ),
+                )}
+              </p>
+            </div>
+            {study.contextImageId && (
+              <>
+                <EditorialMedia ids={[study.contextImageId]} single />
+                <p className={styles.note}>
+                  {study.contextNote && t(study.contextNote)}
+                </p>
+              </>
+            )}
+          </section>
+        )}
         {record.verificationNote && (
           <p className={styles.note}>{t(record.verificationNote)}</p>
         )}
@@ -419,25 +486,29 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
                 </a>
               </dd>
             </div>
-            <div>
-              <dt>{t(b('Team', '团队'))}</dt>
-              <dd>
-                {record.teamName ??
-                  t(b('Not named in the cited record', '引用记录未明确命名'))}
-              </dd>
-            </div>
-            <div>
-              <dt>{t(b('Product name', '产品专名'))}</dt>
-              <dd>
-                {record.projectName ??
-                  t(
-                    b(
-                      'Not established; title describes the team’s record',
-                      '尚未明确；标题为团队成果的描述性名称',
-                    ),
-                  )}
-              </dd>
-            </div>
+            {record.teamName && (
+              <div>
+                <dt>{t(b('Team', '团队'))}</dt>
+                <dd>
+                  {record.teamName ??
+                    t(b('Not named in the cited record', '引用记录未明确命名'))}
+                </dd>
+              </div>
+            )}
+            {record.projectName && (
+              <div>
+                <dt>{t(b('Product name', '产品专名'))}</dt>
+                <dd>
+                  {record.projectName ??
+                    t(
+                      b(
+                        'Not established; title describes the team’s record',
+                        '尚未明确；标题为团队成果的描述性名称',
+                      ),
+                    )}
+                </dd>
+              </div>
+            )}
             <div>
               <dt>{t(b('Challenge', '赛题'))}</dt>
               <dd>
@@ -496,6 +567,8 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
           ? p.year === null
           : String(p.year) === filters.year)) &&
       (!filters.university || p.universityId === filters.university) &&
+      (!filters.direction ||
+        projectDirectionById[p.projectId] === filters.direction) &&
       [
         p.projectName,
         p.teamName,
@@ -570,11 +643,25 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
               ))}
           </select>
         </label>
+        <label>
+          {t(b('Direction', '方向'))}
+          <select
+            value={filters.direction}
+            onChange={(e) => change({ direction: e.target.value })}
+          >
+            <option value="">{t(b('All directions', '全部方向'))}</option>
+            {Object.entries(projectDirections).map(([id, label]) => (
+              <option key={id} value={id}>
+                {t(label)}
+              </option>
+            ))}
+          </select>
+        </label>
         <button
           type="button"
           onClick={() => {
             setQuery('');
-            change({ year: '', university: '' });
+            change({ year: '', university: '', direction: '' });
           }}
         >
           {t(b('Clear filters', '清除筛选'))}

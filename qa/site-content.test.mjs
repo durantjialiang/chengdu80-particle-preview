@@ -32,6 +32,100 @@ await test('site content and static archive contracts', async (t) => {
       '/content/universities.ts',
     );
     await t.test(
+      'editorial routes, dated partnerships and case studies stay evidence-linked',
+      async () => {
+        const e = await server.ssrLoadModule('/content/ecosystem.ts');
+        const { projectStudies, projectDirectionById } =
+          await server.ssrLoadModule('/content/project-studies.ts');
+        const { publicArchiveImages } = await server.ssrLoadModule(
+          '/content/archive-media.ts',
+        );
+        const pages = await server.ssrLoadModule(
+          '/components/site/EcosystemContent.tsx',
+        );
+        for (const path of ['/about/', '/partners/', '/media/'])
+          assert.ok(routes.some((route) => route.path === path));
+        for (const name of [
+          'AboutPage',
+          'PartnersPage',
+          'MediaPage',
+          'HomeBeforeNetwork',
+          'HomeAfterNetwork',
+          'HeroEssentials',
+        ]) {
+          const html = renderToString(React.createElement(pages[name]));
+          assert.ok(
+            html.length > (name === 'HeroEssentials' ? 200 : 500),
+            name,
+          );
+          if (name === 'HeroEssentials')
+            assert.match(html, /Competition guide/);
+          assert.doesNotMatch(html, /Page in preparation|>Soon</);
+        }
+        assert.equal(
+          e.impactStories.find((s) => s.id === 'fintech80x').year,
+          '2021',
+        );
+        assert.deepEqual(e.partnerEditions.find((p) => p.year === 2023).hosts, [
+          'swufe',
+          'jiaozi',
+        ]);
+        assert.ok(
+          e.partnerEditions.every(
+            (p) => p.year < 2026 && e.ecosystemSources[p.source],
+          ),
+        );
+        assert.ok(
+          e.historicalPeople.every(
+            (p) => p.year < 2026 && e.ecosystemSources[p.source],
+          ),
+        );
+        for (const id of [
+          'nushadow',
+          'dragon-search',
+          'pisces',
+          'data-queens-report',
+        ]) {
+          const study = projectStudies[id];
+          assert.ok(projects.some((p) => p.projectId === id));
+          assert.ok(projectDirectionById[id]);
+          for (const field of [
+            'problem',
+            'users',
+            'solution',
+            'technical',
+            'evidenceLabel',
+          ]) {
+            assert.ok(
+              study[field].en.length > 10 && study[field].zh.length > 5,
+            );
+          }
+          assert.match(study.evidenceUrl, /^https:\/\//);
+          if (study.contextImageId) {
+            const image = publicArchiveImages.find(
+              (i) => i.id === study.contextImageId,
+            );
+            assert.ok(image);
+            assert.equal(
+              image.projectId,
+              null,
+              'Context photo must not be relabelled a product image',
+            );
+            assert.equal(
+              image.eventYear,
+              projects.find((p) => p.projectId === id).year,
+            );
+            assert.ok(study.contextNote.en && study.contextNote.zh);
+          }
+        }
+        assert.ok(
+          e.sceneImageIds.every((id) =>
+            publicArchiveImages.some((i) => i.id === id),
+          ),
+        );
+      },
+    );
+    await t.test(
       '2025/2026 do not imply false dates, registration or an edition',
       () => {
         assert.equal(year2025.status, 'not-held');

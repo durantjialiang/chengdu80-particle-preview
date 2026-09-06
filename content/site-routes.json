@@ -1,4 +1,7 @@
 [
+  { "path": "/about/", "title": "About Chengdu 80", "zh": "关于成都八零", "description": "An 80-hour fintech challenge since 2018: mission, people and academic–industry collaboration.", "descriptionZh": "自2018年起的80小时金融科技挑战：赛事使命、人物与产学合作。", "image": "/history-media/cd80-2019-06-full.webp" },
+  { "path": "/partners/", "title": "Partners & Impact", "zh": "合作与成果", "description": "SWUFE and Chengdu Jiaozi: dated organizational roles, FINTECH80x and the 2024 incubator launch.", "descriptionZh": "西财与成都交子的历届组织合作、FINTECH80x及2024年孵化器启动记录。", "image": "/history-media/cd80-2024-05-full.webp" },
+  { "path": "/media/", "title": "Media & Resources", "zh": "媒体与资源", "description": "Approved historical photographs, original reports, rules and the fifth-anniversary publication.", "descriptionZh": "已获准公开的历史影像、原始新闻、规则与五周年专刊。", "image": "/history-media/cd80-2024-01-full.webp" },
   { "path": "/competition/", "title": "2026 Competition", "zh": "2026赛事信息" },
   { "path": "/history/", "title": "History", "zh": "历届赛事" },
   { "path": "/winners/", "title": "Winners & Projects", "zh": "成果档案" },

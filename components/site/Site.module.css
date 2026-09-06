@@ -110,7 +110,7 @@
 }
 .filters {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr auto;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
   gap: 16px;
   align-items: end;
   margin-block: 36px 18px;
@@ -562,7 +562,7 @@
   margin-right: auto;
   color: #7991a4;
 }
-@media (max-width: 1050px) {
+@media (max-width: 1160px) {
   .desktopNav {
     display: none;
   }
