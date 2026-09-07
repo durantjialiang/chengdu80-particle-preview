@@ -97,11 +97,14 @@ function HostPair() {
     <div className={styles.partners}>
       {(['swufe', 'jiaozi'] as const).map((id) => (
         <div key={id} className={styles.partner}>
-          <small>
-            {t(b('JOINT HOST · 2023 / 2024', '联合主办 · 2023 / 2024'))}
-          </small>
-          <strong>{t(organizations[id].short)}</strong>
-          <p>{t(organizations[id].name)}</p>
+          <small>{t(b('JOINT HOST', '联合主办'))}</small>
+          <strong>
+            {t(
+              id === 'jiaozi'
+                ? organizations[id].name
+                : organizations[id].short,
+            )}
+          </strong>
         </div>
       ))}
     </div>

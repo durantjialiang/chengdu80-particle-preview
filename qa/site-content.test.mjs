@@ -60,6 +60,23 @@ await test('site content and static archive contracts', async (t) => {
           );
           if (name === 'HeroEssentials')
             assert.match(html, /Competition guide/);
+          if (
+            ['HomeBeforeNetwork', 'AboutPage', 'PartnersPage'].includes(name)
+          ) {
+            assert.equal(
+              (html.match(/<small>JOINT HOST<\/small>/g) ?? []).length,
+              2,
+            );
+            assert.match(html, /<strong>SWUFE<\/strong>/);
+            assert.match(
+              html,
+              /<strong>Chengdu Jiaozi Financial Holding Group<\/strong>/,
+            );
+            assert.doesNotMatch(
+              html,
+              /JOINT HOST ·|<p>(Southwestern University of Finance and Economics|Chengdu Jiaozi Financial Holding Group)<\/p>/,
+            );
+          }
           assert.doesNotMatch(html, /Page in preparation|>Soon</);
         }
         assert.equal(
