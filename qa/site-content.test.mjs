@@ -23,9 +23,8 @@ await test('site content and static archive contracts', async (t) => {
       faqs,
       approvedDownloads,
     } = await server.ssrLoadModule('/content/competition.ts');
-    const { editions, projects, sources } = await server.ssrLoadModule(
-      '/content/archive.ts',
-    );
+    const { editions, publicEditions, projects, sources } =
+      await server.ssrLoadModule('/content/archive.ts');
     const routes = JSON.parse(
       await readFile('content/site-routes.json', 'utf8'),
     );
@@ -447,8 +446,11 @@ await test('site content and static archive contracts', async (t) => {
     await t.test(
       'all archive records have deep-link build destinations and real source refs',
       () => {
-        for (const e of editions)
+        for (const e of publicEditions)
           assert.ok(routes.some((r) => r.path === `/history/${e.year}/`));
+        assert.ok(!routes.some((r) => r.path === '/history/2025/'));
+        assert.ok(!publicEditions.some((e) => e.year === 2025));
+        assert.equal(editions.find((e) => e.year === 2025).status, 'not-held');
         for (const p of projects) {
           assert.ok(routes.some((r) => r.path === `/winners/${p.projectId}/`));
           assert.ok(universities.some((u) => u.id === p.universityId));
@@ -971,7 +973,14 @@ await test('site content and static archive contracts', async (t) => {
                 }
               }
             }
-            for (const year of [2025, 2026]) {
+            assert.doesNotMatch(listing, /2025|未举办|Not held/);
+            const lastHeld = render(HistoryPage, { year: 2024 });
+            const upcoming = render(HistoryPage, { year: 2026 });
+            assert.doesNotMatch(lastHeld, /2025/);
+            assert.doesNotMatch(upcoming, /2025/);
+            assert.ok(lastHeld.includes(`/history/2026/?lang=${language}`));
+            assert.ok(upcoming.includes(`/history/2024/?lang=${language}`));
+            for (const year of [2026]) {
               assert.doesNotMatch(
                 render(HistoryPage, { year }),
                 /data-edition-project=|data-award-group=/,

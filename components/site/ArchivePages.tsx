@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  editions,
+  publicEditions as editions,
   projects,
   sources,
   projectTitle,

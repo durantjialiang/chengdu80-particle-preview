@@ -219,8 +219,8 @@ export default function CompetitionPage() {
         <p className={styles.note}>
           {t(
             b(
-              'Information provenance: the 2026 month and the absence of an edition in 2025 were supplied by the project owner; they are not presented as a public organizer announcement. Historical facts link to their original sources.',
-              '信息来源：2026月份与2025未举办由项目负责人提供，不作为组委会公开公告表述。历史内容附原始来源链接。',
+              'Information provenance: the 2026 month was supplied by the project owner; it is not presented as a public organizer announcement. Historical facts link to their original sources.',
+              '信息来源：2026月份由项目负责人提供，不作为组委会公开公告表述。历史内容附原始来源链接。',
             ),
           )}
         </p>

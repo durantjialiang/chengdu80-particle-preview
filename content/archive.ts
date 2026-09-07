@@ -456,6 +456,10 @@ export const projectTitle = (p: Project) =>
   p.projectName
     ? b(p.projectName, p.projectName)
     : b(`${p.teamName} — prototype record`, `${p.teamName} — 原型成果记录`);
+// Preserve the internal chronology, but do not publish entries for years without an event.
+export const publicEditions: readonly Edition[] = editions.filter(
+  (edition) => edition.status !== 'not-held',
+);
 export const statusLabels = {
   held: b('Historical edition', '历史赛事'),
   'record-only': b(

@@ -4,6 +4,13 @@
   "installCommand": "npm ci",
   "buildCommand": "npm run build:particle-preview",
   "outputDirectory": "out/particle-preview",
+  "redirects": [
+    {
+      "source": "/history/2025/:path*",
+      "destination": "/history/",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
