@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import { readFile, mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { createHash } from 'node:crypto';
 import { createServer } from 'vite';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
@@ -140,6 +141,64 @@ await test('site content and static archive contracts', async (t) => {
             publicArchiveImages.some((i) => i.id === id),
           ),
         );
+      },
+    );
+    await t.test(
+      'international partner identities use official logos, direct links and historical roles',
+      async () => {
+        const { partnerBrandProfiles } = await server.ssrLoadModule(
+          '/content/partner-brands.ts',
+        );
+        const { partnerEditions } = await server.ssrLoadModule(
+          '/content/ecosystem.ts',
+        );
+        const { PartnersPage } = await server.ssrLoadModule(
+          '/components/site/EcosystemContent.tsx',
+        );
+        const html = renderToString(React.createElement(PartnersPage));
+        assert.deepEqual(
+          partnerBrandProfiles.map((profile) => profile.id),
+          ['cdar', 'stateStreet'],
+        );
+        assert.match(html, /Historical international co-hosts/);
+        for (const profile of partnerBrandProfiles) {
+          assert.match(
+            new URL(profile.website).hostname,
+            /(^|\.)(berkeley\.edu|statestreet\.com)$/,
+          );
+          assert.ok(
+            profile.years.every((year) =>
+              partnerEditions.some(
+                (edition) =>
+                  edition.year === year && edition.hosts.includes(profile.id),
+              ),
+            ),
+          );
+          assert.ok(profile.years.every((year) => year < 2026));
+          const logo = await readFile(`public${profile.logo.src}`);
+          assert.ok(logo.length > 100);
+          assert.equal(
+            createHash('sha256').update(logo).digest('hex'),
+            profile.logo.sha256,
+          );
+          assert.equal(profile.usageStatus, 'project-owner-confirmed');
+          assert.equal(profile.permissionConfirmedOn, '2026-09-07');
+          assert.ok(profile.logo.width > 0 && profile.logo.height > 0);
+          assert.ok(profile.logo.sourcePage.startsWith('https://'));
+          assert.ok(profile.logo.originalImageUrl.startsWith('https://'));
+          const card = html.match(
+            new RegExp(
+              `<a[^>]*data-organization="${profile.id}"[^>]*>[\\s\\S]*?<\\/a>`,
+            ),
+          )?.[0];
+          assert.ok(card, profile.id);
+          assert.ok(card.includes(`href="${profile.website}"`));
+          assert.match(card, /target="_blank"/);
+          assert.match(card, /rel="noopener noreferrer"/);
+          assert.ok(card.includes(`src="${profile.logo.src}"`));
+          assert.match(card, /<h3>/);
+          assert.match(card, /Visit official website/);
+        }
       },
     );
     await t.test(

@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react';
+import { ArrowUpRight } from 'lucide-react';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import {
   bilingual as b,
@@ -20,6 +21,7 @@ import {
   type EcosystemSourceId,
 } from '@/content/ecosystem';
 import { projects } from '@/content/archive';
+import { partnerBrandProfiles } from '@/content/partner-brands';
 import { publicArchiveImages } from '@/content/archive-media';
 import { WinnerCard } from './ArchivePages';
 import EditorialMedia from './EditorialMedia';
@@ -528,6 +530,76 @@ export function AboutPage() {
     </>
   );
 }
+function InternationalPartners() {
+  const { t } = useSiteLanguage();
+  // Original, size-bounded local marks; this Vite preview has no Next image server.
+  /* oxlint-disable next/no-img-element */
+  return (
+    <section
+      className={styles.collaboration}
+      id="international-partners"
+      aria-labelledby="international-partners-title"
+    >
+      <div className={styles.collaborationHeading}>
+        <p className={styles.eyebrow}>
+          {t(b('Historical international co-hosts', '历届国际联合主办'))}
+        </p>
+        <h2 id="international-partners-title">
+          {t(b('Connecting research and finance.', '联结全球研究与金融实践。'))}
+        </h2>
+        <p>
+          {t(
+            b(
+              'In 2019, SWUFE, Chengdu Jiaozi, UC Berkeley CDAR and State Street Bank jointly hosted the second Chengdu 80 competition.',
+              '2019年，西财、成都交子、伯克利CDAR与美国道富银行联合主办第二届成都八零，连接学术研究与金融实践。',
+            ),
+          )}
+        </p>
+      </div>
+      <div className={styles.institutionGrid}>
+        {partnerBrandProfiles.map((profile) => (
+          <a
+            key={profile.id}
+            data-organization={profile.id}
+            className={styles.institutionCard}
+            href={profile.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t(
+              b(
+                `${profile.title.en} — official website (opens in a new tab)`,
+                `${profile.title.zh} · 官方网站（新标签页打开）`,
+              ),
+            )}
+          >
+            <span className={styles.institutionRole}>
+              {t(organizations[profile.id].kind)}
+            </span>
+            <div className={styles.institutionLogo}>
+              <img
+                src={profile.logo.src}
+                alt={t(
+                  b(`${profile.title.en} logo`, `${profile.title.zh} 标志`),
+                )}
+                width={profile.logo.width}
+                height={profile.logo.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <h3>{t(profile.title)}</h3>
+            <p>{t(profile.descriptor)}</p>
+            <span className={styles.institutionVisit}>
+              {t(b('Visit official website', '访问官方网站'))}
+              <ArrowUpRight aria-hidden="true" />
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+  /* oxlint-enable next/no-img-element */
+}
 export function PartnersPage() {
   const { t, href } = useSiteLanguage();
   return (
@@ -550,17 +622,7 @@ export function PartnersPage() {
         )}
       </p>
       <HostPair />
-      <div className={styles.notice}>
-        <p>
-          {t(
-            b(
-              'In 2019, Chengdu Jiaozi’s official report explicitly recorded the group as the second edition’s exclusive funding sponsor and a joint host alongside SWUFE, CDAR and State Street Bank.',
-              '2019年，成都交子官网明确记载：集团独家出资赞助第二届赛事，并与西财、CDAR、美国道富银行联合主办。',
-            ),
-          )}
-        </p>
-        <EvidenceLinks ids={['jiaozi2019']} />
-      </div>
+      <InternationalPartners />
       <Section
         id="roles"
         eyebrow={b('ORGANIZATION BY EDITION', '历届组织关系')}
