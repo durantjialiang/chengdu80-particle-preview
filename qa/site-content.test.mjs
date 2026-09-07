@@ -61,6 +61,24 @@ await test('site content and static archive contracts', async (t) => {
           );
           if (name === 'HeroEssentials')
             assert.match(html, /Competition guide/);
+          if (name === 'PartnersPage') {
+            assert.match(html, /PARTNERSHIP MILESTONES/);
+            assert.match(
+              html,
+              /From a shared competition to a shared innovation ecosystem\./,
+            );
+            assert.doesNotMatch(
+              html,
+              /ORGANIZATION BY EDITION|The right role, in the right year\.|their dated roles|These are documented historical roles/,
+            );
+            for (const edition of e.partnerEditions) {
+              assert.ok(
+                edition.milestone.title.zh && edition.milestone.summary.zh,
+              );
+              assert.ok(html.includes(edition.milestone.title.en));
+              assert.ok(html.includes(edition.milestone.summary.en));
+            }
+          }
           if (
             ['HomeBeforeNetwork', 'AboutPage', 'PartnersPage'].includes(name)
           ) {

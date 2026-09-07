@@ -107,6 +107,7 @@ export const organizations = {
 export type OrganizationId = keyof typeof organizations;
 export type PartnerEdition = {
   year: number;
+  milestone: { title: Localized; summary: Localized };
   hosts: OrganizationId[];
   deliveredBy: OrganizationId[];
   coOrganizers?: Localized[];
@@ -116,6 +117,13 @@ export type PartnerEdition = {
 export const partnerEditions: PartnerEdition[] = [
   {
     year: 2019,
+    milestone: {
+      title: b('Global collaboration meets Chengdu', '全球合作，共聚成都'),
+      summary: b(
+        'The second edition brought SWUFE, Chengdu Jiaozi, UC Berkeley CDAR and State Street Bank together. Jiaozi funded the competition and organized a visit to Jiaozi Park for the teams.',
+        '第二届赛事连接西财、成都交子、伯克利CDAR与美国道富银行。成都交子独家出资赞助赛事，并组织参赛团队走进交子公园。',
+      ),
+    },
     hosts: ['swufe', 'jiaozi', 'cdar', 'stateStreet'],
     deliveredBy: [],
     source: 'jiaozi2019',
@@ -126,6 +134,16 @@ export const partnerEditions: PartnerEdition[] = [
   },
   {
     year: 2020,
+    milestone: {
+      title: b(
+        'Research, finance and the fintech community',
+        '学术、产业与社群协作',
+      ),
+      summary: b(
+        'SWUFE, CDAR and Chengdu Jiaozi jointly hosted the third edition, with FIC and the Chengdu Fintech Association delivering the competition.',
+        '西财、CDAR与成都交子联合主办第三届赛事，FIC与成都市金融科技协会共同承办，连接学术研究、金融产业与本地金融科技社群。',
+      ),
+    },
     hosts: ['swufe', 'cdar', 'jiaozi'],
     deliveredBy: ['fic', 'association'],
     source: 'report2020',
@@ -136,6 +154,13 @@ export const partnerEditions: PartnerEdition[] = [
   },
   {
     year: 2021,
+    milestone: {
+      title: b('FINTECH80x launches', 'FINTECH80x 计划启动'),
+      summary: b(
+        'SWUFE and Chengdu Jiaozi launched FINTECH80x. Jiaozi became the plan’s first cooperating financial enterprise, extending collaboration beyond the competition.',
+        '西财与成都交子共同启动FINTECH80x，成都交子成为计划首家合作金融企业，将产学合作延伸到赛事之外。',
+      ),
+    },
     hosts: ['swufe', 'cdar', 'jiaozi'],
     deliveredBy: [],
     source: 'report2021',
@@ -146,6 +171,13 @@ export const partnerEditions: PartnerEdition[] = [
   },
   {
     year: 2023,
+    milestone: {
+      title: b('Together for the sixth edition', '携手呈现第六届赛事'),
+      summary: b(
+        'SWUFE and Chengdu Jiaozi jointly hosted the sixth edition, supported by SWUFE schools and research platforms.',
+        '西财与成都交子联合主办第六届赛事，校内多个学院与研究平台共同参与。',
+      ),
+    },
     hosts: ['swufe', 'jiaozi'],
     deliveredBy: [],
     coOrganizers: [
@@ -169,6 +201,13 @@ export const partnerEditions: PartnerEdition[] = [
   },
   {
     year: 2024,
+    milestone: {
+      title: b('The Chengdu 80 incubator launches', '成都八零孵化器启动'),
+      summary: b(
+        'The seventh edition marked the launch of the Chengdu 80 incubator, with more than 20 organizations participating in the launch initiative.',
+        '第七届赛事期间，成都八零孵化器正式启动，20余家单位参与启动事项。',
+      ),
+    },
     hosts: ['swufe', 'jiaozi'],
     deliveredBy: [],
     source: 'report2024',

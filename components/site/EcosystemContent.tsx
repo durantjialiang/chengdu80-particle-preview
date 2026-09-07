@@ -616,8 +616,8 @@ export function PartnersPage() {
       <p className={site.lead}>
         {t(
           b(
-            'The collaboration between SWUFE and Chengdu Jiaozi is part of the competition’s history—not a footnote. Explore the organizations, their dated roles and the initiatives that followed.',
-            '西财与成都交子的合作是赛事发展的一条主线。沿着年份，了解组织者各自的角色，以及由赛事延伸的合作倡议。',
+            'SWUFE and Chengdu Jiaozi connect universities and financial institutions through Chengdu 80. Their collaboration extends beyond the competition, with the launch of FINTECH80x and the Chengdu 80 incubator.',
+            '西财与成都交子携手高校和金融机构，让全球团队相聚成都。从共同办赛，到FINTECH80x计划与成都八零孵化器的启动，合作不断延伸到赛场之外。',
           ),
         )}
       </p>
@@ -625,10 +625,10 @@ export function PartnersPage() {
       <InternationalPartners />
       <Section
         id="roles"
-        eyebrow={b('ORGANIZATION BY EDITION', '历届组织关系')}
+        eyebrow={b('PARTNERSHIP MILESTONES', '合作里程碑')}
         title={b(
-          'The right role, in the right year.',
-          '每一次合作，都有清楚的年份与身份。',
+          'From a shared competition to a shared innovation ecosystem.',
+          '从共同办赛，到共建创新生态。',
         )}
       >
         <div className={styles.timeline}>
@@ -636,23 +636,24 @@ export function PartnersPage() {
             <article key={edition.year}>
               <span className={styles.year}>{edition.year}</span>
               <div>
-                <p className={styles.role}>{t(b('Joint hosts', '联合主办'))}</p>
-                <h3>
+                <h3>{t(edition.milestone.title)}</h3>
+                <p>{t(edition.milestone.summary)}</p>
+                <p className={styles.milestoneOrganizations}>
+                  {t(b('Joint hosts', '联合主办'))}：
                   {edition.hosts
                     .map((id) => t(organizations[id].name))
                     .join(' / ')}
-                </h3>
+                </p>
                 {edition.deliveredBy.length > 0 && (
-                  <p>
+                  <p className={styles.milestoneOrganizations}>
                     {t(b('Delivery organizations', '承办'))}：
                     {edition.deliveredBy
                       .map((id) => t(organizations[id].name))
                       .join(' / ')}
                   </p>
                 )}
-                <p>{t(edition.note)}</p>
                 {edition.coOrganizers && (
-                  <p>
+                  <p className={styles.milestoneOrganizations}>
                     {t(b('Co-organizers', '协办'))}：
                     {edition.coOrganizers.map(t).join(' / ')}
                   </p>
@@ -666,8 +667,8 @@ export function PartnersPage() {
           <p>
             {t(
               b(
-                'These are documented historical roles. A guest’s company affiliation is not treated as sponsorship, and the 2026 host, co-organizer and supporting-partner list is not yet confirmed.',
-                '这里呈现有来源的历史角色。嘉宾的企业任职不自动等于企业赞助，2026主办、承办、协办与支持名单仍待确认。',
+                'The 2026 partner lineup will be announced separately.',
+                '2026年合作机构名单将另行公布。',
               ),
             )}
           </p>

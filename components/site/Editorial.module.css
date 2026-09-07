@@ -327,6 +327,11 @@
 .timeline p {
   margin-top: 12px;
 }
+.timeline .milestoneOrganizations {
+  color: #92acbd;
+  font-size: 14px;
+  line-height: 1.75;
+}
 .sourceLinks {
   display: flex;
   flex-wrap: wrap;
