@@ -168,7 +168,6 @@ function Impact({ full = false }: { full?: boolean }) {
             <h3>{t(story.title)}</h3>
             <p>{t(story.description)}</p>
             <EvidenceLinks ids={[story.source]} />
-            {full && <p className={styles.date}>{t(story.locator)}</p>}
           </article>
         ))}
       </div>

@@ -63,6 +63,9 @@ await test('site content and static archive contracts', async (t) => {
             assert.match(html, /Competition guide/);
           if (name === 'PartnersPage') {
             assert.match(html, /PARTNERSHIP MILESTONES/);
+            for (const story of e.impactStories) {
+              assert.ok(!html.includes(story.locator.en));
+            }
             assert.match(
               html,
               /From a shared competition to a shared innovation ecosystem\./,
