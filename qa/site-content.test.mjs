@@ -742,8 +742,24 @@ await test('site content and static archive contracts', async (t) => {
         const { default: Competition } = await server.ssrLoadModule(
           '/components/site/CompetitionPage.tsx',
         );
+        const competitionHtml = renderToString(React.createElement(Competition));
+        const formatSection = competitionHtml.match(
+          /<section\b[^>]*id="format"[^>]*>[\s\S]*?<\/section>/,
+        )?.[0];
+        assert.ok(formatSection);
+        assert.match(formatSection, /HISTORICAL FORMAT/);
+        assert.equal((formatSection.match(/<li\b/g) ?? []).length, 5);
+        assert.doesNotMatch(formatSection, /<p\b|<a\b/);
+        const competitionSource = await readFile(
+          'components/site/CompetitionPage.tsx',
+          'utf8',
+        );
+        assert.doesNotMatch(
+          competitionSource,
+          /A typical historical sequence|以下为历史赛制的典型流程|Historical source: NUS Computing|历史来源：新加坡国立大学计算机学院/,
+        );
         for (const html of [
-          renderToString(React.createElement(Competition)),
+          competitionHtml,
           ...editions.map((e) =>
             renderToString(React.createElement(HistoryPage, { year: e.year })),
           ),

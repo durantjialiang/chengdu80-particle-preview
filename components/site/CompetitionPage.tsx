@@ -105,14 +105,6 @@ export default function CompetitionPage() {
           <span>02 / {t(b('HISTORICAL FORMAT', '历史赛制'))}</span>
           <h2>{t(b('From challenge to prototype.', '从赛题到原型。'))}</h2>
         </div>
-        <p className={styles.measure}>
-          {t(
-            b(
-              'A typical historical sequence, not the final 2026 rules. The 80 hours refer to focused development, not the entire event or travel.',
-              '以下为历史赛制的典型流程，不是2026正式规则。80小时指集中开发时段，不是整个活动或出行的总时长。',
-            ),
-          )}
-        </p>
         <ol className={styles.process}>
           {historicalFormat.map((s, i) => (
             <li key={s.en}>
@@ -121,20 +113,6 @@ export default function CompetitionPage() {
             </li>
           ))}
         </ol>
-        <a
-          className={styles.source}
-          href="https://www.comp.nus.edu.sg/news/2020-chengdu80-win/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {t(
-            b(
-              'Historical source: NUS Computing (2020)',
-              '历史来源：新加坡国立大学计算机学院（2020）',
-            ),
-          )}{' '}
-          ↗
-        </a>
       </section>
       <section className={styles.section} id="faq">
         <div className={styles.sectionHeading}>
