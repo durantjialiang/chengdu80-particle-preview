@@ -6,6 +6,11 @@
   "outputDirectory": "out/particle-preview",
   "redirects": [
     {
+      "source": "/history/2025/",
+      "destination": "/history/",
+      "permanent": true
+    },
+    {
       "source": "/history/2025/:path*",
       "destination": "/history/",
       "permanent": true
