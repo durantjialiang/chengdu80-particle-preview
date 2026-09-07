@@ -99,6 +99,25 @@
 .archiveCard a:hover {
   color: #afe4ff;
 }
+.projectIdentity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  min-width: 0;
+  max-width: 100%;
+  text-decoration: none;
+}
+.archiveCard .projectIdentity .kicker {
+  margin: 0;
+}
+.projectIdentity h3 {
+  overflow-wrap: anywhere;
+}
+.projectUniversity {
+  max-width: 100%;
+  margin-bottom: 24px;
+}
 .award {
   display: block;
   margin-top: auto;

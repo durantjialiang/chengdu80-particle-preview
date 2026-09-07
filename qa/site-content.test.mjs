@@ -626,6 +626,110 @@ await test('site content and static archive contracts', async (t) => {
       },
     );
     await t.test(
+      'winner cards and project headers reuse the correct university logo in both languages',
+      async () => {
+        const { WinnerCard, WinnersPage } = await server.ssrLoadModule(
+          '/components/site/ArchivePages.tsx',
+        );
+        const { SiteLanguageProvider } = await server.ssrLoadModule(
+          '/hooks/use-site-language.tsx',
+        );
+        const logoSource = await readFile(
+          'components/network/UniversityLogo.tsx',
+          'utf8',
+        );
+        assert.doesNotMatch(logoSource, /framer-motion|UniversityCard|three/);
+        assert.equal(
+          universities.find((u) => u.id === 'hku').logoSurface,
+          'light',
+        );
+        const previousWindow = Object.getOwnPropertyDescriptor(
+          globalThis,
+          'window',
+        );
+        const previousLocation = Object.getOwnPropertyDescriptor(
+          globalThis,
+          'location',
+        );
+        try {
+          // SSR-only language input, not a real browser or interaction test.
+          Object.defineProperty(globalThis, 'window', {
+            value: {},
+            configurable: true,
+          });
+          for (const language of ['en', 'zh']) {
+            Object.defineProperty(globalThis, 'location', {
+              value: { search: `?lang=${language}` },
+              configurable: true,
+            });
+            const render = (component, props) =>
+              renderToString(
+                React.createElement(
+                  SiteLanguageProvider,
+                  null,
+                  React.createElement(component, props),
+                ),
+              );
+            const listing = render(WinnersPage);
+            assert.equal(
+              (listing.match(/data-project-university=/g) ?? []).length,
+              projects.length,
+            );
+            for (const project of projects) {
+              const university = universities.find(
+                (u) => u.id === project.universityId,
+              );
+              assert.ok(university?.logo, project.projectId);
+              assert.ok(
+                (await readFile(`public${university.logo}`)).length > 0,
+              );
+              const card = render(WinnerCard, { project });
+              assert.ok(
+                card.includes(`data-project-university="${university.id}"`),
+              );
+              const anchor = card.match(/<a\b[^>]*>[\s\S]*?<\/a>/)?.[0];
+              assert.ok(
+                anchor?.includes(
+                  `href="/winners/${project.projectId}/?lang=${language}"`,
+                ),
+              );
+              assert.ok(anchor.includes(`src="${university.logo}"`));
+              assert.match(anchor, /<h3>/);
+              assert.equal(
+                (card.match(/<a\b/g) ?? []).length,
+                1,
+                'Logo and title share one keyboard target',
+              );
+              assert.ok(
+                card.includes(`data-surface="${university.logoSurface}"`),
+              );
+              assert.ok(
+                card.includes(language === 'zh' ? '官方标识' : 'official logo'),
+              );
+              assert.match(card, /loading="lazy"/);
+              assert.match(card, /width="132" height="44"/);
+              const detail = render(WinnersPage, {
+                projectId: project.projectId,
+              });
+              const header = detail.slice(0, detail.indexOf('<h1'));
+              assert.ok(
+                header.includes(`data-project-university="${university.id}"`),
+              );
+              assert.ok(header.includes(`src="${university.logo}"`));
+              assert.doesNotMatch(header, /<canvas|WebGLRenderer/);
+            }
+          }
+        } finally {
+          if (previousWindow)
+            Object.defineProperty(globalThis, 'window', previousWindow);
+          else delete globalThis.window;
+          if (previousLocation)
+            Object.defineProperty(globalThis, 'location', previousLocation);
+          else delete globalThis.location;
+        }
+      },
+    );
+    await t.test(
       'text pages and all details render without WebGL or browser APIs',
       async () => {
         const { HistoryPage, WinnersPage } = await server.ssrLoadModule(

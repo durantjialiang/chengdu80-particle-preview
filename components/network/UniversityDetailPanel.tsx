@@ -12,7 +12,7 @@ import { useSiteLanguage } from '@/hooks/use-site-language';
 import { bilingual as b } from '@/content/competition';
 import { projects, projectTitle } from '@/content/archive';
 import { Button } from '@/components/ui/button';
-import { UniversityLogo } from './UniversityCard';
+import { UniversityLogo } from './UniversityLogo';
 import styles from './Network.module.css';
 
 /** Native dialog provides modal focus containment, Escape and focus restoration. */

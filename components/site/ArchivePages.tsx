@@ -17,6 +17,7 @@ import { useUrlFilters } from '@/hooks/use-url-filters';
 import styles from './Site.module.css';
 import ArchiveGallery from './ArchiveGallery';
 import { universityName } from '@/content/university-i18n';
+import { UniversityLogo } from '@/components/network/UniversityLogo';
 import {
   projectStudies,
   projectDirections,
@@ -367,15 +368,21 @@ export function HistoryPage({ year }: { year?: number }) {
 }
 export function WinnerCard({ project: p }: { project: Project }) {
   const { t, href } = useSiteLanguage();
+  const university = getUniversity(p.universityId);
   return (
     <article className={styles.archiveCard}>
-      <div className={styles.kicker}>
-        {p.year ?? `${t(b('Report', '报道'))} ${p.reportedYear}`} /{' '}
-        {getUniversity(p.universityId).shortName}
-      </div>
-      <h3>
-        <a href={href(`/winners/${p.projectId}/`)}>{t(projectTitle(p))} ↗</a>
-      </h3>
+      <a
+        className={styles.projectIdentity}
+        href={href(`/winners/${p.projectId}/`)}
+        data-project-university={university.id}
+      >
+        <UniversityLogo university={university} />
+        <div className={styles.kicker}>
+          {p.year ?? `${t(b('Report', '报道'))} ${p.reportedYear}`} /{' '}
+          {university.shortName}
+        </div>
+        <h3>{t(projectTitle(p))} ↗</h3>
+      </a>
       <p>{t(p.summary)}</p>
       <span className={styles.award}>{t(p.awardLabel)}</span>
     </article>
@@ -395,6 +402,12 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
           <a href={href('/winners/')}>{t(b('Winners', '成果档案'))}</a>
           <span>/ {record.projectName ?? record.teamName}</span>
         </nav>
+        <div
+          className={styles.projectUniversity}
+          data-project-university={record.universityId}
+        >
+          <UniversityLogo university={getUniversity(record.universityId)} />
+        </div>
         <div className={styles.kicker}>
           {record.year ??
             `${t(b('Published report', '报道发表于'))} ${record.reportedYear}`}{' '}
@@ -441,13 +454,15 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
               </a>
               <p className={styles.note}>
                 {t(
-                  study.illustrationStatus === 'not-established' ? b(
-                    'Historical prototype. An original product illustration and its reuse permission have not yet been established.',
-                    '历史原型记录。原始产品配图及其复用授权尚未确认。',
-                  ) : b(
-                    'Historical prototype. The original illustration can be consulted at the publisher; project-image reuse permission is not established in this website’s media collection.',
-                    '历史原型记录。原始作品配图可到发布方查阅；本站媒体库尚未确认该作品图片的复用授权。',
-                  ),
+                  study.illustrationStatus === 'not-established'
+                    ? b(
+                        'Historical prototype. An original product illustration and its reuse permission have not yet been established.',
+                        '历史原型记录。原始产品配图及其复用授权尚未确认。',
+                      )
+                    : b(
+                        'Historical prototype. The original illustration can be consulted at the publisher; project-image reuse permission is not established in this website’s media collection.',
+                        '历史原型记录。原始作品配图可到发布方查阅；本站媒体库尚未确认该作品图片的复用授权。',
+                      ),
                 )}
               </p>
             </div>

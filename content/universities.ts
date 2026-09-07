@@ -564,7 +564,7 @@ const universityRecords: readonly University[] = [
     recordNote:
       'Selected documented editions, not an exhaustive participation history.',
     logoSource: 'https://www.hku.hk/',
-    logoSurface: 'dark',
+    logoSurface: 'light',
   },
   {
     id: 'nus',
