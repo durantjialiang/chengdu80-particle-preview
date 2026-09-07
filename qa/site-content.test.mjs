@@ -938,6 +938,34 @@ await test('site content and static archive contracts', async (t) => {
                 caseStudy.includes(escapeHtml(study.solution[language])),
               );
               assert.ok(study.features.length >= 2);
+              assert.equal(study.technicalSteps.length, 3);
+              const expectedBasis = [
+                'giraffe',
+                'apollo-2023',
+                'data-queens-report',
+              ].includes(project.projectId)
+                ? 'interpretation'
+                : 'documented-design';
+              for (const html of [detail, caseStudy]) {
+                assert.ok(
+                  html.includes(`data-technical-basis="${expectedBasis}"`),
+                );
+                if (expectedBasis === 'interpretation')
+                  assert.ok(
+                    html.includes(
+                      language === 'zh'
+                        ? '非原团队已披露的实现细节'
+                        : 'not a disclosed team implementation',
+                    ),
+                  );
+                for (const step of study.technicalSteps) {
+                  assert.ok(step.description.zh.length >= 50);
+                  assert.ok(html.includes(escapeHtml(step.title[language])));
+                  assert.ok(
+                    html.includes(escapeHtml(step.description[language])),
+                  );
+                }
+              }
               for (const feature of study.features) {
                 assert.ok(detail.includes(escapeHtml(feature[language])));
                 assert.ok(caseStudy.includes(escapeHtml(feature[language])));

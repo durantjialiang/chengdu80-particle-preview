@@ -10,6 +10,7 @@ import { universityName } from '@/content/university-i18n';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import { UniversityLogo } from '@/components/network/UniversityLogo';
 import styles from './EditionProjectShowcase.module.css';
+import ProjectTechnicalApproach from './ProjectTechnicalApproach';
 
 /** One shared project record, presented as a timeline preview or an annual feature. */
 export default function EditionProjectShowcase({
@@ -77,7 +78,7 @@ export default function EditionProjectShowcase({
               <summary>
                 {t(b('Explore the technical approach', '展开技术方案'))}
               </summary>
-              <p>{t(study.technical)}</p>
+              <ProjectTechnicalApproach study={study} />
             </details>
           </>
         )}

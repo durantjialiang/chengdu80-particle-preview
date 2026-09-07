@@ -27,6 +27,7 @@ import EditorialMedia from './EditorialMedia';
 import editorial from './Editorial.module.css';
 import EditionProjectShowcase from './EditionProjectShowcase';
 import historyStyles from './History.module.css';
+import ProjectTechnicalApproach from './ProjectTechnicalApproach';
 
 export function Sources({ ids }: { ids: readonly SourceId[] }) {
   const { t } = useSiteLanguage();
@@ -453,7 +454,7 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
               </ul>
               <details className={editorial.details}>
                 <summary>{t(b('Technical record', '技术记录'))}</summary>
-                <p>{t(study.technical)}</p>
+                <ProjectTechnicalApproach study={study} />
               </details>
               <a
                 className={styles.source}

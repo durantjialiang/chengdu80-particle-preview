@@ -1,0 +1,61 @@
+.approach {
+  min-width: 0;
+  margin-top: 1.25rem;
+  overflow-wrap: anywhere;
+}
+.approach .intro {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #b9cddc;
+}
+.approach .scope {
+  margin: 0 0 1rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid #84b4cd70;
+  color: #90adc1;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+.steps {
+  display: grid;
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0.5rem;
+}
+.steps li {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: baseline;
+}
+.number {
+  color: #7197af;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+.stepTitle {
+  display: block;
+  color: #d5e7f1;
+  font-size: 1rem;
+  font-weight: 550;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+.approach .description {
+  margin: 0;
+  color: #a9c0d0;
+  font-size: 1rem;
+  line-height: 1.8;
+  max-width: 70ch;
+}
+@media (max-width: 42rem) {
+  .steps {
+    gap: 1.25rem;
+  }
+  .steps li {
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+}

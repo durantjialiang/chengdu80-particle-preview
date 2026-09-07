@@ -26,6 +26,9 @@ export type ProjectStudy = {
   solution: Localized;
   features: Localized[];
   technical: Localized;
+  technicalSteps: readonly { title: Localized; description: Localized }[];
+  /** Design interpretation is visibly distinguished from a documented implementation. */
+  technicalInterpretation?: boolean;
   evidenceUrl: string;
   evidenceLabel: Localized;
   contextImageId?: string;
@@ -64,9 +67,38 @@ export const projectStudies: Record<string, ProjectStudy> = {
       ),
     ],
     technical: b(
-      'The prototype design combined AI-assisted recommendations, distributed-ledger payments, two-factor authentication and modular microservices. Credit analysis considered spending and repayment records; a risk assistant and interactive charts supported the investment workflow.',
-      '原型设计结合AI辅助推荐、分布式账本支付、双因素认证与模块化微服务。信用分析考虑消费和还款记录，并以风险辅助工具及交互图表支持投资流程。',
+      'NuShadow connects personal financial information with pricing, matching and portfolio tools. The design brings both sides of a personal IPO into a shared analytical workflow.',
+      'NuShadow把个人财务信息与定价、撮合、组合管理连接起来，让筹资者和投资者围绕同一套分析流程完成个人IPO的探索。',
     ),
+    technicalSteps: [
+      {
+        title: b('Build the information foundation', '建立双边信息基础'),
+        description: b(
+          'Fundraisers provide personal and financial information and a target share price. Investor portfolios and objectives describe the other side of the market. Spending and repayment records inform the credit analysis, while interactive charts make the inputs easier to explore.',
+          '筹资者提供个人资料、财务状况与目标股价；投资者侧呈现已有组合和投资目标。消费与还款记录参与信用分析，交互图表帮助双方理解输入信息，为后续定价和匹配建立基础。',
+        ),
+      },
+      {
+        title: b(
+          'Connect reference pricing and matching',
+          '连接参考定价与交易匹配',
+        ),
+        description: b(
+          'The described pricing process uses historical transactions and AI-assisted analysis to suggest prices and quantities. Bid prices, quantities and supply-and-demand relationships then support matching. These outputs are decision references rather than guaranteed returns.',
+          '定价流程参考历史交易，并结合AI辅助分析，形成价格与发行数量建议。双方提交的意愿价格、数量和供需关系进一步支持匹配，使分析结果进入交易决策；这些结果是参考信息，并非收益承诺。',
+        ),
+      },
+      {
+        title: b(
+          'Bring the workflow into a modular platform',
+          '形成模块化产品流程',
+        ),
+        description: b(
+          'Portfolio statistics and a risk assistant extend the experience beyond issuance. The publication describes modular microservices, distributed-ledger payments and two-factor authentication: distinct concerns that connect analysis, transaction records and account access within the prototype design.',
+          '发行之外，组合统计与风险助手继续支持用户管理投资。专刊中的模块化微服务、分布式账本支付和双因素认证，分别对应服务组织、交易记录与账户访问，让分析能力与产品流程相衔接。',
+        ),
+      },
+    ],
     evidenceUrl: `${publication}#page=22`,
     evidenceLabel: b(
       'Project description and original illustration · PDF p22 / printed p15',
@@ -102,9 +134,35 @@ export const projectStudies: Record<string, ProjectStudy> = {
       ),
     ],
     technical: b(
-      'The publication describes PCA ranking, TF-IDF topic extraction, Word2Vec recommendations, Spark and MongoDB, and Hyperledger-based contract workflows.',
-      '专刊提及PCA排序、TF-IDF主题提取、Word2Vec推荐、Spark与MongoDB，以及基于Hyperledger的合约流程。',
+      'Dragon Search combines research retrieval, semantic analysis and collaboration workflows. Its technical design turns a search result into a starting point for discovering people, topics and potential research relationships.',
+      'Dragon Search将文献检索、语义分析与合作流程结合起来，让一次搜索不止于返回结果，还能继续发现相关学者、研究主题与合作联系。',
     ),
+    technicalSteps: [
+      {
+        title: b('Refine a query through feedback', '通过反馈逐步细化检索'),
+        description: b(
+          'Fuzzy search and content suggestions help users begin with an incomplete question. Citation and recency weighting allow the scoring to be adjusted; the search–results–feedback cycle then narrows the exploration toward more relevant work.',
+          '模糊搜索与内容建议帮助用户从尚不完整的问题出发。引用与时效权重支持调整结果评分，再通过“搜索—结果—反馈”的循环逐步缩小范围，使探索更贴近实际研究需求。',
+        ),
+      },
+      {
+        title: b(
+          'Connect researchers and research topics',
+          '连接学者与研究主题',
+        ),
+        description: b(
+          'The publication describes PCA for researcher ranking, TF-IDF for topic keywords and Word2Vec for related-word and topic recommendations. Spark and MongoDB support the data-processing design; network visualization brings these relationships into an exploratory interface.',
+          '专刊以PCA支持学者排序、TF-IDF提取主题关键词、Word2Vec生成相关词和主题推荐，并使用Spark与MongoDB组织数据处理。网络可视化将这些关联呈现在界面中，帮助用户沿着学者与主题继续探索。',
+        ),
+      },
+      {
+        title: b('Extend discovery into collaboration', '让研究发现延伸到合作'),
+        description: b(
+          'Hyperledger-based agreement workflows support sending, receiving and signing researcher contracts. Alongside a dual-web-server load-balancing design, this extends the prototype from information retrieval toward managing a potential research collaboration.',
+          '基于Hyperledger的协议流程支持研究合作合约的发送、接收与签署，双Web服务器负载均衡则服务于系统组织。由此，原型把信息发现与后续合作流程连接起来，而不只是一个文献检索页面。',
+        ),
+      },
+    ],
     evidenceUrl: `${publication}#page=38`,
     evidenceLabel: b(
       'Project description and original illustration · PDF p38 / printed p31',
@@ -145,9 +203,38 @@ export const projectStudies: Record<string, ProjectStudy> = {
       ),
     ],
     technical: b(
-      'PIE combined surrogate models, LIME, partial-dependence plots and Shapley values. The architecture described a content-delivery network, multi-region failover and microservices, with distributed-ledger trust mechanisms. These describe the prototype design, not measured investment performance.',
-      'PIE结合代理模型、LIME、部分依赖图与Shapley值。架构设计包括内容分发网络、多地区故障切换与微服务，并引入分布式账本信任机制。这些属于原型方案，不代表经过验证的投资收益。',
+      'Pisces places an explanation layer between a predictive model and its user. The Pisces Explanation Engine (PIE) connects the forecast, the factors behind it and an interface for exploring those factors.',
+      'Pisces在预测模型与使用者之间加入解释层。Pisces Explanation Engine（PIE）将预测结果、影响因素与交互界面连接起来，让投资者进一步理解模型为何给出这样的判断。',
     ),
+    technicalSteps: [
+      {
+        title: b('Explain model behaviour', '解释模型的判断过程'),
+        description: b(
+          'Surrogate models approximate complex predictions with a more interpretable model. LIME examines local behaviour by perturbing an input; partial-dependence plots examine how selected features relate to predictions, while Shapley values describe feature contributions.',
+          '代理模型以更易解释的形式近似复杂预测；LIME通过扰动输入观察局部行为，部分依赖图展示特定特征与预测的关系，Shapley值用于描述特征贡献。多种解释方式共同支持对模型行为的理解。',
+        ),
+      },
+      {
+        title: b(
+          'Translate explanations into visual exploration',
+          '把解释结果变成可探索的图表',
+        ),
+        description: b(
+          'Interactive stock pages offer bar charts, beeswarm plots and partial-dependence views. Users can move beyond a single prediction number to inspect the factors involved and the patterns shown by the model, choosing the representation they find most useful.',
+          '股票页面提供条形图、蜂群图与部分依赖视图。用户不必只面对一个预测数字，而能查看相关因素及模型呈现的变化关系，并选择更便于自己理解的图表形式。',
+        ),
+      },
+      {
+        title: b(
+          'Connect models, services and subscriptions',
+          '连接模型服务与订阅市场',
+        ),
+        description: b(
+          'The prototype links model publishing and subscription with investor-facing analysis. Its architecture describes microservices, CDN delivery and multi-region failover, alongside distributed-ledger trust mechanisms. These are system-design choices, not evidence of investment returns.',
+          '原型将开发者的模型发布与订阅流程连接到投资者的分析界面。架构采用微服务、CDN分发与多地区故障切换，并引入分布式账本信任机制。这些构成平台设计，不代表模型收益已经得到验证。',
+        ),
+      },
+    ],
     evidenceUrl: `${publication}#page=48`,
     evidenceLabel: b(
       'Project description and original illustration · PDF p48 / printed p41',
@@ -183,9 +270,35 @@ export const projectStudies: Record<string, ProjectStudy> = {
       ),
     ],
     technical: b(
-      'The team worked with 183 variables and used domain knowledge and KNN for missing-data processing. The described modelling approach included XGBoost, CatBoost, LightGBM and two MLP variants, combined through stacking and five-fold cross-validation. The interface used responsive Bootstrap layouts.',
-      '团队围绕183个变量开展处理，使用领域知识与KNN处理缺失数据。建模方案包括XGBoost、CatBoost、LightGBM和两种MLP变体，结合Stacking与五折交叉验证；界面采用响应式Bootstrap布局。',
+      'Panda follows a path from data preparation to ensemble modelling and risk visualization. Data-quality, model-and-algorithm and risk-model modules connect the analytical process with an interface for monitoring enterprise risk.',
+      'Panda围绕“数据准备—集成建模—风险呈现”组织技术路径，通过数据质量、模型算法和风险模型三个模块，把后台分析连接到企业风险监测界面。',
     ),
+    technicalSteps: [
+      {
+        title: b(
+          'Prepare variables and compare feature sets',
+          '处理变量并比较特征方案',
+        ),
+        description: b(
+          'The team first examined the distributions and missingness of 183 variables. Domain knowledge and KNN informed imputation and transformation. Alternative feature sets combined different filtering choices with engineered operating indicators for comparison.',
+          '团队先检查183个变量的分布与缺失情况，结合领域知识和KNN进行填补与转换；再比较不同筛选方式和人工构建经营指标形成的特征组合，让后续建模建立在经过处理的数据之上。',
+        ),
+      },
+      {
+        title: b('Combine complementary learning models', '组合不同学习模型'),
+        description: b(
+          'XGBoost, CatBoost, LightGBM and two MLP variants modelled risk probabilities. Stacking combined model outputs, with five-fold cross-validation used in the ensemble process. The design considered both feature importance and the usefulness of the resulting risk assessment.',
+          '风险概率由XGBoost、CatBoost、LightGBM及两种MLP变体建模，再通过Stacking组合模型输出，并在集成过程中使用五折交叉验证。方案同时关注特征重要性与风险结果的可用性。',
+        ),
+      },
+      {
+        title: b('Make risk changes usable', '让风险变化能够被理解和跟踪'),
+        description: b(
+          'Early warnings, indicator views and risk-transition graphs turn analysis into a monitoring workflow. Configurable scenarios serve different users, while responsive Bootstrap layouts support access across devices. The focus is linking a risk assessment to continued observation and analysis.',
+          '风险预警、指标视图和风险转移图将分析结果转化为监测流程，可配置场景适配不同使用者，响应式Bootstrap布局支持跨设备访问。技术方案的重点是让风险评估能够被持续查看、跟踪和分析。',
+        ),
+      },
+    ],
     evidenceUrl: `${publication}#page=60`,
     evidenceLabel: b(
       'Panda project profile · PDF pp60–61 / printed pp53–54',
@@ -221,9 +334,39 @@ export const projectStudies: Record<string, ProjectStudy> = {
       ),
     ],
     technical: b(
-      'The published description establishes the emphasis on automation, privacy and visualization. It does not identify the algorithms, datasets or full system architecture.',
-      '已公开的作品介绍明确了自动化、隐私与可视化方向，未披露具体算法、数据集或完整系统架构。',
+      'Giraffe can be read as a workflow linking data preparation, automated risk modelling and visual review. Its published emphasis on privacy and data–model–result visualization suggests treating model development as a process that business and technical teams can examine together.',
+      '从作品亮点来看，Giraffe可以理解为连接数据准备、自动化风控建模与可视化审阅的工作流程。隐私保护和“数据—模型—结果”的多层展示，让业务与技术团队能够围绕同一过程展开讨论。',
     ),
+    technicalInterpretation: true,
+    technicalSteps: [
+      {
+        title: b('Create a clear modelling input', '整理清晰的建模输入'),
+        description: b(
+          'One design approach is to organize credit-related fields, missing values and data quality before modelling, while limiting access to sensitive information. Data visualization could help business users see the inputs and identify issues that need review.',
+          '一种设计思路是先整理信贷相关字段、缺失情况与数据质量，并对敏感信息的访问作区分。配合数据可视化，业务人员能够理解模型将使用什么信息，以及哪些问题需要进一步核查。',
+        ),
+      },
+      {
+        title: b(
+          'Make modelling a reviewable workflow',
+          '让自动化建模成为可审阅流程',
+        ),
+        description: b(
+          'An automated workflow could bring model configuration, training and evaluation into a consistent sequence. Comparable result views would help users examine alternative settings without requiring the business team to read implementation code.',
+          '自动化流程可以把模型配置、训练与评估组织为连续步骤，再以统一视图比较不同方案。这样既能减少重复操作，也能让业务团队在不阅读实现代码的情况下参与结果讨论。',
+        ),
+      },
+      {
+        title: b(
+          'Connect privacy and visual collaboration',
+          '结合隐私与可视化协作',
+        ),
+        description: b(
+          'A layered interface could separate sensitive records from model summaries and assessment results. Business users could review the conclusions, while modelling teams inspect the data and model views, supporting a more focused front-to-back-office conversation.',
+          '界面可区分敏感记录、模型摘要与风险结果的呈现层次：业务端关注结论，建模端查看数据与模型视图。围绕共同可见的结果展开沟通，是将隐私意识与跨团队协作结合的一种方式。',
+        ),
+      },
+    ],
     evidenceUrl: 'https://lab.swufe.edu.cn/info/1035/1020.htm',
     evidenceLabel: b(
       'SWUFE · Giraffe historical project review',
@@ -259,9 +402,42 @@ export const projectStudies: Record<string, ProjectStudy> = {
       ),
     ],
     technical: b(
-      'The HKU report describes detection, scoring and backtesting, without naming the models, data sources or scoring scale. Apollo is the team name; a separate product name is not published in the available report.',
-      '港大报道介绍了识别、评分与回测工作，未明确模型名称、数据来源或评分尺度。Apollo为团队名称，现有报道没有给出独立产品专名。',
+      'Apollo’s documented work links fake-news detection, financial-news scoring and backtesting. Read as a design pathway, these form three connected questions: is the information credible, what signal does it provide, and how does that signal behave when tested?',
+      'Apollo已介绍的工作包括虚假新闻识别、金融新闻评分与数据回测。沿着这三项亮点，可以将方案理解为三个相互衔接的问题：信息是否可信、它提供了什么信号，以及信号在检验中如何表现。',
     ),
+    technicalInterpretation: true,
+    technicalSteps: [
+      {
+        title: b(
+          'Organize the news and assess credibility',
+          '整理新闻并评估可信度',
+        ),
+        description: b(
+          'A practical design could start by organizing article text, timestamps and related entities, then applying a credibility assessment. Keeping the assessment alongside the original item would allow users to distinguish the news itself from the system’s judgement.',
+          '在设计层面，可先整理新闻正文、发布时间和相关对象，再开展可信度评估。将判断结果与原始新闻并列保留，便于使用者区分“新闻说了什么”与“系统如何判断这条信息”。',
+        ),
+      },
+      {
+        title: b(
+          'Turn analysis into comparable signals',
+          '把分析结果转化为可比较信号',
+        ),
+        description: b(
+          'The scoring stage could turn analysis into a consistent representation for comparing news items. Showing an explanation with each score, and allowing uncertain items to remain flagged, would make the signal easier to inspect rather than treating a number as a complete answer.',
+          '评分环节可把分析结果转化为统一形式，支持新闻之间的比较。分数旁同时呈现解释，并保留不确定信息的标记，能让使用者审阅信号的含义，而不是把一个数字当作完整结论。',
+        ),
+      },
+      {
+        title: b(
+          'Examine signals through time-aware backtesting',
+          '通过时间顺序回测检验信号',
+        ),
+        description: b(
+          'A sound evaluation design would replay news in publication order and compare the resulting signals with later observations. Keeping future information out of each decision point and reviewing failures separately would help distinguish a promising idea from an overstated result.',
+          '合理的评估设计可按发布时间回放新闻，将当时生成的信号与后续观察相比较。每个判断时点应排除未来信息，并单独复盘失效案例，帮助辨别方案的适用范围，而非只展示表现较好的结果。',
+        ),
+      },
+    ],
     evidenceUrl:
       'https://www.cs.hku.hk/news-events/news-and-announcements/20231106-chengdu80-pioneer-award-2023',
     evidenceLabel: b('HKU · Apollo team profile', '香港大学 · Apollo团队报道'),
@@ -291,9 +467,42 @@ export const projectStudies: Record<string, ProjectStudy> = {
       ),
     ],
     technical: b(
-      'The current record does not establish a complete technical architecture, public demo or repository. These fields remain open rather than being inferred from the challenge.',
-      '当前记录尚未明确完整技术架构、公开演示或代码仓库，不根据赛题推测这些信息。',
+      'The confirmed prototype addresses autonomous-vehicle insurance for a hypothetical insurer. A useful design interpretation is to connect driving scenarios, insurance-service decisions and a demonstrable user journey, rather than treating the challenge as only a pricing model.',
+      '已确认的原型围绕假设保险公司的自动驾驶汽车保险需求展开。就方案设计而言，可以把驾驶场景、保险服务决策与可演示的用户流程连接起来，而不只把赛题理解为一个定价模型。',
     ),
+    technicalInterpretation: true,
+    technicalSteps: [
+      {
+        title: b(
+          'Define the scenario and its assumptions',
+          '明确场景与分析假设',
+        ),
+        description: b(
+          'A prototype could begin by defining the vehicle-use scenario, the insurer’s decision and the information available at that point. Making assumptions explicit would help distinguish an exploratory insurance concept from an assessment based on validated operating data.',
+          '原型设计可先界定车辆使用场景、保险公司需要作出的决策，以及当时可获得的信息。明确这些假设，能够区分探索性的保险构想与基于真实运营数据完成的评估。',
+        ),
+      },
+      {
+        title: b(
+          'Connect information with service decisions',
+          '把信息连接到保险服务决策',
+        ),
+        description: b(
+          'A service flow could show how submitted information informs a proposed assessment or service response, with the reasons visible to the user. Alternative scenarios could then be compared using the same presentation, making the concept easier to discuss and refine.',
+          '服务流程可展示用户提交的信息如何支持评估或服务响应，并说明相应理由。不同场景采用一致的呈现方式进行比较，有助于把抽象的保险构想转化为能够讨论和迭代的方案。',
+        ),
+      },
+      {
+        title: b(
+          'Demonstrate and test the complete journey',
+          '演示并检验完整使用流程',
+        ),
+        description: b(
+          'For an 80-hour prototype, a bounded journey from input to explanation would make the concept tangible. Scenario walkthroughs could test whether the flow is understandable and whether exception cases need revision, without implying actuarial validation or a deployed insurance product.',
+          '在80小时原型阶段，可以用一条从信息输入到结果解释的完整路径呈现构想，再通过场景走查检验流程是否清晰、异常情况是否需要调整。这类演示不等同于精算验证或已经上线的保险产品。',
+        ),
+      },
+    ],
     evidenceUrl:
       'https://www.cs.queensu.ca/news/2024/11/26/data-queens-brings-home-1st-place-trophy-from-the-fintech-hackathon-in-china/',
     evidenceLabel: b(
