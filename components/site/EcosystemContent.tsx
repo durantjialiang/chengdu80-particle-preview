@@ -14,7 +14,6 @@ import {
   impactStories,
   sceneImageIds,
   featuredProjectIds,
-  schoolRequests,
   historicalPeople,
   industryConnections,
   ficIndustry,
@@ -52,14 +51,14 @@ function Section({
   children,
 }: {
   id: string;
-  eyebrow: Localized;
+  eyebrow?: Localized;
   title: Localized;
   children: ReactNode;
 }) {
   const { t } = useSiteLanguage();
   return (
     <section id={id} className={styles.section} data-particle-reading-region>
-      <p className={styles.eyebrow}>{t(eyebrow)}</p>
+      {eyebrow && <p className={styles.eyebrow}>{t(eyebrow)}</p>}
       <h2>{t(title)}</h2>
       {children}
     </section>
@@ -93,16 +92,22 @@ export function HeroEssentials() {
     </div>
   );
 }
-function HostPair() {
+function HostPair({ historical = false }: { historical?: boolean }) {
   const { t } = useSiteLanguage();
   return (
     <div className={styles.partners}>
       {(['swufe', 'jiaozi'] as const).map((id) => (
         <div key={id} className={styles.partner}>
-          <small>{t(b('JOINT HOST', '联合主办'))}</small>
+          <small>
+            {t(
+              historical
+                ? b('Joint hosts · 2023 / 2024', '联合主办 · 2023 / 2024')
+                : b('JOINT HOST', '联合主办'),
+            )}
+          </small>
           <strong>
             {t(
-              id === 'jiaozi'
+              historical || id === 'jiaozi'
                 ? organizations[id].name
                 : organizations[id].short,
             )}
@@ -167,11 +172,40 @@ function Impact({ full = false }: { full?: boolean }) {
             <span className={styles.date}>{story.year}</span>
             <h3>{t(story.title)}</h3>
             <p>{t(story.description)}</p>
-            <EvidenceLinks ids={[story.source]} />
+            <a
+              className={styles.link}
+              href={ecosystemSources[story.source].url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t(story.cta)} ↗
+            </a>
           </article>
         ))}
       </div>
-      {full && <EditorialMedia ids={['cd80-2024-05']} single />}
+      {full && (
+        <EditorialMedia
+          ids={['cd80-2024-05']}
+          single
+          caption={
+            <>
+              {t(
+                b(
+                  'Launch of the Chengdu 80 Incubator, 2024.',
+                  '成都八零孵化器启动仪式，2024年。',
+                ),
+              )}{' '}
+              <a
+                href={ecosystemSources.report2024.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t(b('SWUFE News', '西财新闻网'))} ↗
+              </a>
+            </>
+          }
+        />
+      )}
     </>
   );
 }
@@ -341,7 +375,7 @@ export function HomeAfterNetwork() {
         <Impact />
         <p>
           <a className={styles.link} href={href('/partners/')}>
-            {t(b('Partners & impact', '合作与成果'))} →
+            {t(b('Partnerships & initiatives', '合作与倡议'))} →
           </a>
         </p>
       </Section>
@@ -444,47 +478,37 @@ export function AboutPage() {
           '以学术为根，与产业相连。',
         )}
       >
-        <HostPair />
+        <HostPair historical />
         <p className={styles.introCopy}>
           {t(
             b(
-              'Historical organization has evolved by edition. SWUFE and Chengdu Jiaozi were joint hosts in 2023 and 2024; the 2020 report also lists UC Berkeley CDAR as a joint host. These dated roles are not a 2026 organizer list.',
-              '组织关系随届次发展。2023、2024年由西财与成都交子联合主办；2020报道还列明伯克利CDAR为联合主办方。这些带年份的角色不代表2026组织名单。',
+              'SWUFE and Chengdu Jiaozi jointly hosted the competition in 2023 and 2024. UC Berkeley CDAR was also a co-host of the 2020 edition.',
+              '西财与成都交子联合主办2023、2024年赛事。伯克利CDAR也是2020年赛事的联合主办方。',
             ),
           )}
         </p>
         <EvidenceLinks ids={['report2020', 'report2023', 'report2024']} />
         <p>
           <a className={styles.link} href={href('/partners/')}>
-            {t(b('Explore roles by edition', '按年份了解组织角色'))} →
+            {t(b('Explore the partnerships', '了解赛事合作'))} →
           </a>
         </p>
       </Section>
       <Section
         id="fic"
         eyebrow={b('FIC', '金融科技创新中心')}
-        title={b(
-          'Research and exchange, with a distinct identity.',
-          '研究与交流，各有其位。',
-        )}
+        title={b('Fintech Innovation Center', '金融科技创新中心')}
       >
         <p className={styles.introCopy}>
           {t(
             b(
-              'The historical FIC introduction describes a platform for academic and industry exchange. The 2020 event report names FIC and the Chengdu Fintech Association as delivery organizations. FIC, the Jiaozi Fintech Innovation Research Institute and Jiaozi Financial Dreamworks are distinct organizations.',
-              '旧官网介绍了FIC的学术与产业交流背景。2020赛事报道列明FIC与成都市金融科技协会承办。FIC、交子金融科技创新研究院、交子金融梦工场是不同主体，不应合并为同一家机构。',
+              'Established in May 2019 by SWUFE and the Chengdu Municipal Government, FIC connects academic research and industry through forums and exchange. FIC and the Chengdu Fintech Association delivered the third Chengdu 80 in 2020.',
+              'FIC于2019年5月由西财与成都市政府共同打造，通过论坛与交流连接学术研究和产业。2020年，FIC与成都市金融科技协会共同承办第三届成都八零。',
             ),
           )}
         </p>
         <EvidenceLinks ids={['fic', 'report2020']} />
-        <p className={styles.introCopy}>
-          {t(
-            b(
-              'The archived introduction dates the platform’s establishment to May 2019 and describes it as jointly built by SWUFE and the Chengdu Municipal Government. The forum and research network is broader than the competition roster.',
-              '旧介绍明确平台于2019年5月成立，由西财与成都市政府共同打造。论坛与研究交流网络，比赛事参赛和合作名单的范围更广。',
-            ),
-          )}
-        </p>
+        <FicExchangeNetwork />
       </Section>
       <Section
         id="people"
@@ -501,8 +525,8 @@ export function AboutPage() {
             <p>
               {t(
                 b(
-                  'The old committee page contains entries for Qing Li, Jingmei Zhao and Zhilong Xie. It is retained as a historical source, not a confirmed current committee or judges list.',
-                  '旧官网委员会页面公开了Qing Li、Jingmei Zhao、Zhilong Xie的条目。这里保留历史来源入口，不将其作为已确认的当届委员会或评委名单。',
+                  'Explore the committee from past editions, including Qing Li, Jingmei Zhao and Zhilong Xie.',
+                  '了解历届组织委员会成员，包括Qing Li、Jingmei Zhao与Zhilong Xie。',
                 ),
               )}
             </p>
@@ -513,8 +537,8 @@ export function AboutPage() {
             <p>
               {t(
                 b(
-                  'The fifth-anniversary publication records previous judges and their affiliations at the time. See PDF page 67 (printed page 60); current appointments and portrait reuse require separate confirmation.',
-                  '五周年专刊记录历届评委及当时机构职务，见PDF第67页（书内第60页）。当届任命和肖像复用需另行确认。',
+                  'Meet the judges from past editions and learn about their professional backgrounds in the fifth-anniversary publication.',
+                  '在五周年专刊中了解历届评委及其当时的专业背景。',
                 ),
               )}
             </p>
@@ -599,150 +623,197 @@ function InternationalPartners() {
   );
   /* oxlint-enable next/no-img-element */
 }
+export function FicExchangeNetwork() {
+  const { t } = useSiteLanguage();
+  return (
+    <div id="fic-network" className={styles.exchangeNetwork}>
+      <h3>{t(b('The wider FIC exchange network', 'FIC更广泛的交流网络'))}</h3>
+      <div className={styles.exchangeGrid}>
+        {ficIndustry.map((company) => (
+          <a
+            key={company.id}
+            className={styles.exchangeCard}
+            data-fic-company={company.id}
+            href={company.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${t(company.name)} · ${t(b('Official website (opens in a new tab)', '官网（新标签页打开）'))}`}
+          >
+            <span className={styles.exchangeLogo}>
+              {/* Static Vite export: preserve original local marks without an image-proxy route. */}
+              {/* oxlint-disable-next-line next/no-img-element */}
+              <img
+                src={company.logo.src}
+                alt=""
+                width={company.logo.width}
+                height={company.logo.height}
+                style={{ maxWidth: company.logo.width }}
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
+            <h4 className={styles.exchangeName}>
+              {t(company.name)}
+              <ArrowUpRight aria-hidden="true" />
+            </h4>
+          </a>
+        ))}
+      </div>
+      <EvidenceLinks ids={['fic']} />
+    </div>
+  );
+}
 export function PartnersPage() {
   const { t, href } = useSiteLanguage();
   return (
     <>
-      <p className={site.kicker}>{t(b('PARTNERS & IMPACT', '合作与成果'))}</p>
+      <p className={site.kicker}>{t(b('PARTNERSHIPS', '合作与倡议'))}</p>
       <h1>
-        {t(
-          b(
-            'A Chengdu collaboration.\nA wider horizon.',
-            '从成都携手，\n向更广阔处生长。',
-          ),
-        )}
+        {t(b('The partnerships behind Chengdu 80', '成都八零背后的合作力量'))}
       </h1>
       <p className={site.lead}>
         {t(
           b(
-            'SWUFE and Chengdu Jiaozi connect universities and financial institutions through Chengdu 80. Their collaboration extends beyond the competition, with the launch of FINTECH80x and the Chengdu 80 incubator.',
-            '西财与成都交子携手高校和金融机构，让全球团队相聚成都。从共同办赛，到FINTECH80x计划与成都八零孵化器的启动，合作不断延伸到赛场之外。',
+            'Chengdu 80 brings university teams together with researchers and financial-sector professionals to address practical fintech challenges. Southwestern University of Finance and Economics and Chengdu Jiaozi Financial Holding Group have jointly hosted multiple editions of the competition.',
+            '成都八零汇聚高校团队、研究者与金融行业专业人士，共同探索真实的金融科技问题。西南财经大学与成都交子金融控股集团已联合主办多届赛事。',
           ),
         )}
       </p>
-      <HostPair />
+      <HostPair historical />
       <InternationalPartners />
-      <Section
-        id="roles"
-        eyebrow={b('PARTNERSHIP MILESTONES', '合作里程碑')}
-        title={b(
-          'From a shared competition to a shared innovation ecosystem.',
-          '从共同办赛，到共建创新生态。',
-        )}
-      >
+      <Section id="roles" title={b('Partnership milestones', '合作里程碑')}>
         <div className={styles.timeline}>
-          {partnerEditions.map((edition) => (
-            <article key={edition.year}>
-              <span className={styles.year}>{edition.year}</span>
-              <div>
-                <h3>{t(edition.milestone.title)}</h3>
-                <p>{t(edition.milestone.summary)}</p>
-                <p className={styles.milestoneOrganizations}>
-                  {t(b('Joint hosts', '联合主办'))}：
-                  {edition.hosts
-                    .map((id) => t(organizations[id].name))
-                    .join(' / ')}
-                </p>
-                {edition.deliveredBy.length > 0 && (
-                  <p className={styles.milestoneOrganizations}>
-                    {t(b('Delivery organizations', '承办'))}：
-                    {edition.deliveredBy
-                      .map((id) => t(organizations[id].name))
-                      .join(' / ')}
-                  </p>
-                )}
-                {edition.coOrganizers && (
-                  <p className={styles.milestoneOrganizations}>
-                    {t(b('Co-organizers', '协办'))}：
-                    {edition.coOrganizers.map(t).join(' / ')}
-                  </p>
-                )}
-                <EvidenceLinks ids={[edition.source]} />
-              </div>
-            </article>
-          ))}
-        </div>
-        <div className={styles.notice}>
-          <p>
-            {t(
-              b(
-                'The 2026 partner lineup will be announced separately.',
-                '2026年合作机构名单将另行公布。',
-              ),
-            )}
-          </p>
+          {partnerEditions.map((edition) => {
+            const initiative = impactStories.find(
+              (story) => Number(story.year) === edition.year,
+            );
+            return (
+              <article key={edition.year}>
+                <span className={styles.year}>{edition.year}</span>
+                <div>
+                  <h3>{t(edition.milestone.title)}</h3>
+                  {initiative ? (
+                    <a className={styles.link} href={'#' + initiative.id}>
+                      {t(b('Explore the initiative', '了解这项倡议'))} ↓
+                    </a>
+                  ) : (
+                    <>
+                      <p>{t(edition.milestone.summary)}</p>
+                      <details className={styles.roleDetails}>
+                        <summary>
+                          {t(b('Organizers for this edition', '本届组织机构'))}
+                        </summary>
+                        <p className={styles.milestoneOrganizations}>
+                          {t(b('Joint hosts', '联合主办'))}：
+                          {edition.hosts
+                            .map((id) => t(organizations[id].name))
+                            .join(' / ')}
+                        </p>
+                        {edition.deliveredBy.length > 0 && (
+                          <p className={styles.milestoneOrganizations}>
+                            {t(b('Delivery organizations', '承办'))}：
+                            {edition.deliveredBy
+                              .map((id) => t(organizations[id].name))
+                              .join(' / ')}
+                          </p>
+                        )}
+                        {edition.coOrganizers && (
+                          <p className={styles.milestoneOrganizations}>
+                            {t(b('Co-organizers', '协办'))}：
+                            {edition.coOrganizers.map(t).join(' / ')}
+                          </p>
+                        )}
+                      </details>
+                      <a
+                        className={styles.link}
+                        href={ecosystemSources[edition.source].url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {t(b('Read the event report', '阅读赛事报道'))} ↗
+                      </a>
+                    </>
+                  )}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </Section>
-      <Section
-        id="industry"
-        eyebrow={b('ACADEMIA & INDUSTRY', '学术与产业联系')}
-        title={b('More than a competition stage.', '不止于一场比赛。')}
-      >
+      <Section id="industry" title={b('Industry participation', '产业参与')}>
         <p className={styles.introCopy}>
           {t(
             b(
-              'Chengdu Jiaozi Financial Holding Group connects the story to the city’s financial sector. UC Berkeley CDAR’s 2020 role belongs to a research center; it is distinct from Berkeley student teams in participation records. FIC and the Chengdu Fintech Association have their own delivery and exchange roles.',
-              '成都交子金融控股集团让赛事与城市金融产业产生连接。伯克利CDAR在2020年的组织角色属于研究中心，与伯克利学生团队的参赛记录不同；FIC和成都市金融科技协会也分别具有承办与交流角色。',
+              'At the 2024 awards ceremony, representatives from Hundsun and Swiss Re presented awards to competing teams.',
+              '在2024年颁奖典礼上，恒生电子与瑞士再保险的代表为参赛团队颁奖。',
             ),
           )}
         </p>
-        <EvidenceLinks ids={['report2020', 'fic']} />
-        <div className={styles.featureList}>
-          {industryConnections.map((item) => (
-            <article className={styles.feature} key={item.id}>
-              <span className={styles.date}>{t(item.context)}</span>
-              <h3>{t(item.name)}</h3>
-              <p>{t(item.detail)}</p>
-              <EvidenceLinks ids={[item.source]} />
-            </article>
-          ))}
+        <h3>
+          {t(
+            b('Industry leaders at the 2024 awards', '2024颁奖现场的产业嘉宾'),
+          )}
+        </h3>
+        <div className={styles.twoColumns}>
+          {industryConnections.flatMap((item) =>
+            item.person && item.role
+              ? [
+                  <article className={styles.feature} key={item.id}>
+                    <h3>{t(item.person)}</h3>
+                    <p>{t(item.role)}</p>
+                  </article>,
+                ]
+              : [],
+          )}
         </div>
-        <h3>{t(b('The wider FIC exchange network', 'FIC更广泛的交流网络'))}</h3>
-        <p>
+        <a
+          className={styles.link}
+          href={ecosystemSources.report2024.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t(b('Read the 2024 event report', '阅读2024赛事报道'))} ↗
+        </a>
+      </Section>
+      <Section id="impact" title={b('Beyond the 80 Hours', '80小时之后')}>
+        <p className={styles.introCopy}>
           {t(
             b(
-              'The archived FIC introduction names the following institutions in its forum and academic–industry resource network. This is not a Chengdu 80 sponsor list or a confirmed 2026 partner list.',
-              '旧FIC介绍在论坛与产学资源网络中提及以下机构。它们不被自动列为成都八零赞助商，也不是2026确认合作名单。',
+              'FINTECH80x and the Chengdu 80 Incubator mark two steps in extending collaboration beyond the competition.',
+              'FINTECH80x计划与成都八零孵化器，见证了合作从赛事向更广泛活动与项目孵化的延伸。',
+            ),
+          )}
+        </p>
+        <Impact full />
+      </Section>
+      <Section id="explore-work" title={b('Explore the work', '探索历届作品')}>
+        <p className={styles.introCopy}>
+          {t(
+            b(
+              'Discover the projects and university teams from past editions of Chengdu 80.',
+              '了解历届成都八零的参赛作品与高校团队。',
             ),
           )}
         </p>
         <div className={site.pills}>
-          {ficIndustry.map((name) => (
-            <span key={name.en} className={site.primary}>
-              {t(name)}
-            </span>
-          ))}
+          <a className={site.primary} href={href('/winners/')}>
+            {t(b('Explore past projects', '探索历届作品'))} →
+          </a>
+          <a className={styles.link} href={href('/history/')}>
+            {t(b('Browse past editions', '浏览历届赛事'))} →
+          </a>
         </div>
-        <EvidenceLinks ids={['fic']} />
-      </Section>
-      <Section
-        id="impact"
-        eyebrow={b('BEYOND THE 80 HOURS', '80小时之后')}
-        title={b(
-          'Milestones, with room for the next chapter.',
-          '记录合作的起点，也期待下一章。',
-        )}
-      >
-        <Impact full />
-        <div className={styles.notice}>
-          <p>
-            {t(
-              b(
-                'Incubator operations, investment outcomes, placements and project follow-up have not been established in the current sources. We do not promise funding, jobs or incubation places.',
-                '现有来源尚未明确孵化器后续运行、投资成果、就业与项目进展。本页不承诺投资、就业或孵化名额。',
-              ),
-            )}
-          </p>
-        </div>
-        <a className={styles.link} href={href('/media/#requests')}>
+        <p className={styles.editionStatus}>
           {t(
             b(
-              'Information needed for the next edition',
-              '当届与后续资料待补清单',
+              'Details of the 2026 edition will be published on the Competition page.',
+              '2026届赛事详情将在参赛信息页公布。',
             ),
           )}{' '}
-          →
-        </a>
+          <a className={styles.link} href={href('/competition/')}>
+            {t(b('Competition guide', '参赛信息'))} →
+          </a>
+        </p>
       </Section>
     </>
   );
@@ -762,59 +833,81 @@ export function MediaPage() {
   const resources: {
     id: EcosystemSourceId;
     kind: Localized;
+    title: Localized;
     note: Localized;
+    publisher: Localized;
+    cta: Localized;
   }[] = [
     {
       id: 'anniversary',
       kind: b('PUBLICATION', '专刊'),
+      title: b('Chengdu 80: the first five years', '成都八零五周年专刊'),
       note: b(
-        'Five years of challenges, projects and people. View or download the original PDF on the official site; not a licensed redistribution package.',
-        '五年赛题、作品与人物。前往旧官网浏览或下载原始PDF；本站不重新打包分发完整专刊。',
+        'Challenges, projects and people from the first five editions of Chengdu 80.',
+        '回顾前五届成都八零的赛题、作品与人物。',
       ),
+      publisher: b('Chengdu 80 · SWUFE', '成都八零 · 西南财经大学'),
+      cta: b('View the publication (PDF)', '阅读专刊（PDF）'),
     },
     {
       id: 'rules',
-      kind: b('RULES', '规则'),
+      kind: b('HISTORICAL RULES', '历届规则'),
+      title: b('Competition rules', '赛事规则'),
       note: b(
         'Historical rules for reference, not the 2026 rulebook.',
         '历史规则参考，不作为2026规则。',
       ),
+      publisher: b('Chengdu 80 · SWUFE', '成都八零 · 西南财经大学'),
+      cta: b('View historical rules', '查看历届规则'),
     },
     {
       id: 'report2024',
       kind: b('2024 NEWS', '2024新闻'),
+      title: b('The seventh Chengdu 80', '第七届成都八零'),
       note: b(
-        'The seventh edition, automotive insurance challenge and incubator launch. Published 2024-10-31.',
-        '第七届、汽车保险赛题与孵化器启动。发布于2024-10-31。',
+        'The automotive insurance challenge, university teams and the incubator launch.',
+        '汽车保险赛题、高校团队与孵化器启动。',
       ),
+      publisher: b(
+        'SWUFE News · 31 October 2024',
+        '西财新闻网 · 2024年10月31日',
+      ),
+      cta: b('Read the article', '阅读报道'),
     },
     {
       id: 'report2023',
       kind: b('2023 NEWS', '2023新闻'),
+      title: b('The sixth Chengdu 80', '第六届成都八零'),
       note: b(
-        'The sixth edition and its academic–industry collaboration. Published 2023-11-06.',
-        '第六届赛事及产学合作。发布于2023-11-06。',
+        'The financial news challenge and academic–industry participation.',
+        '金融新闻赛题与学界、产业界的赛事参与。',
       ),
+      publisher: b(
+        'SWUFE School of Finance · 6 November 2023',
+        '西财金融学院 · 2023年11月6日',
+      ),
+      cta: b('Read the article', '阅读报道'),
     },
     {
       id: 'report2020',
       kind: b('2020 NEWS', '2020新闻'),
+      title: b('The third Chengdu 80', '第三届成都八零'),
       note: b(
-        'The third edition and its joint organizers. Published 2020-11-02.',
-        '第三届及联合组织机构。发布于2020-11-02。',
+        'The third edition and its joint organizers.',
+        '第三届赛事及联合组织机构。',
       ),
+      publisher: b(
+        'SWUFE School of Finance · 2 November 2020',
+        '西财金融学院 · 2020年11月2日',
+      ),
+      cta: b('Read the article', '阅读报道'),
     },
   ];
   return (
     <>
       <p className={site.kicker}>{t(b('MEDIA & RESOURCES', '媒体与资源'))}</p>
       <h1>
-        {t(
-          b(
-            'The record, in words and images.',
-            '用文字与影像，\n留住每一次相聚。',
-          ),
-        )}
+        {t(b('Chengdu 80 in words and photographs', '文字与影像中的成都八零'))}
       </h1>
       <p className={site.lead}>
         {t(
@@ -824,35 +917,30 @@ export function MediaPage() {
           ),
         )}
       </p>
-      <Section
-        id="resources"
-        eyebrow={b('READ & EXPLORE', '阅读与探索')}
-        title={b('From the original sources.', '从原始记录出发。')}
-      >
+      <Section id="resources" title={b('News & publications', '新闻与出版物')}>
         <div className={styles.resourceList}>
           {resources.map((resource) => (
             <article key={resource.id}>
               <span className={styles.date}>{t(resource.kind)}</span>
               <div>
-                <h3>{t(ecosystemSources[resource.id].title)}</h3>
+                <h3>{t(resource.title)}</h3>
                 <p>{t(resource.note)}</p>
+                <p className={styles.resourcePublisher}>
+                  {t(resource.publisher)}
+                </p>
               </div>
               <a
                 href={ecosystemSources[resource.id].url}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {t(b('Open source', '打开原始资源'))} ↗
+                {t(resource.cta)} ↗
               </a>
             </article>
           ))}
         </div>
       </Section>
-      <Section
-        id="photos"
-        eyebrow={b('PHOTO LIBRARY', '影像库')}
-        title={b('Real teams. Real moments.', '真实的团队，真实的瞬间。')}
-      >
+      <Section id="photos" title={b('Photo archive', '照片档案')}>
         <div className={site.filters}>
           <label>
             {t(b('Year', '年份'))}
@@ -883,9 +971,8 @@ export function MediaPage() {
             {t(b('Clear filters', '清除筛选'))}
           </button>
         </div>
-        <output>
-          {images.length}{' '}
-          {t(b('approved archive photographs', '张已获准公开的档案照片'))}
+        <output aria-live="polite">
+          {images.length} {t(b('photographs', '张照片'))}
         </output>
         {images.length ? (
           <EditorialMedia ids={images.map((image) => image.id)} />
@@ -894,36 +981,16 @@ export function MediaPage() {
             {t(b('No photographs match these filters.', '此筛选下暂无照片。'))}
           </p>
         )}
-        <p>
-          {t(
-            b(
-              'Permission for this website does not grant unrestricted third-party reuse. For other uses, consult the original publisher and relevant rights holders. No cleared video is available in this collection yet.',
-              '本站获准展示不等于第三方可以任意转载。其他使用请联系原发布方及相关权利人。目前尚无已核验并获准使用的视频。',
-            ),
-          )}
-        </p>
       </Section>
-      <Section
-        id="requests"
-        eyebrow={b('FOR THE NEXT CHAPTER', '下一阶段资料')}
-        title={b('What is still to be confirmed.', '需要学校补充的资料。')}
-      >
+      <Section id="usage" title={b('Media use', '素材使用说明')}>
         <p className={styles.introCopy}>
           {t(
             b(
-              'The historical archive remains available while current information is being confirmed. The month of October 2026 was supplied by the project owner; the exact schedule and current contacts await official confirmation.',
-              '历史档案继续开放，以下当届资料集中待补。2026年10月由项目负责人提供，准确日程与有效联系方式待正式确认。',
+              'Photographs are displayed here with permission. For republication or other uses, contact the original publisher and relevant rights holders. Publication links open the original files on their publishers’ websites.',
+              '本站照片已获准展示。如需转载或用于其他用途，请联系原发布方及相关权利人。专刊链接打开原发布方网站上的文件。',
             ),
           )}
         </p>
-        <div className={styles.featureList}>
-          {schoolRequests.map((request) => (
-            <article className={styles.feature} key={request.id}>
-              <h3>{t(request.title)}</h3>
-              <p>{t(request.text)}</p>
-            </article>
-          ))}
-        </div>
       </Section>
     </>
   );

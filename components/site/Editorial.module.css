@@ -6,6 +6,7 @@
   color: #e5eef5;
 }
 .section {
+  scroll-margin-top: 100px;
   padding: 84px 0;
   border-top: 1px solid #a6cce026;
 }
@@ -188,6 +189,78 @@
   width: 22px;
   height: 22px;
 }
+.exchangeNetwork {
+  margin-top: 48px;
+  scroll-margin-top: 100px;
+}
+.exchangeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin: 28px 0;
+}
+.exchangeCard {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #a4c8df30;
+  background: #091724e8;
+  color: #e5eef5;
+  text-decoration: none;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+.exchangeCard:hover {
+  border-color: #9bc8ed;
+  transform: translateY(-3px);
+}
+.exchangeCard:focus-visible {
+  outline: 2px solid #9bc8ed;
+  outline-offset: 5px;
+}
+.exchangeLogo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 12 / 5;
+  padding: 20px;
+  background: #fff;
+}
+.exchangeLogo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 100px;
+  object-fit: contain;
+}
+.exchangeName {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 22px 0 0;
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+.exchangeName svg {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: #9bc8ed;
+}
+@media (max-width: 960px) {
+  .exchangeGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 480px) {
+  .exchangeGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 @media (max-width: 760px) {
   .institutionGrid {
     grid-template-columns: minmax(0, 1fr);
@@ -202,6 +275,12 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .exchangeCard {
+    transition: none;
+  }
+  .exchangeCard:hover {
+    transform: none;
+  }
   .institutionCard {
     transition: none;
   }
@@ -325,6 +404,39 @@
   margin-bottom: 14px;
 }
 .timeline p {
+  margin-top: 12px;
+  max-width: 68ch;
+}
+.roleDetails {
+  margin: 20px 0;
+  font-size: 14px;
+  color: #abc6d6;
+}
+.roleDetails summary {
+  cursor: pointer;
+  padding: 8px 0;
+}
+.roleDetails summary:focus-visible {
+  outline: 2px solid #9bc8ed;
+  outline-offset: 3px;
+}
+.twoColumns > article {
+  min-width: 0;
+  scroll-margin-top: 100px;
+}
+.twoColumns > article > p {
+  max-width: 58ch;
+}
+.twoColumns > article > .link {
+  margin-top: 18px;
+}
+.section .editionStatus {
+  font-size: 14px;
+  margin-top: 36px;
+}
+.resourceList .resourcePublisher {
+  color: #8facbf;
+  font-size: 14px;
   margin-top: 12px;
 }
 .timeline .milestoneOrganizations {

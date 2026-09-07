@@ -2,7 +2,9 @@ import { currentCompetition } from './competition';
 import siteRoutes from './site-routes.json';
 
 // Keep future navigation labels without publishing links to unfinished routes.
-export const navigationReady = (href: string) => href === '/global-network' || siteRoutes.some(route => route.path === href + '/');
+export const navigationReady = (href: string) =>
+  href === '/global-network' ||
+  siteRoutes.some((route) => route.path === href + '/');
 
 export const navigation = [
   {
@@ -31,9 +33,9 @@ export const navigation = [
     description: 'University innovation across borders.',
   },
   {
-    label: 'Partners & Impact',
+    label: 'Partnerships',
     href: '/partners',
-    description: 'Historical collaboration and industry connections.',
+    description: 'The organizations and initiatives behind Chengdu 80.',
   },
 ] as const;
 
@@ -44,5 +46,7 @@ export const registration = {
   applicationUrl: null as string | null,
   status: 'Details to be announced',
   compactStatus: 'DETAILS TO FOLLOW',
-  description: currentCompetition.dateLabel.en + ' Eligibility and application arrangements will be published when confirmed.',
+  description:
+    currentCompetition.dateLabel.en +
+    ' Eligibility and application arrangements will be published when confirmed.',
 } as const;

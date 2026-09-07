@@ -12,7 +12,7 @@ const navChinese: Record<string, string> = {
   History: '历届赛事',
   'Projects & Awards': '作品与奖项',
   'Global Network': '高校网络',
-  'Partners & Impact': '合作与成果',
+  Partnerships: '合作与倡议',
 };
 export function LanguageSwitch() {
   const { language, setLanguage } = useSiteLanguage();
@@ -46,15 +46,26 @@ export function SiteNavigation({ embedded = false }: { embedded?: boolean }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const path = typeof location === 'undefined' ? '/' : location.pathname;
-  const links = navigation.map((item) => navigationReady(item.href) ? (
-    <a
-      key={item.href}
-      href={href(item.href + '/')}
-      aria-current={path.startsWith(item.href) ? 'page' : undefined}
-    >
-      {language === 'zh' ? navChinese[item.label] : item.label}
-    </a>
-  ) : <span key={item.href} className={styles.pendingNav} title={t(b('Page in preparation', '页面待完善'))}>{language === 'zh' ? navChinese[item.label] : item.label}<small>{t(b('Soon', '待完善'))}</small></span>);
+  const links = navigation.map((item) =>
+    navigationReady(item.href) ? (
+      <a
+        key={item.href}
+        href={href(item.href + '/')}
+        aria-current={path.startsWith(item.href) ? 'page' : undefined}
+      >
+        {language === 'zh' ? navChinese[item.label] : item.label}
+      </a>
+    ) : (
+      <span
+        key={item.href}
+        className={styles.pendingNav}
+        title={t(b('Page in preparation', '页面待完善'))}
+      >
+        {language === 'zh' ? navChinese[item.label] : item.label}
+        <small>{t(b('Soon', '待完善'))}</small>
+      </span>
+    ),
+  );
   return (
     <div className={styles.navigation} data-embedded={embedded}>
       <a href={href('/')} className={styles.wordmark}>
@@ -108,34 +119,38 @@ export function SiteFooter() {
   return (
     <footer className={styles.footer}>
       <div data-particle-reading-region className={styles.footerInner}>
-      <div>
-        <a className={styles.wordmark} href={href('/')}>
-          CHENGDU 80
-        </a>
-        <p>{t(currentCompetition.dateLabel)}</p>
-      </div>
-      <nav aria-label={t(b('Footer navigation', '页脚导航'))}>
-        {navigation.filter(n => navigationReady(n.href)).map((n) => (
-          <a key={n.href} href={href(n.href + '/')}>
-            {language === 'zh' ? navChinese[n.label] : n.label}
+        <div>
+          <a className={styles.wordmark} href={href('/')}>
+            CHENGDU 80
           </a>
-        ))}
-        <a href={href('/media/')}>{t(b('Media & Resources', '媒体与资源'))}</a>
-      </nav>
-      <div className={styles.footerBottom}>
-        <a href={href('/competition/#resources')}>
-          {t(b('Sources, resources & contact', '来源、资料与联系'))}
-        </a>
-        <span>
-          {t(
-            b(
-              'Preview · 2026 roster and rules unannounced',
-              '预览版 · 2026名单与规则待公布',
-            ),
-          )}
-        </span>
-        <LanguageSwitch />
-      </div>
+          <p>{t(currentCompetition.dateLabel)}</p>
+        </div>
+        <nav aria-label={t(b('Footer navigation', '页脚导航'))}>
+          {navigation
+            .filter((n) => navigationReady(n.href))
+            .map((n) => (
+              <a key={n.href} href={href(n.href + '/')}>
+                {language === 'zh' ? navChinese[n.label] : n.label}
+              </a>
+            ))}
+          <a href={href('/media/')}>
+            {t(b('Media & Resources', '媒体与资源'))}
+          </a>
+        </nav>
+        <div className={styles.footerBottom}>
+          <a href={href('/competition/#resources')}>
+            {t(b('Sources, resources & contact', '来源、资料与联系'))}
+          </a>
+          <span>
+            {t(
+              b(
+                'Preview · 2026 roster and rules unannounced',
+                '预览版 · 2026名单与规则待公布',
+              ),
+            )}
+          </span>
+          <LanguageSwitch />
+        </div>
       </div>
     </footer>
   );

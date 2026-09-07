@@ -373,8 +373,8 @@ export const editions: readonly Edition[] = [
       '第七届路演评选暨颁奖晚会于2024年10月30日举行；西财报道发表于10月31日。现有来源未给出精确开发起止时间。',
     ),
     recap: b(
-      'SWUFE and Chengdu Jiaozi Financial Holding Group hosted the event. The final evening took place at Sichuan Radio and Television. Teams addressed insurance product design in the autonomous-driving era, and the event launched the Chengdu 80 incubator.',
-      '西南财经大学与成都交子金融控股集团联合主办，路演评选与颁奖晚会在四川广播电视台举行。参赛队伍围绕智能驾驶时代的保险产品设计展开研发，现场启动了“成都八零”孵化器。',
+      'SWUFE and Chengdu Jiaozi Financial Holding Group hosted the event. The final evening took place at Sichuan Radio and Television. Teams addressed insurance product design in the autonomous-driving era, and the event launched the Chengdu 80 incubator. Zhang Lisheng, executive vice president of the UAE Chinese Business Council, sent an invitation to host the competition by video.',
+      '西南财经大学与成都交子金融控股集团联合主办，路演评选与颁奖晚会在四川广播电视台举行。参赛队伍围绕智能驾驶时代的保险产品设计展开研发，现场启动了“成都八零”孵化器。阿联酋中华工商总会常务副会长张立生通过视频发来大赛举办邀请。',
     ),
     sourceRefs: ['event2024', 'queensReport'],
     media: [

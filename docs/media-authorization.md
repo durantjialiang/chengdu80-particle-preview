@@ -23,3 +23,14 @@ Source links and school associations remain evidence-based. The 2019 HTML table 
 ## Presentation update 2026-09-07
 
 At the project owner's request, public image tiles and the public image viewer no longer display audit captions, source-credit lines or original-image links. They retain the photographs, accessible image descriptions and viewing controls; the editorial tiles also retain their year. All provenance, school/project associations, null photographer fields and approval records remain unchanged in the manifest and exported source/material records. Explicitly private local-review media still show review and source details. No photo pixels, embedded logos or watermarks were altered.
+
+## Editorial exception 2026-09-07
+
+The subsequently adopted editorial review explicitly asks for a caption and
+publisher attribution on the existing incubator launch photograph in Partners.
+That single placement of `cd80-2024-05` now displays “Launch of the Chengdu 80
+Incubator, 2024.” (and its Chinese equivalent), plus a SWUFE News source link.
+This is a publisher/source attribution; no photographer has been identified or
+invented. All other gallery placements retain their image-only presentation.
+No image bytes, associations, permission gates or rights records changed. Media
+use conditions remain in the separate `/media/#usage` section.

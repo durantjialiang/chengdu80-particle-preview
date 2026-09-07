@@ -62,34 +62,53 @@ await test('site content and static archive contracts', async (t) => {
           if (name === 'HeroEssentials')
             assert.match(html, /Competition guide/);
           if (name === 'PartnersPage') {
-            assert.match(html, /PARTNERSHIP MILESTONES/);
+            assert.match(html, /The partnerships behind Chengdu 80/);
+            assert.match(html, /Partnership milestones/);
             for (const story of e.impactStories) {
               assert.ok(!html.includes(story.locator.en));
+              assert.equal(
+                html.split(story.description.en).length - 1,
+                1,
+                'Each initiative is told once',
+              );
+              assert.ok(html.includes(`href="#${story.id}"`));
+              assert.ok(html.includes(`id="${story.id}"`));
             }
-            assert.match(
-              html,
-              /From a shared competition to a shared innovation ecosystem\./,
-            );
             assert.doesNotMatch(
               html,
-              /ORGANIZATION BY EDITION|The right role, in the right year\.|their dated roles|These are documented historical roles/,
+              /ORGANIZATION BY EDITION|The right role, in the right year\.|their dated roles|These are documented historical roles|A wider horizon|We do not promise|not a count of incubated|#requests|data-fic-company|UAE Chinese Business Council/,
             );
             for (const edition of e.partnerEditions) {
               assert.ok(
                 edition.milestone.title.zh && edition.milestone.summary.zh,
               );
               assert.ok(html.includes(edition.milestone.title.en));
-              assert.ok(html.includes(edition.milestone.summary.en));
+              if (![2021, 2024].includes(edition.year))
+                assert.ok(html.includes(edition.milestone.summary.en));
             }
           }
           if (
             ['HomeBeforeNetwork', 'AboutPage', 'PartnersPage'].includes(name)
           ) {
-            assert.equal(
-              (html.match(/<small>JOINT HOST<\/small>/g) ?? []).length,
-              2,
-            );
-            assert.match(html, /<strong>SWUFE<\/strong>/);
+            if (name === 'HomeBeforeNetwork') {
+              assert.equal(
+                (html.match(/<small>JOINT HOST<\/small>/g) ?? []).length,
+                2,
+              );
+              assert.match(html, /<strong>SWUFE<\/strong>/);
+            } else {
+              assert.equal(
+                (
+                  html.match(/<small>Joint hosts · 2023 \/ 2024<\/small>/g) ??
+                  []
+                ).length,
+                2,
+              );
+              assert.match(
+                html,
+                /<strong>Southwestern University of Finance and Economics<\/strong>/,
+              );
+            }
             assert.match(
               html,
               /<strong>Chengdu Jiaozi Financial Holding Group<\/strong>/,
@@ -220,6 +239,108 @@ await test('site content and static archive contracts', async (t) => {
           assert.match(card, /<h3>/);
           assert.match(card, /Visit official website/);
         }
+      },
+    );
+    await t.test(
+      'FIC exchange cards wrap original logos and names in official homepage links',
+      async () => {
+        const { ficIndustry } = await server.ssrLoadModule(
+          '/content/ecosystem.ts',
+        );
+        const { AboutPage } = await server.ssrLoadModule(
+          '/components/site/EcosystemContent.tsx',
+        );
+        const html = renderToString(React.createElement(AboutPage));
+        const network = html.match(
+          /<div id="fic-network"[\s\S]*?<\/section>/,
+        )?.[0];
+        assert.ok(network);
+        assert.match(network, /The wider FIC exchange network/);
+        assert.doesNotMatch(
+          network,
+          /The archived FIC introduction|sponsor list|confirmed 2026|旧FIC介绍/,
+        );
+        assert.equal((network.match(/data-fic-company=/g) ?? []).length, 6);
+        const hosts = {
+          pingAn: 'www.pingan.cn',
+          ccb: 'www.ccb.com',
+          cic: 'www.china-inv.cn',
+          stateStreet: 'www.statestreet.com',
+          swissRe: 'www.swissre.com',
+          moodys: 'www.moodys.com',
+        };
+        assert.deepEqual(
+          ficIndustry.map((company) => company.id),
+          Object.keys(hosts),
+        );
+        for (const company of ficIndustry) {
+          assert.equal(company.usageStatus, 'project-owner-confirmed');
+          assert.equal(company.permissionConfirmedOn, '2026-09-07');
+          assert.equal(new URL(company.website).hostname, hosts[company.id]);
+          assert.equal(new URL(company.website).protocol, 'https:');
+          const card = network.match(
+            new RegExp(
+              `<a[^>]*data-fic-company="${company.id}"[^>]*>[\\s\\S]*?<\\/a>`,
+            ),
+          )?.[0];
+          assert.ok(card, company.id);
+          assert.ok(card.includes(`href="${company.website}"`));
+          assert.match(card, /target="_blank"/);
+          assert.match(card, /rel="noopener noreferrer"/);
+          assert.match(card, /Official website \(opens in a new tab\)/);
+          assert.ok(card.includes(`src="${company.logo.src}"`));
+          assert.match(card, /loading="lazy"/);
+          assert.match(card, /decoding="async"/);
+          assert.ok(company.name.zh && company.name.en);
+          assert.ok(card.includes(company.name.en));
+          assert.ok(card.indexOf('<img') < card.indexOf('<h4'));
+          assert.ok(company.logo.width > 0 && company.logo.height > 0);
+          const original = await readFile(`public${company.logo.src}`);
+          assert.equal(
+            createHash('sha256').update(original).digest('hex'),
+            company.logo.sha256,
+          );
+          if (company.logo.src.endsWith('.svg')) {
+            assert.doesNotMatch(
+              original.toString(),
+              /<script|<foreignObject|\bonload=|javascript:/i,
+            );
+          }
+        }
+      },
+    );
+    await t.test(
+      'Media keeps visitor resources and rights terms without the internal checklist',
+      async () => {
+        const { MediaPage } = await server.ssrLoadModule(
+          '/components/site/EcosystemContent.tsx',
+        );
+        const { ecosystemSources } = await server.ssrLoadModule(
+          '/content/ecosystem.ts',
+        );
+        const { schoolRequests } = await server.ssrLoadModule(
+          '/content/editorial-requests.ts',
+        );
+        const html = renderToString(React.createElement(MediaPage));
+        assert.doesNotMatch(
+          html,
+          /id="requests"|What is still to be confirmed|Open source|approved archive photographs|redistribution package|No cleared video/,
+        );
+        for (const item of schoolRequests)
+          assert.ok(!html.includes(item.text.en));
+        assert.match(html, /View the publication \(PDF\)/);
+        assert.match(html, /View historical rules/);
+        assert.match(html, /Read the article/);
+        assert.match(html, /Media use/);
+        assert.match(html, /original publisher and relevant rights holders/);
+        for (const id of [
+          'anniversary',
+          'rules',
+          'report2024',
+          'report2023',
+          'report2020',
+        ])
+          assert.ok(html.includes(ecosystemSources[id].url));
       },
     );
     await t.test(

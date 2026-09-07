@@ -1,8 +1,33 @@
 [
-  { "path": "/about/", "title": "About Chengdu 80", "zh": "关于成都八零", "description": "An 80-hour fintech challenge since 2018: mission, people and academic–industry collaboration.", "descriptionZh": "自2018年起的80小时金融科技挑战：赛事使命、人物与产学合作。", "image": "/history-media/cd80-2019-06-full.webp" },
-  { "path": "/partners/", "title": "Partners & Impact", "zh": "合作与成果", "description": "SWUFE and Chengdu Jiaozi: dated organizational roles, FINTECH80x and the 2024 incubator launch.", "descriptionZh": "西财与成都交子的历届组织合作、FINTECH80x及2024年孵化器启动记录。", "image": "/history-media/cd80-2024-05-full.webp" },
-  { "path": "/media/", "title": "Media & Resources", "zh": "媒体与资源", "description": "Approved historical photographs, original reports, rules and the fifth-anniversary publication.", "descriptionZh": "已获准公开的历史影像、原始新闻、规则与五周年专刊。", "image": "/history-media/cd80-2024-01-full.webp" },
-  { "path": "/competition/", "title": "2026 Competition", "zh": "2026赛事信息" },
+  {
+    "path": "/about/",
+    "title": "About Chengdu 80",
+    "zh": "关于成都八零",
+    "description": "An 80-hour fintech challenge since 2018: mission, people and academic–industry collaboration.",
+    "descriptionZh": "自2018年起的80小时金融科技挑战：赛事使命、人物与产学合作。",
+    "image": "/history-media/cd80-2019-06-full.webp"
+  },
+  {
+    "path": "/partners/",
+    "title": "Partnerships & Initiatives",
+    "zh": "合作与倡议",
+    "description": "The partnerships behind Chengdu 80: joint hosts, industry participation, FINTECH80x and the Chengdu 80 Incubator.",
+    "descriptionZh": "成都八零背后的合作力量：联合主办、产业参与、FINTECH80x计划与成都八零孵化器。",
+    "image": "/history-media/cd80-2024-05-full.webp"
+  },
+  {
+    "path": "/media/",
+    "title": "Media & Resources",
+    "zh": "媒体与资源",
+    "description": "Chengdu 80 photographs, event news, historical rules and the fifth-anniversary publication.",
+    "descriptionZh": "成都八零照片、赛事新闻、历届规则与五周年专刊。",
+    "image": "/history-media/cd80-2024-01-full.webp"
+  },
+  {
+    "path": "/competition/",
+    "title": "2026 Competition",
+    "zh": "2026赛事信息"
+  },
   { "path": "/history/", "title": "History", "zh": "历届赛事" },
   { "path": "/winners/", "title": "Winners & Projects", "zh": "成果档案" },
   { "path": "/history/2018/", "title": "2018 edition", "zh": "2018赛事" },
@@ -11,14 +36,30 @@
   { "path": "/history/2021/", "title": "2021 edition", "zh": "2021赛事" },
   { "path": "/history/2022/", "title": "2022 edition", "zh": "2022赛事" },
   { "path": "/history/2023/", "title": "2023 edition", "zh": "2023赛事" },
-  { "path": "/history/2024/", "title": "2024 seventh edition", "zh": "2024第七届赛事" },
+  {
+    "path": "/history/2024/",
+    "title": "2024 seventh edition",
+    "zh": "2024第七届赛事"
+  },
   { "path": "/history/2025/", "title": "2025 not held", "zh": "2025未举办" },
   { "path": "/history/2026/", "title": "2026 upcoming", "zh": "2026即将举办" },
   { "path": "/winners/nushadow/", "title": "NuShadow", "zh": "NuShadow" },
-  { "path": "/winners/dragon-search/", "title": "Dragon Search", "zh": "Dragon Search" },
+  {
+    "path": "/winners/dragon-search/",
+    "title": "Dragon Search",
+    "zh": "Dragon Search"
+  },
   { "path": "/winners/pisces/", "title": "Pisces", "zh": "Pisces" },
   { "path": "/winners/panda/", "title": "Panda", "zh": "Panda" },
   { "path": "/winners/giraffe/", "title": "Giraffe", "zh": "Giraffe" },
-  { "path": "/winners/apollo-2023/", "title": "Apollo team record", "zh": "Apollo团队成果" },
-  { "path": "/winners/data-queens-report/", "title": "Data Queens report", "zh": "Data Queens报道档案" }
+  {
+    "path": "/winners/apollo-2023/",
+    "title": "Apollo team record",
+    "zh": "Apollo团队成果"
+  },
+  {
+    "path": "/winners/data-queens-report/",
+    "title": "Data Queens report",
+    "zh": "Data Queens报道档案"
+  }
 ]

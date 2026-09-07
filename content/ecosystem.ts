@@ -118,7 +118,10 @@ export const partnerEditions: PartnerEdition[] = [
   {
     year: 2019,
     milestone: {
-      title: b('Global collaboration meets Chengdu', '全球合作，共聚成都'),
+      title: b(
+        'International co-hosts join the second edition',
+        '国际机构联合主办第二届赛事',
+      ),
       summary: b(
         'The second edition brought SWUFE, Chengdu Jiaozi, UC Berkeley CDAR and State Street Bank together. Jiaozi funded the competition and organized a visit to Jiaozi Park for the teams.',
         '第二届赛事连接西财、成都交子、伯克利CDAR与美国道富银行。成都交子独家出资赞助赛事，并组织参赛团队走进交子公园。',
@@ -135,10 +138,7 @@ export const partnerEditions: PartnerEdition[] = [
   {
     year: 2020,
     milestone: {
-      title: b(
-        'Research, finance and the fintech community',
-        '学术、产业与社群协作',
-      ),
+      title: b('Delivering the third edition', '共同承办第三届赛事'),
       summary: b(
         'SWUFE, CDAR and Chengdu Jiaozi jointly hosted the third edition, with FIC and the Chengdu Fintech Association delivering the competition.',
         '西财、CDAR与成都交子联合主办第三届赛事，FIC与成都市金融科技协会共同承办，连接学术研究、金融产业与本地金融科技社群。',
@@ -172,7 +172,10 @@ export const partnerEditions: PartnerEdition[] = [
   {
     year: 2023,
     milestone: {
-      title: b('Together for the sixth edition', '携手呈现第六届赛事'),
+      title: b(
+        'SWUFE and Jiaozi co-host the sixth edition',
+        '西财与交子联合主办第六届赛事',
+      ),
       summary: b(
         'SWUFE and Chengdu Jiaozi jointly hosted the sixth edition, supported by SWUFE schools and research platforms.',
         '西财与成都交子联合主办第六届赛事，校内多个学院与研究平台共同参与。',
@@ -221,11 +224,12 @@ export const impactStories = [
   {
     id: 'fintech80x',
     year: '2021',
-    title: b('FINTECH80x begins', 'FINTECH80x 计划启动'),
+    title: b('FINTECH80x', 'FINTECH80x 计划'),
     description: b(
-      'SWUFE and Chengdu Jiaozi launched FINTECH80x on 17 July 2021. Jiaozi became the plan’s first cooperating financial enterprise, extending the competition’s academic–industry connection.',
-      '2021年7月17日，西财与成都交子共同启动FINTECH80x。成都交子成为计划首家合作金融企业，将赛事的产学联系延伸到比赛之外。',
+      'SWUFE and Chengdu Jiaozi launched FINTECH80x in July 2021 to extend collaboration around Chengdu 80. The initiative introduced standards for proposing and hosting related activities, with Chengdu Jiaozi as its first financial-sector partner.',
+      '2021年7月，西财与成都交子共同启动FINTECH80x计划，拓展围绕成都八零的合作。计划发布了相关活动的申请与举办标准，成都交子成为首家合作金融企业。',
     ),
+    cta: b('Read the launch announcement', '阅读启动公告'),
     source: 'report2021' as const,
     locator: b(
       'Event: 2021-07-17 · report: 2021-07-26. Also in PDF page 58.',
@@ -235,11 +239,14 @@ export const impactStories = [
   {
     id: 'incubator',
     year: '2024',
-    title: b('A bridge beyond the prototype', '从赛场原型，走向更广阔的合作'),
+    title: b('Chengdu 80 Incubator', '成都八零孵化器'),
     description: b(
-      'The Chengdu 80 incubator was launched at the seventh edition. The official report records participation by more than 20 organizations in the launch initiative. This is a launch milestone, not a count of incubated companies.',
-      '第七届赛事启动成都八零孵化器，正式报道记录了20余家单位参与这一启动事项。这是已发生的合作起点，并非已孵化企业数量。',
+      'In October 2024, more than 20 organizations from universities, industry and government joined the launch of the Chengdu 80 Incubator. The initiative was introduced to support fintech project incubation and talent development.',
+      '2024年10月，来自高校、企业和政府等领域的20余家单位共同参与成都八零孵化器启动，旨在推动金融科技项目孵化与人才培养。',
     ),
+    cta: b('Read the 2024 event report', '阅读2024赛事报道'),
+    // 20+ counts organizations at the 2024 launch, not incubated companies,
+    // current members, investment recipients or subsequent operating outcomes.
     source: 'report2024' as const,
     locator: b('Seventh-edition report', '第七届正式报道'),
   },
@@ -298,20 +305,24 @@ export const industryConnections = [
     id: 'hengsheng-2024',
     // Official English brand: https://en.hundsun.com/ (not Hang Seng Bank).
     name: b('Hundsun', '恒生电子'),
+    person: b('Guan Xiaolan', '官晓岚'),
+    role: b('Executive president, Hundsun', '恒生电子执行总裁'),
     context: b('2024 · award ceremony', '2024 · 颁奖现场'),
     detail: b(
-      'Executive president Guan Xiaolan presented awards to teams, as recorded in SWUFE’s report.',
-      '西财报道记载，执行总裁官晓岚为参赛队伍颁奖。',
+      'Executive president Guan Xiaolan presented awards to competing teams at the 2024 ceremony.',
+      '执行总裁官晓岚在2024年颁奖典礼上为参赛队伍颁奖。',
     ),
     source: 'report2024' as const,
   },
   {
     id: 'swiss-re-2024',
     name: b('Swiss Re', '瑞士再保险'),
+    person: b('Li Xu', '李旭'),
+    role: b('Group vice president, Swiss Re', '瑞士再保险集团副总裁'),
     context: b('2024 · award ceremony', '2024 · 颁奖现场'),
     detail: b(
-      'Group vice president Li Xu presented awards to teams, as recorded in SWUFE’s report.',
-      '西财报道记载，集团副总裁李旭为参赛队伍颁奖。',
+      'Group vice president Li Xu presented awards to competing teams at the 2024 ceremony.',
+      '集团副总裁李旭在2024年颁奖典礼上为参赛队伍颁奖。',
     ),
     source: 'report2024' as const,
   },
@@ -326,14 +337,7 @@ export const industryConnections = [
     source: 'report2024' as const,
   },
 ];
-export const ficIndustry = [
-  b('Ping An Group', '平安集团'),
-  b('China Construction Bank', '中国建设银行'),
-  b('China Investment Corporation', '中投公司'),
-  b('State Street Bank', '道富银行'),
-  b('Swiss Re', '瑞士再保险'),
-  b('Moody’s', '穆迪'),
-];
+export { ficIndustry } from './fic-network';
 export const sceneImageIds = [
   'cd80-2024-04',
   'cd80-2024-01',
@@ -341,53 +345,3 @@ export const sceneImageIds = [
   'cd80-2019-08',
   'cd80-2024-05',
 ] as const;
-export const schoolRequests = [
-  {
-    id: 'edition',
-    title: b('2026 competition', '2026当届赛事'),
-    text: b(
-      'Confirmed organizing roles, exact dates and venue, entry process, team eligibility, judging, awards and deliverables.',
-      '正式主办、承办与协办名单，准确日期地点，邀请或报名机制，队伍条件，评审、奖项及交付要求。',
-    ),
-  },
-  {
-    id: 'international',
-    title: b('International participation', '国际参与'),
-    text: b(
-      'Working language, travel and accommodation, costs, on-site arrangements and a current consultation contact.',
-      '工作语言、交通住宿、费用支持、来华与现场安排，以及有效咨询人和邮箱。',
-    ),
-  },
-  {
-    id: 'people',
-    title: b('People', '赛事人物'),
-    text: b(
-      'Confirmed current committee, judges and mentors; dated roles, approved portraits and biographies.',
-      '本届委员会、评委与导师确认名单，准确职务、获准公开的肖像与简介。',
-    ),
-  },
-  {
-    id: 'industry',
-    title: b('Industry & incubation', '产业与孵化'),
-    text: b(
-      'Current Jiaozi and industry participation, incubator operating status and publishable follow-up projects or collaboration cases.',
-      '交子及产业单位的当届参与方式，孵化器实际运行情况，可公开的项目进展与对接案例。',
-    ),
-  },
-  {
-    id: 'media',
-    title: b('Project images & media', '作品与媒体素材'),
-    text: b(
-      'Project-matched screenshots and demo footage with rights clearance; high-resolution event photos, interviews and usage scope.',
-      '能够对应具体作品的产品界面图与演示视频及使用授权；高清现场照片、访谈与使用范围。',
-    ),
-  },
-  {
-    id: 'operations',
-    title: b('Ongoing updates', '持续运营'),
-    text: b(
-      'Official contact channels, public social accounts, editorial owner and publication process.',
-      '官方联系渠道、公众号等有效账号，以及内容更新负责人和发布流程。',
-    ),
-  },
-];

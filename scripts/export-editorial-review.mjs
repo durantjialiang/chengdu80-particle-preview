@@ -25,6 +25,9 @@ const server = await createServer({
 });
 try {
   const data = await server.ssrLoadModule('/content/ecosystem.ts');
+  const { schoolRequests } = await server.ssrLoadModule(
+    '/content/editorial-requests.ts',
+  );
   const { projectStudies } = await server.ssrLoadModule(
     '/content/project-studies.ts',
   );
@@ -69,7 +72,10 @@ try {
     ].join('\n') +
     '\n';
   await mkdir(destination, { recursive: true });
-  await writeFile(resolve(destination, 'README.md'), await readFile('docs/site-upgrade-2026-09-06.md', 'utf8'));
+  await writeFile(
+    resolve(destination, 'README.md'),
+    await readFile('docs/site-upgrade-2026-09-06.md', 'utf8'),
+  );
   await writeFile(
     resolve(destination, 'sources.csv'),
     csv(sourceRows, ['id', 'title', 'url', 'published', 'kind']),
@@ -136,7 +142,7 @@ try {
       '',
       '2026年10月为项目负责人提供的月份；不推断具体日期、届次或名单。历史内容不因此暂停发布。',
       '',
-      ...data.schoolRequests.flatMap((item) => [
+      ...schoolRequests.flatMap((item) => [
         `## ${item.title.zh}`,
         '',
         item.text.zh,

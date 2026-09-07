@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { publicArchiveImages } from '@/content/archive-media';
 import { bilingual as b } from '@/content/competition';
 import { useSiteLanguage } from '@/hooks/use-site-language';
@@ -9,9 +9,11 @@ import styles from './Editorial.module.css';
 export default function EditorialMedia({
   ids,
   single = false,
+  caption,
 }: {
   ids: readonly string[];
   single?: boolean;
+  caption?: ReactNode;
 }) {
   const { t } = useSiteLanguage();
   const [selected, setSelected] = useState<number | null>(null);
@@ -32,6 +34,7 @@ export default function EditorialMedia({
               <Photo image={image} full />
               <span className={styles.photoYear}>{image.eventYear} ↗</span>
             </button>
+            {single && caption && <figcaption>{caption}</figcaption>}
           </figure>
         ))}
       </div>
