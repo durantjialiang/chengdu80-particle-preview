@@ -6,7 +6,6 @@ import {
   universityName,
   universityLocation,
   universityRole,
-  recordNote,
 } from '@/content/university-i18n';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import { bilingual as b } from '@/content/competition';
@@ -198,41 +197,6 @@ export default function UniversityDetailPanel({
             </p>
           )}
         </section>
-        <details className={styles.sources}>
-          <summary>{t(b('Sources & record notes', '资料来源与说明'))}</summary>
-          <p>{recordNote(university, language)}</p>
-          <p>
-            {t(
-              b(
-                'Award wording is retained from each source. Conflicting English labels are not converted into assumed rankings. Campus pins are approximate.',
-                '奖项保留各来源措辞，不把冲突的英文译名换算成推定名次。地图为近似校区位置。',
-              ),
-            )}
-          </p>
-          {university.evidence.length ? (
-            university.evidence.map((item) => (
-              <a
-                key={item.url}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={item.title}
-              >
-                {language === 'zh' ? `来源记录 · ${item.title}` : item.title}
-                <ArrowUpRight size={14} />
-              </a>
-            ))
-          ) : (
-            <p>
-              {t(
-                b(
-                  'Awaiting organizer-verified participation evidence.',
-                  '等待主办方确认参赛依据。',
-                ),
-              )}
-            </p>
-          )}
-        </details>
         <a
           className={styles.officialButton}
           href={university.website}

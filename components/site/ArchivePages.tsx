@@ -11,7 +11,7 @@ import {
   type ArchiveSource,
 } from '@/content/archive';
 import { universities, getUniversity } from '@/content/universities';
-import { bilingual as b, type Localized } from '@/content/competition';
+import { bilingual as b } from '@/content/competition';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import { useUrlFilters } from '@/hooks/use-url-filters';
 import styles from './Site.module.css';
@@ -110,17 +110,6 @@ export function HistoryPage({ year }: { year?: number }) {
   if (record) {
     const index = editions.indexOf(record);
     const related = projects.filter((p) => p.year === record.year);
-    const schedule: [Localized, string | null][] = [
-      [
-        b('Event dates', '活动日期'),
-        record.startDate
-          ? `${record.startDate}${record.endDate && record.endDate !== record.startDate ? ` — ${record.endDate}` : ''}`
-          : null,
-      ],
-      [b('Development start', '开发开始'), record.developmentStart],
-      [b('Development end', '开发结束'), record.developmentEnd],
-      [b('Final', '决赛'), record.finalDate],
-    ];
     return (
       <>
         <nav className={styles.breadcrumb}>
@@ -259,47 +248,6 @@ export function HistoryPage({ year }: { year?: number }) {
           />
         )}
         <section className={styles.section}>
-          <details className={styles.archiveSources}>
-            <summary>
-              {t(b('Sources & record notes', '资料来源与说明'))}
-            </summary>
-            <p>{t(record.dateNote)}</p>
-            <h3>{t(b('Schedule record', '时间记录'))}</h3>
-            <dl className={styles.facts}>
-              {schedule.map(([label, value]) => (
-                <div key={label.en}>
-                  <dt>{t(label)}</dt>
-                  <dd>
-                    {value ??
-                      t(
-                        record.status === 'not-held'
-                          ? b('Not applicable', '不适用')
-                          : b('Not established in this record', '本档案未明确'),
-                      )}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-            <p>
-              {t(
-                b(
-                  'Publication dates are not event dates. Photographs are categorized from source context, never used to identify a person or school by appearance. Reuse permission is separate from factual verification.',
-                  '网页发布日期不等于赛事日期。照片按原文上下文分类，不凭人物外观识别学校或个人。事实核实与图片复用授权分别处理。',
-                ),
-              )}
-            </p>
-            <Sources ids={record.sourceRefs} />
-            {!record.sourceRefs.length ? (
-              <p>
-                {t(
-                  b(
-                    'Project owner supplied. No public announcement is claimed.',
-                    '由项目负责人提供，不作为公开公告表述。',
-                  ),
-                )}
-              </p>
-            ) : null}
-          </details>
           <CopyLink />
         </section>
         <nav

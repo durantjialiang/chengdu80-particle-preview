@@ -704,16 +704,6 @@
   font-size: 13px !important;
   color: #8aa2b5 !important;
 }
-.archiveSources summary {
-  cursor: pointer;
-  font-size: 22px;
-  line-height: 1.4;
-  color: #c4dce9;
-}
-.archiveSources > p {
-  margin-top: 20px;
-  max-width: 850px;
-}
 .archiveRecap {
   margin-top: 24px;
   max-width: 820px;

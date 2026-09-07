@@ -393,19 +393,6 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.sources > a {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 16px;
-  margin-top: 12px;
-  color: #a8cddc;
-  font-size: 0.875rem;
-  line-height: 1.6;
-}
-.sources svg {
-  flex-shrink: 0;
-}
 .officialButton {
   display: flex;
   justify-content: space-between;
@@ -547,8 +534,7 @@
 .auditNotes {
   margin-top: 16px;
 }
-.auditNotes summary,
-details.sources summary {
+.auditNotes summary {
   cursor: pointer;
   font-size: 15px;
   color: #b9d8e8;

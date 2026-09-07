@@ -699,7 +699,10 @@ await test('site content and static archive contracts', async (t) => {
           );
           for (const p of u.projects.filter((p) => p.projectId))
             assert.ok(html.includes(`/winners/${p.projectId}/`), p.projectId);
-          assert.match(html, /<details/);
+          assert.doesNotMatch(
+            html,
+            /<details|Sources &amp; record notes|资料来源与说明/,
+          );
         }
       },
     );
@@ -947,6 +950,10 @@ await test('site content and static archive contracts', async (t) => {
                 ? 'interpretation'
                 : 'documented-design';
               for (const html of [detail, caseStudy]) {
+                assert.doesNotMatch(
+                  html,
+                  /资料来源与说明|Sources &amp; record notes/,
+                );
                 assert.ok(
                   html.includes(`data-technical-basis="${expectedBasis}"`),
                 );
@@ -983,8 +990,8 @@ await test('site content and static archive contracts', async (t) => {
               );
               assert.ok(detail.includes(`src="${university.logo}"`));
               assert.ok(
-                detail.includes(escapeHtml(edition.dateNote[language])),
-                'Date boundaries remain available in notes',
+                !detail.includes(escapeHtml(edition.dateNote[language])),
+                'Internal date notes are not rendered as public disclosures',
               );
               assert.ok(
                 !listing.includes(escapeHtml(edition.dateNote[language])),
@@ -1004,6 +1011,25 @@ await test('site content and static archive contracts', async (t) => {
             assert.doesNotMatch(listing, /2025|未举办|Not held/);
             const lastHeld = render(HistoryPage, { year: 2024 });
             const upcoming = render(HistoryPage, { year: 2026 });
+            for (const html of [listing, upcoming])
+              assert.doesNotMatch(
+                html,
+                /资料来源与说明|Sources &amp; record notes/,
+              );
+            const { default: UniversityDetail } = await server.ssrLoadModule(
+              '/components/network/UniversityDetailPanel.tsx',
+            );
+            for (const university of universities) {
+              const panel = render(UniversityDetail, {
+                university,
+                onClose: () => {},
+              });
+              assert.doesNotMatch(
+                panel,
+                /<details|资料来源与说明|Sources &amp; record notes/,
+              );
+              assert.ok(panel.includes(`href="${university.website}"`));
+            }
             assert.doesNotMatch(lastHeld, /2025/);
             assert.doesNotMatch(upcoming, /2025/);
             assert.ok(lastHeld.includes(`/history/2026/?lang=${language}`));
@@ -1073,6 +1099,10 @@ await test('site content and static archive contracts', async (t) => {
         ]) {
           assert.match(html, /<h1/);
           assert.doesNotMatch(html, /<canvas|WebGLRenderer/);
+          assert.doesNotMatch(
+            html,
+            /Sources &amp; record notes|资料来源与说明/,
+          );
         }
         const textEntry = await readFile('qa/site.tsx', 'utf8');
         assert.doesNotMatch(
