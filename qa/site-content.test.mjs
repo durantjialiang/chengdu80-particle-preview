@@ -290,6 +290,10 @@ await test('site content and static archive contracts', async (t) => {
           5,
         );
         for (const item of publicArchiveImages) {
+          assert.ok(item.caption.en && item.caption.zh && item.credit);
+          assert.match(item.sourcePage, /^https:\/\//);
+          assert.match(item.originalImageUrl, /^https:\/\//);
+          if (item.eventYear === 2024) assert.equal(item.universityId, null);
           assert.equal(item.permission.basis, 'project-owner-confirmation');
           assert.equal(item.projectId, null);
           assert.equal(item.photographer, null);
@@ -334,6 +338,56 @@ await test('site content and static archive contracts', async (t) => {
           'virtual:history-review-media',
         );
         assert.deepEqual(localImages, []);
+      },
+    );
+    await t.test(
+      'public photos are image-only while provenance and private-review details remain intact',
+      async () => {
+        const { publicArchiveImages } = await server.ssrLoadModule(
+          '/content/archive-media.ts',
+        );
+        const { default: Gallery, Viewer } = await server.ssrLoadModule(
+          '/components/site/ArchiveGallery.tsx',
+        );
+        const { default: Editorial } = await server.ssrLoadModule(
+          '/components/site/EditorialMedia.tsx',
+        );
+        const items = publicArchiveImages.filter((i) => i.eventYear === 2024);
+        const views = [
+          React.createElement(Editorial, { ids: items.map((i) => i.id) }),
+          React.createElement(Gallery, { year: 2024 }),
+          React.createElement(Gallery, { year: 2024, coverOnly: true }),
+          React.createElement(Viewer, { items, initial: 0, onClose: () => {} }),
+        ];
+        for (const view of views) {
+          const html = renderToString(view);
+          assert.match(html, /<img[^>]+alt="[^"]+"/);
+          assert.doesNotMatch(
+            html,
+            /<figcaption|Captions follow the source context|Photographer not credited/,
+          );
+          for (const item of items) {
+            assert.ok(!html.includes(item.credit));
+            assert.ok(!html.includes(item.originalImageUrl));
+          }
+        }
+        const viewer = renderToString(views[3]);
+        assert.match(viewer, /aria-labelledby="archive-viewer-caption"/);
+        assert.match(viewer, /srOnly[^>]*><h3 id="archive-viewer-caption"/);
+        for (const control of [
+          'Close image viewer',
+          'Previous image',
+          'Next image',
+        ])
+          assert.ok(viewer.includes(control));
+        const privateViewer = renderToString(
+          React.createElement(Viewer, {
+            items: [{ ...items[0], privateReview: true }],
+            initial: 0,
+            onClose: () => {},
+          }),
+        );
+        assert.match(privateViewer, /reuse permission pending|Source article/);
       },
     );
     await t.test(

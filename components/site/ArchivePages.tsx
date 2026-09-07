@@ -454,7 +454,7 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
             {study.contextImageId && (
               <>
                 <EditorialMedia ids={[study.contextImageId]} single />
-                <p className={styles.note}>
+                <p className="sr-only">
                   {study.contextNote && t(study.contextNote)}
                 </p>
               </>

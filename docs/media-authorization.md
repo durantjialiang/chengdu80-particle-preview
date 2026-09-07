@@ -18,4 +18,8 @@ Excluded: 27 other old-year image references, the uncollected Queen’s image ca
 
 Source links and school associations remain evidence-based. The 2019 HTML table explicitly names the schools beside their photographs; no photograph is assigned to Dragon Search. The 2024 photographs have no verified individual school/project association. Data Queens remains a team name, with its product name unknown.
 
-`credit` displays a source attribution, not an invented photographer/rights-holder credit. The original pages do not identify photographers; `photographer` remains null and that boundary is shown in the image viewer. Any later specific attribution or rights restriction must be incorporated before further reuse.
+`credit` records a source attribution, not an invented photographer/rights-holder credit. The original pages do not identify photographers; `photographer` remains null. Any later specific attribution or rights restriction must be incorporated before further reuse.
+
+## Presentation update 2026-09-07
+
+At the project owner's request, public image tiles and the public image viewer no longer display audit captions, source-credit lines or original-image links. They retain the photographs, accessible image descriptions and viewing controls; the editorial tiles also retain their year. All provenance, school/project associations, null photographer fields and approval records remain unchanged in the manifest and exported source/material records. Explicitly private local-review media still show review and source details. No photo pixels, embedded logos or watermarks were altered.

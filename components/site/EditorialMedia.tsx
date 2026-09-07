@@ -32,10 +32,6 @@ export default function EditorialMedia({
               <Photo image={image} full />
               <span className={styles.photoYear}>{image.eventYear} ↗</span>
             </button>
-            <figcaption>
-              {t(image.caption)}
-              <small>{image.credit}</small>
-            </figcaption>
           </figure>
         ))}
       </div>

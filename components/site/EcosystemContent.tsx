@@ -754,8 +754,8 @@ export function MediaPage() {
       <p className={site.lead}>
         {t(
           b(
-            'Browse approved historical photographs and follow original reports, rules and publications. Image credits and source links stay attached to every photograph.',
-            '浏览已获准公开的历史照片，以及原始报道、赛题与专刊。每张照片保留图注、来源和年代。',
+            'Explore past editions through photographs, news, challenge briefs and publications.',
+            '通过照片、新闻、赛题与专刊，回看历届成都八零。',
           ),
         )}
       </p>

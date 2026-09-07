@@ -8,8 +8,6 @@ import {
 } from '@/content/archive-media';
 import { bilingual as b } from '@/content/competition';
 import { useSiteLanguage } from '@/hooks/use-site-language';
-import { getUniversity } from '@/content/universities';
-import { universityName } from '@/content/university-i18n';
 import styles from './ArchiveGallery.module.css';
 
 const publishedIds = new Set(publicArchiveImages.map((image) => image.id));
@@ -115,41 +113,48 @@ export function Viewer({
         <Photo key={current.id} image={current} full eager />
       </div>
       <div className={styles.viewerBottom}>
-        <div className={styles.caption}>
+        {/* Public viewing is image-first. Audit details remain in the manifest
+            and the explicitly private, local research-review mode. */}
+        <div className={current.privateReview ? styles.caption : styles.srOnly}>
           <h3 id="archive-viewer-caption">{t(current.caption)}</h3>
-          <p>
-            {current.credit}
-            {current.photographer
-              ? ` · ${current.photographer}`
-              : ` · ${t(b('Photographer not credited in source', '原页面未标摄影者'))}`}
-          </p>
           {current.privateReview && (
-            <p className={styles.rights}>
-              {t(
-                b(
-                  'Local review only · reuse permission pending',
-                  '仅限本地审阅 · 复用授权待确认',
-                ),
+            <>
+              <p>
+                {current.credit}
+                {current.photographer
+                  ? ` · ${current.photographer}`
+                  : ` · ${t(b('Photographer not credited in source', '原页面未标摄影者'))}`}
+              </p>
+              {current.privateReview && (
+                <p className={styles.rights}>
+                  {t(
+                    b(
+                      'Local review only · reuse permission pending',
+                      '仅限本地审阅 · 复用授权待确认',
+                    ),
+                  )}
+                </p>
               )}
-            </p>
+              <div className={styles.links}>
+                <a
+                  href={current.sourcePage}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t(b('Source article', '原始报道'))}{' '}
+                  <ExternalLink size={13} />
+                </a>
+                <a
+                  href={current.originalImageUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t(b('Original image source', '原图出处'))}{' '}
+                  <ExternalLink size={13} />
+                </a>
+              </div>
+            </>
           )}
-          <div className={styles.links}>
-            <a
-              href={current.sourcePage}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t(b('Source article', '原始报道'))} <ExternalLink size={13} />
-            </a>
-            <a
-              href={current.originalImageUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t(b('Original image source', '原图出处'))}{' '}
-              <ExternalLink size={13} />
-            </a>
-          </div>
         </div>
         {items.length > 1 && (
           <div className={styles.controls}>
@@ -188,7 +193,7 @@ export default function ArchiveGallery({
   projectId?: string;
   coverOnly?: boolean;
 }) {
-  const { t, href, language } = useSiteLanguage();
+  const { t } = useSiteLanguage();
   const [selected, setSelected] = useState<number | null>(null);
   const items = images.filter(
     (image) =>
@@ -230,9 +235,11 @@ export default function ArchiveGallery({
             <Expand size={18} /> {t(b('View image', '查看图片'))}
           </span>
         </button>
-        <figcaption>
-          {t(cover.caption)} <span>{cover.credit}</span>
-        </figcaption>
+        {cover.privateReview && (
+          <figcaption>
+            {t(cover.caption)} <span>{cover.credit}</span>
+          </figcaption>
+        )}
         {cover.privateReview && (
           <p className={styles.rights}>
             {t(
@@ -264,14 +271,16 @@ export default function ArchiveGallery({
           {items.length} {t(b('photographs', '张照片'))}
         </span>
       </div>
-      <p>
-        {t(
-          b(
-            'Captions follow the source context. Recap, ceremony, team and product images are kept distinct.',
-            '图注依据原页面上下文整理；赛事回顾、颁奖现场、团队照片与产品界面分别建档。',
-          ),
-        )}
-      </p>
+      {items.some((image) => image.privateReview) && (
+        <p>
+          {t(
+            b(
+              'Captions follow the source context. Recap, ceremony, team and product images are kept distinct.',
+              '图注依据原页面上下文整理；赛事回顾、颁奖现场、团队照片与产品界面分别建档。',
+            ),
+          )}
+        </p>
+      )}
       <div className={styles.grid}>
         {items.map((image, index) => (
           <figure key={image.id} data-image-type={image.imageType}>
@@ -284,21 +293,12 @@ export default function ArchiveGallery({
                 <Expand size={18} />
               </span>
             </button>
-            <figcaption>
-              {t(image.caption)}
-              <span>{image.credit}</span>
-              {image.universityId && (
-                <a
-                  className={styles.schoolLink}
-                  href={href(
-                    `/global-network/?university=${image.universityId}#university-card-${image.universityId}`,
-                  )}
-                >
-                  {universityName(getUniversity(image.universityId), language)}{' '}
-                  →
-                </a>
-              )}
-            </figcaption>
+            {image.privateReview && (
+              <figcaption>
+                {t(image.caption)}
+                <span>{image.credit}</span>
+              </figcaption>
+            )}
           </figure>
         ))}
       </div>
