@@ -671,6 +671,10 @@ await test('site content and static archive contracts', async (t) => {
                 ),
               );
             const listing = render(WinnersPage);
+            assert.doesNotMatch(
+              listing,
+              /Browse documented prototypes, teams and awards|查找有来源的原型、团队与获奖记录|This is a selected archive, not a complete ranking|这是精选档案，不是完整排名/,
+            );
             assert.equal(
               (listing.match(/data-project-university=/g) ?? []).length,
               projects.length,

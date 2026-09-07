@@ -603,14 +603,6 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
         CHENGDU 80 / {t(b('WINNERS & PROJECTS', '获奖与项目成果'))}
       </div>
       <h1>{t(b('From ideas to evidence.', '创新，\n留下可查的成果。'))}</h1>
-      <p className={styles.lead}>
-        {t(
-          b(
-            'Browse documented prototypes, teams and awards. This is a selected archive, not a complete ranking.',
-            '查找有来源的原型、团队与获奖记录。这是精选档案，不是完整排名。',
-          ),
-        )}
-      </p>
       <div className={styles.filters}>
         <label>
           {t(
