@@ -402,8 +402,8 @@ export const projectStudies: Record<string, ProjectStudy> = {
       ),
     ],
     technical: b(
-      'Apollo’s documented work links fake-news detection, financial-news scoring and backtesting. Read as a design pathway, these form three connected questions: is the information credible, what signal does it provide, and how does that signal behave when tested?',
-      'Apollo已介绍的工作包括虚假新闻识别、金融新闻评分与数据回测。沿着这三项亮点，可以将方案理解为三个相互衔接的问题：信息是否可信、它提供了什么信号，以及信号在检验中如何表现。',
+      'The HKU Apollo team’s documented work links fake-news detection, financial-news scoring and backtesting. Read as a design pathway, these form three connected questions: is the information credible, what signal does it provide, and how does that signal behave when tested?',
+      '香港大学Apollo团队已介绍的工作包括虚假新闻识别、金融新闻评分与数据回测。沿着这三项亮点，可以将方案理解为三个相互衔接的问题：信息是否可信、它提供了什么信号，以及信号在检验中如何表现。',
     ),
     technicalInterpretation: true,
     technicalSteps: [

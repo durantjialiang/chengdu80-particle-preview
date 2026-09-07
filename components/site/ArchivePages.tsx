@@ -453,7 +453,13 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
                 ))}
               </ul>
               <details className={editorial.details}>
-                <summary>{t(b('Technical record', '技术记录'))}</summary>
+                <summary>
+                  {t(
+                    study.technicalInterpretation
+                      ? b('Design interpretation', '方案解读')
+                      : b('Technical approach', '技术方案'),
+                  )}
+                </summary>
                 <ProjectTechnicalApproach study={study} />
               </details>
               <a
