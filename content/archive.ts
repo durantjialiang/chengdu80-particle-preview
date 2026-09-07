@@ -14,9 +14,14 @@ import {
   edition2019Source,
   recap2019Source,
   confirmed2024Awards,
+  confirmed2022Awards,
+  confirmed2023Awards,
   edition2024Source,
+  anniversarySource,
+  bookletAwardsByYear,
 } from './history-evidence';
 export const sources = {
+  booklet: anniversarySource,
   event2019: edition2019Source,
   recap2019: recap2019Source,
   event2024: edition2024Source,
@@ -98,7 +103,8 @@ export type Project = {
   verificationNote?: Localized;
 };
 const media = { image: null, demoUrl: null, repositoryUrl: null };
-const topAward = b('开创者奖 (source wording)', '开创者奖');
+// The bilingual awards table in the anniversary publication establishes this wording.
+const topAward = b('Trailblazer Award', '开创者奖');
 export const projects: readonly Project[] = [
   {
     projectId: 'nushadow',
@@ -110,10 +116,10 @@ export const projects: readonly Project[] = [
     awardId: 'kaichuangzhe',
     awardLabel: topAward,
     summary: b(
-      'A personal fundraising platform connecting fundraisers and investors through analytics and recommendations.',
-      '面向个人筹资的平台，通过分析与推荐连接筹资者和投资者。',
+      'A personal IPO marketplace connecting fundraisers and investors. NuShadow combined issuance recommendations, investment matching and interactive portfolio analysis in one prototype.',
+      '连接个人筹资者与投资者的个人IPO平台。NuShadow将发行定价建议、投资匹配与组合分析整合进同一个原型，让个人融资成为可探索、可比较的过程。',
     ),
-    sourceRefs: ['history'],
+    sourceRefs: ['booklet', 'history'],
     verificationStatus: 'documented',
     ...media,
   },
@@ -130,10 +136,10 @@ export const projects: readonly Project[] = [
     awardId: 'kaichuangzhe',
     awardLabel: topAward,
     summary: b(
-      'A search tool organizing financial research and visualizing academic connections.',
-      '组织金融研究文献、展示学术关联的检索工具。',
+      'From finding a paper to finding a collaborator: Dragon Search connected financial research discovery, researcher networks and a digital agreement workflow.',
+      '从找到一篇论文，到找到一位合作伙伴。Dragon Search将金融研究检索、学者关系网络与数字协议流程相连接，帮助企业接近学术资源。',
     ),
-    sourceRefs: ['event2019', 'history'],
+    sourceRefs: ['event2019', 'booklet', 'history'],
     verificationNote: b(
       'The annual detail establishes the challenge and participants; the later SWUFE historical review names Dragon Search. Team photographs in the annual page do not establish a project-photo association.',
       '年度详情用于核实赛题与参赛高校，后续西财历史回顾用于核实Dragon Search专名。年度页面中的合影未明确关联该产品，不作为项目或冠军照片。',
@@ -154,10 +160,10 @@ export const projects: readonly Project[] = [
       '开创者奖 / Trailblazer Award',
     ),
     summary: b(
-      'An investment platform using explainable AI and blockchain to make prediction models more understandable.',
-      '使用可解释AI与区块链，让投资预测模型更易理解的平台。',
+      'An explanation layer for investment models. Pisces used interactive charts and explainable AI to reveal the factors behind predictions, alongside a model publishing and subscription marketplace.',
+      '为投资模型打开解释窗口。Pisces通过交互图表与可解释AI展示预测背后的影响因素，并设计模型发布与订阅市场，连接开发者与投资者。',
     ),
-    sourceRefs: ['nus2020', 'history'],
+    sourceRefs: ['nus2020', 'booklet', 'history'],
     verificationStatus: 'documented',
     ...media,
   },
@@ -171,10 +177,10 @@ export const projects: readonly Project[] = [
     awardId: 'kaichuangzhe',
     awardLabel: topAward,
     summary: b(
-      'A risk-management prototype with warning and visualization functions.',
-      '具有风险预警与可视化功能的风险管理原型。',
+      'From scattered indicators to a view of enterprise risk. Panda combined data-quality management, multiple learning models, early warnings and risk visualization.',
+      '把分散的指标转化为可理解的企业风险。Panda结合数据质量管理、多种学习模型、风险预警与可视化，支持对企业风险的分析与跟踪。',
     ),
-    sourceRefs: ['history'],
+    sourceRefs: ['booklet', 'history'],
     verificationStatus: 'documented',
     ...media,
   },
@@ -188,8 +194,8 @@ export const projects: readonly Project[] = [
     awardId: 'kaichuangzhe',
     awardLabel: topAward,
     summary: b(
-      'A credit-risk prototype using data, model and result visualization while emphasizing privacy.',
-      '注重隐私，以数据、模型和结果可视化支持信贷风控的原型。',
+      'A visual workflow for automated credit-risk modelling. Giraffe brought data, models and results together, with privacy and front-to-back-office communication as design priorities.',
+      '让自动化信贷风控成为可理解的工作流程。Giraffe贯通数据、模型与结果的可视化，在重视隐私的同时，帮助业务与建模团队更好地协作。',
     ),
     sourceRefs: ['event2022', 'history'],
     verificationStatus: 'documented',
@@ -267,6 +273,7 @@ export type Edition = {
     label: Localized;
     universityIds: readonly UniversityId[];
     sourceRef: SourceId;
+    sourcePage?: number;
   }[];
 };
 const unknownDates = {
@@ -295,14 +302,43 @@ export const editions: readonly Edition[] = [
       datePrecision:
         year === 2019 || year === 2020 || year === 2023 ? 'day' : 'year',
       ...unknownDates,
+      ...(year === 2018 || year === 2020 || year === 2021
+        ? { awardResults: bookletAwardsByYear[year] }
+        : {}),
+      ...(year === 2022 ? { awardResults: confirmed2022Awards } : {}),
+      ...(year === 2023 ? { awardResults: confirmed2023Awards } : {}),
+      ...(year === 2018
+        ? {
+            recap: b(
+              'Eight university teams explored personal IPO pricing and issuance. NUS developed NuShadow, connecting personal fundraising with analytics, recommendations and an investor marketplace.',
+              '首届赛事汇聚八所高校团队，围绕个人IPO定价与发行展开研发。新加坡国立大学以NuShadow探索个人融资，把筹资需求、智能定价与投资者匹配连接起来。',
+            ),
+          }
+        : {}),
+      ...(year === 2020
+        ? {
+            recap: b(
+              'The third edition moved online, with teams developing on a shared cloud platform during the 80-hour challenge. NUS won the Trailblazer Award with Pisces, exploring how investors could understand machine-learning predictions.',
+              '第三届赛事转为线上开展，各队在统一云平台上完成80小时研发。新加坡国立大学凭借Pisces获得开创者奖，探索如何把机器学习预测转化为投资者能够理解的解释与图表。',
+            ),
+          }
+        : {}),
+      ...(year === 2021
+        ? {
+            recap: b(
+              'The fourth edition combined online and on-site demonstrations around enterprise risk assessment. Tsinghua’s Panda connected data preparation, risk models and visual analysis in a prototype for regulators, managers and investors.',
+              '第四届赛事采用线上与线下相结合的展示形式，聚焦企业风险评估。清华大学的Panda将数据处理、风险建模与可视化分析整合为原型，面向监管者、管理者和投资者。',
+            ),
+          }
+        : {}),
       ...(year === 2019
         ? {
             finalDate: '2019-11-03',
             coverImageId: 'cd80-2019-01',
             awardResults: confirmed2019Awards,
             recap: b(
-              'The annual detail presents Financial Academic Explorer, a visual research-discovery platform for finance scholars, and eight university teams. The separate official review records the final and closing ceremony at SWUFE on 3 November, with demonstrations and questions. The photographs are captioned university team groups, not product screenshots or award portraits.',
-              '年度详情介绍Financial Academic Explorer赛题：面向金融学者的可视化科研探索发现平台，并列出八所高校团队。独立赛事回顾记载11月3日在西财举行决赛闭幕式，包含展示与问答。照片为原页面标注高校的团队合影，不是产品截图或获奖名次照片。',
+              'Eight university teams built visual research-discovery platforms for finance scholars, before the final demonstrations and questions at SWUFE on 3 November. HKU’s Dragon Search brought together researcher discovery, topic analysis and potential collaboration.',
+              '八所高校团队围绕金融学者科研探索发现平台展开研发，并于11月3日在西财进行决赛展示与答辩。香港大学的Dragon Search把学者检索、主题分析与合作连接融为一体，获得开创者奖。',
             ),
           }
         : {}),
@@ -340,14 +376,14 @@ export const editions: readonly Edition[] = [
                 ),
       sourceRefs:
         year === 2019
-          ? ['event2019', 'recap2019', 'history']
+          ? ['event2019', 'recap2019', 'booklet', 'history']
           : year === 2020
-            ? ['nus2020', 'history']
+            ? ['nus2020', 'booklet', 'history']
             : year === 2023
               ? ['event2023', 'hku2023']
               : year === 2022
                 ? ['history', 'event2022']
-                : ['history'],
+                : ['booklet', 'history'],
       media:
         year === 2019
           ? Array.from(

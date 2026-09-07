@@ -1,0 +1,167 @@
+.showcase {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.65fr) minmax(0, 1.6fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  margin-block: 2rem;
+  padding: clamp(1.5rem, 3.5vw, 3rem);
+  border: 1px solid #94b9d332;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #102334c9, #07131ee8 65%);
+  scroll-margin-top: 7rem;
+  overflow-wrap: anywhere;
+}
+.identity,
+.story {
+  min-width: 0;
+}
+.showcase .school {
+  color: #c8dbe7;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 1rem 0;
+}
+.award {
+  display: inline-block;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #dac096;
+}
+.showcase .identity h3 {
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+  margin: 1rem 0 0;
+}
+.direction,
+.teamLabel {
+  display: block;
+  color: #8eabbf;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-top: 0.75rem;
+}
+.showcase .solution {
+  font-size: clamp(1.0625rem, 1.35vw, 1.25rem);
+  line-height: 1.8;
+  color: #d6e5ee;
+  margin: 0;
+}
+.context {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin: 1.75rem 0 2rem;
+}
+.showcase h4 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #8fc6dc;
+  line-height: 1.5;
+  margin: 0 0 0.625rem;
+}
+.showcase .context p,
+.showcase .technical p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #a9c0d0;
+  margin: 0;
+}
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
+  padding: 0;
+}
+.features li {
+  border-top: 1px solid #9cbdcf36;
+  padding-top: 1rem;
+}
+.features li > span {
+  color: #6f91a8;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+.showcase .features p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #d0e0ea;
+  margin: 0.625rem 0 0;
+}
+.technical {
+  padding-block: 1rem;
+  border-top: 1px solid #9cbdcf24;
+  border-bottom: 1px solid #9cbdcf24;
+}
+.technical summary {
+  color: #accbdd;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  line-height: 1.6;
+}
+.technical[open] summary {
+  margin-bottom: 1rem;
+}
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-block: 0.875rem;
+  margin-top: 0.75rem;
+  min-height: 2.75rem;
+  color: #c6e9f9;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.link:hover {
+  color: white;
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+.link:focus-visible,
+.technical summary:focus-visible {
+  outline: 2px solid #9bd5ee;
+  outline-offset: 5px;
+}
+.showcase[data-compact='true'] {
+  grid-template-columns: minmax(10rem, 0.7fr) minmax(0, 1.3fr);
+  padding: clamp(1.25rem, 2vw, 2rem);
+  gap: 2rem;
+  margin-block: 1.5rem 0;
+}
+.showcase[data-compact='true'] .identity h3 {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+}
+.showcase[data-compact='true'] .solution {
+  font-size: 1rem;
+}
+@media (max-width: 60rem) {
+  .features {
+    grid-template-columns: 1fr;
+  }
+  .features li {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+  .showcase .features p {
+    margin: 0;
+  }
+}
+@media (max-width: 42rem) {
+  .showcase,
+  .showcase[data-compact='true'],
+  .context {
+    grid-template-columns: 1fr;
+  }
+  .showcase,
+  .showcase[data-compact='true'] {
+    gap: 1.5rem;
+    padding: 1.25rem;
+  }
+  .context {
+    gap: 1.25rem;
+  }
+}

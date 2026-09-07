@@ -25,6 +25,8 @@ import {
 } from '@/content/project-studies';
 import EditorialMedia from './EditorialMedia';
 import editorial from './Editorial.module.css';
+import EditionProjectShowcase from './EditionProjectShowcase';
+import historyStyles from './History.module.css';
 
 export function Sources({ ids }: { ids: readonly SourceId[] }) {
   const { t } = useSiteLanguage();
@@ -137,17 +139,24 @@ export function HistoryPage({ year }: { year?: number }) {
             ? t(record.challenge)
             : t(statusLabels[record.status])}
         </h1>
-        <p className={styles.lead}>{t(record.dateNote)}</p>
+        <p className={styles.lead}>
+          {t(record.recap ?? related[0]?.summary ?? record.dateNote)}
+        </p>
         <ArchiveGallery
           year={record.year}
           albumId={`edition-${record.year}`}
           coverId={record.coverImageId}
           coverOnly
         />
-        {record.recap && (
+        {related.length > 0 && (
           <section className={styles.section}>
-            <h2>{t(b('Edition review', '赛事回顾'))}</h2>
-            <p className={styles.archiveRecap}>{t(record.recap)}</p>
+            <h2>{t(b('Award-winning projects', '获奖作品'))}</h2>
+            {related.map((project) => (
+              <EditionProjectShowcase
+                project={project}
+                key={project.projectId}
+              />
+            ))}
           </section>
         )}
         {record.status === 'upcoming' ? (
@@ -155,72 +164,45 @@ export function HistoryPage({ year }: { year?: number }) {
             {t(b('2026 Competition', '2026赛事信息'))} →
           </a>
         ) : null}
-        <section className={styles.section}>
-          <h2>{t(b('Schedule record', '时间记录'))}</h2>
-          <dl className={styles.facts}>
-            {schedule.map(([label, value]) => (
-              <div key={label.en}>
-                <dt>{t(label)}</dt>
-                <dd>
-                  {value ??
-                    t(
-                      record.status === 'not-held'
-                        ? b('Not applicable', '不适用')
-                        : b('Not established in this record', '本档案未明确'),
-                    )}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </section>
         {record.awardResults?.length ? (
           <section className={styles.section}>
             <h2>{t(b('Award record', '获奖结果'))}</h2>
-            <p className={styles.note}>
-              {t(
-                b(
-                  'Names follow the cited record. Award recipients are not all described as champions.',
-                  '奖项依据原始记录，不将所有获奖高校统称为冠军。',
-                ),
-              )}
-            </p>
-            <dl className={styles.facts}>
+            <div className={historyStyles.awardGroups}>
               {record.awardResults.map((result) => (
-                <div key={result.id}>
-                  <dt>{t(result.label)}</dt>
-                  <dd>
-                    {result.universityIds.map((id, index) => (
-                      <span key={id}>
-                        {index > 0 ? ' / ' : ''}
-                        <a
-                          href={href(
-                            `/global-network/?university=${id}#university-card-${id}`,
-                          )}
-                        >
-                          {universityName(getUniversity(id), language)}
-                        </a>
-                      </span>
-                    ))}
+                <section
+                  className={historyStyles.awardGroup}
+                  key={result.id}
+                  data-award-group={result.id}
+                >
+                  <div className={historyStyles.awardHeading}>
+                    <h3>{t(result.label)}</h3>
                     <a
                       className={styles.awardSource}
-                      href={sources[result.sourceRef].url}
+                      href={`${sources[result.sourceRef].url}${result.sourcePage ? `#page=${result.sourcePage}` : ''}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       {t(b('Source', '依据'))} ↗
                     </a>
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </section>
-        ) : null}
-        {related.length ? (
-          <section className={styles.section}>
-            <h2>{t(b('Documented results', '有据可查的成果'))}</h2>
-            <div className={styles.archiveGrid}>
-              {related.map((p) => (
-                <WinnerCard project={p} key={p.projectId} />
+                  </div>
+                  <ul className={historyStyles.schools}>
+                    {result.universityIds.map((id) => (
+                      <li key={id}>
+                        <a
+                          href={href(
+                            `/global-network/?university=${id}#university-card-${id}`,
+                          )}
+                        >
+                          <UniversityLogo university={getUniversity(id)} />
+                          <span>
+                            {universityName(getUniversity(id), language)}
+                            <span aria-hidden="true"> ↗</span>
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
               ))}
             </div>
           </section>
@@ -280,6 +262,23 @@ export function HistoryPage({ year }: { year?: number }) {
             <summary>
               {t(b('Sources & record notes', '资料来源与说明'))}
             </summary>
+            <p>{t(record.dateNote)}</p>
+            <h3>{t(b('Schedule record', '时间记录'))}</h3>
+            <dl className={styles.facts}>
+              {schedule.map(([label, value]) => (
+                <div key={label.en}>
+                  <dt>{t(label)}</dt>
+                  <dd>
+                    {value ??
+                      t(
+                        record.status === 'not-held'
+                          ? b('Not applicable', '不适用')
+                          : b('Not established in this record', '本档案未明确'),
+                      )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
             <p>
               {t(
                 b(
@@ -334,8 +333,8 @@ export function HistoryPage({ year }: { year?: number }) {
       <p className={styles.lead}>
         {t(
           b(
-            'Source-linked editions and reports since 2018. Event dates, development windows and publication dates are kept distinct.',
-            '从2018年开始的赛事与报道档案。活动日期、开发时段与新闻发布日期分别记录。',
+            'From personal fundraising to autonomous-vehicle insurance. Explore the challenges, award-winning prototypes and ideas developed by teams since 2018.',
+            '从个人融资到智能驾驶保险，回看2018年以来的历届赛题、获奖作品，以及团队将创意转化为原型的思路。',
           ),
         )}
       </p>
@@ -358,7 +357,19 @@ export function HistoryPage({ year }: { year?: number }) {
                   <span aria-hidden="true">↗</span>
                 </a>
               </h2>
-              <p>{t(e.dateNote)}</p>
+              {projects.some((project) => project.year === e.year) ? (
+                projects
+                  .filter((project) => project.year === e.year)
+                  .map((project) => (
+                    <EditionProjectShowcase
+                      project={project}
+                      compact
+                      key={project.projectId}
+                    />
+                  ))
+              ) : (
+                <p>{t(e.dateNote)}</p>
+              )}
             </div>
           </article>
         ))}

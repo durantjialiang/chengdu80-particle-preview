@@ -215,6 +215,9 @@ await test('site content and static archive contracts', async (t) => {
           'nushadow',
           'dragon-search',
           'pisces',
+          'panda',
+          'giraffe',
+          'apollo-2023',
           'data-queens-report',
         ]) {
           const study = projectStudies[id];
@@ -804,6 +807,193 @@ await test('site content and static archive contracts', async (t) => {
             Object.defineProperty(globalThis, 'location', previousLocation);
           else delete globalThis.location;
         }
+      },
+    );
+    await t.test(
+      'annual project features share seven bilingual studies and booklet awards without inventing later products',
+      async () => {
+        const { HistoryPage, WinnersPage } = await server.ssrLoadModule(
+          '/components/site/ArchivePages.tsx',
+        );
+        const { SiteLanguageProvider } = await server.ssrLoadModule(
+          '/hooks/use-site-language.tsx',
+        );
+        const { projectStudies } = await server.ssrLoadModule(
+          '/content/project-studies.ts',
+        );
+        const expected = {
+          2018: [
+            ['nus'],
+            ['hku', 'berkeley'],
+            ['gatech', 'pku', 'swufe', 'sustech', 'tsinghua'],
+          ],
+          2019: [
+            ['hku'],
+            ['berkeley', 'nus'],
+            ['pku', 'swufe', 'tsinghua', 'toronto', 'sjtu'],
+          ],
+          2020: [
+            ['nus'],
+            ['uzh', 'swufe'],
+            ['tsinghua', 'uestc', 'sustech', 'hku', 'cqu'],
+          ],
+          2021: [
+            ['tsinghua'],
+            ['swufe', 'uzh'],
+            ['nus', 'hku', 'uestc', 'cqu', 'tau'],
+          ],
+        };
+        const sourcePages = { 2018: 20, 2019: 36, 2020: 46, 2021: 56 };
+        for (const [year, groups] of Object.entries(expected)) {
+          const edition = editions.find((e) => e.year === Number(year));
+          assert.deepEqual(
+            edition.awardResults.map((r) => [...r.universityIds]),
+            groups,
+          );
+          assert.equal(
+            new Set(edition.awardResults.flatMap((r) => r.universityIds)).size,
+            8,
+          );
+          for (const result of edition.awardResults) {
+            assert.equal(result.sourceRef, 'booklet');
+            assert.equal(result.sourcePage, sourcePages[year]);
+          }
+        }
+        assert.equal(
+          projects.find((p) => p.projectId === 'apollo-2023').projectName,
+          null,
+        );
+        assert.equal(
+          projects.find((p) => p.projectId === 'data-queens-report')
+            .projectName,
+          null,
+        );
+        assert.equal(Object.keys(projectStudies).length, 7);
+        const previousWindow = Object.getOwnPropertyDescriptor(
+          globalThis,
+          'window',
+        );
+        const previousLocation = Object.getOwnPropertyDescriptor(
+          globalThis,
+          'location',
+        );
+        const escapeHtml = (value) =>
+          renderToString(React.createElement('span', null, value)).replace(
+            /^<span>|<\/span>$/g,
+            '',
+          );
+        try {
+          Object.defineProperty(globalThis, 'window', {
+            value: {},
+            configurable: true,
+          });
+          for (const language of ['zh', 'en']) {
+            Object.defineProperty(globalThis, 'location', {
+              value: { search: `?lang=${language}` },
+              configurable: true,
+            });
+            const render = (component, props) =>
+              renderToString(
+                React.createElement(
+                  SiteLanguageProvider,
+                  null,
+                  React.createElement(component, props),
+                ),
+              );
+            const listing = render(HistoryPage);
+            assert.equal(
+              (listing.match(/data-edition-project=/g) ?? []).length,
+              7,
+            );
+            assert.equal(
+              (listing.match(/data-compact="true"/g) ?? []).length,
+              7,
+            );
+            for (const project of projects) {
+              const study = projectStudies[project.projectId];
+              const edition = editions.find((e) => e.year === project.year);
+              const detail = render(HistoryPage, { year: project.year });
+              const caseStudy = render(WinnersPage, {
+                projectId: project.projectId,
+              });
+              assert.ok(
+                listing.includes(
+                  `href="/history/${project.year}/?lang=${language}#project-${project.projectId}"`,
+                ),
+              );
+              assert.ok(
+                listing.includes(escapeHtml(project.summary[language])),
+              );
+              assert.ok(detail.includes(`id="project-${project.projectId}"`));
+              assert.ok(
+                detail.includes(
+                  `href="/winners/${project.projectId}/?lang=${language}"`,
+                ),
+              );
+              assert.ok(detail.includes(escapeHtml(study.solution[language])));
+              assert.ok(detail.includes(escapeHtml(study.technical[language])));
+              assert.ok(
+                caseStudy.includes(escapeHtml(study.solution[language])),
+              );
+              assert.ok(study.features.length >= 2);
+              for (const feature of study.features) {
+                assert.ok(detail.includes(escapeHtml(feature[language])));
+                assert.ok(caseStudy.includes(escapeHtml(feature[language])));
+              }
+              const ids = [...detail.matchAll(/\sid="([^"]+)"/g)].map(
+                (m) => m[1],
+              );
+              assert.equal(
+                new Set(ids).size,
+                ids.length,
+                'Annual page IDs must be unique',
+              );
+              const university = universities.find(
+                (u) => u.id === project.universityId,
+              );
+              assert.ok(detail.includes(`src="${university.logo}"`));
+              assert.ok(
+                detail.includes(escapeHtml(edition.dateNote[language])),
+                'Date boundaries remain available in notes',
+              );
+              assert.ok(
+                !listing.includes(escapeHtml(edition.dateNote[language])),
+                'Timeline leads with projects, not audit notes',
+              );
+              for (const award of edition.awardResults ?? []) {
+                assert.ok(detail.includes(`data-award-group="${award.id}"`));
+                for (const universityId of award.universityIds) {
+                  assert.ok(
+                    detail.includes(
+                      `href="/global-network/?university=${universityId}&amp;lang=${language}#university-card-${universityId}"`,
+                    ),
+                  );
+                }
+              }
+            }
+            for (const year of [2025, 2026]) {
+              assert.doesNotMatch(
+                render(HistoryPage, { year }),
+                /data-edition-project=|data-award-group=/,
+              );
+            }
+          }
+        } finally {
+          if (previousWindow)
+            Object.defineProperty(globalThis, 'window', previousWindow);
+          else delete globalThis.window;
+          if (previousLocation)
+            Object.defineProperty(globalThis, 'location', previousLocation);
+          else delete globalThis.location;
+        }
+        const css = await readFile(
+          'components/site/EditionProjectShowcase.module.css',
+          'utf8',
+        );
+        assert.match(css, /@media \(max-width: 42rem\)/);
+        assert.match(css, /grid-template-columns: 1fr/);
+        assert.match(css, /:focus-visible/);
+        assert.doesNotMatch(css, /animation:|transform:|canvas/);
       },
     );
     await t.test(
