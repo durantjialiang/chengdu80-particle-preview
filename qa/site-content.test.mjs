@@ -33,6 +33,79 @@ await test('site content and static archive contracts', async (t) => {
       '/content/universities.ts',
     );
     await t.test(
+      'homepage type scales without replacing content, navigation or particle behavior',
+      async () => {
+        const navigationCss = await readFile(
+          'components/site/Site.module.css',
+          'utf8',
+        );
+        const editorialCss = await readFile(
+          'components/site/Editorial.module.css',
+          'utf8',
+        );
+        const introCss = await readFile(
+          'components/Particle80Intro.module.css',
+          'utf8',
+        );
+        assert.match(
+          navigationCss,
+          /\.navigation\[data-embedded='true'\]\s*\{[^}]*font-size: clamp\(/,
+        );
+        assert.match(
+          navigationCss,
+          /@media \(max-width: 76rem\)\s*\{\s*\.desktopNav\s*\{\s*display: none/,
+        );
+        assert.match(
+          navigationCss,
+          /\.languages button\s*\{[^}]*min-height: 2\.75rem/,
+        );
+        assert.match(
+          editorialCss,
+          /\.essentials strong\s*\{[^}]*font-size: clamp\([^;]*rem[^;]*vw/,
+        );
+        assert.match(editorialCss, /\.essentialLinks\s*\{[^}]*flex-wrap: wrap/);
+        assert.match(
+          editorialCss,
+          /\.essentialLinks a\s*\{[^}]*max-width: 100%/,
+        );
+        assert.match(
+          editorialCss,
+          /\.essentialLinks a\s*\{[^}]*min-height: 3rem/,
+        );
+        assert.match(introCss, /min-height: clamp\(18rem, 46svh, 27\.5rem\)/);
+        assert.match(introCss, /max-height: 700px/);
+        assert.match(introCss, /env\(safe-area-inset-bottom\)/);
+        const { SiteNavigation } = await server.ssrLoadModule(
+          '/components/site/SiteChrome.tsx',
+        );
+        const { HeroEssentials } = await server.ssrLoadModule(
+          '/components/site/EcosystemContent.tsx',
+        );
+        const { SiteLanguageProvider } = await server.ssrLoadModule(
+          '/hooks/use-site-language.tsx',
+        );
+        const render = (component, props) =>
+          renderToString(
+            React.createElement(
+              SiteLanguageProvider,
+              null,
+              React.createElement(component, props),
+            ),
+          );
+        const nav = render(SiteNavigation, { embedded: true });
+        const essentials = render(HeroEssentials);
+        assert.match(nav, /data-embedded="true"/);
+        assert.match(nav, /<dialog/);
+        assert.match(nav, /aria-haspopup="dialog"/);
+        assert.match(nav, /aria-label="Language"/);
+        assert.match(essentials, /80 hours\. Real fintech challenges\./);
+        for (const route of ['competition', 'winners']) {
+          assert.ok(essentials.includes(`href="/${route}/?lang=en"`));
+        }
+        assert.equal((essentials.match(/<a\b/g) ?? []).length, 2);
+      },
+    );
+    await t.test(
       'editorial routes, dated partnerships and case studies stay evidence-linked',
       async () => {
         const e = await server.ssrLoadModule('/content/ecosystem.ts');
@@ -742,7 +815,9 @@ await test('site content and static archive contracts', async (t) => {
         const { default: Competition } = await server.ssrLoadModule(
           '/components/site/CompetitionPage.tsx',
         );
-        const competitionHtml = renderToString(React.createElement(Competition));
+        const competitionHtml = renderToString(
+          React.createElement(Competition),
+        );
         const formatSection = competitionHtml.match(
           /<section\b[^>]*id="format"[^>]*>[\s\S]*?<\/section>/,
         )?.[0];
