@@ -85,7 +85,7 @@ await test('site content and static archive contracts', async (t) => {
         const { publicCityImages } = await server.ssrLoadModule(
           '/content/city-collaboration-media.ts',
         );
-        assert.equal(publicCityImages.length, 4);
+        assert.equal(publicCityImages.length, 5);
         assert.equal(cityInstitutions.filter((item) => item.photo).length, 4);
         for (const institution of cityInstitutions.filter(
           (item) => item.photo,
@@ -169,11 +169,11 @@ await test('site content and static archive contracts', async (t) => {
               1,
             );
             assert.match(html, /aria-labelledby="city-collaboration-title"/);
-            assert.equal((html.match(/<img\b/g) ?? []).length, 6);
-            assert.equal((html.match(/<button\b/g) ?? []).length, 6);
+            assert.equal((html.match(/<img\b/g) ?? []).length, 7);
+            assert.equal((html.match(/<button\b/g) ?? []).length, 7);
             assert.equal(
               (html.match(/loading="lazy" decoding="async"/g) ?? []).length,
-              6,
+              7,
             );
             assert.equal(
               (html.match(/width="1800" height="1200"/g) ?? []).length,

@@ -110,3 +110,18 @@ card shows a short bilingual event/year label and opens the existing viewer.
 The two general 2024 scene photographs remain in the surrounding section.
 
 Photo update verification (2026-09-08): typecheck, lint, 67 tests and production build passed. The built Chinese page displayed all four institution photographs, and the financial-work-office photograph opened the shared viewer. Existing globe bundle-size warning remains. Production completion is verified separately after publication.
+
+## Owner supplied stage photo 2026-09-08
+
+The project owner supplied `WUL01538.JPG` and explicitly asked to add it to the
+partnership section. Source dimensions are 7008 × 4672; SHA-256 is
+`e32b0de2fd21ab066cbdfb7966a11c4bf4f870602328132848466da4b2398141`.
+The backdrop explicitly names Liang Qizhou and shows FINTECH80 CHENGDU 2024.
+No photographer is inferred and no public source URL is fabricated.
+
+WebP copies at 2400 × 1600 and 640 × 427 retain the entire composition. The
+original user file is unchanged and is not added to the repository. A thumbnail
+labelled “2024 · 梁其洲致辞全景” supplements the financial-work-office card;
+the existing speech photograph remains. Both can be opened in the shared viewer.
+This record covers the user's authorization for the requested website and public
+preview use, not an independent publisher licence.

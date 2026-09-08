@@ -14,9 +14,10 @@ import styles from './CityCollaboration.module.css';
 
 const sceneIds = [
   ...citySceneImageIds,
-  ...cityInstitutions.flatMap((institution) =>
-    institution.photo ? [institution.photo.imageId] : [],
-  ),
+  ...cityInstitutions.flatMap((institution) => [
+    ...(institution.photo ? [institution.photo.imageId] : []),
+    ...(institution.additionalPhotos ?? []).map((photo) => photo.imageId),
+  ]),
 ];
 const scenes = [...new Set(sceneIds)].flatMap((id) =>
   [...publicArchiveImages, ...publicCityImages].filter(
@@ -65,7 +66,7 @@ function Institution({
 export default function CityCollaboration() {
   const { t } = useSiteLanguage();
   const [selected, setSelected] = useState<number | null>(null);
-  const scene = (id: string, label?: Localized) => {
+  const scene = (id: string, label?: Localized, thumbnail = false) => {
     const index = scenes.findIndex((image) => image.id === id);
     const image = scenes[index];
     return (
@@ -76,7 +77,7 @@ export default function CityCollaboration() {
           onClick={() => setSelected(index)}
           aria-label={`${t(b('View photo', '查看图片'))} · ${t(label ?? image.caption)}`}
         >
-          <Photo image={image} full />
+          <Photo image={image} full={!thumbnail} />
           <span className={styles.photoMeta}>
             <span>{label ? t(label) : `CHENGDU 80 · ${image.eventYear}`}</span>
             <Expand size={18} aria-hidden="true" />
@@ -126,8 +127,19 @@ export default function CityCollaboration() {
             key={institution.id}
             institution={institution}
             photo={
-              institution.photo &&
-              scene(institution.photo.imageId, institution.photo.label)
+              <>
+                {institution.photo &&
+                  scene(institution.photo.imageId, institution.photo.label)}
+                {institution.additionalPhotos && (
+                  <div className={styles.additionalPhotos}>
+                    {institution.additionalPhotos.map((photo) => (
+                      <div key={photo.imageId}>
+                        {scene(photo.imageId, photo.label, true)}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
             }
           />
         ))}

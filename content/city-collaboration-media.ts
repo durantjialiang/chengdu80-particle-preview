@@ -103,6 +103,33 @@ export const cityCollaborationImages: readonly ArchiveImage[] = [
     width: 1800,
     height: 1200,
   },
+  {
+    id: 'city-financial-office-2024-stage',
+    albumId: 'chengdu80-financial-work-office-2024',
+    // Owner-supplied WUL01538.JPG, not downloaded from a public source page.
+    sourcePage: '',
+    originalImageUrl: '',
+    eventYear: 2024,
+    caption: b(
+      'Liang Qizhou addresses the seventh Chengdu 80 in 2024, with his name and role displayed on the stage backdrop.',
+      '2024年第七届成都八零，梁其洲现场致辞，舞台背景展示其姓名与职务。',
+    ),
+    universityId: null,
+    projectId: null,
+    imageType: 'speech',
+    photographer: null,
+    credit: '赛事项目方提供 / Supplied by Chengdu 80',
+    usageStatus: 'approved',
+    permission: {
+      ...permission!,
+      evidenceRef:
+        'docs/city-collaboration.md#owner-supplied-stage-photo-2026-09-08',
+    },
+    localAssetPath: '/history-media/city-financial-office-2024-stage-full.webp',
+    thumbnailPath: '/history-media/city-financial-office-2024-stage-thumb.webp',
+    width: 2400,
+    height: 1600,
+  },
 ];
 
 export const publicCityImages =

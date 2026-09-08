@@ -48,6 +48,7 @@ export type CityInstitution = {
   website: string | null;
   sourceIds: readonly (keyof typeof cityCollaborationSources)[];
   photo?: { imageId: string; label: Localized };
+  additionalPhotos?: readonly { imageId: string; label: Localized }[];
 };
 
 /** These are distinct city relationships, not a competition host/sponsor roster. */
@@ -136,6 +137,12 @@ export const cityInstitutions: readonly CityInstitution[] = [
         '2024 · 梁其洲在第七届成都八零致辞',
       ),
     },
+    additionalPhotos: [
+      {
+        imageId: 'city-financial-office-2024-stage',
+        label: b('2024 · Liang Qizhou on stage', '2024 · 梁其洲致辞全景'),
+      },
+    ],
   },
 ];
 

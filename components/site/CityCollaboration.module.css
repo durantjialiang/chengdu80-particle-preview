@@ -110,6 +110,20 @@
 .institutionMedia .photoMeta svg {
   flex-shrink: 0;
 }
+.additionalPhotos {
+  padding: 14px;
+  border-top: 1px solid #a6cce026;
+}
+.additionalPhotos .photo {
+  display: grid;
+  grid-template-columns: min(36%, 160px) minmax(0, 1fr);
+  align-items: center;
+  text-align: left;
+}
+.additionalPhotos .photoMeta {
+  padding: 12px 16px;
+  border-top: 0;
+}
 .institution h3 {
   margin: 0 0 20px;
   font-size: clamp(22px, 2.1vw, 29px);
