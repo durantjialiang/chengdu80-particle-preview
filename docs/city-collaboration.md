@@ -78,3 +78,35 @@ The local Partners route returned HTTP 200 at port 4186. No new browser
 screenshots, responsive viewport runs or photo-click interaction tests were
 performed in this iteration. Asset thumbnails were visually inspected before
 reuse. No new file download or new media licence is claimed.
+
+## Photo authorization 2026-09-08
+
+The project owner asked to find cooperation photographs for the four city
+institution cards and put them on the linked public preview. Their screenshot
+explicitly identifies Wenjiang, Qingyang, the municipal financial regulator and
+the municipal financial work office. This authorizes the requested site edit
+and publication; it is recorded as project-owner confirmation, not an
+independently issued publisher licence. Original sources retain their copyright.
+
+The four selected images are recorded in `content/city-collaboration-media.ts`:
+
+| Card                                          | Photograph                                                                                              | Official source                                |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| Wenjiang district government                  | 2022 International Fintech Forum opening, jointly hosted by SWUFE, Wenjiang and the municipal regulator | https://fic.swufe.edu.cn/info/1027/1003.htm    |
+| Qingyang district government                  | SWUFE–Qingyang cooperation meeting on 6 June 2024                                                       | https://www.swufe.edu.cn/info/1048/20632.htm   |
+| Chengdu Municipal Financial Regulatory Bureau | 2023 International Fintech Forum, jointly hosted with SWUFE and Wenjiang                                | https://www.swufe.edu.cn/info/1048/23202.htm   |
+| Municipal Financial Work Commission office    | Liang Qizhou speaking at the seventh Chengdu 80 on 30 October 2024                                      | https://news.swufe.edu.cn/info/1003/109791.htm |
+
+Forum photographs show the co-hosted events and do not identify a specific
+representative. The Qingyang photograph documents school–district cooperation,
+not a Chengdu 80 competition session. For the financial work office, the source
+places image `DC6395BAFB3DC308D2EB62EE7E5_9A8AB042_309B3.jpg` directly before
+Liang Qizhou's speech paragraph. The older archive `cd80-2024-03` has a generic caption and a different source
+URL. This card uses the exact image URL in the current report and records the
+explicit paragraph association, without modifying the older archive record.
+
+Photographs retain their proportions, content and existing watermarks. Each
+card shows a short bilingual event/year label and opens the existing viewer.
+The two general 2024 scene photographs remain in the surrounding section.
+
+Photo update verification (2026-09-08): typecheck, lint, 67 tests and production build passed. The built Chinese page displayed all four institution photographs, and the financial-work-office photograph opened the shared viewer. Existing globe bundle-size warning remains. Production completion is verified separately after publication.

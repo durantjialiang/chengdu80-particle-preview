@@ -11,12 +11,13 @@ import {
   publicArchiveImages,
   type ArchiveImage,
 } from '../content/archive-media';
+import { publicCityImages } from '../content/city-collaboration-media';
 
 /** Fail closed if a pending/orphan photo is accidentally copied to the public media folder. */
 export function checkPublicHistoryMedia(publicRoot: string) {
   const root = resolve(publicRoot, 'history-media');
   const allowed = new Set(
-    publicArchiveImages.flatMap((image) => [
+    [...publicArchiveImages, ...publicCityImages].flatMap((image) => [
       image.localAssetPath!,
       image.thumbnailPath!,
     ]),

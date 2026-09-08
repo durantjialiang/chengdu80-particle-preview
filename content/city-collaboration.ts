@@ -47,6 +47,7 @@ export type CityInstitution = {
     | 'event-engagement';
   website: string | null;
   sourceIds: readonly (keyof typeof cityCollaborationSources)[];
+  photo?: { imageId: string; label: Localized };
 };
 
 /** These are distinct city relationships, not a competition host/sponsor roster. */
@@ -74,6 +75,10 @@ export const cityInstitutions: readonly CityInstitution[] = [
     relationship: 'forum-co-host',
     website: 'https://www.wenjiang.gov.cn/',
     sourceIds: ['forum2022', 'forum2023'],
+    photo: {
+      imageId: 'city-forum-2022',
+      label: b('2022 · International Fintech Forum', '2022 · 国际金融科技论坛'),
+    },
   },
   {
     id: 'qingyang-district-government',
@@ -86,6 +91,10 @@ export const cityInstitutions: readonly CityInstitution[] = [
     relationship: 'district-collaboration',
     website: 'https://www.cdqingyang.gov.cn/',
     sourceIds: ['qingyang2021', 'qingyang2024', 'competition2024'],
+    photo: {
+      imageId: 'city-qingyang-2024',
+      label: b('2024 · University–district dialogue', '2024 · 校地合作座谈'),
+    },
   },
   {
     id: 'chengdu-financial-regulatory-bureau',
@@ -101,6 +110,10 @@ export const cityInstitutions: readonly CityInstitution[] = [
     relationship: 'forum-co-host',
     website: null,
     sourceIds: ['forum2022', 'forum2023'],
+    photo: {
+      imageId: 'city-forum-2023',
+      label: b('2023 · International Fintech Forum', '2023 · 国际金融科技论坛'),
+    },
   },
   {
     id: 'chengdu-financial-work-office',
@@ -116,6 +129,13 @@ export const cityInstitutions: readonly CityInstitution[] = [
     relationship: 'event-engagement',
     website: null,
     sourceIds: ['competition2024'],
+    photo: {
+      imageId: 'city-financial-office-2024',
+      label: b(
+        '2024 · Liang Qizhou addresses Chengdu 80',
+        '2024 · 梁其洲在第七届成都八零致辞',
+      ),
+    },
   },
 ];
 

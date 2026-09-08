@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { ArrowUpRight, Expand } from 'lucide-react';
-import { bilingual as b } from '@/content/competition';
+import { bilingual as b, type Localized } from '@/content/competition';
 import { publicArchiveImages } from '@/content/archive-media';
+import { publicCityImages } from '@/content/city-collaboration-media';
 import {
   cityInstitutions,
   citySceneImageIds,
@@ -11,16 +12,26 @@ import { useSiteLanguage } from '@/hooks/use-site-language';
 import { Photo, Viewer } from './ArchiveGallery';
 import styles from './CityCollaboration.module.css';
 
-const scenes = citySceneImageIds.flatMap((id) =>
-  publicArchiveImages.filter((image) => image.id === id),
+const sceneIds = [
+  ...citySceneImageIds,
+  ...cityInstitutions.flatMap((institution) =>
+    institution.photo ? [institution.photo.imageId] : [],
+  ),
+];
+const scenes = [...new Set(sceneIds)].flatMap((id) =>
+  [...publicArchiveImages, ...publicCityImages].filter(
+    (image) => image.id === id,
+  ),
 );
 
 function Institution({
   institution,
   featured = false,
+  photo,
 }: {
   institution: CityInstitution;
   featured?: boolean;
+  photo?: ReactNode;
 }) {
   const { t } = useSiteLanguage();
   return (
@@ -29,6 +40,7 @@ function Institution({
       data-city-institution={institution.id}
       data-featured={featured}
     >
+      {photo && <div className={styles.institutionMedia}>{photo}</div>}
       <p className={styles.role}>{t(institution.role)}</p>
       <h3>
         {institution.website ? (
@@ -53,21 +65,26 @@ function Institution({
 export default function CityCollaboration() {
   const { t } = useSiteLanguage();
   const [selected, setSelected] = useState<number | null>(null);
-  const scene = (index: number) =>
-    scenes[index] && (
-      <button
-        className={styles.photo}
-        type="button"
-        onClick={() => setSelected(index)}
-        aria-label={`${t(b('View photo', '查看图片'))} · ${t(scenes[index].caption)}`}
-      >
-        <Photo image={scenes[index]} full />
-        <span className={styles.photoMeta}>
-          <span>CHENGDU 80 · {scenes[index].eventYear}</span>
-          <Expand size={18} aria-hidden="true" />
-        </span>
-      </button>
+  const scene = (id: string, label?: Localized) => {
+    const index = scenes.findIndex((image) => image.id === id);
+    const image = scenes[index];
+    return (
+      image && (
+        <button
+          className={styles.photo}
+          type="button"
+          onClick={() => setSelected(index)}
+          aria-label={`${t(b('View photo', '查看图片'))} · ${t(label ?? image.caption)}`}
+        >
+          <Photo image={image} full />
+          <span className={styles.photoMeta}>
+            <span>{label ? t(label) : `CHENGDU 80 · ${image.eventYear}`}</span>
+            <Expand size={18} aria-hidden="true" />
+          </span>
+        </button>
+      )
     );
+  };
   return (
     <section
       id="city-collaboration"
@@ -100,12 +117,19 @@ export default function CityCollaboration() {
       </header>
 
       <div className={styles.feature}>
-        {scene(0)}
+        {scene(citySceneImageIds[0])}
         <Institution institution={cityInstitutions[0]} featured />
       </div>
       <div className={styles.grid}>
         {cityInstitutions.slice(1).map((institution) => (
-          <Institution key={institution.id} institution={institution} />
+          <Institution
+            key={institution.id}
+            institution={institution}
+            photo={
+              institution.photo &&
+              scene(institution.photo.imageId, institution.photo.label)
+            }
+          />
         ))}
       </div>
 
@@ -131,7 +155,7 @@ export default function CityCollaboration() {
             )}
           </p>
         </div>
-        {scene(1)}
+        {scene(citySceneImageIds[1])}
       </div>
       {selected !== null && (
         <Viewer

@@ -82,6 +82,35 @@ await test('site content and static archive contracts', async (t) => {
         }
         assert.equal(cityInstitutions.filter((item) => item.website).length, 3);
         assert.match(cityInstitutions[3].summary.zh, /当时/);
+        const { publicCityImages } = await server.ssrLoadModule(
+          '/content/city-collaboration-media.ts',
+        );
+        assert.equal(publicCityImages.length, 4);
+        assert.equal(cityInstitutions.filter((item) => item.photo).length, 4);
+        for (const institution of cityInstitutions.filter(
+          (item) => item.photo,
+        )) {
+          const photo = publicCityImages.find(
+            (image) => image.id === institution.photo.imageId,
+          );
+          assert.ok(photo && isPubliclyUsable(photo), institution.id);
+          assert.ok(
+            institution.sourceIds.some(
+              (id) => cityCollaborationSources[id].url === photo.sourcePage,
+            ),
+          );
+          await readFile(`public${photo.localAssetPath}`);
+          await readFile(`public${photo.thumbnailPath}`);
+        }
+        const officePhoto = publicCityImages.find(
+          (image) => image.id === 'city-financial-office-2024',
+        );
+        assert.match(
+          officePhoto.originalImageUrl,
+          /DC6395BAFB3DC308D2EB62EE7E5/,
+        );
+        assert.match(officePhoto.caption.zh, /梁其洲/);
+
         for (const id of citySceneImageIds) {
           const photo = publicArchiveImages.find((image) => image.id === id);
           assert.ok(photo && isPubliclyUsable(photo));
@@ -140,15 +169,15 @@ await test('site content and static archive contracts', async (t) => {
               1,
             );
             assert.match(html, /aria-labelledby="city-collaboration-title"/);
-            assert.equal((html.match(/<img\b/g) ?? []).length, 2);
-            assert.equal((html.match(/<button\b/g) ?? []).length, 2);
+            assert.equal((html.match(/<img\b/g) ?? []).length, 6);
+            assert.equal((html.match(/<button\b/g) ?? []).length, 6);
             assert.equal(
               (html.match(/loading="lazy" decoding="async"/g) ?? []).length,
-              2,
+              6,
             );
             assert.equal(
               (html.match(/width="1800" height="1200"/g) ?? []).length,
-              2,
+              3,
             );
             assert.doesNotMatch(
               html,
@@ -167,6 +196,11 @@ await test('site content and static archive contracts', async (t) => {
               )?.[0];
               assert.ok(card, institution.id);
               assert.ok(card.includes(institution.role[language]));
+              if (institution.photo) {
+                assert.match(card, /<img\b/);
+                assert.ok(card.includes(institution.photo.label[language]));
+              }
+
               if (institution.website) {
                 assert.ok(card.includes(`href="${institution.website}"`));
                 assert.match(card, /target="_blank" rel="noopener noreferrer"/);
