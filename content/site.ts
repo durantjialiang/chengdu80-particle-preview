@@ -1,10 +1,26 @@
 import { globeNodes } from './network';
 import { registration } from './navigation';
-import { currentCompetition } from './competition';
+import { bilingual as b, currentCompetition } from './competition';
 export type { CityNode } from './network';
 
 export const siteContent = {
   hero: {
+    identityLinks: {
+      swufe: {
+        url: 'https://www.swufe.edu.cn/',
+        label: b(
+          'SWUFE official website (opens in a new tab)',
+          'SWUFE · 西南财经大学官网（在新标签页打开）',
+        ),
+      },
+      fic: {
+        url: 'https://fic.swufe.edu.cn/',
+        label: b(
+          'FIC official website (opens in a new tab)',
+          'FIC · 金融科技国际联合实验室官网（在新标签页打开）',
+        ),
+      },
+    },
     eyebrow: 'AN 80-HOUR GLOBAL FINTECH HACKATHON',
     title: 'CHENGDU 80',
     year: String(currentCompetition.year),

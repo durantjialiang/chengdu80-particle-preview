@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createServer } from 'vite';
+import { readFile } from 'node:fs/promises';
 
 await test('Particle80 SSR is deterministic, accessible, and fully disabled on demand', async () => {
   const server = await createServer({
@@ -108,6 +109,19 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
     assert.match(intro, /Finance and Economics/);
     assert.match(intro, /FIC/);
     assert.match(intro, /Fintech Innovation Center/);
+    for (const [name, url] of [['SWUFE', 'https://www.swufe.edu.cn/'], ['FIC', 'https://fic.swufe.edu.cn/']]) {
+      const link = [...intro.matchAll(/<a\b[^>]*>[^<]*<\/a>/g)].map(([html]) => html)
+        .find((html) => html.endsWith(`>${name}</a>`));
+      assert.ok(link, `${name} has a native, keyboard-operable link`);
+      assert.ok(link.includes(`href="${url}"`));
+      assert.match(link, /target="_blank"/);
+      assert.match(link, /rel="noopener noreferrer"/);
+      assert.match(link, /aria-label="[^"]*opens in a new tab/);
+    }
+    const introCss = await readFile('components/Particle80Intro.module.css', 'utf8');
+    assert.match(introCss, /\.identityLink\s*\{[^}]*pointer-events: auto/);
+    assert.match(introCss, /\.container a:focus-visible\s*\{[^}]*outline:/);
+    assert.match(introCss, /\[data-hero-visible='false'\] \.identityLink\s*\{\s*visibility: hidden/);
     assert.match(intro, /data-formation-duration="2.2"/);
     assert.match(intro, /data-intro-state="INTRO_IDLE"/);
     assert.match(intro, /data-hold-duration="2.2"/);

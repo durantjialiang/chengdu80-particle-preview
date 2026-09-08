@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } fro
 import { type Particle80Props, type Particle80State } from './Particle80';
 import PersistentParticleBackdrop from './PersistentParticleBackdrop';
 import { useScenePreferences } from '@/hooks/use-scene-preferences';
+import { useSiteLanguage } from '@/hooks/use-site-language';
 import { useBrandOpening } from '@/hooks/use-brand-opening';
 import { useParticleStoryScroll } from '@/hooks/use-particle-story-scroll';
 import { siteContent } from '@/content/site';
@@ -31,6 +32,7 @@ function IntroSurface({
   onHandoffComplete: _legacyComplete, active = true, className = '', ...particleProps
 }: Omit<Particle80IntroProps, 'enabled'>) {
   const preferences = useScenePreferences();
+  const { t } = useSiteLanguage();
   const [visit, setVisit] = useState({ ready: false, seen: false });
   const host = useRef<HTMLDivElement>(null);
   const hero = useRef<HTMLElement>(null);
@@ -80,11 +82,17 @@ function IntroSurface({
       <header className={styles.header}>{headerContent ?? <><h1>CHENGDU 80</h1><span>2026</span></>}</header>
       <div ref={composition} className={styles.composition}>
         <div className={styles.identity + ' ' + styles.swufe}>
-          <p className={styles.acronym}>SWUFE</p>
+          <p className={styles.acronym}>
+            <a className={styles.identityLink} href={siteContent.hero.identityLinks.swufe.url}
+              target="_blank" rel="noopener noreferrer" aria-label={t(siteContent.hero.identityLinks.swufe.label)}>SWUFE</a>
+          </p>
           <p className={styles.fullName}>Southwestern University of<br className={styles.desktopBreak} /> Finance and Economics</p>
         </div>
         <div className={styles.identity + ' ' + styles.fic}>
-          <p className={styles.acronym}>FIC</p>
+          <p className={styles.acronym}>
+            <a className={styles.identityLink} href={siteContent.hero.identityLinks.fic.url}
+              target="_blank" rel="noopener noreferrer" aria-label={t(siteContent.hero.identityLinks.fic.label)}>FIC</a>
+          </p>
           <p className={styles.fullName}>Fintech Innovation Center</p>
         </div>
       </div>
