@@ -12,12 +12,43 @@
   align-self: center;
   background: #050f18;
 }
-.cover img {
+.cover video {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 16 / 9;
   object-fit: contain;
+}
+.localActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  color: #d9c095;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.localActions a:focus-visible {
+  outline: 2px solid #d9bf87;
+  outline-offset: 5px;
+}
+.youtube {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #a9bfcd38;
+}
+.youtube p {
+  margin: 0;
+  color: #b5c9d6;
+  font-size: 0.9rem;
+}
+.youtube .pending {
+  padding: 0;
+  border: 0;
+  font-size: 0.8rem;
 }
 .coverCaption {
   display: block;

@@ -1,9 +1,8 @@
 import { ArrowUpRight, Play } from 'lucide-react';
 import { bilingual as b } from '@/content/competition';
 import { videoChannel } from '@/content/video-channel';
-import { publicArchiveImages } from '@/content/archive-media';
+import { recap2024Video } from '@/content/recap-2024';
 import { useSiteLanguage } from '@/hooks/use-site-language';
-import { Photo } from './ArchiveGallery';
 import styles from './VideoChannel.module.css';
 
 export default function VideoChannel({
@@ -11,10 +10,7 @@ export default function VideoChannel({
 }: {
   url?: string | null;
 }) {
-  const { t } = useSiteLanguage();
-  const cover = publicArchiveImages.find(
-    (image) => image.id === 'cd80-2024-01',
-  );
+  const { t, href } = useSiteLanguage();
   return (
     <section
       id="videos"
@@ -23,52 +19,74 @@ export default function VideoChannel({
       data-particle-reading-region
     >
       <div className={styles.cover}>
-        {cover && <Photo image={cover} full />}
+        <video
+          controls
+          playsInline
+          preload="none"
+          poster={recap2024Video.poster}
+          width={1280}
+          height={720}
+          aria-label={t(recap2024Video.title)}
+        >
+          <source src={recap2024Video.src} type="video/mp4" />
+          <track
+            kind="captions"
+            src={recap2024Video.captions.zh}
+            srcLang="zh"
+            label="中文"
+          />
+          <track
+            kind="captions"
+            src={recap2024Video.captions.en}
+            srcLang="en"
+            label="English"
+          />
+          <a href={recap2024Video.src}>
+            {t(b('Download the video', '下载视频'))}
+          </a>
+        </video>
         <span className={styles.coverCaption}>
-          {t(b('Chengdu 80 · 2024 awards ceremony', '成都八零 · 2024颁奖现场'))}
+          {t(b('2024 · 90-second photo film', '2024 · 90秒照片回顾'))}
         </span>
       </div>
       <div className={styles.content}>
         <p className={styles.eyebrow}>
-          <Play size={17} aria-hidden="true" /> YOUTUBE
+          <Play size={17} aria-hidden="true" /> 2024 / HIGHLIGHTS
         </p>
-        <h2 id="video-channel-title">
-          {t(b('Chengdu 80 on YouTube', '成都八零 · YouTube'))}
-        </h2>
-        <p className={styles.description}>
-          {t(
-            url
-              ? b(
-                  'Watch past competitions, event recordings and promotional films on YouTube.',
-                  '前往 YouTube，观看历届比赛、现场记录与宣传视频。',
-                )
-              : b(
-                  'Past competitions, event recordings and promotional films are coming to YouTube.',
-                  '历届比赛、现场记录与宣传视频，将陆续发布在 YouTube。',
-                ),
-          )}
-        </p>
-        {url ? (
-          <a
-            className={styles.action}
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t(
-              b(
-                'Watch on YouTube (opens in a new tab)',
-                '前往 YouTube 观看（新标签页打开）',
-              ),
-            )}
-          >
-            {t(b('Watch on YouTube', '前往 YouTube 观看'))}
-            <ArrowUpRight size={19} aria-hidden="true" />
+        <h2 id="video-channel-title">{t(recap2024Video.title)}</h2>
+        <p className={styles.description}>{t(recap2024Video.description)}</p>
+        <div className={styles.localActions}>
+          <a href={href('/media/?year=2024#photos')}>
+            {t(b('Explore the 2024 photographs', '浏览2024照片'))} →
           </a>
-        ) : (
-          <output className={styles.pending}>
-            {t(b('Coming soon', '即将上线'))}
-          </output>
-        )}
+          <a href={recap2024Video.src} download="Chengdu80-2024-highlights.mp4">
+            {t(b('Download the film', '下载回顾片'))} ↓
+          </a>
+        </div>
+        <div className={styles.youtube}>
+          <p>{t(b('Chengdu 80 on YouTube', '成都八零 · YouTube'))}</p>
+          {url ? (
+            <a
+              className={styles.action}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t(
+                b(
+                  'Watch on YouTube (opens in a new tab)',
+                  '前往 YouTube 观看（新标签页打开）',
+                ),
+              )}
+            >
+              {t(b('Watch on YouTube', '前往 YouTube 观看'))}
+              <ArrowUpRight size={19} aria-hidden="true" />
+            </a>
+          ) : (
+            <output className={styles.pending}>
+              {t(b('Coming soon', '即将上线'))}
+            </output>
+          )}
+        </div>
       </div>
     </section>
   );

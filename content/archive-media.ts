@@ -19,6 +19,7 @@ export type UsageStatus =
 export type ArchiveImage = {
   id: string;
   albumId: string;
+  sourceKind?: 'web-publication' | 'owner-supplied';
   sourcePage: string;
   originalImageUrl: string;
   eventYear: number;
@@ -65,7 +66,7 @@ export function isPubliclyUsable(image: ArchiveImage): boolean {
   );
 }
 
-// The project owner approved these 13 sample-page photographs on 2026-09-06.
+// Each public record includes the project owner's approval and its evidence.
 // This records that confirmation, not an independently issued publisher licence.
 // Pending candidates and research originals remain outside the public checkout.
 export const archiveImages = approvedImages as readonly ArchiveImage[];

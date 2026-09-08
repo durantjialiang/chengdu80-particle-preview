@@ -20,6 +20,7 @@ import {
   anniversarySource,
   bookletAwardsByYear,
 } from './history-evidence';
+import { recap2024PhotoIds } from './recap-2024';
 export const sources = {
   berkeley2018: {
     title: b('Berkeley · funder project report', '伯克利 · funder作品报道'),
@@ -516,6 +517,7 @@ export const editions: readonly Edition[] = [
       'cd80-2024-03',
       'cd80-2024-04',
       'cd80-2024-05',
+      ...recap2024PhotoIds,
     ],
     coverImageId: 'cd80-2024-01',
     awardResults: confirmed2024Awards,

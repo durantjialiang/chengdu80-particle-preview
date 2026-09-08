@@ -3,16 +3,34 @@ import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import { resolve, relative, extname } from 'node:path';
 import { createHash } from 'node:crypto';
+import { createServer } from 'vite';
 import routes from '../content/site-routes.json' with { type: 'json' };
 import approvedImages from '../content/archive-media-approved.json' with { type: 'json' };
+
+// Use the same city allowlist as the Vite publication guard.
+const contentServer = await createServer({
+  configFile: 'qa/particle80.vite.config.ts',
+  server: { middlewareMode: true, hmr: false, ws: false, watch: null },
+  appType: 'custom',
+  optimizeDeps: { noDiscovery: true, include: [] },
+});
+let publicCityImages;
+try {
+  ({ publicCityImages } = await contentServer.ssrLoadModule(
+    '/content/city-collaboration-media.ts',
+  ));
+} finally {
+  await contentServer.close();
+}
+const allApprovedImages = [...approvedImages, ...publicCityImages];
 
 const output = resolve('out/particle-preview');
 const reviewRoot = process.argv[2] ? resolve(process.argv[2]) : null;
 const forbiddenHashes = new Set();
 const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
-const approvedIds = new Set(approvedImages.map((i) => i.id));
+const approvedIds = new Set(allApprovedImages.map((i) => i.id));
 const allowedPaths = new Map();
-for (const image of approvedImages) {
+for (const image of allApprovedImages) {
   assert.equal(image.usageStatus, 'approved');
   assert.ok(
     image.permission.newWebsite &&
@@ -92,6 +110,7 @@ console.log(
     {
       staticFiles: files,
       approvedHistoryPhotos: approvedImages.length,
+      approvedCityPhotos: publicCityImages.length,
       approvedDerivativeFiles: approvedFiles,
       archiveAndContentRoutes: routes.length,
       privatePhotoHashesChecked: forbiddenHashes.size,

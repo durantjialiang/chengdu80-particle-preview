@@ -766,6 +766,36 @@ await test('site content and static archive contracts', async (t) => {
         for (const item of schoolRequests)
           assert.ok(!html.includes(item.text.en));
         assert.match(html, /id="videos"/);
+        const { recap2024Video } = await server.ssrLoadModule(
+          '/content/recap-2024.ts',
+        );
+        assert.match(
+          html,
+          /<video[^>]*controls=""[^>]*playsInline=""[^>]*preload="none"/,
+        );
+        assert.doesNotMatch(html, /autoPlay=/i);
+        assert.ok(html.indexOf('id="photos"') < html.indexOf('id="resources"'));
+        for (const asset of [
+          recap2024Video.src,
+          recap2024Video.poster,
+          ...Object.values(recap2024Video.captions),
+        ]) {
+          assert.ok(html.includes(asset));
+          const bytes = await readFile('public' + asset);
+          assert.ok(bytes.length > 20);
+          if (asset.endsWith('.mp4')) {
+            assert.equal(bytes.toString('ascii', 4, 8), 'ftyp');
+            assert.ok(
+              bytes.length < 30 * 1024 * 1024,
+              'Website film must stay below 30 MiB',
+            );
+          }
+          if (asset.endsWith('.vtt')) {
+            assert.match(bytes.toString(), /^WEBVTT/);
+            assert.doesNotMatch(bytes.toString(), /<br\s*\/?\s*>/i);
+          }
+        }
+
         assert.match(html, /Chengdu 80 on YouTube/);
         assert.match(html, /<output[^>]*>Coming soon/);
         assert.doesNotMatch(
@@ -785,6 +815,48 @@ await test('site content and static archive contracts', async (t) => {
           'report2020',
         ])
           assert.ok(html.includes(ecosystemSources[id].url));
+      },
+    );
+    await t.test(
+      'Media year and category links render the selected album in both languages',
+      async () => {
+        const { MediaPage } = await server.ssrLoadModule(
+          '/components/site/EcosystemContent.tsx',
+        );
+        const { SiteLanguageProvider } = await server.ssrLoadModule(
+          '/hooks/use-site-language.tsx',
+        );
+        const previousWindow = Object.getOwnPropertyDescriptor(globalThis, 'window');
+        const previousLocation = Object.getOwnPropertyDescriptor(globalThis, 'location');
+        try {
+          Object.defineProperty(globalThis, 'window', { value: {}, configurable: true });
+          for (const language of ['en', 'zh']) {
+            for (const [query, count] of [
+              ['year=2019', 8],
+              ['year=2024', 34],
+              ['year=2024&type=awards', 2],
+              ['year=2024&type=teams', 3],
+              ['year=2022', 0],
+            ]) {
+              Object.defineProperty(globalThis, 'location', {
+                value: { search: `?lang=${language}&${query}` },
+                configurable: true,
+              });
+              const html = renderToString(
+                React.createElement(SiteLanguageProvider, null, React.createElement(MediaPage)),
+              );
+              const gallery = html.slice(html.indexOf('id="photos"'), html.indexOf('id="resources"'));
+              assert.equal((gallery.match(/<figure\b/g) ?? []).length, count, `${language}/${query}`);
+              assert.doesNotMatch(gallery, /src="[^"]+-full\.webp"/);
+              assert.ok(html.includes(language === 'zh' ? '照片档案' : 'Photo archive'));
+            }
+          }
+        } finally {
+          if (previousWindow) Object.defineProperty(globalThis, 'window', previousWindow);
+          else delete globalThis.window;
+          if (previousLocation) Object.defineProperty(globalThis, 'location', previousLocation);
+          else delete globalThis.location;
+        }
       },
     );
     await t.test(
@@ -945,20 +1017,30 @@ await test('site content and static archive contracts', async (t) => {
       async () => {
         const { publicArchiveImages, isPubliclyUsable, imageFit } =
           await server.ssrLoadModule('/content/archive-media.ts');
-        assert.equal(publicArchiveImages.length, 13);
+        assert.equal(publicArchiveImages.length, 42);
         assert.equal(
           publicArchiveImages.filter((i) => i.eventYear === 2019).length,
           8,
         );
         assert.equal(
           publicArchiveImages.filter((i) => i.eventYear === 2024).length,
-          5,
+          34,
         );
         for (const item of publicArchiveImages) {
           assert.ok(item.caption.en && item.caption.zh && item.credit);
-          assert.match(item.sourcePage, /^https:\/\//);
-          assert.match(item.originalImageUrl, /^https:\/\//);
-          if (item.eventYear === 2024) assert.equal(item.universityId, null);
+          if (item.sourceKind === 'owner-supplied') {
+            assert.equal(item.sourcePage, '');
+            assert.equal(item.originalImageUrl, '');
+            assert.equal(item.eventYear, 2024);
+            assert.match(
+              item.permission.evidenceRef,
+              /owner-2024-photo-collection-2026-09-08/,
+            );
+          } else {
+            assert.match(item.sourcePage, /^https:\/\//);
+            assert.match(item.originalImageUrl, /^https:\/\//);
+            if (item.eventYear === 2024) assert.equal(item.universityId, null);
+          }
           assert.equal(item.permission.basis, 'project-owner-confirmation');
           assert.equal(item.projectId, null);
           assert.equal(item.photographer, null);
@@ -968,6 +1050,27 @@ await test('site content and static archive contracts', async (t) => {
           );
           assert.ok((await readFile(`public${item.thumbnailPath}`)).length > 0);
         }
+
+        const ownerPhotos = publicArchiveImages.filter(
+          (image) => image.sourceKind === 'owner-supplied',
+        );
+        assert.equal(ownerPhotos.length, 29);
+        const inventory = JSON.parse(
+          await readFile('docs/2024-photo-inventory.json', 'utf8'),
+        );
+        assert.equal(new Set(inventory.map((photo) => photo.sha256)).size, 29);
+        const edition2024 = editions.find((edition) => edition.year === 2024);
+        for (const photo of ownerPhotos)
+          assert.ok(edition2024.media.includes(photo.id));
+        assert.deepEqual(
+          ownerPhotos
+            .filter((photo) => photo.universityId)
+            .map((photo) => [photo.id, photo.universityId]),
+          [
+            ['cd80-2024-owner-wul01672', 'hku'],
+            ['cd80-2024-owner-wul01857', 'swufe'],
+          ],
+        );
         const image = {
           usageStatus: 'approved',
           permission: {
@@ -1033,7 +1136,8 @@ await test('site content and static archive contracts', async (t) => {
           );
           for (const item of items) {
             assert.ok(!html.includes(item.credit));
-            assert.ok(!html.includes(item.originalImageUrl));
+            if (item.originalImageUrl)
+              assert.ok(!html.includes(item.originalImageUrl));
           }
         }
         const viewer = renderToString(views[3]);

@@ -1,6 +1,7 @@
-import { useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { useSiteLanguage } from '@/hooks/use-site-language';
+import { useUrlFilters } from '@/hooks/use-url-filters';
 import {
   bilingual as b,
   currentCompetition,
@@ -226,7 +227,7 @@ function Impact({ full = false }: { full?: boolean }) {
       </div>
       {full && (
         <EditorialMedia
-          ids={['cd80-2024-05']}
+          ids={['cd80-2024-owner-wul02419']}
           single
           caption={
             <>
@@ -856,18 +857,27 @@ export function PartnersPage() {
     </>
   );
 }
+const mediaFilterKeys = ['year', 'type'] as const;
 export function MediaPage() {
-  const { t } = useSiteLanguage();
-  const [year, setYear] = useState('');
-  const [type, setType] = useState('');
-  const images = publicArchiveImages.filter(
-    (image) =>
-      (!year || String(image.eventYear) === year) &&
-      (!type ||
-        (type === 'teams'
-          ? image.imageType === 'team-photo'
-          : image.imageType !== 'team-photo')),
-  );
+  const { t, href } = useSiteLanguage();
+  const { filters, change } = useUrlFilters(mediaFilterKeys);
+  const { year, type } = filters;
+  const images = publicArchiveImages
+    .filter(
+      (image) =>
+        (!year || String(image.eventYear) === year) &&
+        (!type ||
+          (type === 'teams'
+            ? image.imageType === 'team-photo'
+            : type === 'speeches'
+              ? image.imageType === 'speech'
+              : type === 'exchange'
+                ? image.imageType === 'work-session'
+                : type === 'awards'
+                  ? image.imageType === 'award-ceremony'
+                  : ['event-group', 'event-recap'].includes(image.imageType))),
+    )
+    .sort((a, b) => b.eventYear - a.eventYear);
   const resources: {
     id: EcosystemSourceId;
     kind: Localized;
@@ -955,7 +965,76 @@ export function MediaPage() {
           ),
         )}
       </p>
+      <nav
+        className={site.pills}
+        aria-label={t(b('Media sections', '媒体栏目'))}
+      >
+        <a href="#videos">{t(b('2024 highlights', '2024精彩回顾'))}</a>
+        <a href="#photos">{t(b('Photo archive', '照片档案'))}</a>
+        <a href="#resources">{t(b('News & publications', '新闻与专刊'))}</a>
+      </nav>
       <VideoChannel />
+      <Section id="photos" title={b('Photo archive', '照片档案')}>
+        <p className={styles.introCopy}>
+          <a href={href('/history/2024/#edition-2024')}>
+            {t(b('Explore the 2024 edition album', '查看2024赛事完整相册'))} →
+          </a>
+        </p>
+        <div className={site.filters}>
+          <label>
+            {t(b('Year', '年份'))}
+            <select
+              value={year}
+              onChange={(e) => change({ year: e.target.value })}
+            >
+              <option value="">{t(b('All years', '全部年份'))}</option>
+              <option>2019</option>
+              <option>2024</option>
+            </select>
+          </label>
+          <label>
+            {t(b('Image category', '照片类别'))}
+            <select
+              value={type}
+              onChange={(e) => change({ type: e.target.value })}
+            >
+              <option value="">{t(b('All categories', '全部类别'))}</option>
+              <option value="teams">
+                {t(b('Team photographs', '团队合影'))}
+              </option>
+              <option value="speeches">
+                {t(b('Talks & remarks', '主题分享与致辞'))}
+              </option>
+              <option value="exchange">
+                {t(b('Team conversations', '团队交流'))}
+              </option>
+              <option value="awards">
+                {t(b('Awards presentations', '颁奖现场'))}
+              </option>
+              <option value="event">
+                {t(b('Venue & group photographs', '会场与大合影'))}
+              </option>
+            </select>
+          </label>
+          <button
+            onClick={() => {
+              change({ year: '', type: '' });
+            }}
+          >
+            {t(b('Clear filters', '清除筛选'))}
+          </button>
+        </div>
+        <output aria-live="polite">
+          {images.length} {t(b('photographs', '张照片'))}
+        </output>
+        {images.length ? (
+          <EditorialMedia ids={images.map((image) => image.id)} />
+        ) : (
+          <p>
+            {t(b('No photographs match these filters.', '此筛选下暂无照片。'))}
+          </p>
+        )}
+      </Section>
       <Section id="resources" title={b('News & publications', '新闻与出版物')}>
         <div className={styles.resourceList}>
           {resources.map((resource) => (
@@ -978,48 +1057,6 @@ export function MediaPage() {
             </article>
           ))}
         </div>
-      </Section>
-      <Section id="photos" title={b('Photo archive', '照片档案')}>
-        <div className={site.filters}>
-          <label>
-            {t(b('Year', '年份'))}
-            <select value={year} onChange={(e) => setYear(e.target.value)}>
-              <option value="">{t(b('All years', '全部年份'))}</option>
-              <option>2019</option>
-              <option>2024</option>
-            </select>
-          </label>
-          <label>
-            {t(b('Image category', '照片类别'))}
-            <select value={type} onChange={(e) => setType(e.target.value)}>
-              <option value="">{t(b('All categories', '全部类别'))}</option>
-              <option value="teams">
-                {t(b('University teams', '高校团队'))}
-              </option>
-              <option value="event">
-                {t(b('Event & collaboration', '赛事与合作现场'))}
-              </option>
-            </select>
-          </label>
-          <button
-            onClick={() => {
-              setYear('');
-              setType('');
-            }}
-          >
-            {t(b('Clear filters', '清除筛选'))}
-          </button>
-        </div>
-        <output aria-live="polite">
-          {images.length} {t(b('photographs', '张照片'))}
-        </output>
-        {images.length ? (
-          <EditorialMedia ids={images.map((image) => image.id)} />
-        ) : (
-          <p>
-            {t(b('No photographs match these filters.', '此筛选下暂无照片。'))}
-          </p>
-        )}
       </Section>
       <Section id="usage" title={b('Media use', '素材使用说明')}>
         <p className={styles.introCopy}>

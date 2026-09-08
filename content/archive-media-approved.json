@@ -362,5 +362,846 @@
     },
     "localAssetPath": "/history-media/cd80-2024-05-full.webp",
     "thumbnailPath": "/history-media/cd80-2024-05-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul00055",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Opening remarks in the main auditorium",
+      "zh": "主会场致辞与观众席"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul00055-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul00055-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul00087",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Audience in the main auditorium",
+      "zh": "主会场观众席"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul00087-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul00087-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul00217",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Participants in a live discussion",
+      "zh": "参赛队员现场交流"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul00217-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul00217-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul00246",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "A presentation on autonomous-driving risks",
+      "zh": "自动驾驶风险主题分享"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul00246-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul00246-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul00674",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "A team shares its ideas at the event",
+      "zh": "团队现场发言与交流"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul00674-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul00674-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul00929",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Team members speaking with the audience",
+      "zh": "参赛队员持麦发言"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul00929-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul00929-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul01042",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Group photograph in the main auditorium",
+      "zh": "主会场参会者大合影"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-group",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul01042-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul01042-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul01095",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Face-to-face conversations between sessions",
+      "zh": "赛间面对面交流"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul01095-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul01095-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul01163",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "A group photograph at the event backdrop",
+      "zh": "赛事品牌墙前的团队合影"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "team-photo",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul01163-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul01163-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul01168",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Another moment at the event photo backdrop",
+      "zh": "赛事品牌墙前的团队合影 · 另一瞬间"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "team-photo",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul01168-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul01168-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul01253",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "A stage performance during the awards evening",
+      "zh": "颁奖晚会舞台表演"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul01253-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul01253-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul01377",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "The audience at the awards evening",
+      "zh": "颁奖晚会观众席"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul01377-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul01377-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul01412",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "SWUFE remarks at the awards evening",
+      "zh": "西南财经大学致辞现场"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul01412-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul01412-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul01567",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Remarks with the Swiss Re guest presentation backdrop",
+      "zh": "瑞士再保险集团嘉宾发言现场"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul01567-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul01567-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul01672",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "The University of Hong Kong, Team Apollo · Innovator Award presentation",
+      "zh": "香港大学 Apollo 战队 · 创新者奖颁奖合影"
+    },
+    "universityId": "hku",
+    "projectId": null,
+    "imageType": "award-ceremony",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul01672-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul01672-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul01857",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "SWUFE, Team FinFlare · awards presentation",
+      "zh": "西南财经大学 FinFlare 团队颁奖现场"
+    },
+    "universityId": "swufe",
+    "projectId": null,
+    "imageType": "award-ceremony",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul01857-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul01857-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul01979",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "A speaker on the Chengdu 80 main stage",
+      "zh": "成都八零主舞台发言现场"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul01979-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul01979-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul02251",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Queen's University guest remarks · stage view",
+      "zh": "女王大学嘉宾发言 · 舞台全景"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul02251-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul02251-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul02269",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Queen's University guest remarks · lectern view",
+      "zh": "女王大学嘉宾发言 · 讲台近景"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul02269-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul02269-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul02293",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Queen's University guest remarks",
+      "zh": "女王大学嘉宾发言现场"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul02293-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul02293-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul02337",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Music performance and interaction at the awards evening",
+      "zh": "颁奖晚会音乐表演与现场互动"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul02337-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul02337-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul02419",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Launch of the Chengdu 80 Incubator",
+      "zh": "成都八零孵化器正式启动"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul02419-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul02419-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul02495",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Participants and guests on the Chengdu 80 main stage",
+      "zh": "成都八零主舞台团队与嘉宾合影"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-group",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul02495-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul02495-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul02499",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "A wide group photograph on the Chengdu 80 main stage",
+      "zh": "成都八零主舞台大合影"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-group",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul02499-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul02499-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul02525",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "A team and guests at the Chengdu 80 event",
+      "zh": "成都八零现场团队与嘉宾合影"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "team-photo",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul02525-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul02525-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul08798",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "A conversation in the event seating area",
+      "zh": "会场面对面交流"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul08798-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul08798-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul08866",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "Remarks with the SWUFE Fintech Innovation Center backdrop",
+      "zh": "金融科技国际联合实验室嘉宾致辞"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul08866-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul08866-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul09783",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "A participant speaking during a discussion",
+      "zh": "现场持麦交流"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 1600,
+    "height": 2400,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul09783-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul09783-thumb.webp"
+  },
+  {
+    "id": "cd80-2024-owner-wul09911",
+    "albumId": "edition-2024",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2024,
+    "caption": {
+      "en": "The 2024 Chengdu 80 event entrance",
+      "zh": "2024成都八零会场入口"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2400,
+    "height": 1600,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-08",
+      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
+    },
+    "localAssetPath": "/history-media/cd80-2024-owner-wul09911-full.webp",
+    "thumbnailPath": "/history-media/cd80-2024-owner-wul09911-thumb.webp"
   }
 ]

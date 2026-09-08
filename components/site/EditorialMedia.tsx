@@ -31,7 +31,7 @@ export default function EditorialMedia({
               onClick={() => setSelected(index)}
               aria-label={`${t(b('View image', '查看图片'))}: ${t(image.caption)}`}
             >
-              <Photo image={image} full />
+              <Photo image={image} full={single} />
               <span className={styles.photoYear}>{image.eventYear} ↗</span>
             </button>
             {single && caption && <figcaption>{caption}</figcaption>}

@@ -34,3 +34,16 @@ This is a publisher/source attribution; no photographer has been identified or
 invented. All other gallery placements retain their image-only presentation.
 No image bytes, associations, permission gates or rights records changed. Media
 use conditions remain in the separate `/media/#usage` section.
+
+
+## Owner 2024 photo collection 2026-09-08
+
+The project owner provided the desktop “成都八零” photo collection, confirmed that these photographs document the 2024 edition, requested their website placement and a 90-second highlights film, and then requested filing them under the 2024 subfolder. This is the authorization for this batch on the existing website/public preview and GitHub repository, and for editing/exporting the photo film. It does not establish a separate publisher licence or identify the photographer.
+
+All 30 original JPG files were moved, with file names and SHA-256 hashes unchanged, into the owner's `成都八零/2024` folder. One exact duplicate (`WUL01672(1).JPG`) remains preserved beside `WUL01672.JPG`; only one derivative pair is published. The 2018–2021 MP4 and the incomplete forum-video download remain outside the 2024 folder and are not used as 2024 footage.
+
+The 29 unique photos use IDs beginning `cd80-2024-owner-`, `sourceKind: owner-supplied`, empty public source URLs, and this section as their permission evidence. `docs/2024-photo-inventory.json` records source file names, original hashes, dimensions and caption/category decisions. Public metadata does not contain local file paths. Full WebP derivatives have a 2400-pixel long edge and thumbnails an 800-pixel long edge; all preserve the complete frame.
+
+The Hong Kong University Apollo and SWUFE FinFlare award pictures have school labels visible on the stage backdrop and retain `projectId: null`. The 2024 Apollo image is not assigned to the 2023 Apollo record. Other photographs are not assigned to a specific university/team based on faces or similar clothes. The new incubator launch photograph has its event clearly printed on the backdrop; it also appears in the site's incubator section.
+
+The original 13 archive photographs remain approved under the earlier dated confirmation. This collection adds 29, for 42 archive photographs (8 from 2019 and 34 from 2024). City collaboration photographs remain in their separate manifest.

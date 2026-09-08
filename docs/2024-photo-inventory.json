@@ -1,0 +1,466 @@
+[
+  {
+    "id": "cd80-2024-owner-wul00055",
+    "file": "WUL00055.JPG",
+    "sha256": "f584099b3eab22693814f4c8c5819f1b5577cc2dd9684baac476d1ed234599a0",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "主会场致辞与观众席",
+      "en": "Opening remarks in the main auditorium"
+    },
+    "imageType": "speech",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 250018,
+    "thumbBytes": 41314
+  },
+  {
+    "id": "cd80-2024-owner-wul00087",
+    "file": "WUL00087.JPG",
+    "sha256": "c05b2b872ca901fb9bf544884366a692f2bbb5b06d432f18a0092a8e92a67eb9",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "主会场观众席",
+      "en": "Audience in the main auditorium"
+    },
+    "imageType": "event-recap",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 217170,
+    "thumbBytes": 46174
+  },
+  {
+    "id": "cd80-2024-owner-wul00217",
+    "file": "WUL00217.JPG",
+    "sha256": "ec98755561c9cc51b4fccfaa33dce80fc1fb9c5a2cf940c1fac0e3ad14741786",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "参赛队员现场交流",
+      "en": "Participants in a live discussion"
+    },
+    "imageType": "work-session",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 216560,
+    "thumbBytes": 44444
+  },
+  {
+    "id": "cd80-2024-owner-wul00246",
+    "file": "WUL00246.JPG",
+    "sha256": "608da904b321ceb1f1d624e2a4574227f47762968a01b5a99ced412a7acf6492",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "自动驾驶风险主题分享",
+      "en": "A presentation on autonomous-driving risks"
+    },
+    "imageType": "speech",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 203530,
+    "thumbBytes": 35722
+  },
+  {
+    "id": "cd80-2024-owner-wul00674",
+    "file": "WUL00674.JPG",
+    "sha256": "147f5af44428ca2d810d7f85be3f36921ce885b96da3e11092bb9de8bdd3a82b",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "团队现场发言与交流",
+      "en": "A team shares its ideas at the event"
+    },
+    "imageType": "work-session",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 187926,
+    "thumbBytes": 37394
+  },
+  {
+    "id": "cd80-2024-owner-wul00929",
+    "file": "WUL00929.JPG",
+    "sha256": "ed13e6e1387bb28b7b1563e05e7f57ced2d13f5bd94bf08da8f63380e7c3a695",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "参赛队员持麦发言",
+      "en": "Team members speaking with the audience"
+    },
+    "imageType": "work-session",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 190754,
+    "thumbBytes": 37628
+  },
+  {
+    "id": "cd80-2024-owner-wul01042",
+    "file": "WUL01042.JPG",
+    "sha256": "39b28cdb6cd64de28533e0ebd7ff438825777d2278ffe889db70f40cad2a4af1",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "主会场参会者大合影",
+      "en": "Group photograph in the main auditorium"
+    },
+    "imageType": "event-group",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 372796,
+    "thumbBytes": 60804
+  },
+  {
+    "id": "cd80-2024-owner-wul01095",
+    "file": "WUL01095.JPG",
+    "sha256": "72eaaaa397a359051e101cf814ed52b3b24dc6159c12148d1300767f68362c8d",
+    "originalWidth": 4608,
+    "originalHeight": 3072,
+    "caption": {
+      "zh": "赛间面对面交流",
+      "en": "Face-to-face conversations between sessions"
+    },
+    "imageType": "work-session",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 225394,
+    "thumbBytes": 42358
+  },
+  {
+    "id": "cd80-2024-owner-wul01163",
+    "file": "WUL01163.JPG",
+    "sha256": "5aee9df74c0efcb414dd9f5a9a7dbf028ff4b911be58c6e637db8f0766ce1125",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "赛事品牌墙前的团队合影",
+      "en": "A group photograph at the event backdrop"
+    },
+    "imageType": "team-photo",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 345472,
+    "thumbBytes": 60920
+  },
+  {
+    "id": "cd80-2024-owner-wul01168",
+    "file": "WUL01168.JPG",
+    "sha256": "36a1abad250b49a9df46788f81a1c8f6cb8ea1c73e77fc3c6d94204817568d3a",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "赛事品牌墙前的团队合影 · 另一瞬间",
+      "en": "Another moment at the event photo backdrop"
+    },
+    "imageType": "team-photo",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 341364,
+    "thumbBytes": 60840
+  },
+  {
+    "id": "cd80-2024-owner-wul01253",
+    "file": "WUL01253.JPG",
+    "sha256": "8eff0013047364e15dfb3f374cd964c57fc5502b8ec10d039f2f4352104d0d5a",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "颁奖晚会舞台表演",
+      "en": "A stage performance during the awards evening"
+    },
+    "imageType": "event-recap",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 152612,
+    "thumbBytes": 30260
+  },
+  {
+    "id": "cd80-2024-owner-wul01377",
+    "file": "WUL01377.JPG",
+    "sha256": "8815275879237592020156145affc8582a0f8b5ac5f2a8beed3ffb464e199e48",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "颁奖晚会观众席",
+      "en": "The audience at the awards evening"
+    },
+    "imageType": "event-recap",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 106190,
+    "thumbBytes": 21428
+  },
+  {
+    "id": "cd80-2024-owner-wul01412",
+    "file": "WUL01412.JPG",
+    "sha256": "3c14f9334f5949cf65e1a042c496dc83a5bcf34af48594c6ee9197eb448f5cf4",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "西南财经大学致辞现场",
+      "en": "SWUFE remarks at the awards evening"
+    },
+    "imageType": "speech",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 188516,
+    "thumbBytes": 36248
+  },
+  {
+    "id": "cd80-2024-owner-wul01567",
+    "file": "WUL01567.JPG",
+    "sha256": "fa8eccd21d061d72bf9e10e0d5ad56a657a2415945009fdcf2a0a8038d1c9366",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "瑞士再保险集团嘉宾发言现场",
+      "en": "Remarks with the Swiss Re guest presentation backdrop"
+    },
+    "imageType": "speech",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 186010,
+    "thumbBytes": 35302
+  },
+  {
+    "id": "cd80-2024-owner-wul01672",
+    "file": "WUL01672.JPG",
+    "sha256": "5b5a456a3c1c0e8c4ff7de7709e8299bbdc3a66fb0f3a4396f1ab8f248366cbc",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "香港大学 Apollo 战队 · 创新者奖颁奖合影",
+      "en": "The University of Hong Kong, Team Apollo · Innovator Award presentation"
+    },
+    "imageType": "award-ceremony",
+    "universityId": "hku",
+    "projectId": null,
+    "fullBytes": 280046,
+    "thumbBytes": 45858
+  },
+  {
+    "id": "cd80-2024-owner-wul01857",
+    "file": "WUL01857.JPG",
+    "sha256": "d2c6e33c8cdc62e7faab484120d31fe1f3789fadbca8e766454fc06d3e66cb11",
+    "originalWidth": 4608,
+    "originalHeight": 3072,
+    "caption": {
+      "zh": "西南财经大学 FinFlare 团队颁奖现场",
+      "en": "SWUFE, Team FinFlare · awards presentation"
+    },
+    "imageType": "award-ceremony",
+    "universityId": "swufe",
+    "projectId": null,
+    "fullBytes": 494488,
+    "thumbBytes": 74434
+  },
+  {
+    "id": "cd80-2024-owner-wul01979",
+    "file": "WUL01979.JPG",
+    "sha256": "20ff5b6135a691fa21b2a37ee65f9c348422ded5884208729816acc1a9867476",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "成都八零主舞台发言现场",
+      "en": "A speaker on the Chengdu 80 main stage"
+    },
+    "imageType": "speech",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 202870,
+    "thumbBytes": 47772
+  },
+  {
+    "id": "cd80-2024-owner-wul02251",
+    "file": "WUL02251.JPG",
+    "sha256": "869b43980abf4901046d8bed9285446e856ec034b7e77791ac93c2742d33cb9f",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "女王大学嘉宾发言 · 舞台全景",
+      "en": "Queen's University guest remarks · stage view"
+    },
+    "imageType": "speech",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 201138,
+    "thumbBytes": 37408
+  },
+  {
+    "id": "cd80-2024-owner-wul02269",
+    "file": "WUL02269.JPG",
+    "sha256": "25c144e999b7dd5899d75479526bfdca1d90e785bb19a76a837d1108c7689bd9",
+    "originalWidth": 4608,
+    "originalHeight": 3072,
+    "caption": {
+      "zh": "女王大学嘉宾发言 · 讲台近景",
+      "en": "Queen's University guest remarks · lectern view"
+    },
+    "imageType": "speech",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 129514,
+    "thumbBytes": 18592
+  },
+  {
+    "id": "cd80-2024-owner-wul02293",
+    "file": "WUL02293.JPG",
+    "sha256": "3785bf4a5b0123c39692eaceca6322924c69979cdfc6531e19b668164b23c125",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "女王大学嘉宾发言现场",
+      "en": "Queen's University guest remarks"
+    },
+    "imageType": "speech",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 169758,
+    "thumbBytes": 38188
+  },
+  {
+    "id": "cd80-2024-owner-wul02337",
+    "file": "WUL02337.JPG",
+    "sha256": "0773bd455f6274dceaa80987d38addc89249fefda5781c5ed5fcfd8a1fd60097",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "颁奖晚会音乐表演与现场互动",
+      "en": "Music performance and interaction at the awards evening"
+    },
+    "imageType": "event-recap",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 346378,
+    "thumbBytes": 54712
+  },
+  {
+    "id": "cd80-2024-owner-wul02419",
+    "file": "WUL02419.JPG",
+    "sha256": "d2fa736489ada87c9f746f6b9628ca51730407d2a92b10ced939b77dce59f87c",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "成都八零孵化器正式启动",
+      "en": "Launch of the Chengdu 80 Incubator"
+    },
+    "imageType": "event-recap",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 238750,
+    "thumbBytes": 44290
+  },
+  {
+    "id": "cd80-2024-owner-wul02495",
+    "file": "WUL02495.JPG",
+    "sha256": "b5d8942dbff396fa1cfb98f82656a0c2b633db3ab267d0c53eb3aee7c9b9c09e",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "成都八零主舞台团队与嘉宾合影",
+      "en": "Participants and guests on the Chengdu 80 main stage"
+    },
+    "imageType": "event-group",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 345314,
+    "thumbBytes": 60998
+  },
+  {
+    "id": "cd80-2024-owner-wul02499",
+    "file": "WUL02499.JPG",
+    "sha256": "d4adf8915aa725cf8ec9619bb052b53f82935de6ff02a9919fdb83d82baa0193",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "成都八零主舞台大合影",
+      "en": "A wide group photograph on the Chengdu 80 main stage"
+    },
+    "imageType": "event-group",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 296418,
+    "thumbBytes": 55506
+  },
+  {
+    "id": "cd80-2024-owner-wul02525",
+    "file": "WUL02525.JPG",
+    "sha256": "cd85afe97259fe03cf2c57cef6f1322e52bededc401d1671f470a04f6316cd2f",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "成都八零现场团队与嘉宾合影",
+      "en": "A team and guests at the Chengdu 80 event"
+    },
+    "imageType": "team-photo",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 330436,
+    "thumbBytes": 63278
+  },
+  {
+    "id": "cd80-2024-owner-wul08798",
+    "file": "WUL08798.JPG",
+    "sha256": "bdd46cab2460fc039248309be303ddfa54522f0ee368a88bbcc1c69c3268d029",
+    "originalWidth": 4608,
+    "originalHeight": 3072,
+    "caption": {
+      "zh": "会场面对面交流",
+      "en": "A conversation in the event seating area"
+    },
+    "imageType": "work-session",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 135128,
+    "thumbBytes": 27966
+  },
+  {
+    "id": "cd80-2024-owner-wul08866",
+    "file": "WUL08866.JPG",
+    "sha256": "e1292d740290470939e92e4047ea980881a422e22a70b895bc5744d8a4d15acf",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "金融科技国际联合实验室嘉宾致辞",
+      "en": "Remarks with the SWUFE Fintech Innovation Center backdrop"
+    },
+    "imageType": "speech",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 269556,
+    "thumbBytes": 48502
+  },
+  {
+    "id": "cd80-2024-owner-wul09783",
+    "file": "WUL09783.JPG",
+    "sha256": "33a71c771ae0b727a7795a9e73e1ac4c9e726fa2f1b819cae7dac1d02cc67540",
+    "originalWidth": 3072,
+    "originalHeight": 4608,
+    "caption": {
+      "zh": "现场持麦交流",
+      "en": "A participant speaking during a discussion"
+    },
+    "imageType": "speech",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 291644,
+    "thumbBytes": 34214
+  },
+  {
+    "id": "cd80-2024-owner-wul09911",
+    "file": "WUL09911.JPG",
+    "sha256": "8956592ce01f44e25588166ace950ba64aa112531415a22032550b053c147ebe",
+    "originalWidth": 7008,
+    "originalHeight": 4672,
+    "caption": {
+      "zh": "2024成都八零会场入口",
+      "en": "The 2024 Chengdu 80 event entrance"
+    },
+    "imageType": "event-recap",
+    "universityId": null,
+    "projectId": null,
+    "fullBytes": 291280,
+    "thumbBytes": 50572
+  }
+]
