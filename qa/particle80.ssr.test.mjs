@@ -121,7 +121,9 @@ await test('Particle80 SSR is deterministic, accessible, and fully disabled on d
     const introCss = await readFile('components/Particle80Intro.module.css', 'utf8');
     assert.match(introCss, /\.identityLink\s*\{[^}]*pointer-events: auto/);
     assert.match(introCss, /\.container a:focus-visible\s*\{[^}]*outline:/);
-    assert.match(introCss, /\[data-hero-visible='false'\] \.identityLink\s*\{\s*visibility: hidden/);
+    assert.match(introCss, /\[data-identity-visible='false'\] \.identityLink\s*\{\s*visibility: hidden/);
+    const scrollSource = await readFile('hooks/use-particle-story-scroll.ts', 'utf8');
+    assert.match(scrollSource, /dataset.identityVisible = String\(next.identityOpacity > 0\)/);
     assert.match(intro, /data-formation-duration="2.2"/);
     assert.match(intro, /data-intro-state="INTRO_IDLE"/);
     assert.match(intro, /data-hold-duration="2.2"/);

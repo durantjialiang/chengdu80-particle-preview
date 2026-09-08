@@ -45,6 +45,7 @@ export function useParticleStoryScroll({ host, hero, composition, content, reduc
       }
       if (element) {
         element.style.setProperty('--story-identity', String(next.identityOpacity));
+        element.dataset.identityVisible = String(next.identityOpacity > 0);
         element.dataset.spread = next.spreadProgress.toFixed(4);
         element.dataset.heroVisible = String(next.heroInView);
         element.dataset.introVisible = String(next.introInView);

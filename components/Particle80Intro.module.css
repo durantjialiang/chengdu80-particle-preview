@@ -89,7 +89,7 @@
   text-decoration-thickness: 1px;
   text-underline-offset: 0.12em;
 }
-.container[data-hero-visible='false'] .identityLink {
+.container[data-identity-visible='false'] .identityLink {
   visibility: hidden;
 }
 .particles {
