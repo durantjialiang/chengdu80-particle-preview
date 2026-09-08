@@ -32,6 +32,174 @@ await test('site content and static archive contracts', async (t) => {
       '/content/universities.ts',
     );
     await t.test(
+      'city relationships preserve evidence, roles and approved photo boundaries',
+      async () => {
+        const {
+          cityInstitutions,
+          cityCollaborationSources,
+          citySceneImageIds,
+        } = await server.ssrLoadModule('/content/city-collaboration.ts');
+        const { publicArchiveImages, isPubliclyUsable } =
+          await server.ssrLoadModule('/content/archive-media.ts');
+        const { partnerEditions } = await server.ssrLoadModule(
+          '/content/ecosystem.ts',
+        );
+        assert.equal(cityInstitutions.length, 5);
+        assert.equal(new Set(cityInstitutions.map((item) => item.id)).size, 5);
+        assert.deepEqual(
+          cityInstitutions.map((item) => item.relationship),
+          [
+            'co-building',
+            'forum-co-host',
+            'district-collaboration',
+            'forum-co-host',
+            'event-engagement',
+          ],
+        );
+        for (const institution of cityInstitutions) {
+          for (const field of ['name', 'role', 'summary']) {
+            assert.ok(institution[field].en && institution[field].zh);
+            assert.doesNotMatch(
+              institution[field].en + institution[field].zh,
+              /2026|赞助商|sponsor/i,
+            );
+          }
+          assert.ok(institution.sourceIds.length > 0);
+          for (const id of institution.sourceIds) {
+            const source = cityCollaborationSources[id];
+            assert.ok(new URL(source.url).hostname.endsWith('swufe.edu.cn'));
+            assert.ok(source.eventDate < source.published);
+          }
+          if (institution.website) {
+            const url = new URL(institution.website);
+            assert.equal(url.protocol, 'https:');
+            assert.ok(url.hostname.endsWith('.gov.cn'));
+          }
+          assert.ok(
+            !JSON.stringify(partnerEditions).includes(institution.id),
+            'City entities do not become competition hosts',
+          );
+        }
+        assert.equal(cityInstitutions.filter((item) => item.website).length, 3);
+        assert.match(cityInstitutions[3].summary.zh, /当时/);
+        for (const id of citySceneImageIds) {
+          const photo = publicArchiveImages.find((image) => image.id === id);
+          assert.ok(photo && isPubliclyUsable(photo));
+          assert.equal(photo.eventYear, 2024);
+          assert.equal(photo.universityId, null);
+          assert.equal(photo.projectId, null);
+          await readFile(`public${photo.localAssetPath}`);
+        }
+      },
+    );
+    await t.test(
+      'city collaboration renders bilingual photo-led content without audit clutter',
+      async () => {
+        const { cityInstitutions } = await server.ssrLoadModule(
+          '/content/city-collaboration.ts',
+        );
+        const { default: CityCollaboration } = await server.ssrLoadModule(
+          '/components/site/CityCollaboration.tsx',
+        );
+        const { PartnersPage } = await server.ssrLoadModule(
+          '/components/site/EcosystemContent.tsx',
+        );
+        const { SiteLanguageProvider } = await server.ssrLoadModule(
+          '/hooks/use-site-language.tsx',
+        );
+        const previousWindow = Object.getOwnPropertyDescriptor(
+          globalThis,
+          'window',
+        );
+        const previousLocation = Object.getOwnPropertyDescriptor(
+          globalThis,
+          'location',
+        );
+        try {
+          Object.defineProperty(globalThis, 'window', {
+            value: {},
+            configurable: true,
+          });
+          for (const language of ['en', 'zh']) {
+            Object.defineProperty(globalThis, 'location', {
+              value: { search: `?lang=${language}` },
+              configurable: true,
+            });
+            const render = (Component) =>
+              renderToString(
+                React.createElement(
+                  SiteLanguageProvider,
+                  null,
+                  React.createElement(Component),
+                ),
+              );
+            const html = render(CityCollaboration);
+            const page = render(PartnersPage);
+            assert.equal(
+              (page.match(/id="city-collaboration"/g) ?? []).length,
+              1,
+            );
+            assert.match(html, /aria-labelledby="city-collaboration-title"/);
+            assert.equal((html.match(/<img\b/g) ?? []).length, 2);
+            assert.equal((html.match(/<button\b/g) ?? []).length, 2);
+            assert.equal(
+              (html.match(/loading="lazy" decoding="async"/g) ?? []).length,
+              2,
+            );
+            assert.equal(
+              (html.match(/width="1800" height="1200"/g) ?? []).length,
+              2,
+            );
+            assert.doesNotMatch(
+              html,
+              /<figcaption|<details|<summary|资料来源与说明|Sources &amp; record notes/,
+            );
+            assert.doesNotMatch(
+              html,
+              /<dialog/,
+              'Viewer mounts only after a photo is selected',
+            );
+            for (const institution of cityInstitutions) {
+              const card = html.match(
+                new RegExp(
+                  `<article[^>]*data-city-institution="${institution.id}"[\\s\\S]*?<\\/article>`,
+                ),
+              )?.[0];
+              assert.ok(card, institution.id);
+              assert.ok(card.includes(institution.role[language]));
+              if (institution.website) {
+                assert.ok(card.includes(`href="${institution.website}"`));
+                assert.match(card, /target="_blank" rel="noopener noreferrer"/);
+              } else
+                assert.doesNotMatch(card, /<a\b/, 'No guessed department URL');
+            }
+          }
+        } finally {
+          if (previousWindow)
+            Object.defineProperty(globalThis, 'window', previousWindow);
+          else delete globalThis.window;
+          if (previousLocation)
+            Object.defineProperty(globalThis, 'location', previousLocation);
+          else delete globalThis.location;
+        }
+        const css = await readFile(
+          'components/site/CityCollaboration.module.css',
+          'utf8',
+        );
+        assert.match(css, /@media \(max-width: 640px\)/);
+        assert.match(
+          css,
+          /grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/,
+        );
+        assert.match(css, /object-fit: contain/);
+        assert.match(css, /:focus-visible/);
+        assert.doesNotMatch(
+          css,
+          /animation:|transition:|filter:|object-fit: cover/,
+        );
+      },
+    );
+    await t.test(
       'homepage type scales without replacing content, navigation or particle behavior',
       async () => {
         const navigationCss = await readFile(

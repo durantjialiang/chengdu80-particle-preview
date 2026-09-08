@@ -27,6 +27,7 @@ import {
 import { publicArchiveImages } from '@/content/archive-media';
 import { WinnerCard } from './ArchivePages';
 import EditorialMedia from './EditorialMedia';
+import CityCollaboration from './CityCollaboration';
 import styles from './Editorial.module.css';
 import site from './Site.module.css';
 
@@ -716,6 +717,7 @@ export function PartnersPage() {
       </p>
       <HostPair historical />
       <InternationalPartners />
+      <CityCollaboration />
       <Section id="roles" title={b('Partnership milestones', '合作里程碑')}>
         <div className={styles.timeline}>
           {partnerEditions.map((edition) => {
