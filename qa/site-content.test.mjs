@@ -472,7 +472,7 @@ await test('site content and static archive contracts', async (t) => {
           assert.match(card, /rel="noopener noreferrer"/);
           assert.ok(card.includes(`src="${profile.logo.src}"`));
           assert.match(card, /<h3>/);
-          assert.match(card, /Visit official website/);
+          assert.doesNotMatch(card, /访问官方网站|Visit official website/);
         }
       },
     );

@@ -205,20 +205,6 @@
   margin-top: 14px;
   max-width: 38ch;
 }
-.institutionVisit {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  margin-top: auto;
-  padding-top: 32px;
-  font-size: 15px;
-  color: var(--institution-accent);
-}
-.institutionVisit svg {
-  width: 22px;
-  height: 22px;
-}
 .exchangeNetwork {
   margin-top: 48px;
   scroll-margin-top: 100px;

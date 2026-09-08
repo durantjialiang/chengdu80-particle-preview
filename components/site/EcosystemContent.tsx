@@ -651,10 +651,6 @@ function InternationalPartners() {
             </div>
             <h3>{t(profile.title)}</h3>
             <p>{t(profile.descriptor)}</p>
-            <span className={styles.institutionVisit}>
-              {t(b('Visit official website', '访问官方网站'))}
-              <ArrowUpRight aria-hidden="true" />
-            </span>
           </a>
         ))}
       </div>
