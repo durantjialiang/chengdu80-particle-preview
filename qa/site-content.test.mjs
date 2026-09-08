@@ -74,6 +74,45 @@ await test('site content and static archive contracts', async (t) => {
         assert.match(introCss, /min-height: clamp\(18rem, 46svh, 27\.5rem\)/);
         assert.match(introCss, /max-height: 700px/);
         assert.match(introCss, /env\(safe-area-inset-bottom\)/);
+        const acronymRules = [
+          ...introCss.matchAll(/\.acronym\s*\{([^}]+)\}/g),
+        ].map((match) => match[1]);
+        assert.equal(
+          acronymRules.length,
+          3,
+          'Shared desktop, tablet and phone type rules',
+        );
+        assert.match(acronymRules[0], /font-weight: 600/);
+        assert.match(acronymRules[0], /white-space: nowrap/);
+        const sizes = acronymRules.map((rule) => {
+          const match = rule.match(
+            /font-size: clamp\(([\d.]+)rem, ([\d.]+)vw, ([\d.]+)rem\)/,
+          );
+          assert.ok(match, 'Type remains fluid with rem bounds');
+          return match.slice(1).map(Number);
+        });
+        const acronymSize = (width) => {
+          const [min, vw, max] = sizes[width <= 640 ? 2 : width <= 900 ? 1 : 0];
+          return Math.max(min * 16, Math.min((width * vw) / 100, max * 16));
+        };
+        for (const width of [1366, 1440, 1920, 2560, 3277, 3840]) {
+          const previous = Math.max(36, Math.min(width * 0.0335, 56));
+          assert.ok(
+            acronymSize(width) >= previous * 1.4,
+            `${width}px desktop is visibly larger`,
+          );
+          assert.ok(
+            acronymSize(width) <= 128,
+            'Ultra-wide size has a controlled ceiling',
+          );
+        }
+        for (const width of [320, 360, 390, 640, 768, 900])
+          assert.ok(
+            acronymSize(width) >= 36 && acronymSize(width) <= 48,
+            `${width}px uses compact type`,
+          );
+        assert.match(introCss, /\.identity\s*\{[^}]*top: calc\(50% - 40px\)/);
+        assert.match(introCss, /\.identity\s*\{[^}]*top: 27px/);
         const { SiteNavigation } = await server.ssrLoadModule(
           '/components/site/SiteChrome.tsx',
         );
