@@ -74,7 +74,7 @@ function City({
     const visibility =
       THREE.MathUtils.smoothstep(facing, 0.04, 0.24) * appearance;
     const highlighted = network
-      ? network.highlightedId === city.id
+      ? city.universityIds.includes(network.highlightedId!)
       : hover.current;
     const emphasis =
       network &&
@@ -232,8 +232,8 @@ export default function CityNodes(
 ) {
   const explorer = Boolean(props.network);
   const cities = useMemo(
-    () => networkCities(props.lowPower, explorer),
-    [props.lowPower, explorer],
+    () => networkCities(props.lowPower, explorer, props.network?.nodes),
+    [props.lowPower, explorer, props.network?.nodes],
   );
   const anchors = useMemo(
     () =>
@@ -271,7 +271,9 @@ export default function CityNodes(
       const label = props.labels.current.get(city.name),
         anchor = anchors.get(city.id);
       if (!label || !anchor) continue;
-      const highlighted = props.network.highlightedId === city.id;
+      const highlighted = city.universityIds.includes(
+        props.network.highlightedId!,
+      );
       label.style.transform = `translate3d(${anchor.labelX.toFixed(1)}px, ${anchor.labelY.toFixed(1)}px, 0)`;
       label.style.opacity = String(
         anchor.visibility * (highlighted || city.isOrigin ? 1 : 0.64),

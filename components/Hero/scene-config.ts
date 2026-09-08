@@ -1,7 +1,7 @@
 import type { RefObject } from 'react';
 import type { Group } from 'three';
 import type { OpeningBridgeRef } from '@/lib/brand-opening';
-import type { UniversityId } from '@/content/network';
+import type { CityNode, UniversityId } from '@/content/network';
 
 export const RADIUS = 1.62;
 export const INITIAL_TILT = [0.14, 0.08, -0.2] as const;
@@ -13,6 +13,7 @@ export const INTRO = {
   routes: 2.5,
 };
 export type NetworkInteraction = {
+  nodes?: readonly CityNode[];
   focusId: UniversityId | null;
   highlightedId: UniversityId | null;
   selectedId: UniversityId;

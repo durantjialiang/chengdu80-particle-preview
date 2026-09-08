@@ -21,16 +21,19 @@ export default function CameraController({
   const focusId = network?.focusId;
   const focusedOrientation = useMemo(() => {
     if (!focusId) return null;
-    const university = getUniversity(focusId);
+    // Focus the displayed city marker for a cluster; retain original campus pins.
+    const university =
+      network?.nodes?.find((n) => n.universityIds.includes(focusId)) ??
+      getUniversity(focusId);
     return universityOrientation(
       university.latitude,
       university.longitude,
       new THREE.Vector3(-0.62, 0.46, lowPower ? 5.95 : 6.45),
     );
-  }, [focusId, lowPower]);
+  }, [focusId, lowPower, network?.nodes]);
   useEffect(() => {
     invalidate();
-  }, [focusId, network?.highlightedId, invalidate]);
+  }, [focusId, network?.highlightedId, network?.nodes, invalidate]);
   useEffect(() => {
     camera.position.set(-0.62, 0.46, lowPower ? 5.95 : 6.45);
     camera.lookAt(0, 0, 0);

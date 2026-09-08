@@ -107,12 +107,15 @@ function Routes({
 }: LayerProps) {
   const explorer = Boolean(network);
   const destinations = useMemo(
-    () => networkCities(lowPower, explorer).filter((city) => !city.isOrigin),
-    [lowPower, explorer],
+    () =>
+      networkCities(lowPower, explorer, network?.nodes).filter(
+        (city) => !city.isOrigin,
+      ),
+    [lowPower, explorer, network?.nodes],
   );
   const routes = useMemo(
-    () => networkRoutes(lowPower, explorer),
-    [lowPower, explorer],
+    () => networkRoutes(lowPower, explorer, network?.nodes),
+    [lowPower, explorer, network?.nodes],
   );
   const packets = useRef<THREE.Points>(null);
   const point = useMemo(() => new THREE.Vector3(), []);
@@ -173,7 +176,9 @@ function Routes({
         opening?.current.frame.globeRevealProgress ?? -1;
       material.current.uniforms.uSelected.value =
         network?.highlightedId && network.highlightedId !== 'swufe'
-          ? destinations.findIndex((city) => city.id === network.highlightedId)
+          ? destinations.findIndex((city) =>
+              city.universityIds.includes(network.highlightedId!),
+            )
           : -1;
     }
     if (packets.current && !reducedMotion) {

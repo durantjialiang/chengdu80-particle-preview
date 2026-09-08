@@ -21,6 +21,38 @@ import {
   bookletAwardsByYear,
 } from './history-evidence';
 export const sources = {
+  berkeley2018: {
+    title: b('Berkeley · funder project report', '伯克利 · funder作品报道'),
+    url: universitySources.berkeley2018,
+    publishedDate: '2020-09-16',
+    dateBasis: 'page-field' as const,
+    dateNote: b(
+      'A later report about the 2018 competition.',
+      '关于2018年赛事的后续报道。',
+    ),
+  },
+  nus2019Computing: {
+    title: b(
+      'NUS Computing · ProScope (2019)',
+      '新加坡国立大学计算机学院 · ProScope（2019）',
+    ),
+    url: universitySources.nus2019Computing,
+    publishedDate: '2019-12-05',
+    dateBasis: 'page-field' as const,
+  },
+  nus2023Computing: {
+    title: b(
+      'NUS Computing · NUSight (2023)',
+      '新加坡国立大学计算机学院 · NUSight（2023）',
+    ),
+    url: universitySources.nus2023Computing,
+    publishedDate: '2023-11-14',
+    dateBasis: 'page-field' as const,
+    dateNote: b(
+      'NUS describes 26 October–2 November; retained separately from other institutions’ broader schedules.',
+      'NUS记载10月26日至11月2日；与其他高校的整体行程口径分别保留。',
+    ),
+  },
   booklet: anniversarySource,
   event2019: edition2019Source,
   recap2019: recap2019Source,
@@ -94,6 +126,8 @@ export type Project = {
   awardId: string;
   editionAwardId?: string;
   awardLabel: Localized;
+  awardRank?: number;
+  awardSourceLabel?: string;
   summary: Localized;
   image: string | null;
   demoUrl: string | null;
@@ -106,6 +140,69 @@ const media = { image: null, demoUrl: null, repositoryUrl: null };
 // The bilingual awards table in the anniversary publication establishes this wording.
 const topAward = b('Trailblazer Award', '开创者奖');
 export const projects: readonly Project[] = [
+  {
+    projectId: 'funder-2018',
+    year: 2018,
+    universityId: 'berkeley',
+    teamName: null,
+    projectName: 'funder',
+    challenge: b('Personal IPO pricing and issuance', '个人IPO定价与发行'),
+    awardId: 'lingxianzhe',
+    editionAwardId: '2018-lingxianzhe',
+    awardLabel: b('Leader award · second place', '领先者奖 · 第二名'),
+    awardRank: 2,
+    awardSourceLabel: 'Leader',
+    summary: b(
+      'A personal IPO prototype connecting private investment with an individual’s future spending. The Berkeley team paired a simple interface with machine-learning support.',
+      '伯克利团队以个人IPO原型连接私人投资与个人未来消费，结合简洁界面和机器学习工具，探索个人融资的新方式。',
+    ),
+    sourceRefs: ['berkeley2018', 'booklet'],
+    verificationStatus: 'documented',
+    ...media,
+  },
+  {
+    projectId: 'proscope-2019',
+    year: 2019,
+    universityId: 'nus',
+    teamName: null,
+    projectName: 'ProScope',
+    challenge: b(
+      'Discovering financial academic research',
+      '金融学者科研探索发现平台',
+    ),
+    awardId: 'lingxianzhe',
+    editionAwardId: '2019-pioneer',
+    awardLabel: b('Pioneer Award · second place', '领先者奖 · 第二名'),
+    awardRank: 2,
+    awardSourceLabel: 'Pioneer Award',
+    summary: b(
+      'From researcher discovery to collaboration: ProScope connected searchable academic profiles, proposals and digitally signed blockchain agreements.',
+      'ProScope把学者检索、合作提案与区块链数字签约连接起来，让金融研究发现走向合作。',
+    ),
+    sourceRefs: ['nus2019Computing', 'event2019', 'booklet'],
+    verificationStatus: 'documented',
+    ...media,
+  },
+  {
+    projectId: 'nusight-2023',
+    year: 2023,
+    universityId: 'nus',
+    teamName: 'NUS Finovators',
+    projectName: 'NUSight',
+    challenge: b('Financial news analysis', '金融新闻分析'),
+    awardId: 'second-place',
+    editionAwardId: '2023-nus-second',
+    awardLabel: b('Second place', '第二名'),
+    awardRank: 2,
+    awardSourceLabel: '2nd place',
+    summary: b(
+      'NUS Finovators developed NUSight to make financial news analysis accessible, combining an unbiased information perspective with quantitative risk assessment.',
+      'NUS Finovators团队开发NUSight，将易于理解的金融新闻分析与量化风险视角结合起来，帮助用户解读信息。',
+    ),
+    sourceRefs: ['nus2023Computing'],
+    verificationStatus: 'documented',
+    ...media,
+  },
   {
     projectId: 'nushadow',
     year: 2018,

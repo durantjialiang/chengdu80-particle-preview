@@ -1,0 +1,182 @@
+import { universities, type UniversityId } from '@/content/universities';
+import { editions, projects, sources } from '@/content/archive';
+import { publicArchiveImages } from '@/content/archive-media';
+import type { CityNode } from '@/content/network';
+import { universityName, universityLocation } from '@/content/university-i18n';
+
+export type NetworkYear =
+  | 'all'
+  | 2018
+  | 2019
+  | 2020
+  | 2021
+  | 2022
+  | 2023
+  | 2024
+  | 2025
+  | 2026;
+export const networkYears: readonly NetworkYear[] = [
+  'all',
+  2018,
+  2019,
+  2020,
+  2021,
+  2022,
+  2023,
+  2024,
+  2025,
+  2026,
+];
+export type NetworkView = { year: NetworkYear; selectedId: UniversityId };
+export function filterUniversities(year: NetworkYear, query = '') {
+  const terms = query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
+  return universities.filter(
+    (u) =>
+      (year === 'all' || u.participationYears.includes(year)) &&
+      terms.every((term) =>
+        [
+          u.name,
+          u.shortName,
+          u.city,
+          u.country,
+          universityName(u, 'zh'),
+          universityLocation(u, 'zh'),
+        ]
+          .join(' ')
+          .toLocaleLowerCase()
+          .includes(term),
+      ),
+  );
+}
+/** Filter first, group second. The hub is geographic context, not an extra participant. */
+export function explorerNodes(
+  filtered: readonly (typeof universities)[number][],
+): readonly CityNode[] {
+  const groups = new Map<string, (typeof universities)[number][]>();
+  for (const u of filtered) {
+    const key = `${u.country}:${u.city}`;
+    groups.set(key, [...(groups.get(key) ?? []), u]);
+  }
+  const hub = universities.find((u) => u.id === 'swufe')!;
+  const nodes: CityNode[] = [...groups.values()].map((members) => {
+    const isOrigin = members.some((u) => u.id === hub.id);
+    const pin = isOrigin ? hub : members[0];
+    return {
+      id: pin.id,
+      cityId: `${pin.country}:${pin.city}`,
+      name: members.length > 1 ? pin.city : members[0].shortName,
+      city: pin.city,
+      latitude: pin.latitude,
+      longitude: pin.longitude,
+      isOrigin,
+      isEcosystem: members.every((u) => u.relationshipType === 'ecosystem'),
+      showOnLowPower: true,
+      universityIds: members.map((u) => u.id),
+    };
+  });
+  if (!nodes.some((n) => n.isOrigin))
+    nodes.unshift({
+      id: hub.id,
+      cityId: `${hub.country}:${hub.city}`,
+      name: 'CHENGDU',
+      city: hub.city,
+      latitude: hub.latitude,
+      longitude: hub.longitude,
+      isOrigin: true,
+      isEcosystem: false,
+      showOnLowPower: true,
+      universityIds: [],
+    });
+  return nodes;
+}
+export function readNetworkView(search: string): NetworkView {
+  const params = new URLSearchParams(search);
+  const candidate = Number(params.get('year'));
+  return {
+    year: networkYears.includes(candidate as NetworkYear)
+      ? (candidate as NetworkYear)
+      : 'all',
+    selectedId:
+      universities.find((u) => u.id === params.get('university'))?.id ??
+      'swufe',
+  };
+}
+export function networkViewUrl(current: string, view: NetworkView) {
+  const url = new URL(current);
+  if (view.year === 'all') url.searchParams.delete('year');
+  else url.searchParams.set('year', String(view.year));
+  url.searchParams.set('university', view.selectedId);
+  return url.pathname + url.search + url.hash;
+}
+// Per-edition mode, not a claim that every team travelled to Chengdu.
+// Source: supplied network research, booklet PDF pp44/54 and the 2022 official recap.
+export function participationMode(id: UniversityId, year: NetworkYear) {
+  const university = universities.find((u) => u.id === id)!;
+  if (year === 'all' || !university.participationYears.includes(year))
+    return 'unknown';
+  if (year === 2020) return 'online';
+  if (year === 2021)
+    return ['tsinghua', 'swufe', 'uestc', 'cqu'].includes(id)
+      ? 'onsite'
+      : 'online';
+  if (year === 2022)
+    return ['uestc', 'sustech', 'swufe'].includes(id) ? 'onsite' : 'online';
+  return 'unknown';
+}
+export function universitySpotlight(id: UniversityId, year: NetworkYear) {
+  const university = universities.find((u) => u.id === id)!;
+  const hasRecord =
+    year === 'all' || university.participationYears.includes(year);
+  const selectedProjects = hasRecord
+    ? projects
+        .filter(
+          (p) => p.universityId === id && (year === 'all' || p.year === year),
+        )
+        .sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
+    : [];
+  const teamPhotos = hasRecord
+    ? publicArchiveImages
+        .filter(
+          (image) =>
+            image.universityId === id &&
+            image.imageType === 'team-photo' &&
+            (year === 'all' || image.eventYear === year),
+        )
+        .sort((a, b) => b.eventYear - a.eventYear)
+    : [];
+  const awards = hasRecord
+    ? editions
+        .filter((e) => year === 'all' || e.year === year)
+        .flatMap((e) =>
+          (e.awardResults ?? [])
+            .filter((a) => a.universityIds.includes(id))
+            .map((a) => ({
+              ...a,
+              year: e.year,
+              sourceUrl: sources[a.sourceRef].url,
+            })),
+        )
+        .sort((a, b) => b.year - a.year)
+    : [];
+  // Public event photographs never inherit the selected university's identity.
+  const eventPhotos =
+    year === 'all'
+      ? []
+      : publicArchiveImages
+          .filter(
+            (image) =>
+              image.eventYear === year &&
+              image.universityId === null &&
+              image.projectId === null,
+          )
+          .slice(0, 3);
+  return {
+    university,
+    hasRecord,
+    projects: selectedProjects,
+    teamPhoto: teamPhotos[0] ?? null,
+    awards,
+    eventPhotos,
+    mode: participationMode(id, year),
+  };
+}

@@ -295,52 +295,63 @@ export default function Scene({
         </SceneBoundary>
       ) : null}
       <div className={styles.labels}>
-        {networkCities(qualityLow, Boolean(network)).map((city) => (
-          <div
-            key={city.id}
-            ref={(element) => {
-              if (element) labels.current.set(city.name, element);
-              else labels.current.delete(city.name);
-            }}
-            className={
-              network
-                ? styles.nodeLabel
-                : city.isOrigin
-                  ? styles.origin
-                  : styles.city
-            }
-          >
-            {network ? (
-              <>
-                <i aria-hidden="true" />
-                <button
-                  type="button"
-                  data-node={city.id}
-                  aria-label={`Select ${city.name} on globe`}
-                  aria-pressed={network.selectedId === city.id}
-                  data-highlighted={network.highlightedId === city.id}
-                  data-hub={city.isOrigin}
-                  onPointerEnter={() => network.onNodeHover(city.id)}
-                  onPointerLeave={() => network.onNodeHover(null)}
-                  onFocus={() => network.onNodeHover(city.id)}
-                  onBlur={() => network.onNodeHover(null)}
-                  onClick={() => network.onNodeSelect(city.id)}
-                >
-                  {city.isOrigin ? 'SWUFE / CHENGDU' : city.name}
-                </button>
-              </>
-            ) : city.isOrigin ? (
-              <>
-                <span>
-                  ORIGIN <i>{'//'}</i> CHENGDU
-                </span>
-                <small>GLOBAL FINTECH NETWORK</small>
-              </>
-            ) : (
-              <span>{city.name}</span>
-            )}
-          </div>
-        ))}
+        {networkCities(qualityLow, Boolean(network), network?.nodes).map(
+          (city) => (
+            <div
+              key={city.id}
+              ref={(element) => {
+                if (element) labels.current.set(city.name, element);
+                else labels.current.delete(city.name);
+              }}
+              className={
+                network
+                  ? styles.nodeLabel
+                  : city.isOrigin
+                    ? styles.origin
+                    : styles.city
+              }
+            >
+              {network ? (
+                <>
+                  <i aria-hidden="true" />
+                  <button
+                    type="button"
+                    data-node={city.id}
+                    data-universities={city.universityIds.join(',')}
+                    disabled={city.universityIds.length === 0}
+                    aria-label={`Select ${city.name} on globe`}
+                    aria-pressed={city.universityIds.includes(
+                      network.selectedId,
+                    )}
+                    data-highlighted={city.universityIds.includes(
+                      network.highlightedId!,
+                    )}
+                    data-hub={city.isOrigin}
+                    onPointerEnter={() => network.onNodeHover(city.id)}
+                    onPointerLeave={() => network.onNodeHover(null)}
+                    onFocus={() => network.onNodeHover(city.id)}
+                    onBlur={() => network.onNodeHover(null)}
+                    onClick={() => network.onNodeSelect(city.id)}
+                  >
+                    {city.name}
+                    {city.universityIds.length > 1
+                      ? ` · ${city.universityIds.length}`
+                      : ''}
+                  </button>
+                </>
+              ) : city.isOrigin ? (
+                <>
+                  <span>
+                    ORIGIN <i>{'//'}</i> CHENGDU
+                  </span>
+                  <small>GLOBAL FINTECH NETWORK</small>
+                </>
+              ) : (
+                <span>{city.name}</span>
+              )}
+            </div>
+          ),
+        )}
       </div>
     </div>
   );

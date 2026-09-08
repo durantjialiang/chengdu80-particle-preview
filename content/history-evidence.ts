@@ -157,6 +157,7 @@ export const edition2024Source = {
 export const confirmed2022Awards = [
   {
     id: '2022-kaichuangzhe',
+    sourceEnglish: 'Trailblazer / Pioneer (same-page conflict)',
     label: b('Trailblazer Award / 开创者奖', '开创者奖'),
     universityIds: ['tsinghua'] as readonly UniversityId[],
     sourceRef: 'event2022' as const,
@@ -177,6 +178,13 @@ export const confirmed2022Awards = [
 // The edition recap does not map every school to an award. This is the
 // independently identified HKU result, not a reconstructed complete ranking.
 export const confirmed2023Awards = [
+  {
+    id: '2023-nus-second',
+    label: b('Second place', '第二名'),
+    rank: 2,
+    universityIds: ['nus'] as readonly UniversityId[],
+    sourceRef: 'nus2023Computing' as const,
+  },
   {
     id: '2023-hku-pioneer',
     label: b('Pioneer Award (HKU)', '领先者奖（香港大学报道）'),

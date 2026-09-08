@@ -13,6 +13,8 @@ export type {
 } from './universities';
 export type CityNode = {
   id: UniversityId;
+  /** Stable grouping key; university IDs and campus coordinates remain separate. */
+  cityId?: string;
   name: string;
   city: string;
   latitude: number;

@@ -13,6 +13,9 @@ export const projectDirectionById: Record<
   keyof typeof projectDirections
 > = {
   nushadow: 'funding',
+  'funder-2018': 'funding',
+  'proscope-2019': 'research',
+  'nusight-2023': 'information',
   'dragon-search': 'research',
   pisces: 'explainability',
   panda: 'risk',
@@ -39,6 +42,154 @@ const publication =
   'https://cd80.swufe.edu.cn/dfiles/14076/chengdoubalingwuzhounianzhuankan.pdf';
 /** Editorial summaries of historical prototypes, not endorsements or live products. */
 export const projectStudies: Record<string, ProjectStudy> = {
+  'funder-2018': {
+    problem: b(
+      'Can a personal IPO connect individual funding needs and private investors?',
+      '个人IPO如何连接个人融资需求与私人投资者？',
+    ),
+    users: b(
+      'Individuals seeking funding and private investors.',
+      '需要融资的个人与私人投资者。',
+    ),
+    solution: b(
+      'The prototype linked investor returns to future spending, with an accessible interface and machine-learning support.',
+      '原型将投资者回报与个人未来消费关联，并结合易用界面与机器学习支持。',
+    ),
+    features: [
+      b('Personal IPO concept', '个人IPO概念'),
+      b('Spending-linked returns', '与未来消费关联的回报'),
+      b('Accessible investment interface', '易于使用的投资界面'),
+    ],
+    technical: b(
+      'Built during the 80-hour challenge; the team later chose not to continue the prototype. It is a historical experiment, not a live investment product.',
+      '作品在80小时挑战中完成；团队后来未继续推进。这是历史原型探索，不是在线投资产品。',
+    ),
+    technicalSteps: [
+      {
+        title: b('Frame the funding relationship', '定义融资关系'),
+        description: b(
+          'Connect private investment with an individual’s future spending.',
+          '把私人投资与个人未来消费建立联系。',
+        ),
+      },
+      {
+        title: b('Support decisions', '支持决策'),
+        description: b(
+          'Combine the interface with a machine-learning tool; the report does not identify an algorithm.',
+          '界面结合机器学习工具提供支持；报道未指明具体算法。',
+        ),
+      },
+      {
+        title: b('Demonstrate a prototype', '展示原型'),
+        description: b(
+          'Present the concept within the hackathon, without claiming commercial deployment.',
+          '在比赛中展示概念与原型，不将其描述为商业化落地产品。',
+        ),
+      },
+    ],
+    evidenceUrl: 'https://cd80.swufe.edu.cn/info/1081/1051.htm',
+    evidenceLabel: b('Berkeley project report', '伯克利作品报道'),
+    illustrationStatus: 'not-established',
+  },
+  'proscope-2019': {
+    problem: b(
+      'Finding relevant researchers is only the beginning of academic collaboration.',
+      '找到合适的学者，只是学术合作的起点。',
+    ),
+    users: b(
+      'Researchers and organizations seeking collaborators.',
+      '寻求合作的研究者与机构。',
+    ),
+    solution: b(
+      'ProScope joined researcher search, proposals and digital agreements in one workflow.',
+      'ProScope将学者搜索、合作提案和数字协议整合为一个流程。',
+    ),
+    features: [
+      b('Name and topic search', '按姓名和主题搜索'),
+      b('Collaboration proposals', '发起合作提案'),
+      b('Digitally signed agreements', '数字签署合作协议'),
+    ],
+    technical: b(
+      'The team cleaned and filtered the organizer-supplied dataset before connecting discovery with a blockchain smart-contract workflow.',
+      '团队清洗、筛选主办方提供的数据，再将研究发现与区块链智能合约流程连接起来。',
+    ),
+    technicalSteps: [
+      {
+        title: b('Prepare research profiles', '整理学者资料'),
+        description: b(
+          'Clean the supplied records for search by researcher name or topic.',
+          '清洗提供的数据，支持按学者姓名或研究主题检索。',
+        ),
+      },
+      {
+        title: b('Propose collaboration', '提出合作'),
+        description: b(
+          'Move from a relevant profile to a collaboration proposal.',
+          '从相关学者资料出发，发起合作提案。',
+        ),
+      },
+      {
+        title: b('Record agreement', '记录共识'),
+        description: b(
+          'After both parties agree, digitally sign a blockchain smart contract.',
+          '双方达成共识后，通过数字签名签署区块链智能合约。',
+        ),
+      },
+    ],
+    evidenceUrl: 'https://www.comp.nus.edu.sg/news/2019-chengdu80/',
+    evidenceLabel: b('NUS Computing · ProScope', 'NUS计算机学院 · ProScope'),
+    illustrationStatus: 'permission-pending',
+  },
+  'nusight-2023': {
+    problem: b(
+      'Financial news needs to be understandable as well as useful for assessing risk.',
+      '金融新闻不仅需要易于理解，也需要帮助用户认识风险。',
+    ),
+    users: b(
+      'People seeking accessible financial news analysis.',
+      '需要易用金融新闻分析的用户。',
+    ),
+    solution: b(
+      'Six NUS Finovators members built NUSight around accessible, unbiased analysis and a quantitative risk perspective.',
+      '六名NUS Finovators成员围绕易用、客观的分析与量化风险视角开发NUSight。',
+    ),
+    features: [
+      b('Accessible news analysis', '易用的新闻分析'),
+      b('Unbiased information perspective', '客观的信息视角'),
+      b('Quantitative risk assessment', '量化风险评估'),
+    ],
+    technical: b(
+      'These are reported design goals. Specific models, data sources and scoring scales are not identified in the university report.',
+      '以上为报道介绍的设计目标；校方报道未明确具体模型、数据来源和评分尺度。',
+    ),
+    technicalSteps: [
+      {
+        title: b('Read the information', '理解信息'),
+        description: b(
+          'Present financial news through an accessible analytical experience.',
+          '以易用的分析体验呈现金融新闻。',
+        ),
+      },
+      {
+        title: b('Consider risk', '认识风险'),
+        description: b(
+          'Bring a quantitative risk perspective to the news analysis.',
+          '为新闻分析加入量化风险视角。',
+        ),
+      },
+      {
+        title: b('Build together', '协同开发'),
+        description: b(
+          'Combine business analytics and computer science expertise in a competition prototype.',
+          '把商业分析与计算机科学专长结合为赛事原型。',
+        ),
+      },
+    ],
+    evidenceUrl:
+      'https://www.comp.nus.edu.sg/bytes/2023-chengdu80-global-fintech-competition/',
+    evidenceLabel: b('NUS Computing · NUSight', 'NUS计算机学院 · NUSight'),
+    illustrationStatus: 'not-established',
+  },
   nushadow: {
     problem: b(
       'The project explored an alternative to slow, restrictive personal borrowing: could individual fundraising connect people with investors through a personal IPO?',

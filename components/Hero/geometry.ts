@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import type { CityNode } from '@/content/network';
 import { siteContent } from '@/content/site';
 import { RADIUS } from './scene-config';
 
@@ -20,14 +21,22 @@ export function seededRandom(seed: number) {
   };
 }
 
-export function networkCities(lowPower: boolean, explorer = false) {
-  return siteContent.cities.filter(
+export function networkCities(
+  lowPower: boolean,
+  explorer = false,
+  nodes?: readonly CityNode[],
+) {
+  return (nodes ?? siteContent.cities).filter(
     (city) => explorer || !lowPower || city.showOnLowPower,
   );
 }
 
-export function networkRoutes(lowPower: boolean, explorer = false) {
-  const cities = networkCities(lowPower, explorer);
+export function networkRoutes(
+  lowPower: boolean,
+  explorer = false,
+  nodes?: readonly CityNode[],
+) {
+  const cities = networkCities(lowPower, explorer, nodes);
   const origin = cities.find((city) => city.isOrigin)!;
   const start = latLon(origin.latitude, origin.longitude, RADIUS + 0.026);
   return cities

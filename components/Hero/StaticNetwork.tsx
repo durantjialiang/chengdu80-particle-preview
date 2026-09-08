@@ -31,8 +31,11 @@ export default function StaticNetwork({
 }: {
   network?: NetworkInteraction;
 }) {
-  const focused = globeNodes.find((city) => city.id === network?.focusId);
-  const nodes = globeNodes.map((city) => ({
+  const focused =
+    network?.nodes?.find((city) =>
+      city.universityIds.includes(network.focusId!),
+    ) ?? globeNodes.find((city) => city.id === network?.focusId);
+  const nodes = (network?.nodes ?? globeNodes).map((city) => ({
     ...city,
     point: project(
       city.latitude,
@@ -70,6 +73,8 @@ export default function StaticNetwork({
         .map((city) => (
           <g
             key={city.id}
+            data-node={city.id}
+            data-universities={city.universityIds.join(',')}
             role={network ? 'button' : undefined}
             tabIndex={network ? 0 : undefined}
             aria-label={network ? `Select ${city.name}` : undefined}
@@ -88,7 +93,9 @@ export default function StaticNetwork({
               stroke="#86cadd"
               strokeDasharray={city.isEcosystem ? '5 8' : undefined}
               strokeOpacity={
-                network && network.highlightedId !== city.id ? '.15' : '.6'
+                network && !city.universityIds.includes(network.highlightedId!)
+                  ? '.15'
+                  : '.6'
               }
             />
             <circle
@@ -97,7 +104,7 @@ export default function StaticNetwork({
               r={network ? 8 : 3}
               fill="#9acddc"
             />
-            {network && city.id === network.highlightedId ? (
+            {network && city.universityIds.includes(network.highlightedId!) ? (
               <text
                 x={city.point.x + 14}
                 y={city.point.y + 5}
@@ -124,6 +131,31 @@ export default function StaticNetwork({
         strokeOpacity=".4"
       />
       <circle cx={origin.point.x} cy={origin.point.y} r="4.5" fill="#d5b391" />
+      {/* SVG hit target: native HTML button cannot be a child of SVG. */}
+      {network && origin.point.visible && origin.universityIds.length > 0 && (
+        <g
+          role={network ? 'button' : undefined}
+          tabIndex={0}
+          data-node={origin.id}
+          data-universities={origin.universityIds.join(',')}
+          aria-label="Select Chengdu universities"
+          onClick={() => network.onNodeSelect(origin.id)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              network.onNodeSelect(origin.id);
+            }
+          }}
+        >
+          <circle
+            cx={origin.point.x}
+            cy={origin.point.y}
+            r="24"
+            fill="transparent"
+            style={{ cursor: 'pointer' }}
+          />
+        </g>
+      )}
       <g fontFamily="ui-monospace, monospace">
         <text
           x={origin.point.x - 178}

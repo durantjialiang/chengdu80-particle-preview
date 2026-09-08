@@ -1,70 +1,77 @@
 'use client';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { UniversityId } from '@/content/network';
-import { universities } from '@/content/network';
+import {
+  readNetworkView,
+  networkViewUrl,
+  type NetworkView,
+  type NetworkYear,
+} from '@/lib/university-explorer';
 
-function initialUniversity(): UniversityId {
-  if (typeof window === 'undefined') return 'swufe';
-  const id = new URLSearchParams(window.location.search).get('university');
-  return universities.find((u) => u.id === id)?.id ?? 'swufe';
-}
-
-/** One selection owner for the cards, globe and detail panel. Hover never scrolls. */
-export function useUniversityNetwork(reducedMotion: boolean) {
-  const [selectedId, setSelectedId] = useState<UniversityId>(initialUniversity);
-  const [focusId, setFocusId] = useState<UniversityId>(initialUniversity);
-  const [cardHover, updateCardHover] = useState<UniversityId | null>(null);
+/** Persistent selection drives content; transient hover never owns the camera. */
+export function useUniversityNetwork(_reducedMotion: boolean) {
+  const [view, setView] = useState<NetworkView>(() =>
+    readNetworkView(
+      typeof window === 'undefined' ? '' : window.location.search,
+    ),
+  );
+  const [focusId, setFocusId] = useState<UniversityId>(view.selectedId);
+  const [cardHover, setCardHover] = useState<UniversityId | null>(null);
   const [nodeHover, setNodeHover] = useState<UniversityId | null>(null);
   const [detailId, setDetailId] = useState<UniversityId | null>(null);
-  const cards = useRef(new Map<UniversityId, HTMLElement>());
-  const pendingNodeScroll = useRef<UniversityId | null>(null);
-  // A compact directory may mount the selected card only after state commits.
-  useEffect(() => {
-    const id = pendingNodeScroll.current;
-    if (!id) return;
-    cards.current.get(id)?.scrollIntoView({
-      behavior: reducedMotion ? 'instant' : 'smooth',
-      block: 'nearest',
-      inline: 'nearest',
-    });
-    pendingNodeScroll.current = null;
-  }, [selectedId, reducedMotion]);
-  // Keep the inspected campus facing forward when crossing from a card to the map.
-  // Resetting on pointer-leave moves labels out from under the approaching cursor.
-  const setCardHover = useCallback((id: UniversityId | null) => {
-    updateCardHover(id);
-    if (id) setFocusId(id);
+  const clearHover = useCallback(() => {
+    setCardHover(null);
+    setNodeHover(null);
   }, []);
-  const selectFromNode = useCallback(
-    (id: UniversityId) => {
-      pendingNodeScroll.current = cards.current.has(id) ? null : id;
-      setSelectedId(id);
-      setFocusId(id);
-      updateCardHover(null);
-      setNodeHover(null);
-      cards.current.get(id)?.scrollIntoView({
-        behavior: reducedMotion ? 'instant' : 'smooth',
-        block: 'nearest',
-        inline: 'nearest',
-      });
+  const commit = useCallback(
+    (next: NetworkView) => {
+      setView(next);
+      clearHover();
+      const url = networkViewUrl(window.location.href, next);
+      if (
+        url !==
+        window.location.pathname + window.location.search + window.location.hash
+      ) {
+        window.history.pushState(window.history.state, '', url);
+      }
     },
-    [reducedMotion],
+    [clearHover],
   );
-  const showDetails = useCallback((id: UniversityId) => {
-    setSelectedId(id);
-    setFocusId(id);
-    setDetailId(id);
-  }, []);
+  useEffect(() => {
+    const restore = () => {
+      const next = readNetworkView(window.location.search);
+      setView(next);
+      setFocusId(next.selectedId);
+      setDetailId(null);
+      clearHover();
+    };
+    window.addEventListener('popstate', restore);
+    return () => window.removeEventListener('popstate', restore);
+  }, [clearHover]);
+  const selectUniversity = useCallback(
+    (id: UniversityId) => {
+      commit({ ...view, selectedId: id });
+      setFocusId(id);
+    },
+    [view, commit],
+  );
+  const setYear = useCallback(
+    (year: NetworkYear) => commit({ ...view, year }),
+    [view, commit],
+  );
+  const showDetails = useCallback((id: UniversityId) => setDetailId(id), []);
   const closeDetails = useCallback(() => setDetailId(null), []);
   return {
-    selectedId,
-    highlightedId: nodeHover ?? cardHover ?? focusId,
+    ...view,
     focusId,
     detailId,
-    cards,
+    highlightedId: nodeHover ?? cardHover ?? view.selectedId,
     setCardHover,
     setNodeHover,
-    selectFromNode,
+    selectUniversity,
+    selectFromNode: selectUniversity,
+    setYear,
+    focusOn: setFocusId,
     showDetails,
     closeDetails,
   };

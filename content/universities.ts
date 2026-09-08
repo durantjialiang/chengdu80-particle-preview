@@ -1,7 +1,12 @@
 /** Shared by Hero, explorer and cards. Historical records are not a 2026 roster.
  * Coordinates are approximate campus pins for an illustrative map, not surveyed boundaries.
  */
-import { confirmed2024Awards, edition2024Source } from './history-evidence';
+import {
+  confirmed2024Awards,
+  edition2024Source,
+  bookletAwardsByYear,
+  anniversarySource,
+} from './history-evidence';
 export type RelationshipType =
   | 'participant'
   | 'winner'
@@ -61,6 +66,10 @@ export const universitySources = {
   edition2022: 'https://cd80.swufe.edu.cn/info/1081/1831.htm',
   edition2023: 'https://cd80.swufe.edu.cn/info/1081/1821.htm',
   nus2020: 'https://www.comp.nus.edu.sg/news/2020-chengdu80-win/',
+  berkeley2018: 'https://cd80.swufe.edu.cn/info/1081/1051.htm',
+  nus2019Computing: 'https://www.comp.nus.edu.sg/news/2019-chengdu80/',
+  nus2023Computing:
+    'https://www.comp.nus.edu.sg/bytes/2023-chengdu80-global-fintech-competition/',
   hku2023:
     'https://www.cs.hku.hk/news-events/news-and-announcements/20231106-chengdu80-pioneer-award-2023',
   queens2024:
@@ -616,6 +625,7 @@ const universityRecords: readonly University[] = [
       {
         year: 2019,
         name: 'ProScope',
+        projectId: 'proscope-2019',
         sourceUrl:
           'https://msba.nus.edu.sg/news/msba-students-win-first-runners-up-title-at-chengdu-80-fintech-competition-2019/',
       },
@@ -628,6 +638,7 @@ const universityRecords: readonly University[] = [
       {
         year: 2023,
         name: 'NUSight',
+        projectId: 'nusight-2023',
         sourceUrl:
           'https://msba.nus.edu.sg/news/nus-msba-students-clinches-first-runner-up-at-fintech80-chengdu-hackathon/',
       },
@@ -1047,7 +1058,87 @@ const universityRecords: readonly University[] = [
 ];
 // One evidence-backed award registry feeds both the edition archive and campus records.
 export const universities: readonly University[] = universityRecords.map(
-  (university) => {
+  (original) => {
+    // Fill only genuinely missing edition records from the shared award pages.
+    // Do not normalize existing source-specific English award terminology.
+    const additions = Object.entries(bookletAwardsByYear).flatMap(
+      ([year, awards]) =>
+        awards
+          .filter(
+            (a) =>
+              a.universityIds.includes(original.id) &&
+              !original.awards.some(
+                (existing) => existing.year === Number(year),
+              ),
+          )
+          .map((a) => ({
+            year: Number(year),
+            name: a.label.zh,
+            sourceUrl: anniversarySource.url,
+          })),
+    );
+    let university: University = additions.length
+      ? {
+          ...original,
+          participationYears: [
+            ...new Set([
+              ...original.participationYears,
+              ...additions.map((a) => a.year),
+            ]),
+          ].sort((a, b) => a - b),
+          awards: [...original.awards, ...additions].sort(
+            (a, b) => (a.year ?? 0) - (b.year ?? 0),
+          ),
+          evidence: [
+            ...original.evidence,
+            {
+              title: anniversarySource.title.en,
+              url: anniversarySource.url,
+              years: additions.map((a) => a.year),
+            },
+          ],
+          relationshipType:
+            original.relationshipType === 'organizer' ? 'organizer' : 'winner',
+        }
+      : original;
+    if (university.id === 'berkeley')
+      university = {
+        ...university,
+        projects: [
+          ...university.projects,
+          {
+            year: 2018,
+            name: 'funder',
+            projectId: 'funder-2018',
+            sourceUrl: universitySources.berkeley2018,
+          },
+        ],
+        evidence: [
+          ...university.evidence,
+          {
+            title: 'Berkeley funder · 2018 project report',
+            url: universitySources.berkeley2018,
+            years: [2018],
+          },
+        ],
+      };
+    if (university.id === 'nus')
+      university = {
+        ...university,
+        evidence: [
+          ...university.evidence,
+          {
+            title: 'NUS Computing · ProScope',
+            url: universitySources.nus2019Computing,
+            years: [2019],
+          },
+          {
+            title: 'NUS Computing · NUSight / NUS Finovators',
+            url: universitySources.nus2023Computing,
+            years: [2023],
+          },
+        ],
+      };
     const result = confirmed2024Awards.find((award) =>
       award.universityIds.includes(university.id),
     );
