@@ -98,20 +98,6 @@
   max-height: 150px;
   object-fit: contain;
 }
-.hostVisit {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding-top: 24px;
-  margin-top: auto;
-  color: #c9ab79;
-  font-size: 14px;
-}
-.partner:hover .hostVisit {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
 .partner small {
   display: block;
   color: #9bb7c9;

@@ -150,10 +150,6 @@ function HostPair({ historical = false }: { historical?: boolean }) {
                 : organizations[id].short,
             )}
           </strong>
-          <span className={styles.hostVisit}>
-            {t(b('Visit official website', '访问官方网站'))}
-            <ArrowUpRight size={18} aria-hidden="true" />
-          </span>
         </a>
       ))}
     </div>

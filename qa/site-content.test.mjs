@@ -391,12 +391,9 @@ await test('site content and static archive contracts', async (t) => {
                   1,
                   'One native keyboard target for logo and name',
                 );
-                assert.ok(
-                  card.includes(
-                    language === 'zh'
-                      ? '访问官方网站'
-                      : 'Visit official website',
-                  ),
+                assert.doesNotMatch(
+                  card,
+                  /访问官方网站|Visit official website/,
                 );
               }
             }
