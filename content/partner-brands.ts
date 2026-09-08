@@ -1,5 +1,37 @@
 import { bilingual as b } from './competition';
 
+/** Reuse approved identities without changing the recorded co-host relationships. */
+export const hostBrandProfiles = {
+  swufe: {
+    website: 'https://www.swufe.edu.cn/',
+    usageStatus: 'project-owner-confirmed',
+    logo: {
+      src: '/university-logos/swufe-logo.png',
+      width: 245,
+      height: 180,
+      surface: 'dark',
+      sourcePage: 'https://www.swufe.edu.cn/',
+      reusedFrom: 'content/universities.ts',
+      sha256:
+        '5d94838bd453e6c7684619a58c7855f677ab411b1669da494c816699c82f1da9',
+    },
+  },
+  jiaozi: {
+    website: 'https://www.cdjzjk.com/',
+    usageStatus: 'project-owner-confirmed',
+    logo: {
+      src: '/partner-logos/chengdu-jiaozi.png',
+      width: 376,
+      height: 50,
+      surface: 'dark',
+      sourcePage: 'https://www.cdjzjk.com/',
+      originalImageUrl: 'https://www.cdjzjk.com/_nuxt/logo-b.Br5iWYEW.png',
+      sha256:
+        'b297a8b33d84ec30e8e17c61a9745e32b9feb362cf456e32d9392153c4c145b7',
+    },
+  },
+} as const;
+
 /**
  * Official, unmodified identifying marks for documented historical co-hosts.
  * Project owner confirmed permission for the new site AND public preview on

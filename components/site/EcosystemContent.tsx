@@ -20,7 +20,10 @@ import {
   type EcosystemSourceId,
 } from '@/content/ecosystem';
 import { projects } from '@/content/archive';
-import { partnerBrandProfiles } from '@/content/partner-brands';
+import {
+  hostBrandProfiles,
+  partnerBrandProfiles,
+} from '@/content/partner-brands';
 import { publicArchiveImages } from '@/content/archive-media';
 import { WinnerCard } from './ArchivePages';
 import EditorialMedia from './EditorialMedia';
@@ -94,10 +97,24 @@ export function HeroEssentials() {
 }
 function HostPair({ historical = false }: { historical?: boolean }) {
   const { t } = useSiteLanguage();
+  /* oxlint-disable next/no-img-element -- Static original logos with reserved dimensions. */
   return (
     <div className={styles.partners}>
       {(['swufe', 'jiaozi'] as const).map((id) => (
-        <div key={id} className={styles.partner}>
+        <a
+          key={id}
+          className={styles.partner}
+          data-host={id}
+          href={hostBrandProfiles[id].website}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={t(
+            b(
+              `${organizations[id].name.en} — official website (opens in a new tab)`,
+              `${organizations[id].name.zh} · 官方网站（新标签页打开）`,
+            ),
+          )}
+        >
           <small>
             {t(
               historical
@@ -105,6 +122,27 @@ function HostPair({ historical = false }: { historical?: boolean }) {
                 : b('JOINT HOST', '联合主办'),
             )}
           </small>
+          <div
+            className={styles.hostLogo}
+            data-surface={hostBrandProfiles[id].logo.surface}
+          >
+            <img
+              src={hostBrandProfiles[id].logo.src}
+              alt={t(
+                b(
+                  `${organizations[id].name.en} logo`,
+                  `${organizations[id].name.zh} 标志`,
+                ),
+              )}
+              width={hostBrandProfiles[id].logo.width}
+              height={hostBrandProfiles[id].logo.height}
+              style={{
+                maxWidth: `min(100%, ${hostBrandProfiles[id].logo.width}px)`,
+              }}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
           <strong>
             {t(
               historical || id === 'jiaozi'
@@ -112,10 +150,15 @@ function HostPair({ historical = false }: { historical?: boolean }) {
                 : organizations[id].short,
             )}
           </strong>
-        </div>
+          <span className={styles.hostVisit}>
+            {t(b('Visit official website', '访问官方网站'))}
+            <ArrowUpRight size={18} aria-hidden="true" />
+          </span>
+        </a>
       ))}
     </div>
   );
+  /* oxlint-enable next/no-img-element */
 }
 function HistoricalPeople() {
   const { t } = useSiteLanguage();

@@ -298,6 +298,130 @@ await test('site content and static archive contracts', async (t) => {
       },
     );
     await t.test(
+      'host identities reuse original logos and link both logo and name to official homepages',
+      async () => {
+        const { hostBrandProfiles } = await server.ssrLoadModule(
+          '/content/partner-brands.ts',
+        );
+        const pages = await server.ssrLoadModule(
+          '/components/site/EcosystemContent.tsx',
+        );
+        const { SiteLanguageProvider } = await server.ssrLoadModule(
+          '/hooks/use-site-language.tsx',
+        );
+        assert.deepEqual(Object.keys(hostBrandProfiles), ['swufe', 'jiaozi']);
+        assert.equal(
+          hostBrandProfiles.swufe.website,
+          'https://www.swufe.edu.cn/',
+        );
+        assert.equal(
+          hostBrandProfiles.jiaozi.website,
+          'https://www.cdjzjk.com/',
+        );
+        assert.equal(
+          hostBrandProfiles.swufe.logo.src,
+          universities.find((u) => u.id === 'swufe').logo,
+        );
+        for (const profile of Object.values(hostBrandProfiles)) {
+          const original = await readFile(`public${profile.logo.src}`);
+          assert.equal(
+            createHash('sha256').update(original).digest('hex'),
+            profile.logo.sha256,
+          );
+          assert.equal(profile.usageStatus, 'project-owner-confirmed');
+          assert.equal(
+            profile.logo.surface,
+            'dark',
+            'White original marks need a dark surface',
+          );
+          assert.ok(profile.logo.width > 0 && profile.logo.height > 0);
+        }
+        const previousWindow = Object.getOwnPropertyDescriptor(
+          globalThis,
+          'window',
+        );
+        const previousLocation = Object.getOwnPropertyDescriptor(
+          globalThis,
+          'location',
+        );
+        try {
+          // SSR-only language inputs; these checks do not imply browser interaction QA.
+          Object.defineProperty(globalThis, 'window', {
+            value: {},
+            configurable: true,
+          });
+          for (const language of ['en', 'zh']) {
+            Object.defineProperty(globalThis, 'location', {
+              value: { search: `?lang=${language}` },
+              configurable: true,
+            });
+            for (const name of [
+              'HomeBeforeNetwork',
+              'AboutPage',
+              'PartnersPage',
+            ]) {
+              const html = renderToString(
+                React.createElement(
+                  SiteLanguageProvider,
+                  null,
+                  React.createElement(pages[name]),
+                ),
+              );
+              for (const [id, profile] of Object.entries(hostBrandProfiles)) {
+                const card = html.match(
+                  new RegExp(`<a[^>]*data-host="${id}"[^>]*>[\\s\\S]*?<\\/a>`),
+                )?.[0];
+                assert.ok(card, `${name}/${language}/${id}`);
+                assert.ok(card.includes(`href="${profile.website}"`));
+                assert.match(card, /target="_blank" rel="noopener noreferrer"/);
+                assert.match(card, /aria-label="[^"]+"/);
+                assert.ok(card.includes(`src="${profile.logo.src}"`));
+                assert.ok(
+                  card.includes(
+                    `width="${profile.logo.width}" height="${profile.logo.height}"`,
+                  ),
+                );
+                assert.match(card, /loading="lazy" decoding="async"/);
+                assert.ok(
+                  card.indexOf('<img ') < card.indexOf('<strong>'),
+                  'Logo precedes the name',
+                );
+                assert.equal(
+                  (card.match(/<a\b/g) ?? []).length,
+                  1,
+                  'One native keyboard target for logo and name',
+                );
+                assert.ok(
+                  card.includes(
+                    language === 'zh'
+                      ? '访问官方网站'
+                      : 'Visit official website',
+                  ),
+                );
+              }
+            }
+          }
+        } finally {
+          if (previousWindow)
+            Object.defineProperty(globalThis, 'window', previousWindow);
+          else delete globalThis.window;
+          if (previousLocation)
+            Object.defineProperty(globalThis, 'location', previousLocation);
+          else delete globalThis.location;
+        }
+        const css = await readFile(
+          'components/site/Editorial.module.css',
+          'utf8',
+        );
+        assert.match(css, /\.hostLogo img\s*\{[^}]*object-fit: contain/);
+        assert.match(css, /\.partner:focus-visible\s*\{[^}]*outline:/);
+        assert.doesNotMatch(
+          css.match(/\.hostLogo img\s*\{([^}]+)\}/)?.[1] ?? '',
+          /filter:|transform:/,
+        );
+      },
+    );
+    await t.test(
       'international partner identities use official logos, direct links and historical roles',
       async () => {
         const { partnerBrandProfiles } = await server.ssrLoadModule(

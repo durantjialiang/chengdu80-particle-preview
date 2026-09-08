@@ -1,12 +1,13 @@
-# Historical international partner identities
+# Host and historical international partner identities
 
 ## Scope
 
 The Partners & Impact page now features UC Berkeley CDAR and State Street Bank as
 clickable institutional cards, replacing the previous 2019 notice. Both marks and
 names are part of a single native link to the respective official website, opened
-in a new tab. The existing SWUFE / Jiaozi block, historical role records, sources,
-particles and global university explorer are unchanged.
+in a new tab. The SWUFE / Jiaozi host block now also includes official identifying
+marks and homepage links. Historical role records, sources, particles and the
+global university explorer are unchanged.
 
 The section explicitly describes **historical international co-hosts** and the
 2019 second edition. It does not assert current sponsorship, an exclusive
@@ -35,10 +36,10 @@ card, not the marks. Rights remain with the respective owners.
 
 ## Original assets and official destinations
 
-| Organization | Official website / source page | Local original | Format / dimensions |
-| --- | --- | --- | --- |
-| UC Berkeley CDAR | https://cdar.econ.berkeley.edu/ | `public/partner-logos/cdar.png` | PNG, 291 × 151 |
-| State Street | https://www.statestreet.com/us/en/about | `public/partner-logos/state-street.svg` | SVG, viewBox 576 × 158 |
+| Organization     | Official website / source page          | Local original                          | Format / dimensions    |
+| ---------------- | --------------------------------------- | --------------------------------------- | ---------------------- |
+| UC Berkeley CDAR | https://cdar.econ.berkeley.edu/         | `public/partner-logos/cdar.png`         | PNG, 291 × 151         |
+| State Street     | https://www.statestreet.com/us/en/about | `public/partner-logos/state-street.svg` | SVG, viewBox 576 × 158 |
 
 Original URLs and SHA-256 checksums are centralized in `content/partner-brands.ts`.
 CDAR's static site uses an encoded `%3F` and `%26` in the actual image filename;
@@ -57,3 +58,42 @@ links, safe new-tab attributes, local assets, and dated historical roles. The
 cards stack below 760px, retain keyboard focus outlines, and suppress hover
 translation for reduced motion. A browser screenshot or manual interaction test
 is not implied by these source/SSR checks.
+
+## SWUFE and Chengdu Jiaozi host identities — 2026-09-08
+
+The shared host block is used on the homepage, About and Partners pages. Each
+host's logo and existing name are inside one native, keyboard-accessible anchor,
+with `target="_blank"`, `rel="noopener noreferrer"` and a bilingual new-tab label.
+The existing names and historical role text are retained. No new relationship or
+endorsement is asserted. The project owner's existing authorization to publish
+company marks is recorded as `project-owner-confirmed`; no private approval
+documents are included.
+
+| Organization                           | Official destination      | Local original                            | Dimensions |
+| -------------------------------------- | ------------------------- | ----------------------------------------- | ---------- |
+| SWUFE                                  | https://www.swufe.edu.cn/ | `public/university-logos/swufe-logo.png`  | 245 × 180  |
+| Chengdu Jiaozi Financial Holding Group | https://www.cdjzjk.com/   | `public/partner-logos/chengdu-jiaozi.png` | 376 × 50   |
+
+SWUFE reuses the approved asset already referenced by `content/universities.ts`;
+it is not a duplicate or a new reconstruction. Jiaozi's white wordmark and gold
+symbol were downloaded unchanged from its official homepage's header asset:
+https://www.cdjzjk.com/_nuxt/logo-b.Br5iWYEW.png
+The official header module `https://www.cdjzjk.com/_nuxt/BVSyvsR9.js` references
+this original. The small 42 × 40 site icon was not used.
+
+SHA-256 values, natural dimensions, original source and destination are recorded
+in `hostBrandProfiles` in `content/partner-brands.ts`. Both white-on-transparent
+marks use a dark presentation area, clear space and `object-fit: contain`, without
+recoloring, cropping or enlarging the source. Dimensions are reserved and images
+use lazy loading and asynchronous decoding. The two-column layout retains the
+existing single-column breakpoint. Audit metadata stays in code and this document,
+not in the public cards.
+
+Regression coverage checks original asset hashes, reuse of the SWUFE university
+asset, direct official links, accessible new-tab attributes, image-before-name
+ordering and both languages across all three placements. These are source and
+server-rendered markup checks, not browser screenshot or click tests.
+
+For this revision, `npm run typecheck`, `npm run lint`, all 58 tests,
+`npm run build` and `git diff --check` passed. The existing Globe bundle-size
+warning remains; particle rendering and dependencies were not changed.
