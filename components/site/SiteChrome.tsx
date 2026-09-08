@@ -13,6 +13,7 @@ const navChinese: Record<string, string> = {
   'Projects & Awards': '作品与奖项',
   'Global Network': '高校网络',
   Partnerships: '合作与倡议',
+  Videos: '视频',
 };
 export function LanguageSwitch() {
   const { language, setLanguage } = useSiteLanguage();
@@ -133,7 +134,7 @@ export function SiteFooter() {
                 {language === 'zh' ? navChinese[n.label] : n.label}
               </a>
             ))}
-          <a href={href('/media/')}>
+          <a href={href('/media/#resources')}>
             {t(b('Media & Resources', '媒体与资源'))}
           </a>
         </nav>

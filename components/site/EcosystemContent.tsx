@@ -28,6 +28,7 @@ import { publicArchiveImages } from '@/content/archive-media';
 import { WinnerCard } from './ArchivePages';
 import EditorialMedia from './EditorialMedia';
 import CityCollaboration from './CityCollaboration';
+import VideoChannel from './VideoChannel';
 import styles from './Editorial.module.css';
 import site from './Site.module.css';
 
@@ -949,11 +950,12 @@ export function MediaPage() {
       <p className={site.lead}>
         {t(
           b(
-            'Explore past editions through photographs, news, challenge briefs and publications.',
-            '通过照片、新闻、赛题与专刊，回看历届成都八零。',
+            'Explore the Chengdu 80 video channel, photo archive, news and publications.',
+            '探索成都八零视频专区、照片档案、赛事新闻与专刊。',
           ),
         )}
       </p>
+      <VideoChannel />
       <Section id="resources" title={b('News & publications', '新闻与出版物')}>
         <div className={styles.resourceList}>
           {resources.map((resource) => (

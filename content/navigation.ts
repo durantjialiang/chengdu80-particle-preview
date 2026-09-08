@@ -33,6 +33,11 @@ export const navigation = [
     description: 'University innovation across borders.',
   },
   {
+    label: 'Videos',
+    href: '/media',
+    description: 'Competition recordings and promotional films on YouTube.',
+  },
+  {
     label: 'Partnerships',
     href: '/partners',
     description: 'The organizations and initiatives behind Chengdu 80.',

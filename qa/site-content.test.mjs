@@ -765,6 +765,13 @@ await test('site content and static archive contracts', async (t) => {
         );
         for (const item of schoolRequests)
           assert.ok(!html.includes(item.text.en));
+        assert.match(html, /id="videos"/);
+        assert.match(html, /Chengdu 80 on YouTube/);
+        assert.match(html, /<output[^>]*>Coming soon/);
+        assert.doesNotMatch(
+          html,
+          /<iframe|href="https:\/\/(www\.)?youtube\.com/,
+        );
         assert.match(html, /View the publication \(PDF\)/);
         assert.match(html, /View historical rules/);
         assert.match(html, /Read the article/);

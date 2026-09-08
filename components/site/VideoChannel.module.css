@@ -1,0 +1,88 @@
+.section {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  margin: 44px 0 64px;
+  border: 1px solid #9bb9cf38;
+  background: linear-gradient(125deg, #102334e8, #07131fe8);
+  scroll-margin-top: 110px;
+}
+.cover {
+  position: relative;
+  min-width: 0;
+  align-self: center;
+  background: #050f18;
+}
+.cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+}
+.coverCaption {
+  display: block;
+  padding: 12px 20px;
+  color: #a9bfcd;
+  font-size: 13px;
+}
+.content {
+  padding: clamp(28px, 4vw, 48px);
+  align-self: center;
+}
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 22px;
+  color: #edaaa7;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+}
+.content h2 {
+  margin: 0 0 22px;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 450;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+.description {
+  margin: 0 0 28px;
+  color: #a9bfcd;
+  font-size: 16px;
+  line-height: 1.85;
+}
+.action,
+.pending {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 19px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.action {
+  color: #fff;
+  background: #a32d32;
+  border: 1px solid #e68383;
+  text-decoration: none;
+}
+.action:hover {
+  background: #bc383e;
+}
+.action:focus-visible {
+  outline: 2px solid #d9bf87;
+  outline-offset: 5px;
+}
+.pending {
+  border: 1px solid #a9bfcd38;
+  color: #b5c9d6;
+}
+@media (max-width: 760px) {
+  .section {
+    grid-template-columns: minmax(0, 1fr);
+    margin: 32px 0 44px;
+  }
+  .content {
+    padding: 28px 24px;
+  }
+}
