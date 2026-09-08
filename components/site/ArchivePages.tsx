@@ -28,6 +28,7 @@ import editorial from './Editorial.module.css';
 import EditionProjectShowcase from './EditionProjectShowcase';
 import historyStyles from './History.module.css';
 import ProjectTechnicalApproach from './ProjectTechnicalApproach';
+import EditionAwardRoster, { AwardBoardLink } from './EditionAwardRoster';
 
 export function Sources({ ids }: { ids: readonly SourceId[] }) {
   const { t } = useSiteLanguage();
@@ -110,6 +111,7 @@ export function HistoryPage({ year }: { year?: number }) {
   if (record) {
     const index = editions.indexOf(record);
     const related = projects.filter((p) => p.year === record.year);
+    const earlyEdition = record.year === 2018 || record.year === 2019;
     return (
       <>
         <nav className={styles.breadcrumb}>
@@ -138,6 +140,13 @@ export function HistoryPage({ year }: { year?: number }) {
           coverId={record.coverImageId}
           coverOnly
         />
+        {earlyEdition && (
+          <section className={styles.section} id="awards">
+            <h2>{t(b('Award record', '获奖结果'))}</h2>
+            <EditionAwardRoster edition={record} />
+            <AwardBoardLink />
+          </section>
+        )}
         {related.length > 0 && (
           <section className={styles.section}>
             <h2>{t(b('Award-winning projects', '获奖作品'))}</h2>
@@ -154,47 +163,10 @@ export function HistoryPage({ year }: { year?: number }) {
             {t(b('2026 Competition', '2026赛事信息'))} →
           </a>
         ) : null}
-        {record.awardResults?.length ? (
-          <section className={styles.section}>
+        {record.awardResults?.length && !earlyEdition ? (
+          <section className={styles.section} id="awards">
             <h2>{t(b('Award record', '获奖结果'))}</h2>
-            <div className={historyStyles.awardGroups}>
-              {record.awardResults.map((result) => (
-                <section
-                  className={historyStyles.awardGroup}
-                  key={result.id}
-                  data-award-group={result.id}
-                >
-                  <div className={historyStyles.awardHeading}>
-                    <h3>{t(result.label)}</h3>
-                    <a
-                      className={styles.awardSource}
-                      href={`${sources[result.sourceRef].url}${result.sourcePage ? `#page=${result.sourcePage}` : ''}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {t(b('Source', '依据'))} ↗
-                    </a>
-                  </div>
-                  <ul className={historyStyles.schools}>
-                    {result.universityIds.map((id) => (
-                      <li key={id}>
-                        <a
-                          href={href(
-                            `/global-network/?university=${id}#university-card-${id}`,
-                          )}
-                        >
-                          <UniversityLogo university={getUniversity(id)} />
-                          <span>
-                            {universityName(getUniversity(id), language)}
-                            <span aria-hidden="true"> ↗</span>
-                          </span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              ))}
-            </div>
+            <EditionAwardRoster edition={record} />
           </section>
         ) : null}
         {record.status === 'record-only' ? (
@@ -306,6 +278,18 @@ export function HistoryPage({ year }: { year?: number }) {
                   <span aria-hidden="true">↗</span>
                 </a>
               </h2>
+              {(e.year === 2018 || e.year === 2019) && (
+                <section className={historyStyles.timelineAwards}>
+                  <h3>{t(b('Award-winning universities', '获奖高校'))}</h3>
+                  <EditionAwardRoster edition={e} compact headingLevel={4} />
+                  <a
+                    className={styles.source}
+                    href={href(`/history/${e.year}/#awards`)}
+                  >
+                    {t(b('View edition awards', '查看本届获奖结果'))} →
+                  </a>
+                </section>
+              )}
               {projects.some((project) => project.year === e.year) ? (
                 projects
                   .filter((project) => project.year === e.year)
@@ -569,99 +553,141 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
         CHENGDU 80 / {t(b('WINNERS & PROJECTS', '获奖与项目成果'))}
       </div>
       <h1>{t(b('From ideas to evidence.', '创新，\n留下可查的成果。'))}</h1>
-      <div className={styles.filters}>
-        <label>
-          {t(
-            b('Search projects, teams or universities', '搜索项目、团队或学校'),
-          )}
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={t(b('Try Pisces or NUS', '试试 Pisces 或 NUS'))}
-          />
-        </label>
-        <label>
-          {t(b('Competition year', '参赛年份'))}
-          <select
-            value={filters.year}
-            onChange={(e) => change({ year: e.target.value })}
-          >
-            <option value="">{t(b('All years', '全部年份'))}</option>
-            {editions
-              .filter((e) => e.status === 'held')
-              .map((e) => (
-                <option key={e.year}>{e.year}</option>
-              ))}
-            <option value="unknown">
-              {t(b('Event year unconfirmed', '参赛年份待确认'))}
-            </option>
-          </select>
-        </label>
-        <label>
-          {t(b('University', '学校'))}
-          <select
-            value={filters.university}
-            onChange={(e) => change({ university: e.target.value })}
-          >
-            <option value="">{t(b('All universities', '全部学校'))}</option>
-            {universities
-              .filter((u) => projects.some((p) => p.universityId === u.id))
-              .map((u) => (
-                <option value={u.id} key={u.id}>
-                  {language === 'zh'
-                    ? universityName(u, language)
-                    : u.shortName}
-                </option>
-              ))}
-          </select>
-        </label>
-        <label>
-          {t(b('Direction', '方向'))}
-          <select
-            value={filters.direction}
-            onChange={(e) => change({ direction: e.target.value })}
-          >
-            <option value="">{t(b('All directions', '全部方向'))}</option>
-            {Object.entries(projectDirections).map(([id, label]) => (
-              <option key={id} value={id}>
-                {t(label)}
-              </option>
+      <section className={styles.section} id="award-rolls">
+        <h2>
+          {t(b('2018–2019 award-winning universities', '2018–2019获奖高校'))}
+        </h2>
+        <AwardBoardLink />
+        <div className={historyStyles.earlyAwardRolls}>
+          {editions
+            .filter((edition) => edition.year === 2018 || edition.year === 2019)
+            .map((edition) => (
+              <article key={edition.year}>
+                <div className={historyStyles.rosterTitle}>
+                  <h3>
+                    <a href={href(`/history/${edition.year}/#awards`)}>
+                      {edition.year} ↗
+                    </a>
+                  </h3>
+                  <p>
+                    {
+                      new Set(
+                        edition.awardResults?.flatMap(
+                          (award) => award.universityIds,
+                        ),
+                      ).size
+                    }{' '}
+                    {t(b('university teams', '所高校代表队'))}
+                  </p>
+                </div>
+                <EditionAwardRoster
+                  edition={edition}
+                  compact
+                  headingLevel={4}
+                />
+              </article>
             ))}
-          </select>
-        </label>
-        <button
-          type="button"
-          onClick={() => {
-            setQuery('');
-            change({ year: '', university: '', direction: '' });
-          }}
-        >
-          {t(b('Clear filters', '清除筛选'))}
-        </button>
-      </div>
-      <output className={styles.resultCount}>
-        {results.length} {t(b('records', '条记录'))}
-      </output>
-      {results.length ? (
-        <div className={styles.archiveGrid}>
-          {results.map((p) => (
-            <WinnerCard project={p} key={p.projectId} />
-          ))}
         </div>
-      ) : (
-        <div className={styles.empty}>
-          <h2>{t(b('No matching records.', '没有匹配记录。'))}</h2>
-          <p>
+      </section>
+      <section className={styles.section} id="project-archive">
+        <h2>{t(b('Project archive', '作品档案'))}</h2>
+        <div className={styles.filters}>
+          <label>
             {t(
               b(
-                'Try another term or clear the filters.',
-                '换个关键词，或清除筛选。',
+                'Search projects, teams or universities',
+                '搜索项目、团队或学校',
               ),
             )}
-          </p>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t(b('Try Pisces or NUS', '试试 Pisces 或 NUS'))}
+            />
+          </label>
+          <label>
+            {t(b('Competition year', '参赛年份'))}
+            <select
+              value={filters.year}
+              onChange={(e) => change({ year: e.target.value })}
+            >
+              <option value="">{t(b('All years', '全部年份'))}</option>
+              {editions
+                .filter((e) => e.status === 'held')
+                .map((e) => (
+                  <option key={e.year}>{e.year}</option>
+                ))}
+              <option value="unknown">
+                {t(b('Event year unconfirmed', '参赛年份待确认'))}
+              </option>
+            </select>
+          </label>
+          <label>
+            {t(b('University', '学校'))}
+            <select
+              value={filters.university}
+              onChange={(e) => change({ university: e.target.value })}
+            >
+              <option value="">{t(b('All universities', '全部学校'))}</option>
+              {universities
+                .filter((u) => projects.some((p) => p.universityId === u.id))
+                .map((u) => (
+                  <option value={u.id} key={u.id}>
+                    {language === 'zh'
+                      ? universityName(u, language)
+                      : u.shortName}
+                  </option>
+                ))}
+            </select>
+          </label>
+          <label>
+            {t(b('Direction', '方向'))}
+            <select
+              value={filters.direction}
+              onChange={(e) => change({ direction: e.target.value })}
+            >
+              <option value="">{t(b('All directions', '全部方向'))}</option>
+              {Object.entries(projectDirections).map(([id, label]) => (
+                <option key={id} value={id}>
+                  {t(label)}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button
+            type="button"
+            onClick={() => {
+              setQuery('');
+              change({ year: '', university: '', direction: '' });
+            }}
+          >
+            {t(b('Clear filters', '清除筛选'))}
+          </button>
         </div>
-      )}
+        <output className={styles.resultCount}>
+          {results.length} {t(b('records', '条记录'))}
+        </output>
+        {results.length ? (
+          <div className={styles.archiveGrid}>
+            {results.map((p) => (
+              <WinnerCard project={p} key={p.projectId} />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.empty}>
+            <h2>{t(b('No matching records.', '没有匹配记录。'))}</h2>
+            <p>
+              {t(
+                b(
+                  'Try another term or clear the filters.',
+                  '换个关键词，或清除筛选。',
+                ),
+              )}
+            </p>
+          </div>
+        )}
+      </section>
     </>
   );
 }

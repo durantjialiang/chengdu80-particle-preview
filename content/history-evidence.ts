@@ -5,6 +5,11 @@ export const anniversarySource = {
   title: b('Chengdu 80 · fifth-anniversary publication', '成都八零五周年专刊'),
   url: 'https://cd80.swufe.edu.cn/dfiles/14076/chengdoubalingwuzhounianzhuankan.pdf',
 };
+/** User-supplied exhibition board; documents both years, not its capture year. */
+export const awardBoard2018And2019 = {
+  title: b('View the 2018–2019 awards display', '查看2018–2019获奖展板'),
+  url: '/award-records/2018-2019-awards.webp',
+};
 const bookletAward = (
   year: number,
   key: string,

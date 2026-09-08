@@ -14,7 +14,7 @@
   gap: 0.75rem 1.5rem;
   margin-bottom: 1.25rem;
 }
-.awardGroup .awardHeading h3 {
+.awardGroup .awardHeading :is(h3, h4) {
   margin: 0;
   color: #d4bb91;
   font-weight: 500;
@@ -55,7 +55,66 @@
   outline: 2px solid #9bd5ee;
   outline-offset: 4px;
 }
+.earlyAwardRolls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.earlyAwardRolls > article {
+  min-width: 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid #88abc833;
+  background: #0c1d2a75;
+  border-radius: 0.625rem;
+}
+.rosterTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1.5rem;
+}
+.rosterTitle h3 {
+  margin: 0;
+  font-size: 2rem;
+}
+.rosterTitle p {
+  margin: 0;
+  color: #a7becd;
+}
+.compactAwards {
+  gap: 1rem;
+}
+.compactAwards .awardGroup {
+  padding-block: 1rem 0;
+}
+.compactAwards .awardHeading {
+  margin-bottom: 0.5rem;
+}
+.compactAwards .schools {
+  grid-template-columns: 1fr;
+  gap: 0.25rem;
+}
+.compactAwards .schools a {
+  display: block;
+  padding: 0.35rem 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.compactAwards .schools a:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.timelineAwards {
+  margin-block: 1.5rem 2.5rem;
+}
 @media (max-width: 42rem) {
+  .earlyAwardRolls {
+    grid-template-columns: 1fr;
+  }
   .schools {
     grid-template-columns: 1fr;
   }

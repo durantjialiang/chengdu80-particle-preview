@@ -1243,6 +1243,12 @@ await test('site content and static archive contracts', async (t) => {
           null,
         );
         assert.equal(Object.keys(projectStudies).length, 10);
+        const boardAsset = await readFile(
+          'public/award-records/2018-2019-awards.webp',
+        );
+        assert.equal(boardAsset.toString('ascii', 0, 4), 'RIFF');
+        assert.equal(boardAsset.toString('ascii', 8, 12), 'WEBP');
+
         const previousWindow = Object.getOwnPropertyDescriptor(
           globalThis,
           'window',
@@ -1275,6 +1281,58 @@ await test('site content and static archive contracts', async (t) => {
                 ),
               );
             const listing = render(HistoryPage);
+            const winners = render(WinnersPage);
+            assert.equal(
+              (winners.match(/data-award-university=/g) ?? []).length,
+              16,
+            );
+            assert.equal(
+              (listing.match(/data-award-university=/g) ?? []).length,
+              16,
+            );
+            assert.ok(
+              winners.indexOf('id="award-rolls"') <
+                winners.indexOf('id="project-archive"'),
+            );
+            for (const year of [2018, 2019]) {
+              const edition = editions.find((e) => e.year === year);
+              const detail = render(HistoryPage, { year });
+              assert.ok(
+                detail.indexOf('id="awards"') <
+                  detail.indexOf('data-edition-project='),
+              );
+              for (const html of [listing, winners, detail]) {
+                for (const award of edition.awardResults) {
+                  const group = html.match(
+                    new RegExp(
+                      `data-award-group="${award.id}"[\\s\\S]*?</section>`,
+                    ),
+                  )?.[0];
+                  assert.ok(group, `${year} ${award.id} must be visible`);
+                  assert.ok(group.includes(escapeHtml(award.label[language])));
+                  assert.equal(
+                    (group.match(/data-award-university=/g) ?? []).length,
+                    award.universityIds.length,
+                  );
+                  for (const id of award.universityIds) {
+                    assert.ok(group.includes(`data-award-university="${id}"`));
+                    assert.ok(
+                      group.includes(
+                        `href="/global-network/?year=${year}&amp;university=${id}&amp;lang=${language}#university-card-${id}"`,
+                      ),
+                    );
+                    const university = universities.find((u) => u.id === id);
+                    assert.ok(university.participationYears.includes(year));
+                    assert.ok(university.awards.some((a) => a.year === year));
+                  }
+                }
+              }
+              for (const html of [winners, detail])
+                assert.ok(
+                  html.includes('href="/award-records/2018-2019-awards.webp"'),
+                );
+            }
+
             assert.equal(
               (listing.match(/data-edition-project=/g) ?? []).length,
               10,
@@ -1379,7 +1437,7 @@ await test('site content and static archive contracts', async (t) => {
                 for (const universityId of award.universityIds) {
                   assert.ok(
                     detail.includes(
-                      `href="/global-network/?university=${universityId}&amp;lang=${language}#university-card-${universityId}"`,
+                      `href="/global-network/?year=${edition.year}&amp;university=${universityId}&amp;lang=${language}#university-card-${universityId}"`,
                     ),
                   );
                 }

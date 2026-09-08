@@ -3,6 +3,7 @@
  */
 import {
   confirmed2024Awards,
+  confirmed2019Awards,
   edition2024Source,
   bookletAwardsByYear,
   anniversarySource,
@@ -1061,21 +1062,21 @@ export const universities: readonly University[] = universityRecords.map(
   (original) => {
     // Fill only genuinely missing edition records from the shared award pages.
     // Do not normalize existing source-specific English award terminology.
-    const additions = Object.entries(bookletAwardsByYear).flatMap(
-      ([year, awards]) =>
-        awards
-          .filter(
-            (a) =>
-              a.universityIds.includes(original.id) &&
-              !original.awards.some(
-                (existing) => existing.year === Number(year),
-              ),
-          )
-          .map((a) => ({
-            year: Number(year),
-            name: a.label.zh,
-            sourceUrl: anniversarySource.url,
-          })),
+    const additions = Object.entries({
+      ...bookletAwardsByYear,
+      2019: confirmed2019Awards,
+    }).flatMap(([year, awards]) =>
+      awards
+        .filter(
+          (a) =>
+            a.universityIds.includes(original.id) &&
+            !original.awards.some((existing) => existing.year === Number(year)),
+        )
+        .map((a) => ({
+          year: Number(year),
+          name: a.label.zh,
+          sourceUrl: anniversarySource.url,
+        })),
     );
     let university: University = additions.length
       ? {
