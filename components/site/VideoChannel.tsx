@@ -31,12 +31,6 @@ export default function VideoChannel({
           <source src={recap2024Video.src} type="video/mp4" />
           <track
             kind="captions"
-            src={recap2024Video.captions.zh}
-            srcLang="zh"
-            label="中文"
-          />
-          <track
-            kind="captions"
             src={recap2024Video.captions.en}
             srcLang="en"
             label="English"
@@ -59,7 +53,7 @@ export default function VideoChannel({
           <a href={href('/media/?year=2024#photos')}>
             {t(b('Explore the 2024 photographs', '浏览2024照片'))} →
           </a>
-          <a href={recap2024Video.src} download="Chengdu80-2024-highlights.mp4">
+          <a href={recap2024Video.src} download="Chengdu80-2024-highlights-English.mp4">
             {t(b('Download the film', '下载回顾片'))} ↓
           </a>
         </div>

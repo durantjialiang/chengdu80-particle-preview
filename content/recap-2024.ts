@@ -11,11 +11,10 @@ export const recap2024Video = {
     'A 90-second photo film: conversations, team moments and the awards ceremony from the seventh Chengdu 80.',
     '用90秒照片短片，重温第七届成都八零的现场交流、团队风采与颁奖时刻。',
   ),
-  src: '/videos/chengdu80-2024-highlights-v1.mp4',
-  poster: '/videos/chengdu80-2024-highlights-v1-poster.jpg',
+  src: '/videos/chengdu80-2024-highlights-v2-en.mp4',
+  poster: '/videos/chengdu80-2024-highlights-v2-en-poster.jpg',
   durationSeconds: 90,
   captions: {
-    zh: '/videos/chengdu80-2024-highlights-v1-zh.vtt',
-    en: '/videos/chengdu80-2024-highlights-v1-en.vtt',
+    en: '/videos/chengdu80-2024-highlights-v2-en.vtt',
   },
 };

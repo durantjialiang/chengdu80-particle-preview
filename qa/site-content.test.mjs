@@ -774,6 +774,9 @@ await test('site content and static archive contracts', async (t) => {
           /<video[^>]*controls=""[^>]*playsInline=""[^>]*preload="none"/,
         );
         assert.doesNotMatch(html, /autoPlay=/i);
+        const player = html.match(/<video[\s\S]*?<\/video>/)?.[0] ?? '';
+        assert.match(player, /srcLang="en"/);
+        assert.doesNotMatch(player, /srcLang="zh"|highlights-v1/);
         assert.ok(html.indexOf('id="photos"') < html.indexOf('id="resources"'));
         for (const asset of [
           recap2024Video.src,
@@ -793,6 +796,7 @@ await test('site content and static archive contracts', async (t) => {
           if (asset.endsWith('.vtt')) {
             assert.match(bytes.toString(), /^WEBVTT/);
             assert.doesNotMatch(bytes.toString(), /<br\s*\/?\s*>/i);
+            assert.doesNotMatch(bytes.toString(), /[\u3400-\u9fff]/);
           }
         }
 
