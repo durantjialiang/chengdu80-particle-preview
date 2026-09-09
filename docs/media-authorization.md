@@ -57,3 +57,9 @@ The 2023 batch contains all 25 unique source JPGs supplied in the owner's 2023 f
 The existing 2024 collection retains all 29 unique supplied photographs and the five previously approved news photographs. The exact duplicate source remains in the owner's folder, with only one derivative pair shown. Both years appear in the media filters and edition albums. The eight 2019 archive images and separate city-collaboration images retain their existing publication records.
 
 Video publication is paused. All previous local film players, film-download links and packaged video/poster/caption files are removed from the current website output. All original footage, edited masters and past video assets remain preserved locally. The future YouTube destination remains configurable but does not render an empty section or placeholder while no owner URL is supplied. No 2023 or 2024 video is newly uploaded.
+
+## Owner 2022 photo publication 2026-09-09
+
+The project owner supplied the 2022 folder and requested: “2022的也放进去了 有图片有视频 也剪一个四分钟的吧 然后再把照片都上传到网站上去”. This authorizes publication of its images on the existing website and repository and a separately delivered local video edit. The previous instruction to withhold videos from the website remains in effect.
+
+At ingestion the folder contains one unique JPG, `36521667567172_.pic_hd.jpg`, and two video files. The JPG is the fifth-edition 2022 event poster, with its year and event name printed in the artwork. It is described as an event poster, not as an event photograph or evidence of an award. No individual university or project is assigned. All source files remain unchanged. `docs/2022-photo-inventory.json` records the image basename, source hash and dimensions, and the derivative hashes. The complete frame is preserved in a 3840-pixel-wide WebP and a 1280-pixel-wide thumbnail, with no crop or altered text. No video or video still is added to the public image manifest.

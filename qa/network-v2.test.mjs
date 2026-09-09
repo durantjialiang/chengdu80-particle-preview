@@ -48,7 +48,7 @@ await test('Network V2 filtered identity and archive contracts', async (t) => {
           await stat('public' + image.localAssetPath);
           await stat('public' + image.thumbnailPath);
         }
-        assert.equal(publicArchiveImages.length, 67);
+        assert.equal(publicArchiveImages.length, 68);
       },
     );
     await t.test(

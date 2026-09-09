@@ -878,7 +878,7 @@ export function MediaPage() {
                 ? image.imageType === 'work-session'
                 : type === 'awards'
                   ? image.imageType === 'award-ceremony'
-                  : ['event-group', 'event-recap'].includes(image.imageType))),
+                  : ['event-group', 'event-recap', 'event-poster'].includes(image.imageType))),
     )
     .sort((a, b) => b.eventYear - a.eventYear);
   const resources: {
@@ -983,6 +983,9 @@ export function MediaPage() {
           </a>
           <a href={href('/history/2023/#edition-2023')}>
             {t(b('2023 edition album', '2023赛事相册'))} →
+          </a>
+          <a href={href('/history/2022/#edition-2022')}>
+            {t(b('2022 edition album', '2022赛事相册'))} →
           </a>
         </nav>
         <div className={site.filters}>

@@ -1928,5 +1928,34 @@
     },
     "localAssetPath": "/history-media/cd80-2023-owner-yfy-3743-full.webp",
     "thumbnailPath": "/history-media/cd80-2023-owner-yfy-3743-thumb.webp"
+  },
+  {
+    "id": "cd80-2022-owner-event-poster",
+    "albumId": "edition-2022",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2022,
+    "caption": {
+      "en": "2022 FINTECH80 Chengdu Hackathon · fifth-edition event poster",
+      "zh": "2022第五届成都八零全球金融科技产品设计与研发大赛 · 赛事主视觉"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-poster",
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "width": 3840,
+    "height": 1440,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2022-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2022-owner-event-poster-full.webp",
+    "thumbnailPath": "/history-media/cd80-2022-owner-event-poster-thumb.webp"
   }
 ]

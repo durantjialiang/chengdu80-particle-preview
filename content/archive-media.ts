@@ -4,6 +4,7 @@ import approvedImages from './archive-media-approved.json';
 
 export type ImageType =
   | 'event-recap'
+  | 'event-poster'
   | 'event-group'
   | 'speech'
   | 'work-session'

@@ -22,6 +22,7 @@ import {
 } from './history-evidence';
 import { recap2024PhotoIds } from './recap-2024';
 import { recap2023PhotoIds } from './recap-2023';
+import { recap2022PhotoIds } from './recap-2022';
 export const sources = {
   berkeley2018: {
     title: b('Berkeley · funder project report', '伯克利 · funder作品报道'),
@@ -453,6 +454,9 @@ export const editions: readonly Edition[] = [
             coverImageId: 'cd80-2023-owner-yfy-3743',
           }
         : {}),
+      ...(year === 2022
+        ? { coverImageId: 'cd80-2022-owner-event-poster' }
+        : {}),
       challenge: editionChallenges[year] ?? null,
       dateNote:
         year === 2019
@@ -492,7 +496,9 @@ export const editions: readonly Edition[] = [
             )
           : year === 2023
             ? recap2023PhotoIds
-            : [],
+            : year === 2022
+              ? recap2022PhotoIds
+              : [],
     }),
   ),
   {
