@@ -29,3 +29,7 @@ The media page places photographs directly after video, before news/publications
 The owner requested a replacement score and English text throughout the film for sharing on YouTube and X. The final choice is an original cinematic score with a spacious opening, a gradual rhythmic build, an awards-and-group-photo climax and a natural ending. The 90-second v2 edit keeps the same 18 photographs and changes all added titles, chapter labels, corner branding, lower thirds, end card and poster to English. Text captured within the original photographs remains intact.
 
 The media player points to versioned `v2-en` video, poster and English WebVTT files. Its optional caption track is English and is off by default. The website's existing Chinese/English interface is unchanged. The previous v1 assets and local master remain available. No commercial song is included and no social-media upload has been performed.
+
+## Stable picture edit, 2026-09-09
+
+The owner reported continuous shaking in the v2 film. The v3 edit removes the animated zoom/pan filter. Each photograph and its text stay at a fixed size and position, with opacity-only cross-dissolves between scenes. The 90-second timeline and English labels are retained, and the approved cinematic score is copied directly from the v2 master without re-encoding. The player uses a new `v3-stable-en.mp4` URL so cached v2 video cannot be mistaken for the fix; the unchanged English poster and caption track are reused.
