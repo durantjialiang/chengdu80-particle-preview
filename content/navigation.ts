@@ -33,9 +33,9 @@ export const navigation = [
     description: 'University innovation across borders.',
   },
   {
-    label: 'Videos',
+    label: 'Photos',
     href: '/media',
-    description: 'Competition recordings and promotional films on YouTube.',
+    description: 'Photographs from Chengdu 80 through the years.',
   },
   {
     label: 'Partnerships',

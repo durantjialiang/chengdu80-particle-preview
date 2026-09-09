@@ -69,6 +69,8 @@ async function walk(directory) {
       continue;
     }
     const local = relative(output, path);
+    // Owner requested photo-only publication; keep edited films outside the site.
+    assert.doesNotMatch(local, /\.(mp4|webm|mov|m4v)$/i, `video withheld from publication: ${local}`);
     assert.doesNotMatch(
       local,
       /review-media|source-pages|research\/|node_modules\/|(?:^|\/)\.env|\.pem$/i,

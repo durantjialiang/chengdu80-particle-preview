@@ -47,3 +47,13 @@ The 29 unique photos use IDs beginning `cd80-2024-owner-`, `sourceKind: owner-su
 The Hong Kong University Apollo and SWUFE FinFlare award pictures have school labels visible on the stage backdrop and retain `projectId: null`. The 2024 Apollo image is not assigned to the 2023 Apollo record. Other photographs are not assigned to a specific university/team based on faces or similar clothes. The new incubator launch photograph has its event clearly printed on the backdrop; it also appears in the site's incubator section.
 
 The original 13 archive photographs remain approved under the earlier dated confirmation. This collection adds 29, for 42 archive photographs (8 from 2019 and 34 from 2024). City collaboration photographs remain in their separate manifest.
+
+## Owner 2023 and 2024 photo publication 2026-09-09
+
+The project owner explicitly requested: “把2023和2024的照片先放到官网吧 然后视频先不放上去”. This authorizes publishing the selected photo collections on the existing website and repository, with videos withheld for now.
+
+The 2023 batch contains all 25 unique source JPGs supplied in the owner's 2023 folder. `docs/2023-photo-inventory.json` records original basenames, dimensions and hashes plus the published derivative hashes. Public records use owner-supplied provenance without local file paths. Full WebP derivatives preserve the entire frame with a maximum 3200-pixel long edge; thumbnails use a maximum 960-pixel long edge. Captions describe visible scenes in Chinese and English. No faces are identified or unverified team/project assignments added.
+
+The existing 2024 collection retains all 29 unique supplied photographs and the five previously approved news photographs. The exact duplicate source remains in the owner's folder, with only one derivative pair shown. Both years appear in the media filters and edition albums. The eight 2019 archive images and separate city-collaboration images retain their existing publication records.
+
+Video publication is paused. All previous local film players, film-download links and packaged video/poster/caption files are removed from the current website output. All original footage, edited masters and past video assets remain preserved locally. The future YouTube destination remains configurable but does not render an empty section or placeholder while no owner URL is supplied. No 2023 or 2024 video is newly uploaded.

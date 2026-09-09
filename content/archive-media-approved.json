@@ -1203,5 +1203,730 @@
     },
     "localAssetPath": "/history-media/cd80-2024-owner-wul09911-full.webp",
     "thumbnailPath": "/history-media/cd80-2024-owner-wul09911-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-yfy-2342",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "2023 Chengdu 80 sixth-edition stage",
+      "zh": "2023 成都八零第六届赛事舞台"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-yfy-2342-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-yfy-2342-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-yfy-2349",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Welcome display and partner institution panels",
+      "zh": "赛事欢迎展示与合作高校展板"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-yfy-2349-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-yfy-2349-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-yfy-2465",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Wide stage view with a speaker title on screen",
+      "zh": "含发言标题屏幕的主舞台全景"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-yfy-2465-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-yfy-2465-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-yfy-2509",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Speaker at the Chengdu 80 podium",
+      "zh": "成都八零讲台发言现场"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-yfy-2509-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-yfy-2509-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-yfy-2441",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Audience with event lanyards and panda props",
+      "zh": "佩戴赛事证件并手持熊猫道具的观众席"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-yfy-2441-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-yfy-2441-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-dsc-0021",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Countdown display reading 80:00:00",
+      "zh": "显示80:00:00的倒计时屏幕"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "challenge-document",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-dsc-0021-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-dsc-0021-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-7b8a1600",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Participants working beside a Chengdu 80 sign",
+      "zh": "参赛者在成都八零标识旁协作"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2134,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-7b8a1600-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-7b8a1600-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-dsc-0030",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Participants discussing a whiteboard",
+      "zh": "参赛者围绕白板讨论"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2129,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-dsc-0030-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-dsc-0030-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-dsc-0036",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Team collaborating around laptops",
+      "zh": "团队围绕电脑协作"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2129,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-dsc-0036-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-dsc-0036-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-dsc-0038",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Team working in a blue event room",
+      "zh": "团队在蓝色赛事教室协作"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2129,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-dsc-0038-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-dsc-0038-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-dsc-0040",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Participants working with laptops and tablets",
+      "zh": "参赛者使用电脑与平板协作"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 1799,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-dsc-0040-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-dsc-0040-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-dsc-0046",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Participants coding at a work table",
+      "zh": "参赛者在工作桌旁编程"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 1799,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-dsc-0046-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-dsc-0046-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-dsc-0063",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Wide view of participants working in a glass-fronted room",
+      "zh": "玻璃隔断工作间内参赛者协作全景"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2129,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-dsc-0063-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-dsc-0063-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-dsc-0071",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Participants discussing beside a work table",
+      "zh": "参赛者在工作桌旁讨论"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2129,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-dsc-0071-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-dsc-0071-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-dsc-0073",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Whiteboard planning with model and interface notes",
+      "zh": "写有模型与界面要点的白板规划"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "challenge-document",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2129,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-dsc-0073-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-dsc-0073-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-dsc-0074",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Participants reviewing a laptop together",
+      "zh": "参赛者围绕电脑共同复盘"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2129,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-dsc-0074-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-dsc-0074-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-dsc-0079",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Participants reviewing printed pages together",
+      "zh": "参赛者共同查看打印资料"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "work-session",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2129,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-dsc-0079-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-dsc-0079-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-yfy-2649",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Two presenters with microphones and event cue cards",
+      "zh": "两位主持人手持话筒与赛事提词卡"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-yfy-2649-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-yfy-2649-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-yfy-2675",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "PathFinder presentation on the event stage",
+      "zh": "赛事舞台上的PathFinder项目展示"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "product-interface",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-yfy-2675-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-yfy-2675-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-yfy-2683",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Speaker sharing an idea at the podium",
+      "zh": "讲台发言与项目分享"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-yfy-2683-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-yfy-2683-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-yfy-3009",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Stage group beneath a 90.00 score screen",
+      "zh": "90.00分数屏幕下的舞台合影"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "award-ceremony",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-yfy-3009-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-yfy-3009-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-yfy-3207",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Stage group beneath a 93.20 score screen",
+      "zh": "93.20分数屏幕下的舞台合影"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "award-ceremony",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-yfy-3207-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-yfy-3207-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-yfy-3694",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Group holding an RMB 5,000 board",
+      "zh": "手持人民币5,000牌的合影"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "award-ceremony",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-yfy-3694-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-yfy-3694-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-yfy-3722",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Group holding an RMB 30,000 board",
+      "zh": "手持人民币30,000牌的合影"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "award-ceremony",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-yfy-3722-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-yfy-3722-thumb.webp"
+  },
+  {
+    "id": "cd80-2023-owner-yfy-3743",
+    "albumId": "edition-2023",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2023,
+    "caption": {
+      "en": "Final group photo at the 2023 Chengdu 80 backdrop",
+      "zh": "2023成都八零背景墙前的大合影"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-group",
+    "photographer": null,
+    "credit": "赛事主办方提供 / Provided by the event organizer",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2023-and-2024-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2023-owner-yfy-3743-full.webp",
+    "thumbnailPath": "/history-media/cd80-2023-owner-yfy-3743-thumb.webp"
   }
 ]

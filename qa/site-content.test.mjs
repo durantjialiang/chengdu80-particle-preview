@@ -765,47 +765,17 @@ await test('site content and static archive contracts', async (t) => {
         );
         for (const item of schoolRequests)
           assert.ok(!html.includes(item.text.en));
-        assert.match(html, /id="videos"/);
-        const { recap2024Video } = await server.ssrLoadModule(
-          '/content/recap-2024.ts',
-        );
-        assert.match(
-          html,
-          /<video[^>]*controls=""[^>]*playsInline=""[^>]*preload="none"/,
-        );
-        assert.doesNotMatch(html, /autoPlay=/i);
-        const player = html.match(/<video[\s\S]*?<\/video>/)?.[0] ?? '';
-        assert.match(player, /srcLang="en"/);
-        assert.doesNotMatch(player, /srcLang="zh"|highlights-v1/);
+        assert.doesNotMatch(html, /<video\b|<source\b|<track\b|<iframe\b|id="videos"|href="#videos"|\/videos\//);
+        assert.doesNotMatch(html, /Download the film|90-second photo film|Coming soon/);
         assert.ok(html.indexOf('id="photos"') < html.indexOf('id="resources"'));
-        for (const asset of [
-          recap2024Video.src,
-          recap2024Video.poster,
-          ...Object.values(recap2024Video.captions),
-        ]) {
-          assert.ok(html.includes(asset));
-          const bytes = await readFile('public' + asset);
-          assert.ok(bytes.length > 20);
-          if (asset.endsWith('.mp4')) {
-            assert.equal(bytes.toString('ascii', 4, 8), 'ftyp');
-            assert.ok(
-              bytes.length < 30 * 1024 * 1024,
-              'Website film must stay below 30 MiB',
-            );
-          }
-          if (asset.endsWith('.vtt')) {
-            assert.match(bytes.toString(), /^WEBVTT/);
-            assert.doesNotMatch(bytes.toString(), /<br\s*\/?\s*>/i);
-            assert.doesNotMatch(bytes.toString(), /[\u3400-\u9fff]/);
-          }
-        }
-
-        assert.match(html, /Chengdu 80 on YouTube/);
-        assert.match(html, /<output[^>]*>Coming soon/);
-        assert.doesNotMatch(
-          html,
-          /<iframe|href="https:\/\/(www\.)?youtube\.com/,
-        );
+        const { default: VideoChannel } = await server.ssrLoadModule('/components/site/VideoChannel.tsx');
+        assert.equal(renderToString(React.createElement(VideoChannel)), '');
+        const channel = renderToString(React.createElement(VideoChannel, { url: 'https://www.youtube.com/@example' }));
+        assert.match(channel, /Watch on YouTube/);
+        assert.match(channel, /target="_blank" rel="noopener noreferrer"/);
+        assert.doesNotMatch(channel, /<video|<iframe/);
+        assert.ok(html.includes('/history/2023/'));
+        assert.ok(html.includes('/history/2024/'));
         assert.match(html, /View the publication \(PDF\)/);
         assert.match(html, /View historical rules/);
         assert.match(html, /Read the article/);
@@ -837,6 +807,7 @@ await test('site content and static archive contracts', async (t) => {
           for (const language of ['en', 'zh']) {
             for (const [query, count] of [
               ['year=2019', 8],
+              ['year=2023', 25],
               ['year=2024', 34],
               ['year=2024&type=awards', 2],
               ['year=2024&type=teams', 3],
@@ -1021,7 +992,7 @@ await test('site content and static archive contracts', async (t) => {
       async () => {
         const { publicArchiveImages, isPubliclyUsable, imageFit } =
           await server.ssrLoadModule('/content/archive-media.ts');
-        assert.equal(publicArchiveImages.length, 42);
+        assert.equal(publicArchiveImages.length, 67);
         assert.equal(
           publicArchiveImages.filter((i) => i.eventYear === 2019).length,
           8,
@@ -1035,10 +1006,12 @@ await test('site content and static archive contracts', async (t) => {
           if (item.sourceKind === 'owner-supplied') {
             assert.equal(item.sourcePage, '');
             assert.equal(item.originalImageUrl, '');
-            assert.equal(item.eventYear, 2024);
+            assert.ok([2023, 2024].includes(item.eventYear));
             assert.match(
               item.permission.evidenceRef,
-              /owner-2024-photo-collection-2026-09-08/,
+              item.eventYear === 2023
+                ? /owner-2023-and-2024-photo-publication-2026-09-09/
+                : /owner-2024-photo-collection-2026-09-08/,
             );
           } else {
             assert.match(item.sourcePage, /^https:\/\//);
@@ -1058,14 +1031,17 @@ await test('site content and static archive contracts', async (t) => {
         const ownerPhotos = publicArchiveImages.filter(
           (image) => image.sourceKind === 'owner-supplied',
         );
-        assert.equal(ownerPhotos.length, 29);
+        assert.equal(ownerPhotos.length, 54);
+        assert.equal(ownerPhotos.filter((photo) => photo.eventYear === 2023).length, 25);
         const inventory = JSON.parse(
           await readFile('docs/2024-photo-inventory.json', 'utf8'),
         );
         assert.equal(new Set(inventory.map((photo) => photo.sha256)).size, 29);
-        const edition2024 = editions.find((edition) => edition.year === 2024);
-        for (const photo of ownerPhotos)
-          assert.ok(edition2024.media.includes(photo.id));
+        for (const photo of ownerPhotos) {
+          const edition = editions.find((item) => item.year === photo.eventYear);
+          assert.ok(edition.media.includes(photo.id));
+        }
+        assert.equal(editions.find((edition) => edition.year === 2023).coverImageId, 'cd80-2023-owner-yfy-3743');
         assert.deepEqual(
           ownerPhotos
             .filter((photo) => photo.universityId)

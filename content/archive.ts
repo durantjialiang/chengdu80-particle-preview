@@ -21,6 +21,7 @@ import {
   bookletAwardsByYear,
 } from './history-evidence';
 import { recap2024PhotoIds } from './recap-2024';
+import { recap2023PhotoIds } from './recap-2023';
 export const sources = {
   berkeley2018: {
     title: b('Berkeley · funder project report', '伯克利 · funder作品报道'),
@@ -449,6 +450,7 @@ export const editions: readonly Edition[] = [
             endDate: '2023-11-03',
             developmentStart: '2023-10-29',
             finalDate: '2023-11-02',
+            coverImageId: 'cd80-2023-owner-yfy-3743',
           }
         : {}),
       challenge: editionChallenges[year] ?? null,
@@ -488,7 +490,9 @@ export const editions: readonly Edition[] = [
               { length: 8 },
               (_, i) => `cd80-2019-${String(i + 1).padStart(2, '0')}`,
             )
-          : [],
+          : year === 2023
+            ? recap2023PhotoIds
+            : [],
     }),
   ),
   {

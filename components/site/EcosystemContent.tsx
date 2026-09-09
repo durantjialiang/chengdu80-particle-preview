@@ -30,6 +30,7 @@ import { WinnerCard } from './ArchivePages';
 import EditorialMedia from './EditorialMedia';
 import CityCollaboration from './CityCollaboration';
 import VideoChannel from './VideoChannel';
+import { videoChannel } from '@/content/video-channel';
 import styles from './Editorial.module.css';
 import site from './Site.module.css';
 
@@ -862,6 +863,8 @@ export function MediaPage() {
   const { t, href } = useSiteLanguage();
   const { filters, change } = useUrlFilters(mediaFilterKeys);
   const { year, type } = filters;
+  const photoYears = [...new Set(publicArchiveImages.map((image) => image.eventYear))]
+    .sort((a, b) => b - a);
   const images = publicArchiveImages
     .filter(
       (image) =>
@@ -960,8 +963,8 @@ export function MediaPage() {
       <p className={site.lead}>
         {t(
           b(
-            'Explore the Chengdu 80 video channel, photo archive, news and publications.',
-            '探索成都八零视频专区、照片档案、赛事新闻与专刊。',
+            'Explore Chengdu 80 through photographs, event news and publications.',
+            '通过赛事照片、新闻与专刊，回顾成都八零。',
           ),
         )}
       </p>
@@ -969,17 +972,19 @@ export function MediaPage() {
         className={site.pills}
         aria-label={t(b('Media sections', '媒体栏目'))}
       >
-        <a href="#videos">{t(b('2024 highlights', '2024精彩回顾'))}</a>
         <a href="#photos">{t(b('Photo archive', '照片档案'))}</a>
+        {videoChannel.youtubeUrl && <a href="#videos">YouTube</a>}
         <a href="#resources">{t(b('News & publications', '新闻与专刊'))}</a>
       </nav>
-      <VideoChannel />
       <Section id="photos" title={b('Photo archive', '照片档案')}>
-        <p className={styles.introCopy}>
+        <nav className={site.pills} aria-label={t(b('Edition albums', '年度相册'))}>
           <a href={href('/history/2024/#edition-2024')}>
-            {t(b('Explore the 2024 edition album', '查看2024赛事完整相册'))} →
+            {t(b('2024 edition album', '2024赛事相册'))} →
           </a>
-        </p>
+          <a href={href('/history/2023/#edition-2023')}>
+            {t(b('2023 edition album', '2023赛事相册'))} →
+          </a>
+        </nav>
         <div className={site.filters}>
           <label>
             {t(b('Year', '年份'))}
@@ -988,8 +993,9 @@ export function MediaPage() {
               onChange={(e) => change({ year: e.target.value })}
             >
               <option value="">{t(b('All years', '全部年份'))}</option>
-              <option>2019</option>
-              <option>2024</option>
+              {photoYears.map((photoYear) => (
+                <option key={photoYear} value={photoYear}>{photoYear}</option>
+              ))}
             </select>
           </label>
           <label>
@@ -1035,6 +1041,7 @@ export function MediaPage() {
           </p>
         )}
       </Section>
+      <VideoChannel />
       <Section id="resources" title={b('News & publications', '新闻与出版物')}>
         <div className={styles.resourceList}>
           {resources.map((resource) => (

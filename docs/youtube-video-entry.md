@@ -33,3 +33,9 @@ The media player points to versioned `v2-en` video, poster and English WebVTT fi
 ## Stable picture edit, 2026-09-09
 
 The owner reported continuous shaking in the v2 film. The v3 edit removes the animated zoom/pan filter. Each photograph and its text stay at a fixed size and position, with opacity-only cross-dissolves between scenes. The 90-second timeline and English labels are retained, and the approved cinematic score is copied directly from the v2 master without re-encoding. The player uses a new `v3-stable-en.mp4` URL so cached v2 video cannot be mistaken for the fix; the unchanged English poster and caption track are reused.
+
+## Photo-only publication, 2026-09-09
+
+The owner now requests the 2023 and 2024 photographs on the website and asks to withhold videos. This supersedes the earlier public-player configuration above. The navigation currently reads Photos / 照片. Media opens with the photo archive, supports year/category filters and links to both edition albums.
+
+The local 2024 player and all files under `public/videos/` are removed from the current deployment. Original source videos, edited exports and the previously published file bundle are preserved outside the site checkout. `VideoChannel` retains the owner's future YouTube-link capability, but renders nothing while `content/video-channel.ts` has `youtubeUrl: null`. A configured owner URL will render the external channel entry after the photographs, with no embedded player or background YouTube request.

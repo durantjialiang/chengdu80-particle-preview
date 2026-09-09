@@ -1,97 +1,27 @@
 .section {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  margin: 44px 0 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 2rem;
+  margin: 2.75rem 0 4rem;
   border: 1px solid #9bb9cf38;
   background: linear-gradient(125deg, #102334e8, #07131fe8);
   scroll-margin-top: 110px;
 }
-.cover {
-  position: relative;
-  min-width: 0;
-  align-self: center;
-  background: #050f18;
-}
-.cover video {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: contain;
-}
-.localActions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem 1.5rem;
-  color: #d9c095;
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-.localActions a:focus-visible {
-  outline: 2px solid #d9bf87;
-  outline-offset: 5px;
-}
-.youtube {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.75rem 1.25rem;
-  margin-top: 1.75rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #a9bfcd38;
-}
-.youtube p {
+.section h2 {
   margin: 0;
-  color: #b5c9d6;
-  font-size: 0.9rem;
-}
-.youtube .pending {
-  padding: 0;
-  border: 0;
-  font-size: 0.8rem;
-}
-.coverCaption {
-  display: block;
-  padding: 12px 20px;
-  color: #a9bfcd;
-  font-size: 13px;
-}
-.content {
-  padding: clamp(28px, 4vw, 48px);
-  align-self: center;
-}
-.eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 22px;
-  color: #edaaa7;
-  font-size: 14px;
-  letter-spacing: 0.12em;
-}
-.content h2 {
-  margin: 0 0 22px;
-  font-size: clamp(28px, 3vw, 40px);
+  font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 450;
   line-height: 1.25;
-  text-wrap: balance;
-}
-.description {
-  margin: 0 0 28px;
-  color: #a9bfcd;
-  font-size: 16px;
-  line-height: 1.85;
-}
-.action,
-.pending {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 13px 19px;
-  font-size: 15px;
-  line-height: 1.5;
 }
 .action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
   color: #fff;
   background: #a32d32;
   border: 1px solid #e68383;
@@ -103,17 +33,4 @@
 .action:focus-visible {
   outline: 2px solid #d9bf87;
   outline-offset: 5px;
-}
-.pending {
-  border: 1px solid #a9bfcd38;
-  color: #b5c9d6;
-}
-@media (max-width: 760px) {
-  .section {
-    grid-template-columns: minmax(0, 1fr);
-    margin: 32px 0 44px;
-  }
-  .content {
-    padding: 28px 24px;
-  }
 }
