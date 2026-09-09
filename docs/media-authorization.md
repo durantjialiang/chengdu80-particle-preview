@@ -69,3 +69,11 @@ At ingestion the folder contains one unique JPG, `36521667567172_.pic_hd.jpg`, a
 The project owner supplied the 2020 folder and explicitly requested: “2021剪一个两三分钟视频吧 然后2020不剪视频了 就把照片传上去”. This authorizes publication of the 2020 photographs on the existing website and repository. The 2021 film is a separate local deliverable; no 2020 film is created and videos remain withheld from the website.
 
 All 13 unique 2020 JPGs are included. `docs/2020-photo-inventory.json` records source basenames, hashes, dimensions and the derivative hashes, without local paths or camera/author/GPS metadata. Full WebP images have a maximum 3200-pixel long edge and thumbnails a maximum 960-pixel long edge; all preserve the full frame. Captions describe the visible auditorium, presentations, remote participation, awards and group photographs. No person is identified and no university or project is inferred from faces. EXIF timestamps are used only for internal consistency checks; they do not alter the separately sourced 2020 competition schedule.
+
+## Owner 2019 photo publication 2026-09-09
+
+The project owner supplied the 2019 folder and requested a comprehensive six-to-seven-minute film featuring the individual team videos, followed by: “然后视频也不慌上传 也是先上传照片”. This authorizes the selected photographs on the existing website and repository; the edited film is a separate local deliverable and videos remain withheld from the website.
+
+All 20 supplied JPGs are unique and are included as full-frame WebP images with a maximum 3200-pixel long edge and 960-pixel thumbnails. `docs/2019-photo-inventory.json` records source basenames, hashes and dimensions plus derivative hashes, without local paths or camera/author/GPS metadata. Captions describe visible presentations, development work, exhibition activity, awards and group photographs; no faces are identified or unverified school/project relationships added.
+
+The eight existing 2019 archive photographs retain their original IDs, provenance, school associations and permission records. Visual comparison found no identical source photograph among the new 20; similar backdrops do not establish a duplicate. The 2019 album therefore contains 28 photographs. Original JPGs and all ten supplied MP4s remain unchanged locally; no video or extracted video still is added to the public image manifest.
