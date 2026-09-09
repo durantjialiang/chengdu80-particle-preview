@@ -23,6 +23,7 @@ import {
 import { recap2024PhotoIds } from './recap-2024';
 import { recap2023PhotoIds } from './recap-2023';
 import { recap2022PhotoIds } from './recap-2022';
+import { recap2020PhotoIds } from './recap-2020';
 export const sources = {
   berkeley2018: {
     title: b('Berkeley · funder project report', '伯克利 · funder作品报道'),
@@ -443,7 +444,7 @@ export const editions: readonly Edition[] = [
           }
         : {}),
       ...(year === 2020
-        ? { startDate: '2020-10-26', endDate: '2020-10-29' }
+        ? { startDate: '2020-10-26', endDate: '2020-10-29', coverImageId: 'cd80-2020-owner-dn6v7222' }
         : {}),
       ...(year === 2023
         ? {
@@ -498,7 +499,9 @@ export const editions: readonly Edition[] = [
             ? recap2023PhotoIds
             : year === 2022
               ? recap2022PhotoIds
-              : [],
+              : year === 2020
+                ? recap2020PhotoIds
+                : [],
     }),
   ),
   {

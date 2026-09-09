@@ -1957,5 +1957,382 @@
     },
     "localAssetPath": "/history-media/cd80-2022-owner-event-poster-full.webp",
     "thumbnailPath": "/history-media/cd80-2022-owner-event-poster-thumb.webp"
+  },
+  {
+    "id": "cd80-2020-owner-dn6v6638",
+    "albumId": "edition-2020",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2020,
+    "caption": {
+      "en": "Two adults stand outside beside a Fintech80 Chengdu event arch.",
+      "zh": "两位成年人在成都八零活动拱门旁的户外场景。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "event-group",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2020-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2020-owner-dn6v6638-full.webp",
+    "thumbnailPath": "/history-media/cd80-2020-owner-dn6v6638-thumb.webp"
+  },
+  {
+    "id": "cd80-2020-owner-dn6v6658",
+    "albumId": "edition-2020",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2020,
+    "caption": {
+      "en": "Six people pose at a Fintech80 Chengdu Hackathon entrance arch.",
+      "zh": "六人在成都八零黑客松入口拱门前合影。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "event-group",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2020-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2020-owner-dn6v6658-full.webp",
+    "thumbnailPath": "/history-media/cd80-2020-owner-dn6v6658-thumb.webp"
+  },
+  {
+    "id": "cd80-2020-owner-dn6v6690",
+    "albumId": "edition-2020",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2020,
+    "caption": {
+      "en": "An auditorium audience watches a large event screen showing a participant profile.",
+      "zh": "礼堂观众观看展示参会者资料的活动大屏。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "event-recap",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2020-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2020-owner-dn6v6690-full.webp",
+    "thumbnailPath": "/history-media/cd80-2020-owner-dn6v6690-thumb.webp"
+  },
+  {
+    "id": "cd80-2020-owner-dn6v6705",
+    "albumId": "edition-2020",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2020,
+    "caption": {
+      "en": "A wide auditorium view captures an onstage presentation and seated audience.",
+      "zh": "礼堂全景记录舞台演示与就座观众。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "event-recap",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2020-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2020-owner-dn6v6705-full.webp",
+    "thumbnailPath": "/history-media/cd80-2020-owner-dn6v6705-thumb.webp"
+  },
+  {
+    "id": "cd80-2020-owner-dn6v6733",
+    "albumId": "edition-2020",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2020,
+    "caption": {
+      "en": "A speaker addresses the audience at a lectern in front of event graphics.",
+      "zh": "一位发言人在活动大屏前的讲台上向观众发言。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "speech",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2020-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2020-owner-dn6v6733-full.webp",
+    "thumbnailPath": "/history-media/cd80-2020-owner-dn6v6733-thumb.webp"
+  },
+  {
+    "id": "cd80-2020-owner-dn6v6981",
+    "albumId": "edition-2020",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2020,
+    "caption": {
+      "en": "A presenter stands beside a stage display reading “FinRocket 1.0”.",
+      "zh": "一位演示者站在显示“FinRocket 1.0”的舞台大屏旁。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "challenge-document",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2020-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2020-owner-dn6v6981-full.webp",
+    "thumbnailPath": "/history-media/cd80-2020-owner-dn6v6981-thumb.webp"
+  },
+  {
+    "id": "cd80-2020-owner-dn6v7051",
+    "albumId": "edition-2020",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2020,
+    "caption": {
+      "en": "A stage display shows University of Hong Kong branding within the event setting.",
+      "zh": "活动舞台大屏展示香港大学标识与会场画面。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "challenge-document",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2020-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2020-owner-dn6v7051-full.webp",
+    "thumbnailPath": "/history-media/cd80-2020-owner-dn6v7051-thumb.webp"
+  },
+  {
+    "id": "cd80-2020-owner-dn6v7053",
+    "albumId": "edition-2020",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2020,
+    "caption": {
+      "en": "A large stage screen shows a remote participant presentation with finance-themed graphics.",
+      "zh": "舞台大屏展示一位远程参会者及金融主题图形。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "challenge-document",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2020-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2020-owner-dn6v7053-full.webp",
+    "thumbnailPath": "/history-media/cd80-2020-owner-dn6v7053-thumb.webp"
+  },
+  {
+    "id": "cd80-2020-owner-dn6v7146",
+    "albumId": "edition-2020",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2020,
+    "caption": {
+      "en": "A wide auditorium view shows a stage display with University of Zurich branding.",
+      "zh": "礼堂全景展示带有苏黎世大学标识的舞台大屏。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "challenge-document",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2020-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2020-owner-dn6v7146-full.webp",
+    "thumbnailPath": "/history-media/cd80-2020-owner-dn6v7146-thumb.webp"
+  },
+  {
+    "id": "cd80-2020-owner-dn6v7182",
+    "albumId": "edition-2020",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2020,
+    "caption": {
+      "en": "Participants hold trophies onstage beneath an “Innovator Award” display.",
+      "zh": "参与者在“Innovator Award”大屏下手持奖杯登台合影。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "award-ceremony",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2020-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2020-owner-dn6v7182-full.webp",
+    "thumbnailPath": "/history-media/cd80-2020-owner-dn6v7182-thumb.webp"
+  },
+  {
+    "id": "cd80-2020-owner-dn6v7190",
+    "albumId": "edition-2020",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2020,
+    "caption": {
+      "en": "Two participants hold trophies onstage beneath a “Pioneer Award” display.",
+      "zh": "两位参与者在“Pioneer Award”大屏下手持奖杯登台合影。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "award-ceremony",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2020-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2020-owner-dn6v7190-full.webp",
+    "thumbnailPath": "/history-media/cd80-2020-owner-dn6v7190-thumb.webp"
+  },
+  {
+    "id": "cd80-2020-owner-dn6v7205",
+    "albumId": "edition-2020",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2020,
+    "caption": {
+      "en": "Two participants pose with a trophy beneath a “Trailblazer Award” display.",
+      "zh": "两位参与者在“Trailblazer Award”大屏下手持奖杯合影。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "award-ceremony",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2020-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2020-owner-dn6v7205-full.webp",
+    "thumbnailPath": "/history-media/cd80-2020-owner-dn6v7205-thumb.webp"
+  },
+  {
+    "id": "cd80-2020-owner-dn6v7222",
+    "albumId": "edition-2020",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2020,
+    "caption": {
+      "en": "A large group poses onstage for an event team photo.",
+      "zh": "大型团队在活动舞台上合影。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "team-photo",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-09",
+      "evidenceRef": "docs/media-authorization.md#owner-2020-photo-publication-2026-09-09"
+    },
+    "localAssetPath": "/history-media/cd80-2020-owner-dn6v7222-full.webp",
+    "thumbnailPath": "/history-media/cd80-2020-owner-dn6v7222-thumb.webp"
   }
 ]

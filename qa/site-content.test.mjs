@@ -775,6 +775,7 @@ await test('site content and static archive contracts', async (t) => {
         assert.match(channel, /target="_blank" rel="noopener noreferrer"/);
         assert.doesNotMatch(channel, /<video|<iframe/);
         assert.ok(html.includes('/history/2022/'));
+        assert.ok(html.includes('/history/2020/'));
         assert.ok(html.includes('/history/2023/'));
         assert.ok(html.includes('/history/2024/'));
         assert.match(html, /View the publication \(PDF\)/);
@@ -808,6 +809,8 @@ await test('site content and static archive contracts', async (t) => {
           for (const language of ['en', 'zh']) {
             for (const [query, count] of [
               ['year=2019', 8],
+              ['year=2020', 13],
+              ['year=2020&type=awards', 3],
               ['year=2023', 25],
               ['year=2024', 34],
               ['year=2024&type=awards', 2],
@@ -995,7 +998,7 @@ await test('site content and static archive contracts', async (t) => {
       async () => {
         const { publicArchiveImages, isPubliclyUsable, imageFit } =
           await server.ssrLoadModule('/content/archive-media.ts');
-        assert.equal(publicArchiveImages.length, 68);
+        assert.equal(publicArchiveImages.length, 81);
         assert.equal(
           publicArchiveImages.filter((i) => i.eventYear === 2019).length,
           8,
@@ -1009,10 +1012,12 @@ await test('site content and static archive contracts', async (t) => {
           if (item.sourceKind === 'owner-supplied') {
             assert.equal(item.sourcePage, '');
             assert.equal(item.originalImageUrl, '');
-            assert.ok([2022, 2023, 2024].includes(item.eventYear));
+            assert.ok([2020, 2022, 2023, 2024].includes(item.eventYear));
             assert.match(
               item.permission.evidenceRef,
-              item.eventYear === 2022
+              item.eventYear === 2020
+                ? /owner-2020-photo-publication-2026-09-09/
+                : item.eventYear === 2022
                 ? /owner-2022-photo-publication-2026-09-09/
                 : item.eventYear === 2023
                   ? /owner-2023-and-2024-photo-publication-2026-09-09/
@@ -1036,7 +1041,9 @@ await test('site content and static archive contracts', async (t) => {
         const ownerPhotos = publicArchiveImages.filter(
           (image) => image.sourceKind === 'owner-supplied',
         );
-        assert.equal(ownerPhotos.length, 55);
+        assert.equal(ownerPhotos.length, 68);
+        assert.equal(ownerPhotos.filter((photo) => photo.eventYear === 2020).length, 13);
+        assert.equal(editions.find((edition) => edition.year === 2020).coverImageId, 'cd80-2020-owner-dn6v7222');
         assert.equal(ownerPhotos.filter((photo) => photo.eventYear === 2022).length, 1);
         const poster2022 = ownerPhotos.find((photo) => photo.eventYear === 2022);
         assert.equal(poster2022.imageType, 'event-poster');
