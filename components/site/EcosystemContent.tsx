@@ -26,6 +26,8 @@ import {
   partnerBrandProfiles,
 } from '@/content/partner-brands';
 import { publicArchiveImages } from '@/content/archive-media';
+import { academicInstitutions } from '@/content/academic-institutions';
+import { collaborators } from '@/content/collaborators';
 import { WinnerCard } from './ArchivePages';
 import EditorialMedia from './EditorialMedia';
 import CityCollaboration from './CityCollaboration';
@@ -599,7 +601,7 @@ export function AboutPage() {
   );
 }
 function InternationalPartners() {
-  const { t } = useSiteLanguage();
+  const { t, href } = useSiteLanguage();
   // Original, size-bounded local marks; this Vite preview has no Next image server.
   /* oxlint-disable next/no-img-element */
   return (
@@ -610,11 +612,80 @@ function InternationalPartners() {
     >
       <div className={styles.collaborationHeading}>
         <p className={styles.eyebrow}>
-          {t(b('Historical international co-hosts', '历届国际联合主办'))}
+          {t(b('INTERNATIONAL PARTNERS & EXCHANGE', '国际合作与交流'))}
         </p>
         <h2 id="international-partners-title">
-          {t(b('Connecting research and finance.', '联结全球研究与金融实践。'))}
+          {t(b('Partner institutions & organizations', '国际合作单位'))}
         </h2>
+        <p>
+          {t(
+            b(
+              'Meet the universities, research groups and science communication projects connected to Chengdu 80 through visiting scholars, forum conversations and shared activities.',
+              '从学者来访、论坛交流到共同举办活动，了解与成都八零开展交流的高校、研究机构和科学传播项目。',
+            ),
+          )}
+        </p>
+      </div>
+      <div className={styles.academicInstitutionGrid}>
+        {academicInstitutions.map((institution) => {
+          const person = collaborators.find(
+            (item) => item.id === institution.collaboratorId,
+          )!;
+          return (
+            <article
+              key={institution.id}
+              id={institution.id}
+              data-academic-institution={institution.id}
+              className={styles.academicInstitutionCard}
+            >
+              <div className={styles.academicInstitutionMeta}>
+                <span>{t(institution.relationship)}</span>
+                <span>{institution.period}</span>
+              </div>
+              <h3>{t(institution.name)}</h3>
+              <p className={styles.academicInstitutionUnit}>
+                {t(institution.unit)}
+              </p>
+              <a
+                className={styles.institutionPerson}
+                href={href(`/partners/#${person.id}`)}
+              >
+                <span>
+                  <strong>{t(person.name)}</strong>
+                  <span>
+                    {t(b('Profile & event photographs', '人物介绍与现场照片'))}
+                  </span>
+                </span>
+                <ArrowUpRight size={20} aria-hidden="true" />
+              </a>
+              <p className={styles.academicInstitutionSummary}>
+                {t(institution.summary)}
+              </p>
+              <div className={styles.institutionLinks}>
+                {institution.websites.map((website) => (
+                  <a
+                    key={website.url}
+                    href={website.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {t(website.label)} ↗
+                  </a>
+                ))}
+                <a
+                  href={institution.source}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t(b('Event report', '活动报道'))} ↗
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+      <div className={`${styles.collaborationHeading} ${styles.cohostHeading}`}>
+        <h3>{t(b('Historical international co-hosts', '历届国际联合主办'))}</h3>
         <p>
           {t(
             b(

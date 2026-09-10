@@ -2,6 +2,14 @@
 
 Updated 2026-09-10. This change adds a four-person feature near the top of the homepage and a complete section at `/partners/#academic-collaborators`. The existing institutions, city partnerships, university directory, competition photo albums and paused video-publication state remain intact.
 
+## Partner institution extension
+
+The owner subsequently requested that the visitors' universities and working organizations also appear among the cooperation units. `/partners/#international-partners` now leads with four bilingual institution cards: University of Chicago (Economics, Statistics and Booth), UC San Diego (Economics), UC Berkeley (CDAR and the Center for Risk Management Research), and Numberphile / Periodic Videos. The profile navigation includes a direct link to this section.
+
+Each card identifies its associated person, the dated activity, official websites and an event report, and links back to the person's introduction and owner-supplied event photographs. Current affiliation sources are the official profiles listed below, rechecked on 2026-09-10. Institutional names are typeset as text; no additional logo or photograph assets were introduced.
+
+Roles distinguish visiting-scholar exchange, forum collaboration and a science communicator's visit. The existing CDAR and State Street historical co-host cards remain below, with their original evidence and logos. Numberphile and Periodic Videos are presented as Haran's science communication projects; his honorary degree does not make Nottingham his workplace. These cards do not assert university-wide agreements, new judging roles, sponsorship or current-year co-hosting.
+
 The section combines current biographical information with dated participation. It does not announce a 2026 appointment, competition judging role or advisory-board membership.
 
 ## Photo authorization

@@ -154,6 +154,9 @@ export default function Collaborators() {
             {t(person.name)}
           </a>
         ))}
+        <a href="#international-partners">
+          {t(b('Partner institutions', '查看合作单位'))} ↗
+        </a>
       </nav>
       <div className={styles.profileList}>
         {collaborators.map((person) => (

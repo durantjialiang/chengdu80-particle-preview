@@ -114,6 +114,7 @@
 }
 .collaboration {
   margin: 58px 0 72px;
+  scroll-margin-top: 100px;
 }
 .collaborationHeading {
   margin-bottom: 30px;
@@ -136,6 +137,104 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
+}
+.academicInstitutionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.academicInstitutionCard {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 3vw, 40px);
+  border: 1px solid #a4c8df30;
+  border-top: 2px solid #9bc8ed;
+  background: linear-gradient(145deg, #102234e8, #06111ce8);
+  scroll-margin-top: 100px;
+}
+.academicInstitutionMeta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 20px;
+  color: #abc1d0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.academicInstitutionCard h3 {
+  margin: 30px 0 12px;
+  color: #e5eef5;
+  font-size: clamp(25px, 2.4vw, 34px);
+  font-weight: 500;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.academicInstitutionUnit {
+  margin: 0 0 28px;
+  color: #abc1d0;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.institutionPerson {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: auto;
+  padding: 18px 0;
+  border-block: 1px solid #a4c8df30;
+  color: #e5eef5;
+  text-decoration: none;
+}
+.institutionPerson strong {
+  display: block;
+  font-size: 18px;
+  font-weight: 500;
+}
+.institutionPerson span span {
+  display: block;
+  margin-top: 5px;
+  color: #abc1d0;
+  font-size: 13px;
+}
+.institutionPerson svg {
+  flex: 0 0 auto;
+  color: #9bc8ed;
+}
+.academicInstitutionSummary {
+  margin: 20px 0 24px;
+  color: #a9bfcd;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.institutionLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 22px;
+}
+.institutionLinks a {
+  color: #b9d8ec;
+  font-size: 13px;
+  line-height: 1.8;
+  text-underline-offset: 5px;
+}
+.institutionPerson:hover strong,
+.institutionLinks a:hover {
+  color: #fff;
+}
+.institutionPerson:focus-visible,
+.institutionLinks a:focus-visible {
+  outline: 2px solid #9bc8ed;
+  outline-offset: 5px;
+}
+.cohostHeading {
+  margin-top: 48px;
+}
+.cohostHeading h3 {
+  font-size: 24px;
+  font-weight: 500;
 }
 .institutionCard {
   --institution-accent: #9bc8ed;
@@ -278,6 +377,7 @@
   }
 }
 @media (max-width: 760px) {
+  .academicInstitutionGrid,
   .institutionGrid {
     grid-template-columns: minmax(0, 1fr);
   }
