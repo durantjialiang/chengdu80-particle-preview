@@ -12,15 +12,17 @@ import {
   type ArchiveImage,
 } from '../content/archive-media';
 import { publicCityImages } from '../content/city-collaboration-media';
+import { publicCollaboratorImages } from '../content/collaborator-media';
 
 /** Fail closed if a pending/orphan photo is accidentally copied to the public media folder. */
 export function checkPublicHistoryMedia(publicRoot: string) {
   const root = resolve(publicRoot, 'history-media');
   const allowed = new Set(
-    [...publicArchiveImages, ...publicCityImages].flatMap((image) => [
-      image.localAssetPath!,
-      image.thumbnailPath!,
-    ]),
+    [
+      ...publicArchiveImages,
+      ...publicCityImages,
+      ...publicCollaboratorImages,
+    ].flatMap((image) => [image.localAssetPath!, image.thumbnailPath!]),
   );
   const walk = (directory: string) => {
     for (const entry of readdirSync(directory, { withFileTypes: true })) {

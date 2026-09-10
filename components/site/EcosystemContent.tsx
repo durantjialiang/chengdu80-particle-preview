@@ -29,6 +29,7 @@ import { publicArchiveImages } from '@/content/archive-media';
 import { WinnerCard } from './ArchivePages';
 import EditorialMedia from './EditorialMedia';
 import CityCollaboration from './CityCollaboration';
+import Collaborators, { FeaturedCollaborators } from './Collaborators';
 import VideoChannel from './VideoChannel';
 import { videoChannel } from '@/content/video-channel';
 import styles from './Editorial.module.css';
@@ -256,6 +257,7 @@ export function HomeBeforeNetwork() {
   const { t, href } = useSiteLanguage();
   return (
     <div className={styles.home}>
+      <FeaturedCollaborators />
       <Section
         id="organizers"
         eyebrow={b('ACADEMIA × INDUSTRY', '学术 × 产业')}
@@ -718,6 +720,7 @@ export function PartnersPage() {
           ),
         )}
       </p>
+      <Collaborators />
       <HostPair historical />
       <InternationalPartners />
       <CityCollaboration />

@@ -40,7 +40,7 @@ export const navigation = [
   {
     label: 'Partnerships',
     href: '/partners',
-    description: 'The organizations and initiatives behind Chengdu 80.',
+    description: 'Meet our academic collaborators, organizations and initiatives.',
   },
 ] as const;
 

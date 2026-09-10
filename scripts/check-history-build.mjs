@@ -15,14 +15,22 @@ const contentServer = await createServer({
   optimizeDeps: { noDiscovery: true, include: [] },
 });
 let publicCityImages;
+let publicCollaboratorImages;
 try {
   ({ publicCityImages } = await contentServer.ssrLoadModule(
     '/content/city-collaboration-media.ts',
   ));
+  ({ publicCollaboratorImages } = await contentServer.ssrLoadModule(
+    '/content/collaborator-media.ts',
+  ));
 } finally {
   await contentServer.close();
 }
-const allApprovedImages = [...approvedImages, ...publicCityImages];
+const allApprovedImages = [
+  ...approvedImages,
+  ...publicCityImages,
+  ...publicCollaboratorImages,
+];
 
 const output = resolve('out/particle-preview');
 const reviewRoot = process.argv[2] ? resolve(process.argv[2]) : null;
@@ -38,7 +46,10 @@ for (const image of allApprovedImages) {
       image.permission.evidenceRef,
   );
   for (const path of [image.localAssetPath, image.thumbnailPath]) {
-    assert.match(path, /^\/history-media\/[a-z0-9-]+\.webp$/);
+    assert.match(
+      path,
+      /^\/history-media\/(?:[a-z0-9_-]+\/)*[a-z0-9_-]+\.webp$/,
+    );
     allowedPaths.set(
       path,
       hash(await readFile(resolve('public', path.slice(1)))),
@@ -70,7 +81,11 @@ async function walk(directory) {
     }
     const local = relative(output, path);
     // Owner requested photo-only publication; keep edited films outside the site.
-    assert.doesNotMatch(local, /\.(mp4|webm|mov|m4v)$/i, `video withheld from publication: ${local}`);
+    assert.doesNotMatch(
+      local,
+      /\.(mp4|webm|mov|m4v)$/i,
+      `video withheld from publication: ${local}`,
+    );
     assert.doesNotMatch(
       local,
       /review-media|source-pages|research\/|node_modules\/|(?:^|\/)\.env|\.pem$/i,
@@ -113,6 +128,7 @@ console.log(
       staticFiles: files,
       approvedHistoryPhotos: approvedImages.length,
       approvedCityPhotos: publicCityImages.length,
+      approvedCollaboratorPhotos: publicCollaboratorImages.length,
       approvedDerivativeFiles: approvedFiles,
       archiveAndContentRoutes: routes.length,
       privatePhotoHashesChecked: forbiddenHashes.size,
