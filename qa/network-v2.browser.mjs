@@ -94,7 +94,7 @@ try {
   await page.waitForTimeout(900);
   await page.keyboard.press('Escape');
   await page
-    .getByRole('combobox', { name: '赛事年份', exact: true })
+    .getByRole('combobox', { name: '年份', exact: true })
     .selectOption('2023');
   assert.equal(await selected(page), 'nus');
   assert.equal(
@@ -112,7 +112,7 @@ try {
   await page.locator('[data-spotlight]').scrollIntoViewIfNeeded();
   await page.waitForTimeout(900);
   await page
-    .getByRole('combobox', { name: '赛事年份', exact: true })
+    .getByRole('combobox', { name: '年份', exact: true })
     .selectOption('all');
   await page.locator('[data-university="nus"]').scrollIntoViewIfNeeded();
   const photo = await page
@@ -141,7 +141,7 @@ try {
   await page.locator('[data-university="queens"]').click();
   assert.equal(await selected(page), 'queens');
   await page
-    .getByRole('combobox', { name: '赛事年份', exact: true })
+    .getByRole('combobox', { name: '年份', exact: true })
     .selectOption('2024');
   assert.equal(
     await page.locator('[data-spotlight] img[src*="history-media"]').count(),
@@ -164,7 +164,7 @@ try {
     fullPage: true,
   });
   await page
-    .getByRole('combobox', { name: '赛事年份', exact: true })
+    .getByRole('combobox', { name: '年份', exact: true })
     .selectOption('2021');
   assert.match(
     await page.locator('[data-spotlight]').innerText(),
@@ -177,7 +177,7 @@ try {
   await page.locator('[data-university="uzh"]').click();
   await page.getByRole('button', { name: '在地球上查看', exact: true }).click();
   await page
-    .getByRole('combobox', { name: '赛事年份', exact: true })
+    .getByRole('combobox', { name: '年份', exact: true })
     .selectOption('all');
   await page.locator('[data-network-node-count]').scrollIntoViewIfNeeded();
   await page.waitForTimeout(2000);
@@ -194,21 +194,21 @@ try {
     /暂无匹配高校记录/,
   );
   await page.getByRole('button', { name: '清除筛选', exact: true }).click();
-  assert.equal(await countNodes(page), '18');
+  assert.equal(await countNodes(page), '20');
   for (const year of ['2025', '2026']) {
     await page
-      .getByRole('combobox', { name: '赛事年份', exact: true })
+      .getByRole('combobox', { name: '年份', exact: true })
       .selectOption(year);
     assert.equal(await countNodes(page), '0');
     assert.equal(await page.locator('[data-university]').count(), 0);
   }
   await page
-    .getByRole('combobox', { name: '赛事年份', exact: true })
+    .getByRole('combobox', { name: '年份', exact: true })
     .selectOption('2020');
   await page.locator('[data-university="unsw"]').click();
   assert.match(await page.locator('[data-spotlight]').innerText(), /线上参赛/);
   await page
-    .getByRole('combobox', { name: '赛事年份', exact: true })
+    .getByRole('combobox', { name: '年份', exact: true })
     .selectOption('2019');
   await page.locator('[data-university="nus"]').click();
   await page.reload();

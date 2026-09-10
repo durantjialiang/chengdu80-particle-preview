@@ -1,0 +1,44 @@
+.exchange {
+  margin: 24px 0;
+  padding: 20px;
+  border: 1px solid #99c1d43d;
+  border-left: 2px solid #c3a173;
+  background: #0b1c28b3;
+}
+.exchange h3,
+.exchange h4 {
+  margin: 0 0 12px;
+  color: #e6c99f;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+.exchange p {
+  color: #b6cbd7;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.exchange .meta {
+  margin: 0 0 10px;
+  color: #93b7c7;
+  font-size: 12px;
+}
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin-top: 18px;
+}
+.links a {
+  color: #d8e7ef;
+  font-size: 13px;
+  line-height: 1.7;
+  text-underline-offset: 4px;
+}
+.links a:hover {
+  color: #fff;
+}
+.links a:focus-visible {
+  outline: 2px solid #9bc8ed;
+  outline-offset: 5px;
+}

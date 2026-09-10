@@ -24,7 +24,7 @@ await test('shared university ecosystem contracts', async (t) => {
       '/components/Hero/scene-config.ts',
     );
     await t.test(
-      'all 18 evidence-linked institutions have unique shared records and real bounded coordinates',
+      'all 20 evidence-linked institutions have unique shared records and real bounded coordinates',
       () => {
         const ids = [
           'swufe',
@@ -37,6 +37,8 @@ await test('shared university ecosystem contracts', async (t) => {
           'hku',
           'nus',
           'berkeley',
+          'uchicago',
+          'ucsd',
           'gatech',
           'toronto',
           'queens',
@@ -50,7 +52,7 @@ await test('shared university ecosystem contracts', async (t) => {
           universities.map((u) => u.id),
           ids,
         );
-        assert.equal(new Set(ids).size, 18);
+        assert.equal(new Set(ids).size, 20);
         assert.equal(siteContent.cities, globeNodes);
         for (const u of universities) {
           const node = globeNodes.find((n) => n.id === u.id);
@@ -61,9 +63,13 @@ await test('shared university ecosystem contracts', async (t) => {
           assert.equal(getUniversity(u.id), u);
           assert.ok(u.evidence.length > 0);
           assert.ok(
-            ['participant', 'winner', 'organizer', 'ecosystem'].includes(
-              u.relationshipType,
-            ),
+            [
+              'participant',
+              'winner',
+              'organizer',
+              'ecosystem',
+              'academic',
+            ].includes(u.relationshipType),
           );
         }
         assert.deepEqual(
@@ -128,6 +134,9 @@ await test('shared university ecosystem contracts', async (t) => {
           'hku.hk',
           'nus.edu.sg',
           'berkeley.edu',
+          'uchicago.edu',
+          'chicagobooth.edu',
+          'ucsd.edu',
           'gatech.edu',
           'utoronto.ca',
           'queensu.ca',
@@ -145,7 +154,7 @@ await test('shared university ecosystem contracts', async (t) => {
               /^\/university-logos\/[a-z-]+\.(svg|png|jpg)$/,
             );
             assert.ok((await stat(`public${u.logo}`)).size > 100);
-          } else assert.equal(u.id, 'unsw');
+          } else assert.ok(['unsw', 'uchicago', 'ucsd'].includes(u.id));
           for (const url of [u.website, ...u.evidence.map((e) => e.url)]) {
             const parsed = new URL(url);
             assert.equal(parsed.protocol, 'https:');
@@ -302,7 +311,7 @@ await test('shared university ecosystem contracts', async (t) => {
       },
     );
     await t.test(
-      'all 18 cards and details SSR without browser APIs; unknown records are not fabricated',
+      'all 20 cards and details SSR without browser APIs; unknown records are not fabricated',
       async () => {
         const { default: Card } = await server.ssrLoadModule(
           '/components/network/UniversityCard.tsx',

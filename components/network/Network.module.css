@@ -522,6 +522,7 @@
 .relationship[data-role='organizer'] {
   color: #dfbb93;
 }
+.relationship[data-role='academic'],
 .relationship[data-role='ecosystem'] {
   color: #a0b1c0;
 }

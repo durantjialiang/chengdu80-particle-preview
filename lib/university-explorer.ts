@@ -1,4 +1,8 @@
-import { universities, type UniversityId } from '@/content/universities';
+import {
+  universities,
+  universityConnectionYears,
+  type UniversityId,
+} from '@/content/universities';
 import { editions, projects, sources } from '@/content/archive';
 import { publicArchiveImages } from '@/content/archive-media';
 import type { CityNode } from '@/content/network';
@@ -47,7 +51,7 @@ export function filterUniversities(
   const terms = query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
   return universities.filter(
     (u) =>
-      (year === 'all' || u.participationYears.includes(year)) &&
+      (year === 'all' || universityConnectionYears(u).includes(year)) &&
       (region === 'all' || regionForUniversity(u) === region) &&
       terms.every((term) =>
         [
@@ -67,6 +71,7 @@ export function filterUniversities(
 /** Filter first, group second. The hub is geographic context, not an extra participant. */
 export function explorerNodes(
   filtered: readonly (typeof universities)[number][],
+  year: NetworkYear = 'all',
 ): readonly CityNode[] {
   const groups = new Map<string, (typeof universities)[number][]>();
   for (const u of filtered) {
@@ -85,7 +90,11 @@ export function explorerNodes(
       latitude: pin.latitude,
       longitude: pin.longitude,
       isOrigin,
-      isEcosystem: members.every((u) => u.relationshipType === 'ecosystem'),
+      isEcosystem: members.every((u) =>
+        year === 'all'
+          ? ['ecosystem', 'academic'].includes(u.relationshipType)
+          : !u.participationYears.includes(year),
+      ),
       showOnLowPower: true,
       universityIds: members.map((u) => u.id),
     };
@@ -174,15 +183,19 @@ export function participationMode(id: UniversityId, year: NetworkYear) {
 export function universitySpotlight(id: UniversityId, year: NetworkYear) {
   const university = universities.find((u) => u.id === id)!;
   const hasRecord =
-    year === 'all' || university.participationYears.includes(year);
-  const selectedProjects = hasRecord
+    year === 'all' || universityConnectionYears(university).includes(year);
+  const hasParticipation =
+    year === 'all'
+      ? university.participationYears.length > 0
+      : university.participationYears.includes(year);
+  const selectedProjects = hasParticipation
     ? projects
         .filter(
           (p) => p.universityId === id && (year === 'all' || p.year === year),
         )
         .sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
     : [];
-  const teamPhotos = hasRecord
+  const teamPhotos = hasParticipation
     ? publicArchiveImages
         .filter(
           (image) =>
@@ -192,7 +205,7 @@ export function universitySpotlight(id: UniversityId, year: NetworkYear) {
         )
         .sort((a, b) => b.eventYear - a.eventYear)
     : [];
-  const awards = hasRecord
+  const awards = hasParticipation
     ? editions
         .filter((e) => year === 'all' || e.year === year)
         .flatMap((e) =>
@@ -221,6 +234,7 @@ export function universitySpotlight(id: UniversityId, year: NetworkYear) {
   return {
     university,
     hasRecord,
+    hasParticipation,
     projects: selectedProjects,
     teamPhoto: teamPhotos[0] ?? null,
     awards,

@@ -114,7 +114,10 @@ export default function GlobalUniversityNetwork({
       ) as Record<NetworkRegion, number>,
     [selection.year, selection.query],
   );
-  const nodes = useMemo(() => explorerNodes(filtered), [filtered]);
+  const nodes = useMemo(
+    () => explorerNodes(filtered, selection.year),
+    [filtered, selection.year],
+  );
   const cityMembers =
     nodes.find((node) => node.id === cityId)?.universityIds ?? [];
   const compactDefaultIds: readonly UniversityId[] = [
@@ -264,8 +267,8 @@ export default function GlobalUniversityNetwork({
         <p>
           {t(
             b(
-              'Explore the universities, teams and ideas across past editions of Chengdu 80.',
-              '探索成都80历届赛事中的高校、团队与创意。',
+              'Explore the universities connected through Chengdu 80 competitions, academic visits and forum exchanges.',
+              '探索通过成都八零赛事、学者来访与论坛交流建立联系的高校。',
             ),
           )}
         </p>
@@ -310,9 +313,9 @@ export default function GlobalUniversityNetwork({
       </div>
       <div className={styles.filters} data-particle-reading-region>
         <label>
-          {t(b('Edition', '赛事年份'))}
+          {t(b('Year', '年份'))}
           <select
-            aria-label={t(b('Edition', '赛事年份'))}
+            aria-label={t(b('Year', '年份'))}
             value={selection.year}
             onChange={(e) =>
               changeYear(
@@ -516,8 +519,8 @@ export default function GlobalUniversityNetwork({
                 selection.year === 'all'
                   ? b('universities recorded', '所已收录高校')
                   : b(
-                      'universities recorded in this edition',
-                      '所该届已收录高校',
+                      'universities connected in this year',
+                      '所该年交流与参赛高校',
                     ),
               )}
             </span>
@@ -546,8 +549,8 @@ export default function GlobalUniversityNetwork({
           <h3>
             {t(
               b(
-                'Universities represented across past editions',
-                '历届赛事收录高校',
+                'Universities across competitions & academic exchange',
+                '赛事与学术交流合作高校',
               ),
             )}
           </h3>

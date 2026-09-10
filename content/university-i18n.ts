@@ -16,6 +16,8 @@ const names: Record<UniversityId, string> = {
   hku: '香港大学',
   nus: '新加坡国立大学',
   berkeley: '加州大学伯克利分校',
+  uchicago: '芝加哥大学',
+  ucsd: '加州大学圣迭戈分校',
   gatech: '佐治亚理工学院',
   toronto: '多伦多大学',
   queens: '女王大学',
@@ -34,6 +36,8 @@ const places: Record<string, string> = {
   'Hong Kong': '香港',
   Singapore: '新加坡',
   Berkeley: '伯克利',
+  Chicago: '芝加哥',
+  'San Diego': '圣迭戈',
   Atlanta: '亚特兰大',
   Toronto: '多伦多',
   Kingston: '金斯顿',
@@ -63,6 +67,7 @@ const roles: Record<RelationshipType, [string, string]> = {
   organizer: ['Organizer', '主办高校'],
   winner: ['Award recipient', '获奖高校'],
   participant: ['Participant', '参赛高校'],
+  academic: ['Academic exchange', '学术交流合作'],
   ecosystem: ['Ecosystem exchange', '生态交流'],
 };
 export const universityRole = (role: RelationshipType, language: Language) =>

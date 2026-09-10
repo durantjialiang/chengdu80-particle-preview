@@ -160,13 +160,81 @@ await test('Network V2 filtered identity and archive contracts', async (t) => {
         assert.equal(unsw.projects.length, 0);
         assert.equal(universitySpotlight('uzh', 2021).mode, 'online');
         assert.equal(universitySpotlight('tsinghua', 2021).mode, 'onsite');
-        assert.equal(filterUniversities('all').length, 18);
+        assert.equal(filterUniversities('all').length, 20);
         assert.equal(
           filterUniversities('all').reduce(
             (n, u) => n + u.participationYears.length,
             0,
           ),
           58,
+        );
+      },
+    );
+    await t.test(
+      'academic visits appear on the globe without becoming competition entries',
+      async () => {
+        const { getUniversity } = await server.ssrLoadModule(
+          '/content/universities.ts',
+        );
+        for (const id of ['uchicago', 'ucsd']) {
+          const university = getUniversity(id);
+          assert.equal(university.relationshipType, 'academic');
+          assert.deepEqual(university.participationYears, []);
+          assert.deepEqual(university.awards, []);
+          assert.deepEqual(university.projects, []);
+          assert.ok(
+            filterUniversities(2019, '', 'north-america').some(
+              (u) => u.id === id,
+            ),
+          );
+          assert.ok(!filterUniversities(2018).some((u) => u.id === id));
+          const node = explorerNodes(filterUniversities('all')).find(
+            (n) => n.id === id,
+          );
+          assert.equal(node.isEcosystem, true);
+          const record = universitySpotlight(id, 2019);
+          assert.equal(record.hasRecord, true);
+          assert.equal(record.hasParticipation, false);
+          assert.equal(record.mode, 'unknown');
+          assert.equal(record.teamPhoto, null);
+          assert.deepEqual(record.awards, []);
+          assert.deepEqual(record.projects, []);
+          assert.equal(universitySpotlight(id, 2022).hasRecord, false);
+          assert.equal(
+            readNetworkView(`?university=${id}&year=2019`).selectedId,
+            id,
+          );
+        }
+        assert.equal(
+          filterUniversities('all').filter((u) => u.id === 'berkeley').length,
+          1,
+        );
+        assert.ok(filterUniversities(2021).some((u) => u.id === 'berkeley'));
+        assert.ok(!getUniversity('berkeley').participationYears.includes(2021));
+        const berkeleyExchange = universitySpotlight('berkeley', 2021);
+        assert.equal(berkeleyExchange.hasRecord, true);
+        assert.equal(berkeleyExchange.hasParticipation, false);
+        assert.equal(berkeleyExchange.teamPhoto, null);
+        assert.deepEqual(berkeleyExchange.awards, []);
+        assert.equal(
+          explorerNodes(filterUniversities(2021), 2021).find(
+            (node) => node.id === 'berkeley',
+          ).isEcosystem,
+          true,
+        );
+        assert.equal(
+          explorerNodes(filterUniversities(2019), 2019).find(
+            (node) => node.id === 'berkeley',
+          ).isEcosystem,
+          false,
+        );
+        assert.deepEqual(
+          filterUniversities('all', '芝加哥').map((u) => u.id),
+          ['uchicago'],
+        );
+        assert.deepEqual(
+          filterUniversities('all', '圣迭戈').map((u) => u.id),
+          ['ucsd'],
         );
       },
     );
@@ -214,7 +282,7 @@ await test('Network V2 filtered identity and archive contracts', async (t) => {
           networkRegions.map(
             (region) => filterUniversities('all', '', region).length,
           ),
-          [18, 10, 3, 4, 1],
+          [20, 10, 3, 6, 1],
         );
         assert.deepEqual(
           filterUniversities(2021, '苏黎世', 'europe').map((u) => u.id),
@@ -222,7 +290,7 @@ await test('Network V2 filtered identity and archive contracts', async (t) => {
         );
         assert.deepEqual(
           filterUniversities(2019, '', 'north-america').map((u) => u.id),
-          ['berkeley', 'toronto'],
+          ['berkeley', 'uchicago', 'ucsd', 'toronto'],
         );
         assert.deepEqual(
           filterUniversities(2020, '', 'oceania').map((u) => u.id),

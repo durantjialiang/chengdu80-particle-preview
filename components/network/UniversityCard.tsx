@@ -2,6 +2,8 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { type University } from '@/content/network';
+import { universityConnectionYears } from '@/content/universities';
+import { academicInstitutionForUniversity } from '@/content/academic-institutions';
 import {
   universityName,
   universityLocation,
@@ -34,8 +36,12 @@ export default function UniversityCard({
   onDetails: () => void;
 }) {
   const { t, language } = useSiteLanguage();
-  const years = university.participationYears;
+  const years =
+    university.relationshipType === 'academic'
+      ? universityConnectionYears(university)
+      : university.participationYears;
   const latest = university.awards.at(-1);
+  const exchange = academicInstitutionForUniversity(university.id);
   return (
     <motion.article
       ref={register}
@@ -80,9 +86,11 @@ export default function UniversityCard({
         <p>{universityLocation(university, language)}</p>
         <div className={styles.years}>
           <span>
-            {university.relationshipType === 'ecosystem'
-              ? t(b('Competition participation', '赛事参与'))
-              : t(b('Documented participation', '有据可查的参赛年份'))}
+            {university.relationshipType === 'academic'
+              ? t(b('Academic exchange', '学术交流年份'))
+              : university.relationshipType === 'ecosystem'
+                ? t(b('Competition participation', '赛事参与'))
+                : t(b('Documented participation', '有据可查的参赛年份'))}
           </span>
           <strong>
             {years.length
@@ -93,6 +101,12 @@ export default function UniversityCard({
                 : t(b('Year not specified', '具体年份待核'))}
           </strong>
         </div>
+        {exchange && university.relationshipType !== 'academic' && (
+          <p className={styles.achievement}>
+            {t(b('Academic exchange', '学术交流'))} /{' '}
+            {exchange.years.join(' · ')}
+          </p>
+        )}
         {latest ? (
           <p className={styles.achievement}>
             {latest.year ??

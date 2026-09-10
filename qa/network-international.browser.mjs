@@ -92,7 +92,7 @@ try {
   });
   await page.goto(base + '/global-network/?lang=en&university=nus');
   await page.locator('[data-spotlight-project="nusight-2023"]').waitFor();
-  assert.equal((await ids(page)).length, 18);
+  assert.equal((await ids(page)).length, 20);
   assert.match(
     await page.locator('[data-spotlight] figcaption').innerText(),
     /2019/,
@@ -115,7 +115,7 @@ try {
   await region(page, 'Europe').click();
   assert.deepEqual((await ids(page)).sort(), ['eth', 'uzh', 'emlyon'].sort());
   await page
-    .getByRole('combobox', { name: 'Edition', exact: true })
+    .getByRole('combobox', { name: 'Year', exact: true })
     .selectOption('2021');
   await page.getByRole('searchbox').fill('Zurich');
   await waitSelected(page, 'uzh');
@@ -135,9 +135,14 @@ try {
     .click();
   await region(page, 'North America').click();
   await page
-    .getByRole('combobox', { name: 'Edition', exact: true })
+    .getByRole('combobox', { name: 'Year', exact: true })
     .selectOption('2019');
-  assert.deepEqual((await ids(page)).sort(), ['berkeley', 'toronto']);
+  assert.deepEqual((await ids(page)).sort(), [
+    'berkeley',
+    'toronto',
+    'uchicago',
+    'ucsd',
+  ]);
   await page.locator('[data-university="berkeley"]').click();
   await waitSelected(page, 'berkeley');
   await page.locator('[data-university="toronto"]').click();
@@ -159,7 +164,7 @@ try {
   assert.match(await page.locator('[data-spotlight]').innerText(), /2020/);
   for (const year of ['2025', '2026']) {
     await page
-      .getByRole('combobox', { name: 'Edition', exact: true })
+      .getByRole('combobox', { name: 'Year', exact: true })
       .selectOption(year);
     assert.equal((await ids(page)).length, 0);
     assert.equal(await page.locator('[data-spotlight-project]').count(), 0);

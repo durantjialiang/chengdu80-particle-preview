@@ -12,6 +12,7 @@ import { bilingual as b } from '@/content/competition';
 import { projects, projectTitle } from '@/content/archive';
 import { Button } from '@/components/ui/button';
 import { UniversityLogo } from './UniversityLogo';
+import UniversityExchange from './UniversityExchange';
 import styles from './Network.module.css';
 
 /** Native dialog provides modal focus containment, Escape and focus restoration. */
@@ -65,138 +66,143 @@ export default function UniversityDetailPanel({
         <p className={styles.location}>
           {universityLocation(university, language)}
         </p>
-        <p className={styles.recordNote}>
-          {t(
-            b(
-              'Historical records, not a confirmed 2026 roster. Missing entries do not imply no participation or awards.',
-              '历史记录，不是2026确认名单。资料空缺不代表未参赛或未获奖。',
-            ),
-          )}
-        </p>
-        {university.relationshipType === 'ecosystem' && (
-          <p className={styles.recordNote}>
-            {t(
-              b(
-                'Competition participation is not confirmed.',
-                '赛事参与尚未确认。',
-              ),
-            )}
-          </p>
-        )}
-        <section>
-          <h3>{t(b('Recorded participation', '已收录参赛记录'))}</h3>
-          <div className={styles.yearPills}>
-            {university.participationYears.length ? (
-              university.participationYears.map((year) => (
-                <a key={year} href={href(`/history/${year}/`)}>
-                  {year} ↗
-                </a>
-              ))
-            ) : (
-              <p>
-                {university.verification === 'pending'
-                  ? t(b('Not yet verified.', '尚未核实。'))
-                  : t(
-                      b(
-                        'Specific years are not given in the cited record.',
-                        '引用记录未给出具体年份。',
-                      ),
-                    )}
-              </p>
-            )}
-          </div>
-        </section>
-        <section>
-          <h3>{t(b('Awards', '获奖记录'))}</h3>
-          {university.awards.length ? (
-            <ul>
-              {university.awards.map((award, index) => (
-                <li key={`${award.year}-${index}`}>
-                  <span>
-                    {award.year ??
-                      `${award.reportedYear} ${t(b('report', '报道'))}`}
-                  </span>
-                  <a
-                    href={award.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {award.name}
-                    <ArrowUpRight size={13} />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>
+        <UniversityExchange universityId={university.id} detail />
+        {university.relationshipType !== 'academic' && (
+          <>
+            <p className={styles.recordNote}>
               {t(
                 b(
-                  'No individual award is verified in this record.',
-                  '当前档案未核实具体奖项。',
+                  'Historical records, not a confirmed 2026 roster. Missing entries do not imply no participation or awards.',
+                  '历史记录，不是2026确认名单。资料空缺不代表未参赛或未获奖。',
                 ),
               )}
             </p>
-          )}
-        </section>
-        <section>
-          <h3>{t(b('Related projects & teams', '项目与团队'))}</h3>
-          {university.projects.length ? (
-            <ul>
-              {university.projects.map((project, index) => {
-                const archived = projects.find(
-                  (p) =>
-                    p.projectId === project.projectId &&
-                    p.universityId === university.id,
-                );
-                return (
-                  <li key={`${project.year}-${index}`}>
-                    <span>
-                      {project.year ??
-                        `${project.reportedYear} ${t(b('report', '报道'))}`}
-                    </span>
-                    <div className={styles.projectLinks}>
-                      {archived ? (
-                        <a href={href(`/winners/${archived.projectId}/`)}>
-                          {t(projectTitle(archived))} →
-                        </a>
-                      ) : (
-                        <span>{project.name}</span>
-                      )}
-                      {archived && !archived.projectName && (
-                        <small>
-                          {t(
-                            b(
-                              'Product name not established',
-                              '产品专名尚未明确',
-                            ),
-                          )}
-                        </small>
-                      )}
+            {university.relationshipType === 'ecosystem' && (
+              <p className={styles.recordNote}>
+                {t(
+                  b(
+                    'Competition participation is not confirmed.',
+                    '赛事参与尚未确认。',
+                  ),
+                )}
+              </p>
+            )}
+            <section>
+              <h3>{t(b('Recorded participation', '已收录参赛记录'))}</h3>
+              <div className={styles.yearPills}>
+                {university.participationYears.length ? (
+                  university.participationYears.map((year) => (
+                    <a key={year} href={href(`/history/${year}/`)}>
+                      {year} ↗
+                    </a>
+                  ))
+                ) : (
+                  <p>
+                    {university.verification === 'pending'
+                      ? t(b('Not yet verified.', '尚未核实。'))
+                      : t(
+                          b(
+                            'Specific years are not given in the cited record.',
+                            '引用记录未给出具体年份。',
+                          ),
+                        )}
+                  </p>
+                )}
+              </div>
+            </section>
+            <section>
+              <h3>{t(b('Awards', '获奖记录'))}</h3>
+              {university.awards.length ? (
+                <ul>
+                  {university.awards.map((award, index) => (
+                    <li key={`${award.year}-${index}`}>
+                      <span>
+                        {award.year ??
+                          `${award.reportedYear} ${t(b('report', '报道'))}`}
+                      </span>
                       <a
-                        className={styles.originalSource}
-                        href={project.sourceUrl}
+                        href={award.sourceUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {t(b('Original report', '原始报道'))}{' '}
+                        {award.name}
                         <ArrowUpRight size={13} />
                       </a>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <p>
-              {t(
-                b(
-                  'No named project is verified in this record.',
-                  '当前档案未核实具名项目。',
-                ),
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>
+                  {t(
+                    b(
+                      'No individual award is verified in this record.',
+                      '当前档案未核实具体奖项。',
+                    ),
+                  )}
+                </p>
               )}
-            </p>
-          )}
-        </section>
+            </section>
+            <section>
+              <h3>{t(b('Related projects & teams', '项目与团队'))}</h3>
+              {university.projects.length ? (
+                <ul>
+                  {university.projects.map((project, index) => {
+                    const archived = projects.find(
+                      (p) =>
+                        p.projectId === project.projectId &&
+                        p.universityId === university.id,
+                    );
+                    return (
+                      <li key={`${project.year}-${index}`}>
+                        <span>
+                          {project.year ??
+                            `${project.reportedYear} ${t(b('report', '报道'))}`}
+                        </span>
+                        <div className={styles.projectLinks}>
+                          {archived ? (
+                            <a href={href(`/winners/${archived.projectId}/`)}>
+                              {t(projectTitle(archived))} →
+                            </a>
+                          ) : (
+                            <span>{project.name}</span>
+                          )}
+                          {archived && !archived.projectName && (
+                            <small>
+                              {t(
+                                b(
+                                  'Product name not established',
+                                  '产品专名尚未明确',
+                                ),
+                              )}
+                            </small>
+                          )}
+                          <a
+                            className={styles.originalSource}
+                            href={project.sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {t(b('Original report', '原始报道'))}{' '}
+                            <ArrowUpRight size={13} />
+                          </a>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <p>
+                  {t(
+                    b(
+                      'No named project is verified in this record.',
+                      '当前档案未核实具名项目。',
+                    ),
+                  )}
+                </p>
+              )}
+            </section>
+          </>
+        )}
         <a
           className={styles.officialButton}
           href={university.website}

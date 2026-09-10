@@ -33,7 +33,9 @@ export const globeNodes: readonly CityNode[] = documentedUniversities.map(
     latitude: university.latitude,
     longitude: university.longitude,
     isOrigin: university.id === 'swufe',
-    isEcosystem: university.relationshipType === 'ecosystem',
+    isEcosystem: ['ecosystem', 'academic'].includes(
+      university.relationshipType,
+    ),
     showOnLowPower: [
       'swufe',
       'nus',
@@ -41,6 +43,8 @@ export const globeNodes: readonly CityNode[] = documentedUniversities.map(
       'queens',
       'eth',
       'berkeley',
+      'uchicago',
+      'ucsd',
     ].includes(university.id),
     universityIds: [university.id],
   }),

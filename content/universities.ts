@@ -1,6 +1,7 @@
 /** Shared by Hero, explorer and cards. Historical records are not a 2026 roster.
  * Coordinates are approximate campus pins for an illustrative map, not surveyed boundaries.
  */
+import { academicInstitutionForUniversity } from './academic-institutions';
 import {
   confirmed2024Awards,
   confirmed2019Awards,
@@ -12,6 +13,7 @@ export type RelationshipType =
   | 'participant'
   | 'winner'
   | 'organizer'
+  | 'academic'
   | 'ecosystem';
 export type UniversityId =
   | 'swufe'
@@ -24,6 +26,8 @@ export type UniversityId =
   | 'hku'
   | 'nus'
   | 'berkeley'
+  | 'uchicago'
+  | 'ucsd'
   | 'gatech'
   | 'toronto'
   | 'queens'
@@ -711,6 +715,11 @@ const universityRecords: readonly University[] = [
     verification: 'documented',
     evidence: [
       {
+        title: 'SWUFE–CDAR 2021 forum · Robert M. Anderson keynote',
+        url: 'https://jinrong.swufe.edu.cn/info/1100/3386.htm',
+        years: [2021],
+      },
+      {
         title: '2019 annual detail · Berkeley named below its team photograph',
         url: 'https://cd80.swufe.edu.cn/info/1031/1091.htm',
         years: [2019],
@@ -740,6 +749,84 @@ const universityRecords: readonly University[] = [
       'Selected documented editions, not an exhaustive participation history.',
     logoSource: 'https://www.berkeley.edu/',
     logoSurface: 'light',
+  },
+  {
+    id: 'uchicago',
+    name: 'University of Chicago',
+    shortName: 'UChicago',
+    city: 'Chicago',
+    country: 'United States',
+    latitude: 41.7897,
+    longitude: -87.5997,
+    logo: null,
+    website: 'https://www.uchicago.edu/',
+    participationYears: [],
+    awards: [],
+    projects: [],
+    relationshipType: 'academic',
+    verification: 'documented',
+    evidence: [
+      {
+        title:
+          '2019 SWUFE–CDAR International FinTech Forum · Lars Peter Hansen keynote',
+        url: 'https://cd80.swufe.edu.cn/info/1051/1121.htm',
+        years: [2019],
+      },
+      {
+        title: 'Chicago Booth · Lars Peter Hansen faculty profile',
+        url: 'https://www.chicagobooth.edu/faculty/directory/h/lars-hansen',
+        years: [],
+      },
+      {
+        title:
+          'UChicago official campus map · representative Hyde Park campus pin',
+        url: 'https://maps.uchicago.edu/',
+        years: [],
+      },
+    ],
+    recordNote:
+      'Lars Peter Hansen delivered a keynote at the 2019 SWUFE–CDAR forum alongside Chengdu 80. This record describes academic exchange; no university-team competition entry is inferred.',
+    recordNoteZh:
+      '汉森在与成都八零同期举行的2019 SWUFE–CDAR论坛发表主旨演讲。本条记录学术交流经历，不据此推定校队参赛。',
+  },
+  {
+    id: 'ucsd',
+    name: 'University of California San Diego',
+    shortName: 'UC San Diego',
+    city: 'San Diego',
+    country: 'United States',
+    latitude: 32.878353,
+    longitude: -117.231842,
+    logo: null,
+    website: 'https://www.ucsd.edu/',
+    participationYears: [],
+    awards: [],
+    projects: [],
+    relationshipType: 'academic',
+    verification: 'documented',
+    evidence: [
+      {
+        title:
+          '2019 SWUFE–CDAR International FinTech Forum · Joel Sobel invited talk',
+        url: 'https://cd80.swufe.edu.cn/info/1051/1121.htm',
+        years: [2019],
+      },
+      {
+        title: 'UC San Diego · Economics faculty directory',
+        url: 'https://economics.ucsd.edu/faculty-and-research/faculty-profiles/index.html',
+        years: [],
+      },
+      {
+        title:
+          'UC San Diego official directions · Central Campus Station landmark pin',
+        url: 'https://ah.ucsd.edu/about/directions.html',
+        years: [],
+      },
+    ],
+    recordNote:
+      'Joel Sobel was an invited speaker at the 2019 SWUFE–CDAR forum. This record describes academic exchange; no university-team competition entry is inferred.',
+    recordNoteZh:
+      '乔尔·索拜尔受邀参加2019 SWUFE–CDAR论坛。本条记录学术交流经历，不据此推定校队参赛。',
   },
   {
     id: 'gatech',
@@ -1172,8 +1259,17 @@ export const relationshipLabels: Record<RelationshipType, string> = {
   organizer: 'Organizer',
   winner: 'Award recipient',
   participant: 'Participant',
+  academic: 'Academic exchange',
   ecosystem: 'Ecosystem exchange',
 };
+/** Map filters include dated academic exchanges without adding competition entries. */
+export const universityConnectionYears = (university: University) =>
+  [
+    ...new Set([
+      ...university.participationYears,
+      ...(academicInstitutionForUniversity(university.id)?.years ?? []),
+    ]),
+  ].sort((a, b) => a - b);
 export const documentedUniversities = universities.filter(
   (u) => u.verification === 'documented',
 );

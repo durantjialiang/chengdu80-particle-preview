@@ -12,6 +12,7 @@ import {
 } from '@/lib/university-explorer';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import { UniversityLogo } from './UniversityLogo';
+import UniversityExchange from './UniversityExchange';
 import { Photo, Viewer } from '@/components/site/ArchiveGallery';
 import styles from './UniversitySpotlight.module.css';
 
@@ -47,7 +48,7 @@ export default function UniversitySpotlight({
   // A representative photo can come from another documented edition. The
   // caption always carries its own year so it cannot be read as a photo from
   // the selected edition. A no-record year stays empty and truthful.
-  const teamPhoto = record.hasRecord ? allYearsRecord.teamPhoto : null;
+  const teamPhoto = record.hasParticipation ? allYearsRecord.teamPhoto : null;
   const selectedProject = record.projects[0] ?? null;
   const representativeAward = record.awards[0] ?? null;
   const representativeYear =
@@ -98,34 +99,41 @@ export default function UniversitySpotlight({
         </button>
       </div>
 
-      <section
-        className={styles.participation}
-        aria-labelledby={`${headingId}-years`}
-      >
-        <h4 id={`${headingId}-years`}>
-          {t(b('Recorded participation', '已收录参赛记录'))}
-        </h4>
-        {university.participationYears.length > 0 ? (
-          <div className={styles.yearPills}>
-            {university.participationYears.map((participationYear) => (
-              <button
-                key={participationYear}
-                type="button"
-                aria-pressed={year === participationYear}
-                onClick={() => onYear(participationYear as NetworkYear)}
-              >
-                {participationYear}
-              </button>
-            ))}
-          </div>
-        ) : (
-          <p className={styles.muted}>
-            {t(
-              b('No participation year is recorded.', '尚未收录具体参赛年份。'),
-            )}
-          </p>
-        )}
-      </section>
+      <UniversityExchange universityId={universityId} year={year} />
+
+      {university.relationshipType !== 'academic' && (
+        <section
+          className={styles.participation}
+          aria-labelledby={`${headingId}-years`}
+        >
+          <h4 id={`${headingId}-years`}>
+            {t(b('Recorded participation', '已收录参赛记录'))}
+          </h4>
+          {university.participationYears.length > 0 ? (
+            <div className={styles.yearPills}>
+              {university.participationYears.map((participationYear) => (
+                <button
+                  key={participationYear}
+                  type="button"
+                  aria-pressed={year === participationYear}
+                  onClick={() => onYear(participationYear as NetworkYear)}
+                >
+                  {participationYear}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <p className={styles.muted}>
+              {t(
+                b(
+                  'No participation year is recorded.',
+                  '尚未收录具体参赛年份。',
+                ),
+              )}
+            </p>
+          )}
+        </section>
+      )}
 
       {!record.hasRecord ? (
         <div className={styles.emptyRecord} aria-live="polite">
@@ -136,12 +144,12 @@ export default function UniversitySpotlight({
                   ? 'The competition was not held in 2025.'
                   : year === 2026
                     ? 'The 2026 university roster has not been announced.'
-                    : 'No recorded participation for this year.',
+                    : 'No recorded activity for this year.',
                 year === 2025
                   ? '2025年未举办赛事。'
                   : year === 2026
                     ? '2026年高校名单待公布。'
-                    : '此年份暂无已收录参赛记录。',
+                    : '此年份暂无已收录活动记录。',
               ),
             )}
           </p>
@@ -161,67 +169,74 @@ export default function UniversitySpotlight({
             </p>
           )}
 
-          <div className={styles.profileGrid}>
-            {teamPhoto && (
-              <figure className={styles.teamPhoto}>
-                <button
-                  type="button"
-                  onClick={() => setViewer(true)}
-                  aria-label={t(b('Enlarge team photograph', '放大团队照片'))}
-                >
-                  <Photo image={teamPhoto} />
-                </button>
-                <figcaption>
-                  <span>{teamPhoto.eventYear}</span>{' '}
-                  {t(b('University team photograph', '高校团队合影'))}
-                </figcaption>
-              </figure>
-            )}
+          {record.hasParticipation && (
+            <div className={styles.profileGrid}>
+              {teamPhoto && (
+                <figure className={styles.teamPhoto}>
+                  <button
+                    type="button"
+                    onClick={() => setViewer(true)}
+                    aria-label={t(b('Enlarge team photograph', '放大团队照片'))}
+                  >
+                    <Photo image={teamPhoto} />
+                  </button>
+                  <figcaption>
+                    <span>{teamPhoto.eventYear}</span>{' '}
+                    {t(b('University team photograph', '高校团队合影'))}
+                  </figcaption>
+                </figure>
+              )}
 
-            {selectedProject ? (
-              <section
-                className={styles.feature}
-                data-spotlight-project={selectedProject.projectId}
-              >
-                <h4>{t(b('Selected project', '代表项目'))}</h4>
-                <p className={styles.featureMeta}>
-                  {selectedProject.year ?? selectedProject.reportedYear ?? '—'}{' '}
-                  / {t(selectedProject.awardLabel)}
-                </p>
-                <h5>
-                  <a href={href(`/winners/${selectedProject.projectId}/`)}>
-                    {selectedProject.projectName ?? selectedProject.teamName} ↗
-                  </a>
-                </h5>
-                <p className={styles.summary}>{t(selectedProject.summary)}</p>
-              </section>
-            ) : (
-              <section className={styles.feature}>
-                <h4>{t(b('Representative participation', '代表参赛记录'))}</h4>
-                {representativeAward ? (
-                  <>
-                    <p className={styles.featureMeta}>
-                      {representativeAward.year} /{' '}
-                      {t(b('Award record', '获奖记录'))}
-                    </p>
-                    <a
-                      className={styles.featureLink}
-                      href={representativeAward.sourceUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {t(representativeAward.label)} ↗
-                    </a>
-                  </>
-                ) : (
-                  <p className={styles.summary}>
-                    {representativeYear ?? '—'} /{' '}
-                    {universityRole(university.relationshipType, language)}
+              {selectedProject ? (
+                <section
+                  className={styles.feature}
+                  data-spotlight-project={selectedProject.projectId}
+                >
+                  <h4>{t(b('Selected project', '代表项目'))}</h4>
+                  <p className={styles.featureMeta}>
+                    {selectedProject.year ??
+                      selectedProject.reportedYear ??
+                      '—'}{' '}
+                    / {t(selectedProject.awardLabel)}
                   </p>
-                )}
-              </section>
-            )}
-          </div>
+                  <h5>
+                    <a href={href(`/winners/${selectedProject.projectId}/`)}>
+                      {selectedProject.projectName ?? selectedProject.teamName}{' '}
+                      ↗
+                    </a>
+                  </h5>
+                  <p className={styles.summary}>{t(selectedProject.summary)}</p>
+                </section>
+              ) : (
+                <section className={styles.feature}>
+                  <h4>
+                    {t(b('Representative participation', '代表参赛记录'))}
+                  </h4>
+                  {representativeAward ? (
+                    <>
+                      <p className={styles.featureMeta}>
+                        {representativeAward.year} /{' '}
+                        {t(b('Award record', '获奖记录'))}
+                      </p>
+                      <a
+                        className={styles.featureLink}
+                        href={representativeAward.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {t(representativeAward.label)} ↗
+                      </a>
+                    </>
+                  ) : (
+                    <p className={styles.summary}>
+                      {representativeYear ?? '—'} /{' '}
+                      {universityRole(university.relationshipType, language)}
+                    </p>
+                  )}
+                </section>
+              )}
+            </div>
+          )}
         </>
       )}
 
@@ -232,7 +247,7 @@ export default function UniversitySpotlight({
         <a href={university.website} target="_blank" rel="noopener noreferrer">
           {t(b('Official university website', '高校官方网站'))} ↗
         </a>
-        {year !== 'all' && record.hasRecord && (
+        {year !== 'all' && university.participationYears.includes(year) && (
           <a href={href(`/history/${year}/`)}>
             {t(b('Explore this edition', '浏览本届赛事'))} ↗
           </a>

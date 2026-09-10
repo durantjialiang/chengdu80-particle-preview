@@ -6,6 +6,8 @@ import { bilingual as b } from './competition';
 export const academicInstitutions = [
   {
     id: 'uchicago-exchange',
+    universityId: 'uchicago',
+    years: [2019],
     collaboratorId: 'lars-peter-hansen',
     name: b('University of Chicago', '芝加哥大学'),
     unit: b(
@@ -31,6 +33,8 @@ export const academicInstitutions = [
   },
   {
     id: 'ucsd-exchange',
+    universityId: 'ucsd',
+    years: [2019],
     collaboratorId: 'joel-sobel',
     name: b('University of California San Diego', '加州大学圣迭戈分校'),
     unit: b('Department of Economics', '经济系'),
@@ -50,6 +54,8 @@ export const academicInstitutions = [
   },
   {
     id: 'berkeley-exchange',
+    universityId: 'berkeley',
+    years: [2019, 2021],
     collaboratorId: 'robert-anderson',
     name: b('University of California, Berkeley', '加州大学伯克利分校'),
     unit: b(
@@ -79,6 +85,8 @@ export const academicInstitutions = [
   },
   {
     id: 'numberphile-exchange',
+    universityId: null,
+    years: [2019],
     collaboratorId: 'brady-haran',
     name: b('Numberphile · Periodic Videos', 'Numberphile · Periodic Videos'),
     unit: b(
@@ -107,3 +115,6 @@ export const academicInstitutions = [
     source: 'https://fife.swufe.edu.cn/info/1311/2341.htm',
   },
 ] as const;
+
+export const academicInstitutionForUniversity = (id: string) =>
+  academicInstitutions.find((institution) => institution.universityId === id);

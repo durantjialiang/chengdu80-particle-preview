@@ -662,6 +662,15 @@ function InternationalPartners() {
                 {t(institution.summary)}
               </p>
               <div className={styles.institutionLinks}>
+                {institution.universityId && (
+                  <a
+                    href={href(
+                      `/global-network/?university=${institution.universityId}#global-network`,
+                    )}
+                  >
+                    {t(b('Locate on the globe', '在合作地球上查看'))} ↗
+                  </a>
+                )}
                 {institution.websites.map((website) => (
                   <a
                     key={website.url}
