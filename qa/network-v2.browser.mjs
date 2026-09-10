@@ -99,7 +99,11 @@ try {
   assert.equal(await selected(page), 'nus');
   assert.equal(
     await page.locator('[data-spotlight] img[src*="history-media"]').count(),
-    0,
+    1,
+  );
+  assert.match(
+    await page.locator('[data-spotlight] figcaption').innerText(),
+    /2019/,
   );
   assert.match(
     await page.locator('[data-spotlight]').innerText(),
@@ -164,7 +168,7 @@ try {
     .selectOption('2021');
   assert.match(
     await page.locator('[data-spotlight]').innerText(),
-    /此年份暂无已收录记录/,
+    /西南财经大学/,
   );
   assert.equal(await page.locator('[data-spotlight-project]').count(), 0);
   await page.getByRole('searchbox').fill('Zurich');
@@ -184,9 +188,10 @@ try {
   assert.equal(await selected(page), 'eth');
   await page.getByRole('searchbox').fill('no-such-university');
   assert.equal(await countNodes(page), '0');
-  assert.equal(
-    await page.locator('[data-search-selection-mismatch]').count(),
-    1,
+  assert.equal(await page.locator('[data-spotlight]').count(), 0);
+  assert.match(
+    await page.locator('#global-network').innerText(),
+    /暂无匹配高校记录/,
   );
   await page.getByRole('button', { name: '清除筛选', exact: true }).click();
   assert.equal(await countNodes(page), '18');

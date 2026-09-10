@@ -175,7 +175,7 @@ await test('Network V2 filtered identity and archive contracts', async (t) => {
       () => {
         const url = networkViewUrl(
           'https://example.com/global-network/?lang=zh&keep=yes#map',
-          { year: 2019, selectedId: 'nus' },
+          { year: 2019, region: 'all', query: '', selectedId: 'nus' },
         );
         assert.equal(
           url,
@@ -183,18 +183,77 @@ await test('Network V2 filtered identity and archive contracts', async (t) => {
         );
         assert.deepEqual(readNetworkView(url.split('?')[1].split('#')[0]), {
           year: 2019,
+          region: 'all',
+          query: '',
           selectedId: 'nus',
         });
         assert.deepEqual(readNetworkView('?year=bad&university=bad'), {
           year: 'all',
+          region: 'all',
+          query: '',
           selectedId: 'swufe',
         });
         assert.ok(
           !networkViewUrl('https://example.com/?year=2019&lang=en', {
             year: 'all',
+            region: 'all',
+            query: '',
             selectedId: 'hku',
           }).includes('year='),
         );
+      },
+    );
+    await t.test(
+      'region, year and bilingual keyword filters share geographic membership',
+      async () => {
+        const { networkRegions, regionForUniversity } =
+          await server.ssrLoadModule('/content/network-regions.ts');
+        const all = filterUniversities('all');
+        assert.ok(all.every((u) => regionForUniversity(u)));
+        assert.deepEqual(
+          networkRegions.map(
+            (region) => filterUniversities('all', '', region).length,
+          ),
+          [18, 10, 3, 4, 1],
+        );
+        assert.deepEqual(
+          filterUniversities(2021, '苏黎世', 'europe').map((u) => u.id),
+          ['uzh'],
+        );
+        assert.deepEqual(
+          filterUniversities(2019, '', 'north-america').map((u) => u.id),
+          ['berkeley', 'toronto'],
+        );
+        assert.deepEqual(
+          filterUniversities(2020, '', 'oceania').map((u) => u.id),
+          ['unsw'],
+        );
+        assert.equal(filterUniversities(2024, 'NUS', 'europe').length, 0);
+        for (const region of networkRegions) {
+          assert.equal(filterUniversities(2026, '', region).length, 0);
+          const selected = filterUniversities('all', '', region);
+          assert.deepEqual(
+            explorerNodes(selected)
+              .flatMap((n) => n.universityIds)
+              .sort(),
+            selected.map((u) => u.id).sort(),
+          );
+        }
+        const view = {
+          year: 2021,
+          region: 'europe',
+          query: 'Zurich',
+          selectedId: 'uzh',
+        };
+        const url = networkViewUrl(
+          'https://example.com/global-network/?lang=zh#global-network',
+          view,
+        );
+        assert.deepEqual(
+          readNetworkView(url.split('?')[1].split('#')[0]),
+          view,
+        );
+        assert.equal(readNetworkView('?region=invalid&query=').region, 'all');
       },
     );
     await t.test(

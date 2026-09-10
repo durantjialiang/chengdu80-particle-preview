@@ -3,6 +3,12 @@ import { editions, projects, sources } from '@/content/archive';
 import { publicArchiveImages } from '@/content/archive-media';
 import type { CityNode } from '@/content/network';
 import { universityName, universityLocation } from '@/content/university-i18n';
+import {
+  networkRegions,
+  regionForUniversity,
+  regionRepresentativeIds,
+  type NetworkRegion,
+} from '@/content/network-regions';
 
 export type NetworkYear =
   | 'all'
@@ -27,12 +33,22 @@ export const networkYears: readonly NetworkYear[] = [
   2025,
   2026,
 ];
-export type NetworkView = { year: NetworkYear; selectedId: UniversityId };
-export function filterUniversities(year: NetworkYear, query = '') {
+export type NetworkView = {
+  year: NetworkYear;
+  region: NetworkRegion;
+  query: string;
+  selectedId: UniversityId;
+};
+export function filterUniversities(
+  year: NetworkYear,
+  query = '',
+  region: NetworkRegion = 'all',
+) {
   const terms = query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
   return universities.filter(
     (u) =>
       (year === 'all' || u.participationYears.includes(year)) &&
+      (region === 'all' || regionForUniversity(u) === region) &&
       terms.every((term) =>
         [
           u.name,
@@ -92,10 +108,15 @@ export function explorerNodes(
 export function readNetworkView(search: string): NetworkView {
   const params = new URLSearchParams(search);
   const candidate = Number(params.get('year'));
+  const regionCandidate = params.get('region');
   return {
     year: networkYears.includes(candidate as NetworkYear)
       ? (candidate as NetworkYear)
       : 'all',
+    region: networkRegions.includes(regionCandidate as NetworkRegion)
+      ? (regionCandidate as NetworkRegion)
+      : 'all',
+    query: (params.get('query') ?? params.get('q') ?? '').trim(),
     selectedId:
       universities.find((u) => u.id === params.get('university'))?.id ??
       'swufe',
@@ -105,8 +126,35 @@ export function networkViewUrl(current: string, view: NetworkView) {
   const url = new URL(current);
   if (view.year === 'all') url.searchParams.delete('year');
   else url.searchParams.set('year', String(view.year));
+  const region = view.region ?? 'all';
+  const query = view.query ?? '';
+  if (region === 'all') url.searchParams.delete('region');
+  else url.searchParams.set('region', region);
+  if (query.trim()) url.searchParams.set('query', query.trim());
+  else {
+    url.searchParams.delete('query');
+    url.searchParams.delete('q');
+  }
   url.searchParams.set('university', view.selectedId);
   return url.pathname + url.search + url.hash;
+}
+export function regionFocusUniversity(
+  region: NetworkRegion,
+  candidates: readonly (typeof universities)[number][],
+  fallbackCandidates: readonly (typeof universities)[number][] = universities,
+): UniversityId | null {
+  if (region === 'all')
+    return candidates[0]?.id ?? fallbackCandidates[0]?.id ?? null;
+  const preferred = regionRepresentativeIds[region];
+  return (
+    candidates.find((university) => university.id === preferred)?.id ??
+    candidates[0]?.id ??
+    fallbackCandidates.find((university) => university.id === preferred)?.id ??
+    fallbackCandidates.find(
+      (university) => regionForUniversity(university) === region,
+    )?.id ??
+    null
+  );
 }
 // Per-edition mode, not a claim that every team travelled to Chengdu.
 // Source: supplied network research, booklet PDF pp44/54 and the 2022 official recap.

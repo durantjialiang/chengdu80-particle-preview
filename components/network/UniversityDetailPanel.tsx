@@ -40,7 +40,7 @@ export default function UniversityDetailPanel({
     >
       <div className={styles.detailInner}>
         <div className={styles.detailTop}>
-          <span>{t(b('UNIVERSITY RECORD', '高校档案'))}</span>
+          <span>{t(b('UNIVERSITY PROFILE', '高校完整档案'))}</span>
           <Button
             variant="ghost"
             size="icon"
@@ -84,7 +84,7 @@ export default function UniversityDetailPanel({
           </p>
         )}
         <section>
-          <h3>{t(b('Participation years', '参赛年份'))}</h3>
+          <h3>{t(b('Recorded participation', '已收录参赛记录'))}</h3>
           <div className={styles.yearPills}>
             {university.participationYears.length ? (
               university.participationYears.map((year) => (

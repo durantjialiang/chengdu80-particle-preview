@@ -374,6 +374,28 @@ await test('site content and static archive contracts', async (t) => {
           );
           if (name === 'HeroEssentials')
             assert.match(html, /Competition guide/);
+          if (name === 'HomeBeforeNetwork') {
+            assert.match(html, /id="organizers"/);
+            assert.doesNotMatch(
+              html,
+              /id="(?:featured-projects|inside-the-challenge|people)"/,
+            );
+          }
+          if (name === 'HomeAfterNetwork') {
+            const sequence = [
+              'featured-projects',
+              'inside-the-challenge',
+              'people',
+              'beyond-80',
+              'news-next',
+            ];
+            const positions = sequence.map((id) => html.indexOf(`id="${id}"`));
+            assert.ok(positions.every((position) => position >= 0));
+            assert.deepEqual(
+              positions,
+              [...positions].sort((a, b) => a - b),
+            );
+          }
           if (name === 'PartnersPage') {
             assert.match(html, /The partnerships behind Chengdu 80/);
             assert.match(html, /Partnership milestones/);
@@ -1273,7 +1295,7 @@ await test('site content and static archive contracts', async (t) => {
                 card.includes(language === 'zh' ? '官方标识' : 'official logo'),
               );
               assert.match(card, /loading="lazy"/);
-              assert.match(card, /width="132" height="44"/);
+              assert.match(card, /width="144" height="48"/);
               const detail = render(WinnersPage, {
                 projectId: project.projectId,
               });

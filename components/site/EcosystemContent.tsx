@@ -265,8 +265,8 @@ export function HomeBeforeNetwork() {
         <p className={styles.introCopy}>
           {t(
             b(
-              'SWUFE and Chengdu Jiaozi jointly hosted the sixth and seventh editions. Their collaboration brings an academic competition into dialogue with the financial industry. FIC has its own role in research and exchange.',
-              '西南财经大学与成都交子金融控股集团联合主办第六届、第七届赛事，让学术竞赛与金融产业展开对话。FIC则以独立的研究与交流平台身份参与其中。',
+              'An 80-hour fintech challenge connecting university teams, researchers and industry. SWUFE and Chengdu Jiaozi jointly hosted the 2023 and 2024 editions.',
+              '80小时金融科技挑战，汇聚高校团队、研究者与产业。西南财经大学与成都交子金融控股集团联合主办2023、2024年赛事。',
             ),
           )}
         </p>
@@ -276,6 +276,66 @@ export function HomeBeforeNetwork() {
             {t(b('Explore the collaboration', '了解历届合作'))} →
           </a>
         </p>
+      </Section>
+    </div>
+  );
+}
+export function HomeAfterNetwork() {
+  const { t, href } = useSiteLanguage();
+  return (
+    <div className={styles.home}>
+      <Section
+        id="featured-projects"
+        eyebrow={b('FEATURED PROJECTS', '精选作品')}
+        title={b('What can an idea become?', '一个问题，可以变成怎样的产品？')}
+      >
+        <p className={styles.introCopy}>
+          {t(
+            b(
+              'Research discovery, explainable investing and insurance in the age of intelligent driving. A selection of historical prototypes and team records—not a ranking.',
+              '学术发现、可解释投资、智能驾驶时代的保险：精选历史原型与团队成果，不作为全赛事排名。',
+            ),
+          )}
+        </p>
+        <div className={site.archiveGrid}>
+          {featuredProjectIds.map((id) => (
+            <WinnerCard
+              key={id}
+              project={projects.find((p) => p.projectId === id)!}
+            />
+          ))}
+        </div>
+        <a className={styles.link} href={href('/winners/')}>
+          {t(b('All projects & awards', '全部作品与奖项'))} →
+        </a>
+      </Section>
+      <Section
+        id="inside-the-challenge"
+        eyebrow={b('INSIDE THE CHALLENGE', '走进比赛现场')}
+        title={b('People behind the prototypes.', '创意背后，是投入其中的人。')}
+      >
+        <p className={styles.introCopy}>
+          {t(
+            b(
+              'A working session, a shared stage, university teams and the start of a new initiative. Photographs from the 2019 and 2024 editions.',
+              '一起开发、同台交流、高校团队相聚，以及新合作的启动。回看2019与2024年的真实现场。',
+            ),
+          )}
+        </p>
+        <EditorialMedia ids={sceneImageIds} />
+        <a className={styles.link} href={href('/media/')}>
+          {t(b('Explore the photo archive', '浏览媒体与影像档案'))} →
+        </a>
+      </Section>
+      <Section
+        id="eighty-hour-challenge"
+        eyebrow={b('THE 80-HOUR CHALLENGE', '80小时挑战')}
+        title={b(
+          'From a question to a demonstration.',
+          '从赛题出发，以作品回答。',
+        )}
+      >
+        <Format />
         <div className={styles.values}>
           {[
             [
@@ -306,59 +366,6 @@ export function HomeBeforeNetwork() {
             </article>
           ))}
         </div>
-      </Section>
-      <Section
-        id="inside-the-challenge"
-        eyebrow={b('INSIDE THE CHALLENGE', '走进比赛现场')}
-        title={b('People behind the prototypes.', '创意背后，是投入其中的人。')}
-      >
-        <p className={styles.introCopy}>
-          {t(
-            b(
-              'A working session, a shared stage, university teams and the start of a new initiative. Photographs from the 2019 and 2024 editions.',
-              '一起开发、同台交流、高校团队相聚，以及新合作的启动。回看2019与2024年的真实现场。',
-            ),
-          )}
-        </p>
-        <EditorialMedia ids={sceneImageIds} />
-        <a className={styles.link} href={href('/media/')}>
-          {t(b('Explore the photo archive', '浏览媒体与影像档案'))} →
-        </a>
-      </Section>
-      <Section
-        id="featured-projects"
-        eyebrow={b('FEATURED PROJECTS', '精选作品')}
-        title={b('What can an idea become?', '一个问题，可以变成怎样的产品？')}
-      >
-        <p className={styles.introCopy}>
-          {t(
-            b(
-              'Research discovery, explainable investing and insurance in the age of intelligent driving. A selection of historical prototypes and team records—not a ranking.',
-              '学术发现、可解释投资、智能驾驶时代的保险：精选历史原型与团队成果，不作为全赛事排名。',
-            ),
-          )}
-        </p>
-        <div className={site.archiveGrid}>
-          {featuredProjectIds.map((id) => (
-            <WinnerCard
-              key={id}
-              project={projects.find((p) => p.projectId === id)!}
-            />
-          ))}
-        </div>
-        <a className={styles.link} href={href('/winners/')}>
-          {t(b('All projects & awards', '全部作品与奖项'))} →
-        </a>
-      </Section>
-      <Section
-        id="eighty-hour-challenge"
-        eyebrow={b('THE 80-HOUR CHALLENGE', '80小时挑战')}
-        title={b(
-          'From a question to a demonstration.',
-          '从赛题出发，以作品回答。',
-        )}
-      >
-        <Format />
       </Section>
       <Section
         id="people"
@@ -403,13 +410,6 @@ export function HomeBeforeNetwork() {
           </div>
         </div>
       </Section>
-    </div>
-  );
-}
-export function HomeAfterNetwork() {
-  const { t, href } = useSiteLanguage();
-  return (
-    <div className={styles.home}>
       <Section
         id="beyond-80"
         eyebrow={b('BEYOND THE 80 HOURS', '80小时之后')}
@@ -863,8 +863,9 @@ export function MediaPage() {
   const { t, href } = useSiteLanguage();
   const { filters, change } = useUrlFilters(mediaFilterKeys);
   const { year, type } = filters;
-  const photoYears = [...new Set(publicArchiveImages.map((image) => image.eventYear))]
-    .sort((a, b) => b - a);
+  const photoYears = [
+    ...new Set(publicArchiveImages.map((image) => image.eventYear)),
+  ].sort((a, b) => b - a);
   const images = publicArchiveImages
     .filter(
       (image) =>
@@ -878,7 +879,9 @@ export function MediaPage() {
                 ? image.imageType === 'work-session'
                 : type === 'awards'
                   ? image.imageType === 'award-ceremony'
-                  : ['event-group', 'event-recap', 'event-poster'].includes(image.imageType))),
+                  : ['event-group', 'event-recap', 'event-poster'].includes(
+                      image.imageType,
+                    ))),
     )
     .sort((a, b) => b.eventYear - a.eventYear);
   const resources: {
@@ -977,7 +980,10 @@ export function MediaPage() {
         <a href="#resources">{t(b('News & publications', '新闻与专刊'))}</a>
       </nav>
       <Section id="photos" title={b('Photo archive', '照片档案')}>
-        <nav className={site.pills} aria-label={t(b('Edition albums', '年度相册'))}>
+        <nav
+          className={site.pills}
+          aria-label={t(b('Edition albums', '年度相册'))}
+        >
           <a href={href('/history/2024/#edition-2024')}>
             {t(b('2024 edition album', '2024赛事相册'))} →
           </a>
@@ -1006,7 +1012,9 @@ export function MediaPage() {
             >
               <option value="">{t(b('All years', '全部年份'))}</option>
               {photoYears.map((photoYear) => (
-                <option key={photoYear} value={photoYear}>{photoYear}</option>
+                <option key={photoYear} value={photoYear}>
+                  {photoYear}
+                </option>
               ))}
             </select>
           </label>

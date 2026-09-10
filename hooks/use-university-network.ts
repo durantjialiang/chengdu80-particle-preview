@@ -1,6 +1,7 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { UniversityId } from '@/content/network';
+import type { NetworkRegion } from '@/content/network-regions';
 import {
   readNetworkView,
   networkViewUrl,
@@ -10,12 +11,17 @@ import {
 
 /** Persistent selection drives content; transient hover never owns the camera. */
 export function useUniversityNetwork(_reducedMotion: boolean) {
-  const [view, setView] = useState<NetworkView>(() =>
+  const [view, setViewState] = useState<NetworkView>(() =>
     readNetworkView(
       typeof window === 'undefined' ? '' : window.location.search,
     ),
   );
+  const viewRef = useRef(view);
+  useEffect(() => {
+    viewRef.current = view;
+  }, [view]);
   const [focusId, setFocusId] = useState<UniversityId>(view.selectedId);
+  const [focusRevision, setFocusRevision] = useState(0);
   const [cardHover, setCardHover] = useState<UniversityId | null>(null);
   const [nodeHover, setNodeHover] = useState<UniversityId | null>(null);
   const [detailId, setDetailId] = useState<UniversityId | null>(null);
@@ -23,16 +29,32 @@ export function useUniversityNetwork(_reducedMotion: boolean) {
     setCardHover(null);
     setNodeHover(null);
   }, []);
+  const focus = useCallback((id: UniversityId) => {
+    setFocusId(id);
+    setFocusRevision((revision) => revision + 1);
+  }, []);
   const commit = useCallback(
-    (next: NetworkView) => {
-      setView(next);
+    (
+      nextOrUpdate: NetworkView | ((current: NetworkView) => NetworkView),
+      mode: 'push' | 'replace' = 'push',
+    ) => {
+      const next =
+        typeof nextOrUpdate === 'function'
+          ? nextOrUpdate(viewRef.current)
+          : nextOrUpdate;
+      viewRef.current = next;
+      setViewState(next);
       clearHover();
       const url = networkViewUrl(window.location.href, next);
       if (
         url !==
         window.location.pathname + window.location.search + window.location.hash
       ) {
-        window.history.pushState(window.history.state, '', url);
+        window.history[mode === 'replace' ? 'replaceState' : 'pushState'](
+          window.history.state,
+          '',
+          url,
+        );
       }
     },
     [clearHover],
@@ -40,24 +62,53 @@ export function useUniversityNetwork(_reducedMotion: boolean) {
   useEffect(() => {
     const restore = () => {
       const next = readNetworkView(window.location.search);
-      setView(next);
-      setFocusId(next.selectedId);
+      viewRef.current = next;
+      setViewState(next);
+      focus(next.selectedId);
       setDetailId(null);
       clearHover();
     };
     window.addEventListener('popstate', restore);
     return () => window.removeEventListener('popstate', restore);
-  }, [clearHover]);
+  }, [clearHover, focus]);
   const selectUniversity = useCallback(
-    (id: UniversityId) => {
-      commit({ ...view, selectedId: id });
-      setFocusId(id);
+    (id: UniversityId, options?: { replace?: boolean }) => {
+      commit(
+        (current) => ({ ...current, selectedId: id }),
+        options?.replace ? 'replace' : 'push',
+      );
+      focus(id);
     },
-    [view, commit],
+    [commit, focus],
   );
   const setYear = useCallback(
-    (year: NetworkYear) => commit({ ...view, year }),
-    [view, commit],
+    (year: NetworkYear, options?: { replace?: boolean }) =>
+      commit(
+        (current) => ({ ...current, year }),
+        options?.replace ? 'replace' : 'push',
+      ),
+    [commit],
+  );
+  const setRegion = useCallback(
+    (region: NetworkRegion, options?: { replace?: boolean }) =>
+      commit(
+        (current) => ({ ...current, region }),
+        options?.replace ? 'replace' : 'push',
+      ),
+    [commit],
+  );
+  const setQuery = useCallback(
+    (query: string, options?: { replace?: boolean }) =>
+      commit(
+        (current) => ({ ...current, query }),
+        options?.replace === false ? 'push' : 'replace',
+      ),
+    [commit],
+  );
+  const setView = useCallback(
+    (next: NetworkView, options?: { replace?: boolean }) =>
+      commit(next, options?.replace ? 'replace' : 'push'),
+    [commit],
   );
   const showDetails = useCallback((id: UniversityId) => setDetailId(id), []);
   const closeDetails = useCallback(() => setDetailId(null), []);
@@ -71,7 +122,11 @@ export function useUniversityNetwork(_reducedMotion: boolean) {
     selectUniversity,
     selectFromNode: selectUniversity,
     setYear,
-    focusOn: setFocusId,
+    setRegion,
+    setQuery,
+    setView,
+    focusRevision,
+    focusOn: focus,
     showDetails,
     closeDetails,
   };

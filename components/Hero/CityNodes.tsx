@@ -20,6 +20,7 @@ type CityProps = LayerProps & {
   labels: LabelElements;
   originBounds: OriginBounds;
   anchor?: NodeLabelAnchor;
+  nearby?: boolean;
 };
 
 function City({
@@ -32,6 +33,7 @@ function City({
   opening,
   network,
   anchor,
+  nearby = false,
 }: CityProps) {
   const marker = useRef<THREE.Group>(null);
   const core = useRef<THREE.MeshBasicMaterial>(null);
@@ -73,25 +75,35 @@ function City({
     facingCamera.current = facing > 0.04;
     const visibility =
       THREE.MathUtils.smoothstep(facing, 0.04, 0.24) * appearance;
-    const highlighted = network
+    const selected = network
+      ? city.universityIds.includes(network.selectedId)
+      : false;
+    const hovered = network
       ? city.universityIds.includes(network.highlightedId!)
       : hover.current;
-    const emphasis =
-      network &&
-      network.highlightedId &&
-      network.highlightedId !== 'swufe' &&
-      !highlighted &&
-      !origin
-        ? 0.22
-        : 1;
+    const highlighted = selected || hovered;
+    const emphasis = network
+      ? selected
+        ? 1
+        : hovered
+          ? 1
+          : nearby
+            ? 0.48
+            : origin
+              ? 0.8
+              : 0.18
+      : 1;
     const pulse = reducedMotion
       ? 0
-      : Math.sin(clock.current.motion * 1.2 + position.x) * 0.08;
+      : Math.sin(clock.current.motion * 0.75 + position.x) *
+        (network ? 0.025 : 0.08);
+    if (core.current && !origin)
+      core.current.color.set(selected ? '#d8b786' : '#b5cbd3');
     if (core.current)
       core.current.opacity =
         appearance *
         emphasis *
-        (origin ? 1 : 0.72 + (highlighted ? 0.25 : pulse));
+        (origin ? 1 : 0.72 + (highlighted ? 0.22 : pulse));
     const activationPulse =
       opening && !reducedMotion ? Math.sin(activation * Math.PI) : 0;
     if (halo.current)
@@ -100,9 +112,13 @@ function City({
         emphasis *
         (origin
           ? 0.1 + pulse * 0.2 + activationPulse * 0.16
-          : highlighted
-            ? 0.19
-            : 0.05 + pulse * 0.1);
+          : selected
+            ? 0.24
+            : hovered
+              ? 0.18
+              : nearby
+                ? 0.105
+                : 0.04 + pulse * 0.06);
     for (let i = 0; i < rings.current.length; i++) {
       const ring = rings.current[i];
       if (!ring) continue;
@@ -180,6 +196,7 @@ function City({
         onClick={(event) => {
           if (!network || !facingCamera.current) return;
           event.stopPropagation();
+          network.onInteraction?.('pointer');
           network.onNodeSelect(city.id);
         }}
       >
@@ -264,22 +281,58 @@ export default function CityNodes(
     [anchors],
   );
   const originBounds = useRef({ x: 0, y: 0, width: 0, height: 0 });
+  const nearbyIds = useMemo(() => {
+    if (!props.network) return new Set<string>();
+    const focusId = props.network.highlightedId ?? props.network.selectedId;
+    const focus = cities.find((city) => city.universityIds.includes(focusId));
+    if (!focus) return new Set<string>();
+    const focusPoint = latLon(focus.latitude, focus.longitude, 1).normalize();
+    return new Set(
+      cities
+        .filter((city) => city.id !== focus.id && !city.isOrigin)
+        .sort((a, b) => {
+          const aPoint = latLon(a.latitude, a.longitude, 1).normalize();
+          const bPoint = latLon(b.latitude, b.longitude, 1).normalize();
+          return focusPoint.angleTo(aPoint) - focusPoint.angleTo(bPoint);
+        })
+        .slice(0, 3)
+        .map((city) => city.id),
+    );
+  }, [cities, props.network]);
   useFrame(({ size }) => {
     if (!props.network) return;
+    for (const city of cities) {
+      const anchor = anchors.get(city.id);
+      if (!anchor) continue;
+      const selected = city.universityIds.includes(props.network.selectedId);
+      const highlighted = city.universityIds.includes(
+        props.network.highlightedId!,
+      );
+      anchor.width =
+        selected || highlighted
+          ? Math.min(224, size.width * 0.64)
+          : city.isOrigin
+            ? 145
+            : Math.min(150, city.name.length * 7 + 34);
+    }
     placeNetworkLabels(ordered, size.width, size.height);
     for (const city of cities) {
       const label = props.labels.current.get(city.name),
         anchor = anchors.get(city.id);
       if (!label || !anchor) continue;
+      const selected = city.universityIds.includes(props.network.selectedId);
       const highlighted = city.universityIds.includes(
         props.network.highlightedId!,
       );
       label.style.transform = `translate3d(${anchor.labelX.toFixed(1)}px, ${anchor.labelY.toFixed(1)}px, 0)`;
       label.style.opacity = String(
-        anchor.visibility * (highlighted || city.isOrigin ? 1 : 0.64),
+        anchor.visibility *
+          (selected || highlighted || city.isOrigin ? 1 : 0.64),
       );
       label.style.visibility = anchor.visibility > 0.15 ? 'visible' : 'hidden';
       label.inert = anchor.visibility <= 0.15;
+      const button = label.querySelector('button');
+      if (button) button.tabIndex = anchor.visibility > 0.15 ? 0 : -1;
       const leader = label.firstElementChild as HTMLElement | null;
       if (leader) {
         const edge = anchor.x < anchor.labelX ? 0 : anchor.width,
@@ -299,6 +352,7 @@ export default function CityNodes(
           city={city}
           originBounds={originBounds}
           anchor={anchors.get(city.id)}
+          nearby={nearbyIds.has(city.id)}
         />
       ))}
     </group>

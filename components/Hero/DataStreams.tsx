@@ -53,7 +53,7 @@ function BrandOrbits({ lowPower, reducedMotion, clock, opening }: LayerProps) {
     if (dots.current && !reducedMotion) {
       for (let i = 0; i < packetPositions.length / 3; i++) {
         paths[i].getPointAt(
-          (clock.current.motion * 0.012 + 0.12 + i * 0.38) % 1,
+          (clock.current.motion * 0.008 + 0.12 + i * 0.38) % 1,
           point,
         );
         point.toArray(packetPositions, i * 3);
@@ -175,9 +175,9 @@ function Routes({
       material.current.uniforms.uOpening.value =
         opening?.current.frame.globeRevealProgress ?? -1;
       material.current.uniforms.uSelected.value =
-        network?.highlightedId && network.highlightedId !== 'swufe'
+        network?.selectedId && network.selectedId !== 'swufe'
           ? destinations.findIndex((city) =>
-              city.universityIds.includes(network.highlightedId!),
+              city.universityIds.includes(network.selectedId),
             )
           : -1;
     }
@@ -191,7 +191,7 @@ function Routes({
                 clock.current.elapsed - INTRO.routes - i * 0.15 - 0.6,
               );
         // All flows converge TO the SWUFE hub (curve point 0), not away from it.
-        curve.getPointAt(1 - ((elapsed * 0.065 + i * 0.13) % 1), point);
+        curve.getPointAt(1 - ((elapsed * 0.035 + i * 0.13) % 1), point);
         if (elapsed === 0) point.set(0, 0, 0); // Hidden within the globe until connected.
         point.toArray(packetPositions, i * 3);
       });
@@ -220,12 +220,13 @@ function Routes({
             void main() {
               float reveal = uOpening < 0.0 ? clamp((uElapsed - 2.5 - vRoute * 0.15) / 0.6, 0.0, 1.0) : clamp((uOpening - 0.36 - vRoute * 0.025) / 0.3, 0.0, 1.0);
               float alpha = (1.0 - smoothstep(reveal - 0.04, reveal, vProgress)) * step(0.01, reveal);
-              float packet = 1.0-fract(max(0.0, uMotion - (uOpening < 0.0 ? 3.1 + vRoute * 0.15 : 0.0)) * 0.065+vRoute*0.13);
+              float packet = 1.0-fract(max(0.0, uMotion - (uOpening < 0.0 ? 3.1 + vRoute * 0.15 : 0.0)) * 0.035+vRoute*0.13);
               float trail = exp(-pow((vProgress - packet) * 30.0, 2.0));
               float selected = 1.0-step(0.5,abs(uSelected-vRoute));
-              float emphasis = uSelected < 0.0 ? 1.0 : mix(0.13,2.4,selected);
+              float emphasis = uSelected < 0.0 ? 1.0 : mix(0.11,2.7,selected);
               float dash = mix(1.0,step(0.42,fract(vProgress*28.0))*0.55,vEcosystem);
-              gl_FragColor = vec4(0.42, 0.78, 0.91, alpha * (0.19 + trail * 0.3) * uActivation * emphasis * dash);
+              vec3 routeColor = mix(vec3(0.38, 0.59, 0.68), vec3(0.86, 0.68, 0.43), selected);
+              gl_FragColor = vec4(routeColor, alpha * (0.18 + trail * 0.3) * uActivation * emphasis * dash);
             }`}
           transparent
           depthWrite={false}
@@ -247,7 +248,7 @@ function Routes({
           <shaderMaterial
             uniforms={uniforms}
             vertexShader={`attribute float aRoute; varying float vRoute; void main() { vRoute=aRoute; vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_PointSize = 5.0; gl_Position = projectionMatrix * mv; }`}
-            fragmentShader={`uniform float uSelected; varying float vRoute; void main() { float d = length(gl_PointCoord - 0.5); float emphasis = uSelected < 0.0 || abs(uSelected-vRoute)<0.5 ? 1.0 : 0.15; gl_FragColor = vec4(0.69, 0.9, 1.0, (1.0 - smoothstep(0.02, 0.5, d)) * 0.85 * emphasis); }`}
+            fragmentShader={`uniform float uSelected; varying float vRoute; void main() { float d = length(gl_PointCoord - 0.5); float selected = uSelected >= 0.0 && abs(uSelected-vRoute)<0.5 ? 1.0 : 0.0; float emphasis = uSelected < 0.0 || selected > 0.5 ? 1.0 : 0.16; vec3 color = mix(vec3(0.64, 0.82, 0.87), vec3(0.96, 0.78, 0.5), selected); gl_FragColor = vec4(color, (1.0 - smoothstep(0.02, 0.5, d)) * 0.78 * emphasis); }`}
             transparent
             depthWrite={false}
             blending={THREE.AdditiveBlending}

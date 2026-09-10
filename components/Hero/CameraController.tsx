@@ -1,11 +1,14 @@
 'use client';
 
 import { useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { INITIAL_TILT, type ControllerProps } from './scene-config';
 import { getUniversity } from '@/content/network';
 import { universityOrientation } from './geometry';
+
+const WORLD_Y = new THREE.Vector3(0, 1, 0);
+const WORLD_X = new THREE.Vector3(1, 0, 0);
 
 export default function CameraController({
   active,
@@ -19,6 +22,9 @@ export default function CameraController({
 }: ControllerProps) {
   const { camera, invalidate } = useThree();
   const focusId = network?.focusId;
+  const focusRevision = network?.focusRevision ?? 0;
+  const manualRotation = useRef(false);
+  const previousFocus = useRef({ id: focusId, revision: focusRevision });
   const focusedOrientation = useMemo(() => {
     if (!focusId) return null;
     // Focus the displayed city marker for a cluster; retain original campus pins.
@@ -33,7 +39,13 @@ export default function CameraController({
   }, [focusId, lowPower, network?.nodes]);
   useEffect(() => {
     invalidate();
-  }, [focusId, network?.highlightedId, network?.nodes, invalidate]);
+  }, [
+    focusId,
+    focusRevision,
+    network?.highlightedId,
+    network?.nodes,
+    invalidate,
+  ]);
   useEffect(() => {
     camera.position.set(-0.62, 0.46, lowPower ? 5.95 : 6.45);
     camera.lookAt(0, 0, 0);
@@ -42,11 +54,29 @@ export default function CameraController({
   /* oxlint-disable react/react-compiler -- Imperative R3F camera/transform updates are outside React rendering. */
   useFrame((_, delta) => {
     if (network) {
-      // Explorer input owns orientation. No competing orbit or pointer parallax.
+      // A new card/region focus hands orientation back to the explorer. Once a
+      // person drags the globe, hold that orientation until the next explicit
+      // focus action so the camera does not fight the gesture.
+      if (
+        previousFocus.current.id !== focusId ||
+        previousFocus.current.revision !== focusRevision
+      ) {
+        previousFocus.current = { id: focusId, revision: focusRevision };
+        manualRotation.current = false;
+      }
+      if (globe.current && (pointer.current.dragX || pointer.current.dragY)) {
+        manualRotation.current = true;
+        const horizontal = pointer.current.dragX * 0.006;
+        const vertical = pointer.current.dragY * 0.0045;
+        pointer.current.dragX = 0;
+        pointer.current.dragY = 0;
+        globe.current.rotateOnWorldAxis(WORLD_Y, horizontal);
+        globe.current.rotateOnWorldAxis(WORLD_X, vertical);
+      }
       clock.current.elapsed = 10;
       if (active && !reducedMotion)
         clock.current.motion += Math.min(delta, 0.05);
-      if (globe.current && focusedOrientation) {
+      if (globe.current && focusedOrientation && !manualRotation.current) {
         if (reducedMotion) globe.current.quaternion.copy(focusedOrientation);
         else if (active)
           globe.current.quaternion.slerp(

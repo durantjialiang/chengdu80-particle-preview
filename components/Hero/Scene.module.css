@@ -81,6 +81,7 @@
   pointer-events: auto;
   padding: 6px 8px;
   min-height: 32px;
+  max-width: min(244px, calc(100vw - 30px));
   font-size: 12px;
   line-height: 1.3;
   color: #a6c0ce;
@@ -92,6 +93,80 @@
   color: #e6fcff;
   border-color: #a2edf6a3;
   background: #102635ed;
+}
+.nodeLabel button[data-selected='true'] {
+  color: #f1e1c6;
+  border-color: #d3b17caa;
+  background: #2a251bed;
+}
+.nodeLabel button[data-expanded='true'] {
+  white-space: normal;
+  text-align: left;
+  min-width: min(176px, calc(100vw - 30px));
+  padding: 7px 9px;
+}
+.conciseLabel {
+  display: inline;
+}
+.expandedLabel {
+  display: none;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 3px;
+  line-height: 1.25;
+}
+.nodeLogo {
+  display: block;
+  width: 36px;
+  height: 30px;
+  padding: 3px;
+  box-sizing: border-box;
+  object-fit: contain;
+  object-position: center;
+  border: 1px solid #a6c8d44d;
+  border-radius: 4px;
+  background: #102331;
+}
+.nodeLogo[data-surface='light'] {
+  background: #f4f6f8;
+  border-color: #d9e3e8;
+}
+.nodeLogoFallback {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  min-height: 30px;
+  padding: 3px;
+  box-sizing: border-box;
+  border: 1px solid #a6c8d44d;
+  border-radius: 4px;
+  color: #e4f3f6;
+  background: #102331;
+  font-size: 8px;
+  font-weight: 600;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+.expandedCopy {
+  min-width: 0;
+}
+.expandedLabel strong {
+  display: block;
+  color: inherit;
+  font-size: 12px;
+  font-weight: 600;
+}
+.expandedLabel small {
+  display: block;
+  color: #8fb4c2;
+  font-size: 10px;
+  letter-spacing: 0.01em;
+}
+.nodeLabel button[data-expanded='true'] .conciseLabel {
+  display: none;
+}
+.nodeLabel button[data-expanded='true'] .expandedLabel {
+  display: grid;
 }
 .nodeLabel button[data-hub='true'] {
   color: #dfbb93;
@@ -116,6 +191,10 @@
 }
 .scene[data-network-explorer='true'] .labels {
   z-index: 3;
+}
+.scene[data-network-explorer='true'] {
+  /* Keep vertical page scrolling usable while horizontal drags rotate the map. */
+  touch-action: pan-y;
 }
 .scene[data-spatial-ready='true'] > .fallback {
   visibility: hidden;

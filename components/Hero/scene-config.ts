@@ -15,10 +15,19 @@ export const INTRO = {
 export type NetworkInteraction = {
   nodes?: readonly CityNode[];
   focusId: UniversityId | null;
+  /** Monotonic focus action token; permits refocusing the same university. */
+  focusRevision?: number;
   highlightedId: UniversityId | null;
   selectedId: UniversityId;
   onNodeHover: (id: UniversityId | null) => void;
   onNodeSelect: (id: UniversityId) => void;
+  /**
+   * Lets the surrounding explorer stop an automated tour as soon as a person
+   * takes control of the globe. The reason is intentionally advisory so
+   * existing consumers can ignore it while accessibility and pointer inputs
+   * share the same cancellation path.
+   */
+  onInteraction?: (kind?: 'drag' | 'pointer' | 'keyboard') => void;
 };
 export type GlobeProps = {
   lowPower: boolean;
@@ -27,7 +36,13 @@ export type GlobeProps = {
   opening?: OpeningBridgeRef;
   network?: NetworkInteraction;
 };
-export type ScenePointer = { x: number; y: number };
+export type ScenePointer = {
+  x: number;
+  y: number;
+  dragging: boolean;
+  dragX: number;
+  dragY: number;
+};
 export type SceneClock = { elapsed: number; motion: number };
 export type LayerProps = GlobeProps & { clock: RefObject<SceneClock> };
 export type ControllerProps = LayerProps & {

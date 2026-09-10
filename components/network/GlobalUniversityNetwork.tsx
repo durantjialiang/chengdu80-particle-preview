@@ -3,13 +3,18 @@ import {
   Component,
   lazy,
   Suspense,
+  useEffect,
   useMemo,
   useRef,
   useState,
   type ReactNode,
 } from 'react';
 import { useInView } from 'framer-motion';
-import { getUniversity, type UniversityId } from '@/content/network';
+import {
+  getUniversity,
+  universities,
+  type UniversityId,
+} from '@/content/network';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import { bilingual as b } from '@/content/competition';
 import { universityName, universityLocation } from '@/content/university-i18n';
@@ -19,15 +24,20 @@ import {
   explorerNodes,
   filterUniversities,
   networkYears,
+  networkViewUrl,
+  regionFocusUniversity,
   universitySpotlight,
   type NetworkYear,
 } from '@/lib/university-explorer';
+import { networkRegions, type NetworkRegion } from '@/content/network-regions';
+import { useNetworkTour } from '@/hooks/use-network-tour';
 import UniversitySpotlight from './UniversitySpotlight';
 import { UniversityLogo } from './UniversityLogo';
 import UniversityDetailPanel from './UniversityDetailPanel';
 import { Photo, Viewer } from '@/components/site/ArchiveGallery';
 import StaticNetwork from '@/components/Hero/StaticNetwork';
 import styles from './Network.module.css';
+import controls from './NetworkControls.module.css';
 
 const Globe = lazy(() => import('@/components/Globe'));
 class GlobeLoadBoundary extends Component<
@@ -56,6 +66,7 @@ export default function GlobalUniversityNetwork({
   const { t, href, language } = useSiteLanguage();
   const mapPanel = useRef<HTMLDivElement>(null);
   const inView = useInView(mapPanel, { margin: '100px' });
+  const tourInView = useInView(mapPanel, { margin: '0px' });
   const {
     lowPower,
     reducedMotion: systemReducedMotion,
@@ -63,24 +74,114 @@ export default function GlobalUniversityNetwork({
   } = useScenePreferences();
   const reducedMotion = systemReducedMotion || forceReducedMotion;
   const selection = useUniversityNetwork(reducedMotion);
-  const [query, setQuery] = useState('');
   const [cityId, setCityId] = useState<UniversityId | null>(null);
   const [eventViewer, setEventViewer] = useState<number | null>(null);
+  const params =
+    typeof window === 'undefined'
+      ? null
+      : new URLSearchParams(window.location.search);
+  const explicitView = Boolean(
+    params &&
+    ['university', 'year', 'region', 'query', 'q'].some((key) =>
+      params.has(key),
+    ),
+  );
+  const tour = useNetworkTour({
+    inView: tourInView,
+    pageVisible,
+    reducedMotion,
+    autoStart: !explicitView,
+    selectUniversity: selection.selectUniversity,
+  });
+  const stopTour = tour.stop;
+  const selectUniversity = selection.selectUniversity;
+  useEffect(() => {
+    const cancelTour = () => stopTour('filter');
+    window.addEventListener('popstate', cancelTour);
+    return () => window.removeEventListener('popstate', cancelTour);
+  }, [stopTour]);
   const filtered = useMemo(
-    () => filterUniversities(selection.year, query),
-    [selection.year, query],
+    () => filterUniversities(selection.year, selection.query, selection.region),
+    [selection.year, selection.query, selection.region],
+  );
+  const regionCounts = useMemo(
+    () =>
+      Object.fromEntries(
+        networkRegions.map((region) => [
+          region,
+          filterUniversities(selection.year, selection.query, region).length,
+        ]),
+      ) as Record<NetworkRegion, number>,
+    [selection.year, selection.query],
   );
   const nodes = useMemo(() => explorerNodes(filtered), [filtered]);
   const cityMembers =
     nodes.find((node) => node.id === cityId)?.universityIds ?? [];
+  const compactDefaultIds: readonly UniversityId[] = [
+    'swufe',
+    'nus',
+    'berkeley',
+    'toronto',
+    'eth',
+    'unsw',
+  ];
+  const compactDefaults = compactDefaultIds
+    .map((id) => universities.find((university) => university.id === id))
+    .filter((university): university is (typeof universities)[number] =>
+      Boolean(university),
+    );
+  const hasFilters =
+    selection.year !== 'all' ||
+    selection.region !== 'all' ||
+    selection.query.trim().length > 0;
   const visibleUniversities = compact
-    ? [
-        ...filtered.filter((u) => u.id === selection.selectedId),
-        ...filtered.filter((u) => u.id !== selection.selectedId),
-      ].slice(0, 6)
+    ? (hasFilters ? filtered : compactDefaults).slice(0, 6)
     : filtered;
+  useEffect(() => {
+    if (!filtered.length || filtered.some((u) => u.id === selection.selectedId))
+      return;
+    const nextId =
+      regionFocusUniversity(selection.region, filtered) ?? filtered[0]?.id;
+    if (nextId && nextId !== selection.selectedId)
+      selectUniversity(nextId, { replace: true });
+  }, [filtered, selection.region, selection.selectedId, selectUniversity]);
   const select = (id: UniversityId) => {
+    tour.stop('card');
     selection.selectUniversity(id);
+    setCityId(null);
+    if (
+      typeof window !== 'undefined' &&
+      window.matchMedia('(max-width: 900px)').matches
+    ) {
+      window.requestAnimationFrame(() => {
+        document
+          .querySelector<HTMLElement>('[data-spotlight]')
+          ?.scrollIntoView({
+            behavior: reducedMotion ? 'auto' : 'smooth',
+            block: 'start',
+          });
+      });
+    }
+  };
+  const changeRegion = (region: NetworkRegion) => {
+    tour.stop('filter');
+    const next = filterUniversities(selection.year, selection.query, region);
+    const nextId = next.some((u) => u.id === selection.selectedId)
+      ? selection.selectedId
+      : (regionFocusUniversity(region, next, universities) ??
+        selection.selectedId);
+    selection.setView({
+      year: selection.year,
+      region,
+      query: selection.query,
+      selectedId: nextId,
+    });
+    selection.focusOn(nextId);
+    setCityId(null);
+  };
+  const changeQuery = (value: string) => {
+    tour.stop('search');
+    selection.setQuery(value);
     setCityId(null);
   };
   const mapSelection = {
@@ -90,6 +191,8 @@ export default function GlobalUniversityNetwork({
       ? selection.highlightedId
       : null,
     selectedId: selection.selectedId,
+    focusRevision: selection.focusRevision,
+    onInteraction: () => tour.stop('globe'),
     onNodeHover: (id: UniversityId | null) => {
       const members = nodes.find((n) => n.id === id)?.universityIds ?? [];
       selection.setNodeHover(
@@ -99,6 +202,7 @@ export default function GlobalUniversityNetwork({
       );
     },
     onNodeSelect: (id: UniversityId) => {
+      tour.stop('node');
       const members = nodes.find((n) => n.id === id)?.universityIds ?? [];
       if (members.length === 1) select(members[0]);
       else if (members.length > 1) setCityId(id);
@@ -109,15 +213,32 @@ export default function GlobalUniversityNetwork({
     selection.year,
   ).eventPhotos;
   const changeYear = (year: NetworkYear) => {
+    tour.stop('filter');
     selection.setYear(year);
     setCityId(null);
     setEventViewer(null);
   };
-  const explorerHref =
-    href('/global-network/') +
-    (selection.year === 'all' ? '' : '&year=' + selection.year) +
-    '&university=' +
-    selection.selectedId;
+  const explorerHref = networkViewUrl(
+    new URL(href('/global-network/'), 'https://chengdu80.invalid').href,
+    selection,
+  );
+  const replayTour = () => {
+    tour.stop('filter');
+    if (hasFilters) {
+      selection.setView(
+        {
+          year: 'all',
+          region: 'all',
+          query: '',
+          selectedId: 'swufe',
+        },
+        { replace: true },
+      );
+      selection.focusOn('swufe');
+      setCityId(null);
+    }
+    tour.replay();
+  };
   return (
     <section
       id="global-network"
@@ -125,7 +246,11 @@ export default function GlobalUniversityNetwork({
       data-standalone={standalone}
       data-compact={compact}
       data-reduced-motion={reducedMotion}
+      data-tour-state={tour.state}
+      data-tour-step={tour.stepId}
+      data-tour-stop={tour.stopReason ?? undefined}
       aria-labelledby="network-title"
+      onKeyDownCapture={() => tour.stop('keyboard')}
     >
       <header className={styles.header} data-particle-reading-region>
         <p className={styles.eyebrow}>
@@ -139,8 +264,8 @@ export default function GlobalUniversityNetwork({
         <p>
           {t(
             b(
-              'Explore the universities, teams and ideas that meet in Chengdu.',
-              '在这里，探索汇聚成都的高校、团队与创意。',
+              'Explore the universities, teams and ideas across past editions of Chengdu 80.',
+              '探索成都80历届赛事中的高校、团队与创意。',
             ),
           )}
         </p>
@@ -149,6 +274,32 @@ export default function GlobalUniversityNetwork({
             {t(b('Open network explorer', '探索完整高校网络'))} ↗
           </a>
         )}
+        <div className={controls.tourRow}>
+          <button
+            type="button"
+            className={controls.tourButton}
+            onClick={replayTour}
+            disabled={reducedMotion}
+          >
+            {t(
+              hasFilters
+                ? b(
+                    'Take a global tour · clear filters',
+                    '开始全球巡游 · 清除筛选',
+                  )
+                : b('Take a global tour', '开始全球巡游'),
+            )}
+          </button>
+          <span className={controls.tourStatus} aria-live="polite">
+            {tour.state === 'paused'
+              ? t(b('Tour paused', '巡游已暂停'))
+              : tour.state === 'running'
+                ? t(b('Global tour in progress', '全球巡游进行中'))
+                : tour.state === 'complete'
+                  ? t(b('Tour complete', '巡游完成'))
+                  : null}
+          </span>
+        </div>
       </header>
       <div className="sr-only" aria-live="polite" aria-atomic="true">
         <strong>{getUniversity(selection.selectedId).shortName}</strong>{' '}
@@ -188,21 +339,57 @@ export default function GlobalUniversityNetwork({
           {t(b('Find a university', '查找高校'))}
           <input
             type="search"
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setCityId(null);
-            }}
+            value={selection.query}
+            onChange={(e) => changeQuery(e.target.value)}
             placeholder={t(
               b('Name, abbreviation or city', '学校名称、简称或城市'),
             )}
           />
         </label>
+        <fieldset className={controls.regionBar}>
+          <legend className={controls.regionLabel}>
+            {t(b('Explore by region', '按地区探索'))}
+          </legend>
+          <div className={controls.regionButtons}>
+            {networkRegions.map((region) => {
+              const label =
+                region === 'all'
+                  ? b('All regions', '全部地区')
+                  : region === 'asia'
+                    ? b('Asia', '亚洲')
+                    : region === 'europe'
+                      ? b('Europe', '欧洲')
+                      : region === 'north-america'
+                        ? b('North America', '北美洲')
+                        : b('Oceania', '大洋洲');
+              return (
+                <button
+                  key={region}
+                  type="button"
+                  className={controls.regionButton}
+                  aria-pressed={selection.region === region}
+                  onClick={() => changeRegion(region)}
+                >
+                  {t(label)}{' '}
+                  <span className={controls.regionCount}>
+                    {regionCounts[region]}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </fieldset>
         <button
           type="button"
           onClick={() => {
-            setQuery('');
-            changeYear('all');
+            tour.stop('filter');
+            selection.setView({
+              year: 'all',
+              region: 'all',
+              query: '',
+              selectedId: selection.selectedId,
+            });
+            setCityId(null);
           }}
         >
           {t(b('Clear filters', '清除筛选'))}
@@ -224,26 +411,6 @@ export default function GlobalUniversityNetwork({
                   ),
           )}
         </p>
-      )}
-      {query.trim() && !filtered.some((u) => u.id === selection.selectedId) && (
-        <div
-          className={styles.emptyRecord}
-          data-search-selection-mismatch
-          aria-live="polite"
-        >
-          <p>
-            {universityName(getUniversity(selection.selectedId), language)} /{' '}
-            {t(
-              b(
-                'Your selected university is outside the search results. Its profile remains selected.',
-                '当前选中的高校不在搜索结果中，右侧保留其资料。',
-              ),
-            )}
-          </p>
-          <button type="button" onClick={() => setQuery('')}>
-            {t(b('Clear search', '清除搜索'))}
-          </button>
-        </div>
       )}
       <div className={styles.workspace} data-particle-reading-region>
         <div ref={mapPanel} className={styles.mapPanel} data-particle-no-force>
@@ -296,8 +463,51 @@ export default function GlobalUniversityNetwork({
               </button>
             </div>
           )}
+          {filtered.length > 0 && (
+            <div
+              className={styles.connectionReadout}
+              data-particle-reading-region
+            >
+              <span className={styles.readoutLabel}>
+                {t(b('GEOGRAPHIC CONNECTION', '地理连接'))}
+              </span>
+              <strong>
+                <span>
+                  {
+                    universityLocation(getUniversity('swufe'), language).split(
+                      ' · ',
+                    )[0]
+                  }
+                </span>{' '}
+                ↔{' '}
+                {
+                  universityLocation(
+                    getUniversity(selection.selectedId),
+                    language,
+                  ).split(' · ')[0]
+                }
+              </strong>
+              <button
+                type="button"
+                className={controls.profileLink}
+                onClick={() => {
+                  tour.stop('card');
+                  selection.showDetails(selection.selectedId);
+                }}
+              >
+                {universityName(getUniversity(selection.selectedId), language)}{' '}
+                · {t(b('Explore university profile', '查看高校资料'))} ↗
+              </button>
+            </div>
+          )}
           <div className={styles.mapFooter}>
-            <button type="button" onClick={() => selection.focusOn('swufe')}>
+            <button
+              type="button"
+              onClick={() => {
+                tour.stop('card');
+                selection.focusOn('swufe');
+              }}
+            >
               {t(b('Return to Chengdu', '回到成都'))} ↗
             </button>
             <span>
@@ -313,19 +523,34 @@ export default function GlobalUniversityNetwork({
             </span>
           </div>
         </div>
-        <UniversitySpotlight
-          key={selection.selectedId + ':' + selection.year}
-          universityId={selection.selectedId}
-          year={selection.year}
-          compact={compact}
-          onYear={changeYear}
-          onLocate={() => selection.focusOn(selection.selectedId)}
-          onDetails={() => selection.showDetails(selection.selectedId)}
-        />
+        {filtered.length > 0 && (
+          <UniversitySpotlight
+            key={selection.selectedId + ':' + selection.year}
+            universityId={selection.selectedId}
+            year={selection.year}
+            compact={compact}
+            onYear={changeYear}
+            onLocate={() => {
+              tour.stop('card');
+              selection.focusOn(selection.selectedId);
+            }}
+            onDetails={() => {
+              tour.stop('card');
+              selection.showDetails(selection.selectedId);
+            }}
+          />
+        )}
       </div>
       <div className={styles.directory} data-particle-reading-region>
         <div className={styles.directoryHeading}>
-          <h3>{t(b('University directory', '高校目录'))}</h3>
+          <h3>
+            {t(
+              b(
+                'Universities represented across past editions',
+                '历届赛事收录高校',
+              ),
+            )}
+          </h3>
           <span>
             {visibleUniversities.length} / {filtered.length}
           </span>
@@ -355,7 +580,7 @@ export default function GlobalUniversityNetwork({
         </div>
         {compact && (
           <a className={styles.pageLink} href={explorerHref}>
-            {t(b('Explore all university records', '查看完整高校目录'))} ↗
+            {t(b('Explore all universities', '探索全部高校'))} ↗
           </a>
         )}
       </div>

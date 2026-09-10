@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { UniversityId } from '@/content/network';
 import { bilingual as b } from '@/content/competition';
-import { universityName, universityLocation } from '@/content/university-i18n';
+import {
+  universityName,
+  universityLocation,
+  universityRole,
+} from '@/content/university-i18n';
 import {
   universitySpotlight,
   type NetworkYear,
@@ -9,8 +13,13 @@ import {
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import { UniversityLogo } from './UniversityLogo';
 import { Photo, Viewer } from '@/components/site/ArchiveGallery';
-import styles from './Network.module.css';
+import styles from './UniversitySpotlight.module.css';
 
+/**
+ * The reading surface beside the globe is intentionally a single, short
+ * profile. Detailed awards and source records remain in the dialog opened by
+ * “Explore university profile”.
+ */
 export default function UniversitySpotlight({
   universityId,
   year,
@@ -28,52 +37,111 @@ export default function UniversitySpotlight({
 }) {
   const { t, language, href } = useSiteLanguage();
   const record = universitySpotlight(universityId, year);
-  const { university, teamPhoto } = record;
+  const allYearsRecord = useMemo(
+    () => universitySpotlight(universityId, 'all'),
+    [universityId],
+  );
+  const { university } = record;
   const [viewer, setViewer] = useState(false);
+
+  // A representative photo can come from another documented edition. The
+  // caption always carries its own year so it cannot be read as a photo from
+  // the selected edition. A no-record year stays empty and truthful.
+  const teamPhoto = record.hasRecord ? allYearsRecord.teamPhoto : null;
+  const selectedProject = record.projects[0] ?? null;
+  const representativeAward = record.awards[0] ?? null;
+  const representativeYear =
+    year === 'all' ? (university.participationYears.at(-1) ?? null) : year;
+  const headingId = `spotlight-title-${universityId}`;
+
   return (
     <article
       className={styles.spotlight}
       data-spotlight={universityId}
       data-year={year}
+      data-compact={compact}
       data-particle-reading-region
-      aria-labelledby="spotlight-title"
+      aria-labelledby={headingId}
     >
-      <div className={styles.spotlightIdentity}>
+      <div className={styles.identity}>
         <a
+          className={styles.logoLink}
           href={university.website}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={universityName(university, language)}
+          aria-label={t(
+            b(
+              `${university.name} official website`,
+              `${universityName(university, 'zh')}官方网站`,
+            ),
+          )}
         >
           <UniversityLogo university={university} />
         </a>
-        <span className={styles.eyebrow}>
-          {year === 'all' ? t(b('Across the years', '历届记录')) : year}
-        </span>
+        <div className={styles.identityMeta}>
+          <span className={styles.eyebrow}>
+            {t(b('University spotlight', '高校焦点'))}
+          </span>
+          <p className={styles.location}>
+            {universityLocation(university, language)}
+          </p>
+        </div>
       </div>
-      <h3 id="spotlight-title">
-        <a href={university.website} target="_blank" rel="noopener noreferrer">
-          {universityName(university, language)} ↗
-        </a>
+
+      <h3 id={headingId} className={styles.title}>
+        {universityName(university, language)}
       </h3>
-      <p className={styles.location}>
-        {universityLocation(university, language)}
-      </p>
-      <div className={styles.spotlightActions}>
+
+      <div className={styles.quickActions}>
         <button type="button" onClick={onLocate}>
           {t(b('Locate on globe', '在地球上查看'))}
         </button>
-        <button type="button" onClick={onDetails}>
-          {t(b('University details', '高校详情'))} ↗
-        </button>
       </div>
+
+      <section
+        className={styles.participation}
+        aria-labelledby={`${headingId}-years`}
+      >
+        <h4 id={`${headingId}-years`}>
+          {t(b('Recorded participation', '已收录参赛记录'))}
+        </h4>
+        {university.participationYears.length > 0 ? (
+          <div className={styles.yearPills}>
+            {university.participationYears.map((participationYear) => (
+              <button
+                key={participationYear}
+                type="button"
+                aria-pressed={year === participationYear}
+                onClick={() => onYear(participationYear as NetworkYear)}
+              >
+                {participationYear}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <p className={styles.muted}>
+            {t(
+              b('No participation year is recorded.', '尚未收录具体参赛年份。'),
+            )}
+          </p>
+        )}
+      </section>
+
       {!record.hasRecord ? (
         <div className={styles.emptyRecord} aria-live="polite">
           <p>
             {t(
               b(
-                'No recorded participation for this year.',
-                '此年份暂无已收录记录。',
+                year === 2025
+                  ? 'The competition was not held in 2025.'
+                  : year === 2026
+                    ? 'The 2026 university roster has not been announced.'
+                    : 'No recorded participation for this year.',
+                year === 2025
+                  ? '2025年未举办赛事。'
+                  : year === 2026
+                    ? '2026年高校名单待公布。'
+                    : '此年份暂无已收录参赛记录。',
               ),
             )}
           </p>
@@ -83,21 +151,6 @@ export default function UniversitySpotlight({
         </div>
       ) : (
         <>
-          <div
-            className={styles.yearPills}
-            aria-label={t(b('Recorded participation years', '已收录参赛年份'))}
-          >
-            {university.participationYears.map((y) => (
-              <button
-                key={y}
-                type="button"
-                aria-pressed={year === y}
-                onClick={() => onYear(y as NetworkYear)}
-              >
-                {y}
-              </button>
-            ))}
-          </div>
           {record.mode !== 'unknown' && (
             <p className={styles.mode}>
               {t(
@@ -107,81 +160,85 @@ export default function UniversitySpotlight({
               )}
             </p>
           )}
-          {teamPhoto ? (
-            <figure className={styles.teamPhoto}>
-              <button
-                type="button"
-                onClick={() => setViewer(true)}
-                aria-label={t(b('Enlarge team photograph', '放大团队照片'))}
+
+          <div className={styles.profileGrid}>
+            {teamPhoto && (
+              <figure className={styles.teamPhoto}>
+                <button
+                  type="button"
+                  onClick={() => setViewer(true)}
+                  aria-label={t(b('Enlarge team photograph', '放大团队照片'))}
+                >
+                  <Photo image={teamPhoto} />
+                </button>
+                <figcaption>
+                  <span>{teamPhoto.eventYear}</span>{' '}
+                  {t(b('University team photograph', '高校团队合影'))}
+                </figcaption>
+              </figure>
+            )}
+
+            {selectedProject ? (
+              <section
+                className={styles.feature}
+                data-spotlight-project={selectedProject.projectId}
               >
-                <Photo image={teamPhoto} />
-              </button>
-              <figcaption>
-                {teamPhoto.eventYear} / {t(b('University team', '高校团队'))}
-              </figcaption>
-            </figure>
-          ) : (
-            <p className={styles.photoPlaceholder}>
-              {t(b('Team photograph to follow', '团队照片待补'))}
-            </p>
-          )}
-          <div className={styles.spotlightProjects}>
-            <h4>{t(b('Ideas into prototypes', '从创想到作品'))}</h4>
-            {record.projects.slice(0, compact ? 1 : 2).map((project) => (
-              <div
-                className={styles.projectPreview}
-                key={project.projectId}
-                data-spotlight-project={project.projectId}
-              >
-                <span>
-                  {project.year} / {t(project.awardLabel)}
-                </span>
+                <h4>{t(b('Selected project', '代表项目'))}</h4>
+                <p className={styles.featureMeta}>
+                  {selectedProject.year ?? selectedProject.reportedYear ?? '—'}{' '}
+                  / {t(selectedProject.awardLabel)}
+                </p>
                 <h5>
-                  <a href={href(`/winners/${project.projectId}/`)}>
-                    {project.projectName ?? project.teamName} ↗
+                  <a href={href(`/winners/${selectedProject.projectId}/`)}>
+                    {selectedProject.projectName ?? selectedProject.teamName} ↗
                   </a>
                 </h5>
-                {project.projectName && project.teamName && (
-                  <p>{project.teamName}</p>
+                <p className={styles.summary}>{t(selectedProject.summary)}</p>
+              </section>
+            ) : (
+              <section className={styles.feature}>
+                <h4>{t(b('Representative participation', '代表参赛记录'))}</h4>
+                {representativeAward ? (
+                  <>
+                    <p className={styles.featureMeta}>
+                      {representativeAward.year} /{' '}
+                      {t(b('Award record', '获奖记录'))}
+                    </p>
+                    <a
+                      className={styles.featureLink}
+                      href={representativeAward.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {t(representativeAward.label)} ↗
+                    </a>
+                  </>
+                ) : (
+                  <p className={styles.summary}>
+                    {representativeYear ?? '—'} /{' '}
+                    {universityRole(university.relationshipType, language)}
+                  </p>
                 )}
-                <p>{t(project.summary)}</p>
-              </div>
-            ))}
-            {record.projects.length === 0 && (
-              <p>
-                {t(
-                  b(
-                    'No project profile recorded for this selection.',
-                    '当前选择暂无已建档作品。',
-                  ),
-                )}
-              </p>
+              </section>
             )}
           </div>
-          {record.awards.length > 0 && (
-            <div className={styles.awardList}>
-              <h4>{t(b('Recognition', '获奖记录'))}</h4>
-              {record.awards.slice(0, compact ? 1 : 3).map((award) => (
-                <p key={award.id}>
-                  <span>{award.year}</span>{' '}
-                  <a
-                    href={award.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {t(award.label)} ↗
-                  </a>
-                </p>
-              ))}
-            </div>
-          )}
-          {year !== 'all' && (
-            <a className={styles.pageLink} href={href(`/history/${year}/`)}>
-              {t(b('Explore this edition', '浏览本届赛事'))} ↗
-            </a>
-          )}
         </>
       )}
+
+      <div className={styles.footerActions}>
+        <button type="button" onClick={onDetails}>
+          {t(b('Explore university profile', '查看高校完整档案'))} ↗
+        </button>
+        <a href={university.website} target="_blank" rel="noopener noreferrer">
+          {t(b('Official university website', '高校官方网站'))} ↗
+        </a>
+        {year !== 'all' && record.hasRecord && (
+          <a href={href(`/history/${year}/`)}>
+            {t(b('Explore this edition', '浏览本届赛事'))} ↗
+          </a>
+        )}
+      </div>
+
       {viewer && teamPhoto && (
         <Viewer
           items={[teamPhoto]}

@@ -47,7 +47,7 @@
 }
 .workspace {
   display: grid;
-  grid-template-columns: 1.12fr 1fr;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
   gap: 30px;
   align-items: start;
 }
@@ -895,4 +895,61 @@
 .detailPanel :is(a, button, summary):focus-visible {
   outline: 2px solid #a5d7e9;
   outline-offset: 4px;
+}
+
+/* The home selection introduces six schools from four regions at equal scale. */
+.network[data-compact='true'] .compactGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 900px) {
+  .network[data-compact='true'] .compactGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 360px) {
+  .network[data-compact='true'] .compactGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Keep search useful at desktop widths; regional shortcuts get their own row. */
+.filters {
+  display: grid;
+  grid-template-columns: 210px minmax(180px, 1fr) auto;
+  align-items: end;
+  gap: 16px;
+}
+.filters > label:first-child {
+  grid-column: 1;
+  grid-row: 1;
+}
+.filters > .searchLabel {
+  grid-column: 2;
+  grid-row: 1;
+}
+.filters > button {
+  grid-column: 3;
+  grid-row: 1;
+}
+.filters > fieldset {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+.connectionReadout > :is(a, button) {
+  display: inline-block;
+  max-width: 100%;
+  color: #bdd8e6;
+  font-size: 0.8rem;
+  text-align: left;
+  line-height: 1.55;
+  white-space: normal;
+}
+@media (max-width: 600px) {
+  .filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .filters > :is(label, .searchLabel, button, fieldset) {
+    grid-column: 1;
+    grid-row: auto;
+  }
 }
