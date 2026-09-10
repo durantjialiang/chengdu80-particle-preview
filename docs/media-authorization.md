@@ -83,3 +83,13 @@ The eight existing 2019 archive photographs retain their original IDs, provenanc
 The project owner supplied the 2018 photographs and explicitly requested: “2018年的照片上传网站呀 网站上没有2018的照片”. This authorizes publication of these photographs on the existing website and repository.
 
 All 16 supplied JPEG photographs are included as full-frame WebP images with a maximum 3200-pixel long edge and 960-pixel thumbnails. `docs/2018-photo-inventory.json` records source basenames, hashes and dimensions plus derivative hashes, without local paths or camera/author/GPS metadata. Captions describe the visible forum, university presentations, discussions, outdoor gathering and awards; no faces are identified and no school or project relationships are inferred from appearances. The original photographs and videos remain unchanged locally. Edited videos remain separate local deliverables.
+
+## Owner photo folder synchronization 2026-09-10
+
+The project owner requested that website photographs follow the current yearly desktop folders after deleting selected originals, and explicitly confirmed: “对，按文件夹现状同步”.
+
+Three previously published owner photographs are removed from the current album manifest, yearly inventories and both full/thumbnail asset sets: `IMG_1766.JPG` (2018), `DN6V6638.JPG` (2020), and `WUL09783.JPG` (2024). Their IDs are `cd80-2018-owner-img-1766`, `cd80-2020-owner-dn6v6638`, and `cd80-2024-owner-wul09783`. Local original files are not changed by this synchronization.
+
+The same synchronization adds all 14 unique selected 2021 photographs currently in the owner’s folder, including event presentations, awards and group photographs. Full WebP derivatives preserve the entire frame, apply EXIF orientation and use a maximum 3200-pixel long edge; thumbnails use a maximum 960-pixel long edge. Original hashes and derivative dimensions are recorded in `docs/2021-photo-inventory.json`, without local paths or embedded camera/GPS metadata. Bilingual captions describe visible scenes without identifying people or inferring school/project relationships.
+
+The current public archive contains 128 photographs: 15 from 2018, 28 from 2019, 12 from 2020, 14 from 2021, 1 from 2022, 25 from 2023, and 33 from 2024. This comprises 115 owner photographs and 13 previously approved official-archive photographs. Separate city-collaboration photographs retain their publication records. Earlier sections record the original dated publication batches; these current counts supersede their batch totals for the present website. Videos remain withheld from publication.

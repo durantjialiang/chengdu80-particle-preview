@@ -1147,35 +1147,6 @@
     "thumbnailPath": "/history-media/cd80-2024-owner-wul08866-thumb.webp"
   },
   {
-    "id": "cd80-2024-owner-wul09783",
-    "albumId": "edition-2024",
-    "sourceKind": "owner-supplied",
-    "sourcePage": "",
-    "originalImageUrl": "",
-    "eventYear": 2024,
-    "caption": {
-      "en": "A participant speaking during a discussion",
-      "zh": "现场持麦交流"
-    },
-    "universityId": null,
-    "projectId": null,
-    "imageType": "speech",
-    "photographer": null,
-    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
-    "width": 1600,
-    "height": 2400,
-    "usageStatus": "approved",
-    "permission": {
-      "newWebsite": true,
-      "publicPreview": true,
-      "basis": "project-owner-confirmation",
-      "confirmedAt": "2026-09-08",
-      "evidenceRef": "docs/media-authorization.md#owner-2024-photo-collection-2026-09-08"
-    },
-    "localAssetPath": "/history-media/cd80-2024-owner-wul09783-full.webp",
-    "thumbnailPath": "/history-media/cd80-2024-owner-wul09783-thumb.webp"
-  },
-  {
     "id": "cd80-2024-owner-wul09911",
     "albumId": "edition-2024",
     "sourceKind": "owner-supplied",
@@ -1957,35 +1928,6 @@
     },
     "localAssetPath": "/history-media/cd80-2022-owner-event-poster-full.webp",
     "thumbnailPath": "/history-media/cd80-2022-owner-event-poster-thumb.webp"
-  },
-  {
-    "id": "cd80-2020-owner-dn6v6638",
-    "albumId": "edition-2020",
-    "sourceKind": "owner-supplied",
-    "sourcePage": "",
-    "originalImageUrl": "",
-    "eventYear": 2020,
-    "caption": {
-      "en": "Two adults stand outside beside a Fintech80 Chengdu event arch.",
-      "zh": "两位成年人在成都八零活动拱门旁的户外场景。"
-    },
-    "universityId": null,
-    "projectId": null,
-    "photographer": null,
-    "credit": "成都八零提供 / Courtesy of Chengdu 80",
-    "imageType": "event-group",
-    "width": 3200,
-    "height": 2133,
-    "usageStatus": "approved",
-    "permission": {
-      "newWebsite": true,
-      "publicPreview": true,
-      "basis": "project-owner-confirmation",
-      "confirmedAt": "2026-09-09",
-      "evidenceRef": "docs/media-authorization.md#owner-2020-photo-publication-2026-09-09"
-    },
-    "localAssetPath": "/history-media/cd80-2020-owner-dn6v6638-full.webp",
-    "thumbnailPath": "/history-media/cd80-2020-owner-dn6v6638-thumb.webp"
   },
   {
     "id": "cd80-2020-owner-dn6v6658",
@@ -3090,35 +3032,6 @@
     "thumbnailPath": "/history-media/cd80-2018-owner-img-1839-thumb.webp"
   },
   {
-    "id": "cd80-2018-owner-img-1766",
-    "albumId": "edition-2018",
-    "sourceKind": "owner-supplied",
-    "sourcePage": "",
-    "originalImageUrl": "",
-    "eventYear": 2018,
-    "caption": {
-      "en": "A participant sits at the front conference table with a water bottle and audience behind.",
-      "zh": "一位参与者坐在会议前排桌前，桌上有水瓶，后方是现场观众。"
-    },
-    "universityId": null,
-    "projectId": null,
-    "photographer": null,
-    "credit": "成都八零提供 / Courtesy of Chengdu 80",
-    "imageType": "event-recap",
-    "width": 3200,
-    "height": 2133,
-    "usageStatus": "approved",
-    "permission": {
-      "newWebsite": true,
-      "publicPreview": true,
-      "basis": "project-owner-confirmation",
-      "confirmedAt": "2026-09-10",
-      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
-    },
-    "localAssetPath": "/history-media/cd80-2018-owner-img-1766-full.webp",
-    "thumbnailPath": "/history-media/cd80-2018-owner-img-1766-thumb.webp"
-  },
-  {
     "id": "cd80-2018-owner-img-1773",
     "albumId": "edition-2018",
     "sourceKind": "owner-supplied",
@@ -3378,5 +3291,411 @@
     },
     "localAssetPath": "/history-media/cd80-2018-owner-img-2025-full.webp",
     "thumbnailPath": "/history-media/cd80-2018-owner-img-2025-thumb.webp"
+  },
+  {
+    "id": "cd80-2021-owner-dn6v0375",
+    "albumId": "edition-2021",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2021,
+    "caption": {
+      "en": "The FinTech80 Chengdu 2021 event stage with the main title screen.",
+      "zh": "FinTech80 成都八零 2021 赛事舞台与主标题屏幕。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-photo-folder-synchronization-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2021-owner-dn6v0375-full.webp",
+    "thumbnailPath": "/history-media/cd80-2021-owner-dn6v0375-thumb.webp"
+  },
+  {
+    "id": "cd80-2021-owner-dn6v0528",
+    "albumId": "edition-2021",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2021,
+    "caption": {
+      "en": "Two presenters stand on the Chengdu 80 stage as the audience watches.",
+      "zh": "两位发言者站在成都八零舞台上，现场观众正在观看。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-photo-folder-synchronization-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2021-owner-dn6v0528-full.webp",
+    "thumbnailPath": "/history-media/cd80-2021-owner-dn6v0528-thumb.webp"
+  },
+  {
+    "id": "cd80-2021-owner-dn6v0606",
+    "albumId": "edition-2021",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2021,
+    "caption": {
+      "en": "A full auditorium view shows the front table, audience and event cameras.",
+      "zh": "会场全景展示前排桌席、观众席和现场摄像机。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-photo-folder-synchronization-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2021-owner-dn6v0606-full.webp",
+    "thumbnailPath": "/history-media/cd80-2021-owner-dn6v0606-thumb.webp"
+  },
+  {
+    "id": "cd80-2021-owner-dn6v0541",
+    "albumId": "edition-2021",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2021,
+    "caption": {
+      "en": "Attendees sit at the front tables with name placards and panda props.",
+      "zh": "参会者坐在前排桌席，桌上可见姓名牌和熊猫摆件。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-photo-folder-synchronization-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2021-owner-dn6v0541-full.webp",
+    "thumbnailPath": "/history-media/cd80-2021-owner-dn6v0541-thumb.webp"
+  },
+  {
+    "id": "cd80-2021-owner-dn6v0549",
+    "albumId": "edition-2021",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2021,
+    "caption": {
+      "en": "A portrait-oriented view shows an attendee listening in the green-lit auditorium.",
+      "zh": "竖幅画面记录一位参会者在绿色灯光会场中聆听。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-recap",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 2133,
+    "height": 3200,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-photo-folder-synchronization-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2021-owner-dn6v0549-full.webp",
+    "thumbnailPath": "/history-media/cd80-2021-owner-dn6v0549-thumb.webp"
+  },
+  {
+    "id": "cd80-2021-owner-dn6v0890",
+    "albumId": "edition-2021",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2021,
+    "caption": {
+      "en": "A speaker addresses the room beneath the FinTech80 Chengdu event backdrop.",
+      "zh": "一位发言者在 FinTech80 成都八零赛事背景板前发言。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-photo-folder-synchronization-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2021-owner-dn6v0890-full.webp",
+    "thumbnailPath": "/history-media/cd80-2021-owner-dn6v0890-thumb.webp"
+  },
+  {
+    "id": "cd80-2021-owner-dn6v0634",
+    "albumId": "edition-2021",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2021,
+    "caption": {
+      "en": "A speaker holds a microphone and presentation clicker beside the event screen.",
+      "zh": "一位发言者在活动屏幕旁手持麦克风和翻页器。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-photo-folder-synchronization-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2021-owner-dn6v0634-full.webp",
+    "thumbnailPath": "/history-media/cd80-2021-owner-dn6v0634-thumb.webp"
+  },
+  {
+    "id": "cd80-2021-owner-dn6v0630",
+    "albumId": "edition-2021",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2021,
+    "caption": {
+      "en": "A stage presentation asks “Invest or not?” beside a risk-themed slide.",
+      "zh": "舞台展示中出现“Invest or not?”风险主题幻灯片。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-photo-folder-synchronization-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2021-owner-dn6v0630-full.webp",
+    "thumbnailPath": "/history-media/cd80-2021-owner-dn6v0630-thumb.webp"
+  },
+  {
+    "id": "cd80-2021-owner-dn6v1050",
+    "albumId": "edition-2021",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2021,
+    "caption": {
+      "en": "A presenter speaks from the front of the auditorium while the audience watches.",
+      "zh": "一位发言者在会场前方讲解，观众席清晰可见。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-photo-folder-synchronization-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2021-owner-dn6v1050-full.webp",
+    "thumbnailPath": "/history-media/cd80-2021-owner-dn6v1050-thumb.webp"
+  },
+  {
+    "id": "cd80-2021-owner-dn6v1066",
+    "albumId": "edition-2021",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2021,
+    "caption": {
+      "en": "A speaker presents a “2.5 Performance” slide with data-flow and chart graphics.",
+      "zh": "一位发言者展示“2.5 Performance”幻灯片，屏幕可见数据流程和图表。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "speech",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-photo-folder-synchronization-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2021-owner-dn6v1066-full.webp",
+    "thumbnailPath": "/history-media/cd80-2021-owner-dn6v1066-thumb.webp"
+  },
+  {
+    "id": "cd80-2021-owner-dn6v1297",
+    "albumId": "edition-2021",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2021,
+    "caption": {
+      "en": "A group poses beneath university placards and an “Innovator Award” backdrop.",
+      "zh": "一组人员在高校牌和“创新者奖”背景板下合影。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "award-ceremony",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-photo-folder-synchronization-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2021-owner-dn6v1297-full.webp",
+    "thumbnailPath": "/history-media/cd80-2021-owner-dn6v1297-thumb.webp"
+  },
+  {
+    "id": "cd80-2021-owner-dn6v1345",
+    "albumId": "edition-2021",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2021,
+    "caption": {
+      "en": "A group poses with a panda mascot beneath a “Trailblazer Award” backdrop.",
+      "zh": "一组人员与熊猫玩偶在“开创者奖”背景板下合影。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "award-ceremony",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-photo-folder-synchronization-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2021-owner-dn6v1345-full.webp",
+    "thumbnailPath": "/history-media/cd80-2021-owner-dn6v1345-thumb.webp"
+  },
+  {
+    "id": "cd80-2021-owner-dn6v1383",
+    "albumId": "edition-2021",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2021,
+    "caption": {
+      "en": "A group poses on the event stage beneath the FinTech80 Chengdu backdrop.",
+      "zh": "一组人员在 FinTech80 成都八零赛事背景板前登台合影。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "team-photo",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-photo-folder-synchronization-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2021-owner-dn6v1383-full.webp",
+    "thumbnailPath": "/history-media/cd80-2021-owner-dn6v1383-thumb.webp"
+  },
+  {
+    "id": "cd80-2021-owner-dn6v1381",
+    "albumId": "edition-2021",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2021,
+    "caption": {
+      "en": "A large group poses on stage beneath the 2021 event backdrop.",
+      "zh": "一组规模较大的人员在 2021 赛事背景板前合影。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "imageType": "event-group",
+    "photographer": null,
+    "credit": "赛事项目方提供 / Supplied by Chengdu 80",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-photo-folder-synchronization-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2021-owner-dn6v1381-full.webp",
+    "thumbnailPath": "/history-media/cd80-2021-owner-dn6v1381-thumb.webp"
   }
 ]

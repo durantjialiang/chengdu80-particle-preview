@@ -797,6 +797,7 @@ await test('site content and static archive contracts', async (t) => {
         assert.match(channel, /target="_blank" rel="noopener noreferrer"/);
         assert.doesNotMatch(channel, /<video|<iframe/);
         assert.ok(html.includes('/history/2022/'));
+        assert.ok(html.includes('/history/2021/'));
         assert.ok(html.includes('/history/2020/'));
         assert.ok(html.includes('/history/2019/'));
         assert.ok(html.includes('/history/2018/'));
@@ -832,12 +833,13 @@ await test('site content and static archive contracts', async (t) => {
           Object.defineProperty(globalThis, 'window', { value: {}, configurable: true });
           for (const language of ['en', 'zh']) {
             for (const [query, count] of [
-              ['year=2018', 16],
+              ['year=2018', 15],
               ['year=2019', 28],
-              ['year=2020', 13],
+              ['year=2020', 12],
+              ['year=2021', 14],
               ['year=2020&type=awards', 3],
               ['year=2023', 25],
-              ['year=2024', 34],
+              ['year=2024', 33],
               ['year=2024&type=awards', 2],
               ['year=2024&type=teams', 3],
               ['year=2022', 1],
@@ -1023,21 +1025,21 @@ await test('site content and static archive contracts', async (t) => {
       async () => {
         const { publicArchiveImages, isPubliclyUsable, imageFit } =
           await server.ssrLoadModule('/content/archive-media.ts');
-        assert.equal(publicArchiveImages.length, 117);
+        assert.equal(publicArchiveImages.length, 128);
         assert.equal(
           publicArchiveImages.filter((i) => i.eventYear === 2019).length,
           28,
         );
         assert.equal(
           publicArchiveImages.filter((i) => i.eventYear === 2024).length,
-          34,
+          33,
         );
         for (const item of publicArchiveImages) {
           assert.ok(item.caption.en && item.caption.zh && item.credit);
           if (item.sourceKind === 'owner-supplied') {
             assert.equal(item.sourcePage, '');
             assert.equal(item.originalImageUrl, '');
-            assert.ok([2018, 2019, 2020, 2022, 2023, 2024].includes(item.eventYear));
+            assert.ok([2018, 2019, 2020, 2021, 2022, 2023, 2024].includes(item.eventYear));
             assert.match(
               item.permission.evidenceRef,
               item.eventYear === 2018
@@ -1046,6 +1048,8 @@ await test('site content and static archive contracts', async (t) => {
                 ? /owner-2019-photo-publication-2026-09-09/
                 : item.eventYear === 2020
                 ? /owner-2020-photo-publication-2026-09-09/
+                : item.eventYear === 2021
+                ? /owner-photo-folder-synchronization-2026-09-10/
                 : item.eventYear === 2022
                 ? /owner-2022-photo-publication-2026-09-09/
                 : item.eventYear === 2023
@@ -1070,13 +1074,15 @@ await test('site content and static archive contracts', async (t) => {
         const ownerPhotos = publicArchiveImages.filter(
           (image) => image.sourceKind === 'owner-supplied',
         );
-        assert.equal(ownerPhotos.length, 104);
-        assert.equal(ownerPhotos.filter((photo) => photo.eventYear === 2018).length, 16);
+        assert.equal(ownerPhotos.length, 115);
+        assert.equal(ownerPhotos.filter((photo) => photo.eventYear === 2018).length, 15);
         assert.equal(editions.find((edition) => edition.year === 2018).coverImageId, 'cd80-2018-owner-img-1754');
         assert.equal(ownerPhotos.filter((photo) => photo.eventYear === 2019).length, 20);
         assert.equal(editions.find((edition) => edition.year === 2019).coverImageId, 'cd80-2019-owner-1c9a6519');
-        assert.equal(ownerPhotos.filter((photo) => photo.eventYear === 2020).length, 13);
+        assert.equal(ownerPhotos.filter((photo) => photo.eventYear === 2020).length, 12);
         assert.equal(editions.find((edition) => edition.year === 2020).coverImageId, 'cd80-2020-owner-dn6v7222');
+        assert.equal(ownerPhotos.filter((photo) => photo.eventYear === 2021).length, 14);
+        assert.equal(editions.find((edition) => edition.year === 2021).coverImageId, 'cd80-2021-owner-dn6v1381');
         assert.equal(ownerPhotos.filter((photo) => photo.eventYear === 2022).length, 1);
         const poster2022 = ownerPhotos.find((photo) => photo.eventYear === 2022);
         assert.equal(poster2022.imageType, 'event-poster');
@@ -1086,7 +1092,7 @@ await test('site content and static archive contracts', async (t) => {
         const inventory = JSON.parse(
           await readFile('docs/2024-photo-inventory.json', 'utf8'),
         );
-        assert.equal(new Set(inventory.map((photo) => photo.sha256)).size, 29);
+        assert.equal(new Set(inventory.map((photo) => photo.sha256)).size, 28);
         for (const photo of ownerPhotos) {
           const edition = editions.find((item) => item.year === photo.eventYear);
           assert.ok(edition.media.includes(photo.id));

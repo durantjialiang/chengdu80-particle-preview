@@ -23,6 +23,7 @@ import {
 import { recap2024PhotoIds } from './recap-2024';
 import { recap2023PhotoIds } from './recap-2023';
 import { recap2022PhotoIds } from './recap-2022';
+import { recap2021PhotoIds } from './recap-2021';
 import { recap2020PhotoIds } from './recap-2020';
 import { recap2019PhotoIds } from './recap-2019';
 import { recap2018PhotoIds } from './recap-2018';
@@ -460,6 +461,9 @@ export const editions: readonly Edition[] = [
       ...(year === 2022
         ? { coverImageId: 'cd80-2022-owner-event-poster' }
         : {}),
+      ...(year === 2021
+        ? { coverImageId: 'cd80-2021-owner-dn6v1381' }
+        : {}),
       ...(year === 2019
         ? { coverImageId: 'cd80-2019-owner-1c9a6519' }
         : {}),
@@ -510,11 +514,13 @@ export const editions: readonly Edition[] = [
             ? recap2023PhotoIds
             : year === 2022
               ? recap2022PhotoIds
-              : year === 2020
-                ? recap2020PhotoIds
-                : year === 2018
-                  ? recap2018PhotoIds
-                  : [],
+              : year === 2021
+                ? recap2021PhotoIds
+                : year === 2020
+                  ? recap2020PhotoIds
+                  : year === 2018
+                    ? recap2018PhotoIds
+                    : [],
     }),
   ),
   {

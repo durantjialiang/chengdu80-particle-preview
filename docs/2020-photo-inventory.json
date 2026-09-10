@@ -1,26 +1,6 @@
 [
   {
     "order": 1,
-    "id": "cd80-2020-owner-dn6v6638",
-    "originalBasename": "DN6V6638.JPG",
-    "originalSha256": "e5a6b9efead4c9dcb55b24989c379ac16ae2bfd58d8ba356d53740d1a7e71d28",
-    "originalBytes": 7428913,
-    "originalFileFormat": "JPEG",
-    "originalWidth": 5184,
-    "originalHeight": 3456,
-    "fullFilename": "cd80-2020-owner-dn6v6638-full.webp",
-    "fullSha256": "b6bf8db9ee3e27ab5ca4022af993ccb12c5428f0c5143b67d5e2a34befdf3edf",
-    "fullBytes": 806606,
-    "fullWidth": 3200,
-    "fullHeight": 2133,
-    "thumbFilename": "cd80-2020-owner-dn6v6638-thumb.webp",
-    "thumbSha256": "0cae9ad3e280c06ab655a3395fd9916e7fa2b931479829e66cda716dc10d8490",
-    "thumbBytes": 80636,
-    "thumbWidth": 960,
-    "thumbHeight": 640
-  },
-  {
-    "order": 2,
     "id": "cd80-2020-owner-dn6v6658",
     "originalBasename": "DN6V6658.JPG",
     "originalSha256": "6841cbc1cf6717e48e88c2f24e7893769688d8ed8a62828e69ac93641ac317b3",
@@ -40,7 +20,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 3,
+    "order": 2,
     "id": "cd80-2020-owner-dn6v6690",
     "originalBasename": "DN6V6690.JPG",
     "originalSha256": "8c2eeb94b6e99722dd184b6747f9340dd8a347ed441fe5d06b056622d863f9e0",
@@ -60,7 +40,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 4,
+    "order": 3,
     "id": "cd80-2020-owner-dn6v6705",
     "originalBasename": "DN6V6705.JPG",
     "originalSha256": "f5063cdea70599fa1da226637d345b3ed9425dcf4a46bb4c98580f3ee0f238be",
@@ -80,7 +60,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 5,
+    "order": 4,
     "id": "cd80-2020-owner-dn6v6733",
     "originalBasename": "DN6V6733.JPG",
     "originalSha256": "d46e79410515e21a51a6b528feff06030b6ee429f94e0739ee1e70a13290f9c4",
@@ -100,7 +80,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 6,
+    "order": 5,
     "id": "cd80-2020-owner-dn6v6981",
     "originalBasename": "DN6V6981.JPG",
     "originalSha256": "f86dd0911367fa5f7c45b81d4d457abaaa369c0f096e5f72b164c26b97cc4932",
@@ -120,7 +100,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 7,
+    "order": 6,
     "id": "cd80-2020-owner-dn6v7051",
     "originalBasename": "DN6V7051.JPG",
     "originalSha256": "1cb34cc7bb85c048038258c78d8937232d41d200edab6945ea1224f7f3bcf3a3",
@@ -140,7 +120,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 8,
+    "order": 7,
     "id": "cd80-2020-owner-dn6v7053",
     "originalBasename": "DN6V7053.JPG",
     "originalSha256": "91db1a71694fc7165956c36cfb299ed433994b6844c4c54f3ea7b27c91d73185",
@@ -160,7 +140,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 9,
+    "order": 8,
     "id": "cd80-2020-owner-dn6v7146",
     "originalBasename": "DN6V7146.JPG",
     "originalSha256": "be2c14851d2ea428e2ae9fa4945868a1069e39a4687c3a0adf41afefc7c13635",
@@ -180,7 +160,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 10,
+    "order": 9,
     "id": "cd80-2020-owner-dn6v7182",
     "originalBasename": "DN6V7182.JPG",
     "originalSha256": "1d4de7667e4d198ff398667095b0f41f2780fd19aa35f4c9c1c6c88af883bf0e",
@@ -200,7 +180,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 11,
+    "order": 10,
     "id": "cd80-2020-owner-dn6v7190",
     "originalBasename": "DN6V7190.JPG",
     "originalSha256": "085bcd9e1a44ef2892918d649c3723786e1bb0efb478400a74acf3d25a01418e",
@@ -220,7 +200,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 12,
+    "order": 11,
     "id": "cd80-2020-owner-dn6v7205",
     "originalBasename": "DN6V7205.JPG",
     "originalSha256": "c36178508354e7001327e73b5035c09f7f6f87702b66e21b004b8e39c85903ef",
@@ -240,7 +220,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 13,
+    "order": 12,
     "id": "cd80-2020-owner-dn6v7222",
     "originalBasename": "DN6V7222.JPG",
     "originalSha256": "d4509052b294bf952ff6680a62e18fc1c32cc48e7082a5ff50f3a3d544849690",

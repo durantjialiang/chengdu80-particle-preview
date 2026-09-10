@@ -432,22 +432,6 @@
     "thumbBytes": 48502
   },
   {
-    "id": "cd80-2024-owner-wul09783",
-    "file": "WUL09783.JPG",
-    "sha256": "33a71c771ae0b727a7795a9e73e1ac4c9e726fa2f1b819cae7dac1d02cc67540",
-    "originalWidth": 3072,
-    "originalHeight": 4608,
-    "caption": {
-      "zh": "现场持麦交流",
-      "en": "A participant speaking during a discussion"
-    },
-    "imageType": "speech",
-    "universityId": null,
-    "projectId": null,
-    "fullBytes": 291644,
-    "thumbBytes": 34214
-  },
-  {
     "id": "cd80-2024-owner-wul09911",
     "file": "WUL09911.JPG",
     "sha256": "8956592ce01f44e25588166ace950ba64aa112531415a22032550b053c147ebe",

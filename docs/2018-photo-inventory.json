@@ -121,26 +121,6 @@
   },
   {
     "order": 7,
-    "id": "cd80-2018-owner-img-1766",
-    "originalBasename": "IMG_1766.JPG",
-    "originalSha256": "67dd89104e8de19a705b6bd4599d6f3f51b0df1499a345ad72a6a5f206a2bbea",
-    "originalBytes": 6434474,
-    "originalFileFormat": "JPEG",
-    "originalWidth": 5616,
-    "originalHeight": 3744,
-    "fullFilename": "cd80-2018-owner-img-1766-full.webp",
-    "fullSha256": "f8e937e9f79095fdc40c3a5c32755028a4807fdb2d78f3920e0668eaa8f52173",
-    "fullBytes": 275932,
-    "fullWidth": 3200,
-    "fullHeight": 2133,
-    "thumbFilename": "cd80-2018-owner-img-1766-thumb.webp",
-    "thumbSha256": "1bdebb5d10e4a23ad8f87dae827f862bb2736d4951291af3b2c9bd6d620bfb4d",
-    "thumbBytes": 33110,
-    "thumbWidth": 960,
-    "thumbHeight": 640
-  },
-  {
-    "order": 8,
     "id": "cd80-2018-owner-img-1773",
     "originalBasename": "IMG_1773.JPG",
     "originalSha256": "7b651ddeada741d25b3b78a2a862795bd3e0ff41efd1e35e141c016c8b03146b",
@@ -160,7 +140,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 9,
+    "order": 8,
     "id": "cd80-2018-owner-img-1947",
     "originalBasename": "IMG_1947.JPG",
     "originalSha256": "1addaefa839cd7168e6a4a9e5b0be945c3c63291360b056288a3062babd7923e",
@@ -180,7 +160,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 10,
+    "order": 9,
     "id": "cd80-2018-owner-img-0145",
     "originalBasename": "IMG_0145.JPG",
     "originalSha256": "2d4c79cbe275afc0d8283b935755f350c740594f0b124cb665168d03a7c6cdf6",
@@ -200,7 +180,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 11,
+    "order": 10,
     "id": "cd80-2018-owner-img-1982",
     "originalBasename": "IMG_1982.JPG",
     "originalSha256": "fef71f7327c62a72f0594cdd1714e3e23a8030495b27141a027065bc389dfd9f",
@@ -220,7 +200,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 12,
+    "order": 11,
     "id": "cd80-2018-owner-img-0142",
     "originalBasename": "IMG_0142.JPG",
     "originalSha256": "1d601f7757bbe30a21d514a1f1dd68cfdc707b0854528547a97b410d39ebd278",
@@ -240,7 +220,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 13,
+    "order": 12,
     "id": "cd80-2018-owner-img-1786",
     "originalBasename": "IMG_1786.JPG",
     "originalSha256": "3f0338c6829d6a61b2a5c7dc6b5896d38cd8c15f39f3e4ffe05fa2bb572f2a4d",
@@ -260,7 +240,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 14,
+    "order": 13,
     "id": "cd80-2018-owner-img-1888",
     "originalBasename": "IMG_1888.JPG",
     "originalSha256": "afc4b23bd5f31ff07a2239e39abc80a5895bf64d5e93d8ed0583d28c9be2ec5a",
@@ -280,7 +260,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 15,
+    "order": 14,
     "id": "cd80-2018-owner-img-0288",
     "originalBasename": "IMG_0288.JPG",
     "originalSha256": "d06aef0fbd6782482d28fb5f812c4fed7932c6f720b86e18831090e5efa62f34",
@@ -300,7 +280,7 @@
     "thumbHeight": 640
   },
   {
-    "order": 16,
+    "order": 15,
     "id": "cd80-2018-owner-img-2025",
     "originalBasename": "IMG_2025.JPG",
     "originalSha256": "555517d76dc55de0e3a752613a276889fa9e957a4e780633a68ca40afcc70cb1",
