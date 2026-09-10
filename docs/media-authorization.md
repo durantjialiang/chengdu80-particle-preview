@@ -77,3 +77,9 @@ The project owner supplied the 2019 folder and requested a comprehensive six-to-
 All 20 supplied JPGs are unique and are included as full-frame WebP images with a maximum 3200-pixel long edge and 960-pixel thumbnails. `docs/2019-photo-inventory.json` records source basenames, hashes and dimensions plus derivative hashes, without local paths or camera/author/GPS metadata. Captions describe visible presentations, development work, exhibition activity, awards and group photographs; no faces are identified or unverified school/project relationships added.
 
 The eight existing 2019 archive photographs retain their original IDs, provenance, school associations and permission records. Visual comparison found no identical source photograph among the new 20; similar backdrops do not establish a duplicate. The 2019 album therefore contains 28 photographs. Original JPGs and all ten supplied MP4s remain unchanged locally; no video or extracted video still is added to the public image manifest.
+
+## Owner 2018 photo publication 2026-09-10
+
+The project owner supplied the 2018 photographs and explicitly requested: “2018年的照片上传网站呀 网站上没有2018的照片”. This authorizes publication of these photographs on the existing website and repository.
+
+All 16 supplied JPEG photographs are included as full-frame WebP images with a maximum 3200-pixel long edge and 960-pixel thumbnails. `docs/2018-photo-inventory.json` records source basenames, hashes and dimensions plus derivative hashes, without local paths or camera/author/GPS metadata. Captions describe the visible forum, university presentations, discussions, outdoor gathering and awards; no faces are identified and no school or project relationships are inferred from appearances. The original photographs and videos remain unchanged locally. Edited videos remain separate local deliverables.

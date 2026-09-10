@@ -2914,5 +2914,469 @@
     },
     "localAssetPath": "/history-media/cd80-2019-owner-dsc9552-full.webp",
     "thumbnailPath": "/history-media/cd80-2019-owner-dsc9552-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-1754",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "A wide welcome-remarks scene shows a speaker at a podium before the event screen.",
+      "zh": "宽幅欢迎致辞画面中，一位发言人站在讲台前，身后是活动大屏。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "speech",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-1754-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-1754-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-0234",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "A wide venue view shows an audience, delegate tables, a runway-style stage and a camera operator.",
+      "zh": "宽幅会场画面展示观众、嘉宾桌、走道式舞台和一位摄像人员。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "event-recap",
+    "width": 2592,
+    "height": 1728,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-0234-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-0234-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-0088",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "A wider conference-room view shows seated delegates, a full audience, stage lighting and chandeliers.",
+      "zh": "较宽的会议厅画面展示就座嘉宾、现场观众、舞台灯光和水晶灯。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "event-recap",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-0088-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-0088-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-0086",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "A conference panel sits at a long table with blue placards, water bottles and an audience behind.",
+      "zh": "会议嘉宾在长桌前就座，桌上有蓝色桌牌和水瓶，后方是现场观众。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "event-recap",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-0086-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-0086-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-0091",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "Delegates sit at the front table while one participant looks down at a laptop or notes.",
+      "zh": "嘉宾坐在前排桌前，其中一位参与者低头查看笔记本电脑或资料。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "event-recap",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-0091-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-0091-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-1839",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "Front-table delegates watch the stage while the audience fills the background.",
+      "zh": "前排桌前的嘉宾注视舞台，后方坐满现场观众。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "event-recap",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-1839-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-1839-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-1766",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "A participant sits at the front conference table with a water bottle and audience behind.",
+      "zh": "一位参与者坐在会议前排桌前，桌上有水瓶，后方是现场观众。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "event-recap",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-1766-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-1766-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-1773",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "A seated participant faces the conference room from the front table, with a placard and water bottle in view.",
+      "zh": "一位参与者坐在前排桌前面向会议厅，画面中可见桌牌和水瓶。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "event-recap",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-1773-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-1773-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-1947",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "An audience participant speaks into a handheld microphone at the front table.",
+      "zh": "一位观众参与者在前排桌旁手持麦克风发言。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "speech",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-1947-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-1947-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-0145",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "A six-person group speaks at a stage table with a live close-up projected beside event artwork.",
+      "zh": "六人小组在舞台桌旁交流，旁边投影着现场近景和活动画面。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "team-photo",
+    "width": 2592,
+    "height": 1728,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-0145-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-0145-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-1982",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "A technical presentation shows a projected interface while two participants work at a laptop.",
+      "zh": "技术展示中，屏幕投影出界面，两位参与者在笔记本电脑前协作。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "speech",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-1982-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-1982-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-0142",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "A group presents on stage beneath a screen reading “Peking University”.",
+      "zh": "一组参与者在写有“Peking University / 北京大学”的大屏下进行舞台展示。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "team-photo",
+    "width": 2592,
+    "height": 1728,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-0142-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-0142-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-1786",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "A small group presents on stage beneath a screen reading “University of Hong Kong”.",
+      "zh": "一组参与者在写有“University of Hong Kong”的大屏下进行舞台展示。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "team-photo",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-1786-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-1786-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-1888",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "A group presents on stage beneath a screen reading “Georgia Institute of Technology”.",
+      "zh": "一组参与者在写有“Georgia Institute of Technology / 佐治亚理工学院”的大屏下进行舞台展示。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "team-photo",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-1888-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-1888-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-0288",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "Attendees wearing event lanyards walk together on a tree-lined path.",
+      "zh": "佩戴活动挂绳的参与者一起走在林荫小路上。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "event-group",
+    "width": 2592,
+    "height": 1728,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-0288-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-0288-thumb.webp"
+  },
+  {
+    "id": "cd80-2018-owner-img-2025",
+    "albumId": "edition-2018",
+    "sourceKind": "owner-supplied",
+    "sourcePage": "",
+    "originalImageUrl": "",
+    "eventYear": 2018,
+    "caption": {
+      "en": "A large group stands on stage beside a trophy and panda mascot beneath a screen reading “Results and Awards”.",
+      "zh": "一大组参与者站在舞台上，身旁有奖杯和熊猫吉祥物，背后大屏写着“Results and Awards”。"
+    },
+    "universityId": null,
+    "projectId": null,
+    "photographer": null,
+    "credit": "成都八零提供 / Courtesy of Chengdu 80",
+    "imageType": "award-ceremony",
+    "width": 3200,
+    "height": 2133,
+    "usageStatus": "approved",
+    "permission": {
+      "newWebsite": true,
+      "publicPreview": true,
+      "basis": "project-owner-confirmation",
+      "confirmedAt": "2026-09-10",
+      "evidenceRef": "docs/media-authorization.md#owner-2018-photo-publication-2026-09-10"
+    },
+    "localAssetPath": "/history-media/cd80-2018-owner-img-2025-full.webp",
+    "thumbnailPath": "/history-media/cd80-2018-owner-img-2025-thumb.webp"
   }
 ]

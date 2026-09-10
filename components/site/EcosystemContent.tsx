@@ -993,6 +993,9 @@ export function MediaPage() {
           <a href={href('/history/2019/#edition-2019')}>
             {t(b('2019 edition album', '2019赛事相册'))} →
           </a>
+          <a href={href('/history/2018/#edition-2018')}>
+            {t(b('2018 edition album', '2018赛事相册'))} →
+          </a>
         </nav>
         <div className={site.filters}>
           <label>
