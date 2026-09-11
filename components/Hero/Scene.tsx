@@ -382,9 +382,8 @@ export default function Scene({
               ? universityLocation(record, language)
               : cityLabel;
             const isSelected = Boolean(selectedMember && network);
-            const isExpanded = Boolean(
-              (selectedMember || activeMember) && network,
-            );
+            // Expand after selection so hover cannot move the click target.
+            const isExpanded = isSelected;
             const selectLabel = language === 'zh' ? '在地球上选择' : 'Select';
             const accessibleName =
               city.universityIds.length > 1

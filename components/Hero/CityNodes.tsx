@@ -305,15 +305,11 @@ export default function CityNodes(
       const anchor = anchors.get(city.id);
       if (!anchor) continue;
       const selected = city.universityIds.includes(props.network.selectedId);
-      const highlighted = city.universityIds.includes(
-        props.network.highlightedId!,
-      );
-      anchor.width =
-        selected || highlighted
-          ? Math.min(224, size.width * 0.64)
-          : city.isOrigin
-            ? 145
-            : Math.min(150, city.name.length * 7 + 34);
+      anchor.width = selected
+        ? Math.min(224, size.width * 0.64)
+        : city.isOrigin
+          ? 145
+          : Math.min(150, city.name.length * 7 + 34);
     }
     placeNetworkLabels(ordered, size.width, size.height);
     for (const city of cities) {

@@ -583,29 +583,6 @@
 }
 .connectionReadout {
   padding: 0 25px 23px;
-  min-height: 92px;
-}
-.readoutLabel {
-  display: block;
-  color: #92aeba;
-  font-size: 0.75rem;
-  letter-spacing: 0.07em;
-}
-.connectionReadout strong {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 8px 0;
-  font-size: 1.2rem;
-  font-weight: 450;
-  color: #e7f8fc;
-}
-.connectionReadout strong > span {
-  color: #ddbb96;
-}
-.connectionReadout > span:last-child {
-  font-size: 0.75rem;
-  color: #91acbb;
 }
 .legend {
   display: flex;

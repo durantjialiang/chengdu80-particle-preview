@@ -471,25 +471,6 @@ export default function GlobalUniversityNetwork({
               className={styles.connectionReadout}
               data-particle-reading-region
             >
-              <span className={styles.readoutLabel}>
-                {t(b('GEOGRAPHIC CONNECTION', '地理连接'))}
-              </span>
-              <strong>
-                <span>
-                  {
-                    universityLocation(getUniversity('swufe'), language).split(
-                      ' · ',
-                    )[0]
-                  }
-                </span>{' '}
-                ↔{' '}
-                {
-                  universityLocation(
-                    getUniversity(selection.selectedId),
-                    language,
-                  ).split(' · ')[0]
-                }
-              </strong>
               <button
                 type="button"
                 className={controls.profileLink}
