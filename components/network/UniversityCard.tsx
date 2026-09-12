@@ -4,7 +4,11 @@ import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { type University } from '@/content/network';
 import { universityConnectionYears } from '@/content/universities';
 import { academicInstitutionForUniversity } from '@/content/academic-institutions';
-import { universityName, universityLocation } from '@/content/university-i18n';
+import {
+  achievementName,
+  universityName,
+  universityLocation,
+} from '@/content/university-i18n';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import { bilingual as b } from '@/content/competition';
 import { UniversityLogo } from './UniversityLogo';
@@ -106,7 +110,7 @@ export default function UniversityCard({
           <p className={styles.achievement}>
             {latest.year ??
               `${t(b('Reported', '报道发表于'))} ${latest.reportedYear}`}{' '}
-            / {latest.name}
+            / {achievementName(latest, language)}
           </p>
         ) : null}
         <span className={styles.detailAction}>

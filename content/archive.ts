@@ -259,10 +259,7 @@ export const projects: readonly Project[] = [
     projectName: 'Pisces',
     challenge: b('Explainable investment strategies', '可解释的投资策略'),
     awardId: 'kaichuangzhe',
-    awardLabel: b(
-      'Trailblazer Award / 开创者奖',
-      '开创者奖 / Trailblazer Award',
-    ),
+    awardLabel: b('Trailblazer Award', '开创者奖'),
     summary: b(
       'An explanation layer for investment models. Pisces used interactive charts and explainable AI to reveal the factors behind predictions, alongside a model publishing and subscription marketplace.',
       '为投资模型打开解释窗口。Pisces通过交互图表与可解释AI展示预测背后的影响因素，并设计模型发布与订阅市场，连接开发者与投资者。',
@@ -314,14 +311,18 @@ export const projects: readonly Project[] = [
     challenge: b('Financial news analysis', '金融新闻分析'),
     awardId: 'hku-pioneer-wording',
     awardLabel: b(
-      'Pioneer Award (HKU wording: 領先者獎)',
-      '领先者奖（港大英文原文：Pioneer Award）',
+      'Pioneer Award (HKU report wording)',
+      '领先者奖（香港大学报道原文）',
     ),
     summary: b(
       'The team developed methods for detecting false news and scoring financial news during the prototype challenge.',
       '团队在原型挑战中开发了虚假新闻识别与金融新闻评分方法。',
     ),
     sourceRefs: ['hku2023', 'event2023'],
+    verificationNote: b(
+      'HKU’s report uses “Pioneer Award”; the Chengdu 80 source uses a Chinese label for the same award. The detail record keeps the source distinction while presenting a language-appropriate label above.',
+      '香港大学报道使用“Pioneer Award”；成都八零来源使用该奖项的中文名称。详情保留来源差异，奖项栏按页面语言显示对应名称。',
+    ),
     verificationStatus: 'documented',
     ...media,
   },
@@ -339,10 +340,7 @@ export const projects: readonly Project[] = [
     awardId: 'first-place',
     // Preserve the existing filter key; link the evidence-backed edition award by stable ID.
     editionAwardId: '2024-kaichuangzhe',
-    awardLabel: b(
-      '开创者奖 (SWUFE); first place / Trailblazer’s Award (Queen’s)',
-      '开创者奖（西财正式报道）；女王大学专文称第一名',
-    ),
+    awardLabel: b('Trailblazer Award', '开创者奖'),
     summary: b(
       'Data Queens developed an insurance prototype for autonomous vehicles in 80 hours and received the Trailblazer Award at the seventh Chengdu 80.',
       'Data Queens在80小时内开发了面向自动驾驶汽车的保险原型，获得第七届成都八零开创者奖。',
@@ -350,8 +348,8 @@ export const projects: readonly Project[] = [
     sourceRefs: ['event2024', 'queensReport'],
     verificationStatus: 'documented',
     verificationNote: b(
-      'Cross-source association uses institution, award, insurance topic and publication context. The Queen’s article alone does not explicitly date the edition; Data Queens is a team name, not a confirmed product name.',
-      '按学校、奖项、保险赛题与发表背景交叉关联。女王大学专文正文单独不能确定届次；Data Queens是团队名，不是已确认产品专名。',
+      'SWUFE’s official report calls the highest award the Trailblazer Award, while the Queen’s article describes the result as first place. The cross-source association uses institution, award, insurance topic and publication context; the Queen’s article alone does not explicitly date the edition. Data Queens is a team name, not a confirmed product name.',
+      '西财正式报道将最高奖项称为“开创者奖”，女王大学专文称结果为“第一名”。本条按学校、奖项、保险赛题与发表背景交叉关联；女王大学专文正文单独不能确定届次。Data Queens是团队名，不是已确认产品专名。',
     ),
     ...media,
   },

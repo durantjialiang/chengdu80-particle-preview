@@ -1,5 +1,7 @@
 import type { Language } from './competition';
 import type {
+  Achievement,
+  Evidence,
   University,
   UniversityId,
   RelationshipType,
@@ -72,6 +74,15 @@ const roles: Record<RelationshipType, [string, string]> = {
 };
 export const universityRole = (role: RelationshipType, language: Language) =>
   roles[role][language === 'zh' ? 1 : 0];
+export const achievementName = (
+  achievement: Achievement,
+  language: Language,
+) =>
+  language === 'zh'
+    ? (achievement.nameZh ?? achievement.name)
+    : (achievement.nameEn ?? achievement.name);
+export const evidenceTitle = (evidence: Evidence, language: Language) =>
+  language === 'zh' ? (evidence.titleZh ?? evidence.title) : evidence.title;
 export const recordNote = (u: University, language: Language) => {
   if (language !== 'zh') return u.recordNote;
   if (u.recordNoteZh) return u.recordNoteZh;

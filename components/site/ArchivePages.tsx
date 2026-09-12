@@ -490,8 +490,8 @@ export function WinnersPage({ projectId }: { projectId?: string }) {
           <p className={styles.note}>
             {t(
               b(
-                'Award wording follows the cited source; it is not normalized into an assumed ranking. No live product, demo or source repository is claimed.',
-                '奖项保留来源措辞，不据此推定统一名次。此处不宣称存在可用的在线产品、演示或代码仓库。',
+                'Award wording follows the cited source. Project and product names appear only where the record establishes them; use the original reports for source context.',
+                '奖项沿用引用来源的措辞。仅在档案明确时显示项目与产品专名，来源背景可查看原始报道。',
               ),
             )}
           </p>

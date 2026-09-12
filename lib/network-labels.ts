@@ -4,6 +4,8 @@ export type NodeLabelAnchor = {
   y: number;
   visibility: number;
   width: number;
+  height?: number;
+  hidden?: boolean;
   labelX: number;
   labelY: number;
 };
@@ -15,10 +17,13 @@ export function placeNetworkLabels(
   anchors: readonly NodeLabelAnchor[],
   width: number,
   height: number,
+  maxVisible = Infinity,
 ) {
+  let visible = 0;
   for (let i = 0; i < anchors.length; i++) {
     const item = anchors[i];
-    if (item.visibility <= 0.15) continue;
+    item.hidden = item.visibility <= 0.15 || visible >= maxVisible;
+    if (item.hidden) continue;
     let bestPenalty = Infinity,
       bestX = 0,
       bestY = 0;
@@ -32,16 +37,19 @@ export function placeNetworkLabels(
           item.x + (attempt % 2 ? -item.width - 14 : 14),
         ),
       );
-      const y = Math.max(8, Math.min(height - 42, item.y - 16 + dy));
+      const y = Math.max(
+        8,
+        Math.min(height - (item.height ?? 34) - 8, item.y - 16 + dy),
+      );
       let penalty = Math.abs(dy) * 0.08;
       for (let j = 0; j < i; j++) {
         const placed = anchors[j];
-        if (placed.visibility <= 0.15) continue;
+        if (placed.hidden || placed.visibility <= 0.15) continue;
         if (
           x < placed.labelX + placed.width + 7 &&
           x + item.width + 7 > placed.labelX &&
-          y < placed.labelY + 37 &&
-          y + 37 > placed.labelY
+          y < placed.labelY + (placed.height ?? 34) + 7 &&
+          y + (item.height ?? 34) + 7 > placed.labelY
         )
           penalty += 10000;
       }
@@ -52,6 +60,8 @@ export function placeNetworkLabels(
       }
       if (penalty < 10000) break;
     }
+    item.hidden = bestPenalty >= 10000;
+    if (!item.hidden) visible++;
     item.labelX = bestX;
     item.labelY = bestY;
   }

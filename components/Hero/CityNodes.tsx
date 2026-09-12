@@ -174,6 +174,7 @@ function City({
         }
       }
       label.style.transform = `translate3d(${safeX.toFixed(1)}px, ${safeY.toFixed(1)}px, 0)`;
+      label.style.zIndex = selected ? '10' : city.isOrigin ? '5' : '1';
       label.style.opacity = String(visibility * (origin ? 1 : 0.65));
     }
   }, -1);
@@ -262,6 +263,8 @@ export default function CityNodes(
             x: 0,
             y: 0,
             visibility: 0,
+            height: 34,
+            hidden: false,
             width: city.isOrigin
               ? 145
               : Math.min(130, city.name.length * 7 + 20),
@@ -275,10 +278,19 @@ export default function CityNodes(
   const ordered = useMemo(
     () =>
       [...anchors.values()].sort((a, b) => {
-        const priority = (id: string) => (id === 'swufe' ? 0 : 1);
+        const selectedId = props.network?.selectedId;
+        const priority = (id: string) =>
+          selectedId &&
+          cities
+            .find((city) => city.id === id)
+            ?.universityIds.includes(selectedId)
+            ? 0
+            : id === 'swufe'
+              ? 1
+              : 2;
         return priority(a.id) - priority(b.id);
       }),
-    [anchors],
+    [anchors, cities, props.network?.selectedId],
   );
   const originBounds = useRef({ x: 0, y: 0, width: 0, height: 0 });
   const nearbyIds = useMemo(() => {
@@ -306,17 +318,20 @@ export default function CityNodes(
     for (const city of cities) {
       const anchor = anchors.get(city.id);
       if (!anchor) continue;
-      const selected = Boolean(
-        props.network.selectedId &&
-        city.universityIds.includes(props.network.selectedId),
-      );
-      anchor.width = selected
-        ? Math.min(224, size.width * 0.64)
-        : city.isOrigin
-          ? 145
-          : Math.min(150, city.name.length * 7 + 34);
+      const button = props.labels.current
+        .get(city.name)
+        ?.querySelector('button');
+      if (button) {
+        anchor.width = button.offsetWidth;
+        anchor.height = button.offsetHeight;
+      }
     }
-    placeNetworkLabels(ordered, size.width, size.height);
+    placeNetworkLabels(
+      ordered,
+      size.width,
+      size.height,
+      size.width < 520 ? 4 : Infinity,
+    );
     for (const city of cities) {
       const label = props.labels.current.get(city.name),
         anchor = anchors.get(city.id);
@@ -329,14 +344,15 @@ export default function CityNodes(
         props.network.highlightedId!,
       );
       label.style.transform = `translate3d(${anchor.labelX.toFixed(1)}px, ${anchor.labelY.toFixed(1)}px, 0)`;
+      label.style.zIndex = selected ? '10' : city.isOrigin ? '5' : '1';
       label.style.opacity = String(
         anchor.visibility *
-          (selected || highlighted || city.isOrigin ? 1 : 0.64),
+          (selected || highlighted || city.isOrigin ? 1 : 0.92),
       );
-      label.style.visibility = anchor.visibility > 0.15 ? 'visible' : 'hidden';
-      label.inert = anchor.visibility <= 0.15;
+      label.style.visibility = !anchor.hidden ? 'visible' : 'hidden';
+      label.inert = anchor.hidden;
       const button = label.querySelector('button');
-      if (button) button.tabIndex = anchor.visibility > 0.15 ? 0 : -1;
+      if (button) button.tabIndex = !anchor.hidden ? 0 : -1;
       const leader = label.firstElementChild as HTMLElement | null;
       if (leader) {
         const edge = anchor.x < anchor.labelX ? 0 : anchor.width,

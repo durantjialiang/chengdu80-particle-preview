@@ -2,7 +2,12 @@
 import { useEffect, useRef } from 'react';
 import { ArrowUpRight, X } from 'lucide-react';
 import { type University } from '@/content/network';
-import { universityName, universityLocation } from '@/content/university-i18n';
+import {
+  achievementName,
+  evidenceTitle,
+  universityName,
+  universityLocation,
+} from '@/content/university-i18n';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import { bilingual as b } from '@/content/competition';
 import { projects, projectTitle } from '@/content/archive';
@@ -140,7 +145,7 @@ export default function UniversityDetailPanel({
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {award.name}
+                        {achievementName(award, language)}
                         <ArrowUpRight size={13} />
                       </a>
                     </li>
@@ -224,7 +229,8 @@ export default function UniversityDetailPanel({
             {university.evidence.map((source) => (
               <li key={source.url}>
                 <a href={source.url} target="_blank" rel="noopener noreferrer">
-                  {source.years.join(' · ')} · {source.title} ↗
+                  {source.years.join(' · ')} · {evidenceTitle(source, language)}{' '}
+                  ↗
                 </a>
               </li>
             ))}

@@ -3,9 +3,11 @@
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { INITIAL_TILT, type ControllerProps } from './scene-config';
+import { INITIAL_TILT, RADIUS, type ControllerProps } from './scene-config';
 import { getUniversity } from '@/content/network';
 import { universityOrientation } from './geometry';
+
+import { networkCameraDistance } from '@/lib/network-camera';
 
 const WORLD_Y = new THREE.Vector3(0, 1, 0);
 const WORLD_X = new THREE.Vector3(1, 0, 0);
@@ -20,7 +22,23 @@ export default function CameraController({
   opening,
   network,
 }: ControllerProps) {
-  const { camera, invalidate } = useThree();
+  const { camera, invalidate, size } = useThree();
+  const explorer = Boolean(network);
+  const cameraPosition = useMemo(() => {
+    const position = new THREE.Vector3(-0.62, 0.46, lowPower ? 5.95 : 6.45);
+    if (explorer && camera instanceof THREE.PerspectiveCamera) {
+      position.setLength(
+        networkCameraDistance(
+          size.width,
+          size.height,
+          camera.fov,
+          RADIUS,
+          position.length(),
+        ),
+      );
+    }
+    return position;
+  }, [camera, explorer, lowPower, size.width, size.height]);
   const focusId = network?.focusId;
   const focusRevision = network?.focusRevision ?? 0;
   const manualRotation = useRef(false);
@@ -34,9 +52,9 @@ export default function CameraController({
     return universityOrientation(
       university.latitude,
       university.longitude,
-      new THREE.Vector3(-0.62, 0.46, lowPower ? 5.95 : 6.45),
+      cameraPosition,
     );
-  }, [focusId, lowPower, network?.nodes]);
+  }, [focusId, cameraPosition, network?.nodes]);
   useEffect(() => {
     invalidate();
   }, [
@@ -47,10 +65,10 @@ export default function CameraController({
     invalidate,
   ]);
   useEffect(() => {
-    camera.position.set(-0.62, 0.46, lowPower ? 5.95 : 6.45);
+    camera.position.copy(cameraPosition);
     camera.lookAt(0, 0, 0);
     invalidate();
-  }, [camera, invalidate, lowPower]);
+  }, [camera, invalidate, cameraPosition]);
   /* oxlint-disable react/react-compiler -- Imperative R3F camera/transform updates are outside React rendering. */
   useFrame((_, delta) => {
     if (network) {
@@ -84,7 +102,7 @@ export default function CameraController({
             1 - Math.exp(-Math.min(delta, 0.05) * 3.2),
           );
       }
-      camera.position.set(-0.62, 0.46, lowPower ? 5.95 : 6.45);
+      camera.position.copy(cameraPosition);
       camera.lookAt(0, 0, 0);
       camera.updateMatrixWorld();
       return;
@@ -95,7 +113,7 @@ export default function CameraController({
       pointer.current.x = 0;
       pointer.current.y = 0;
       globe.current?.rotation.set(...INITIAL_TILT);
-      camera.position.set(-0.62, 0.46, lowPower ? 5.95 : 6.45);
+      camera.position.copy(cameraPosition);
       camera.lookAt(0, 0, 0);
       return;
     }
@@ -103,7 +121,7 @@ export default function CameraController({
       clock.current.elapsed = 10;
       clock.current.motion = 0;
       globe.current?.rotation.set(...INITIAL_TILT);
-      camera.position.set(-0.62, 0.46, lowPower ? 5.95 : 6.45);
+      camera.position.copy(cameraPosition);
       camera.lookAt(0, 0, 0);
       return;
     }

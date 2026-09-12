@@ -296,8 +296,8 @@ export function HomeAfterNetwork() {
         <p className={styles.introCopy}>
           {t(
             b(
-              'Research discovery, explainable investing and insurance in the age of intelligent driving. A selection of historical prototypes and team records—not a ranking.',
-              '学术发现、可解释投资、智能驾驶时代的保险：精选历史原型与团队成果，不作为全赛事排名。',
+              'Across 2018–2024, teams turned questions about financial research, investing and insurance into prototypes.',
+              '2018—2024年，团队把金融学术发现、投资与保险问题转化为一个个原型。',
             ),
           )}
         </p>
@@ -382,8 +382,8 @@ export function HomeAfterNetwork() {
         <p className={styles.introCopy}>
           {t(
             b(
-              'The 2019 archive records teams from Berkeley, Toronto, Hong Kong, Singapore and China. These photographs document participation, not assumed award identities.',
-              '2019档案留下了伯克利、多伦多、香港、新加坡与中国内地高校团队的参赛记录。合影展示参赛者，不据此推断获奖身份。',
+              'In 2019, eight university teams gathered in Chengdu for an 80-hour financial research-discovery challenge.',
+              '2019年，8支高校团队汇聚成都，在80小时内探索金融学术发现。',
             ),
           )}
         </p>
@@ -396,8 +396,8 @@ export function HomeAfterNetwork() {
             <p>
               {t(
                 b(
-                  'Competition records preserve not only product names, but the people who worked together. Explore the dated team photographs and their university records.',
-                  '赛事档案不仅记录产品，也记录共同投入开发的团队。沿着有年份、有学校依据的合影，走进高校记录。',
+                  'The 2019 final brought these research-discovery prototypes to SWUFE for demonstrations and questions. Follow the record to meet the teams and projects from that edition.',
+                  '2019年决赛在西财展示这些金融学术发现原型并进行答辩。沿着记录，回看该届团队与作品。',
                 ),
               )}
             </p>

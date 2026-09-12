@@ -1,6 +1,6 @@
 .network {
   --network-cyan: #a6e4ed;
-  --network-subtle: #93a7b6;
+  --network-subtle: #b3c6d3;
   color: #edf6fa;
   background: #030a10;
   padding: 76px max(24px, calc((100% - 1328px) / 2)) 50px;
@@ -108,7 +108,7 @@
 }
 .directoryHeading > span {
   color: var(--network-subtle);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
 }
 .grid {
   display: grid;
@@ -567,7 +567,7 @@
   gap: 12px;
   padding: 0 22px 20px;
   color: #b7dce4;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
 }
 .website {
   opacity: 0.7;
@@ -937,7 +937,7 @@
   scroll-margin-top: 84px;
 }
 .workspace {
-  align-items: stretch;
+  align-items: start;
 }
 .workspace .mapPanel {
   position: relative;
@@ -1010,5 +1010,26 @@
 @media (max-width: 480px) {
   .compactGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* A card's locate action lands below the fixed site navigation. */
+.mapPanel {
+  scroll-margin-top: 92px;
+}
+.mapPanel:focus-visible {
+  outline: 2px solid #d3b17c;
+  outline-offset: 4px;
+}
+.directoryButton > span,
+.englishName,
+.detailFootnote,
+.detailPhoto figcaption {
+  color: #b8ccd9;
+  font-size: 13px;
+}
+@media (max-width: 600px) {
+  .globe {
+    height: clamp(240px, 88vw, 350px);
   }
 }

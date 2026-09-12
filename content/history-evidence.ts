@@ -163,7 +163,7 @@ export const confirmed2022Awards = [
   {
     id: '2022-kaichuangzhe',
     sourceEnglish: 'Trailblazer / Pioneer (same-page conflict)',
-    label: b('Trailblazer Award / 开创者奖', '开创者奖'),
+    label: b('Trailblazer Award', '开创者奖'),
     universityIds: ['tsinghua'] as readonly UniversityId[],
     sourceRef: 'event2022' as const,
   },
@@ -205,25 +205,25 @@ export const confirmed2024Awards: readonly {
 }[] = [
   {
     id: '2024-kaichuangzhe',
-    label: b('开创者奖 · highest award (official Chinese wording)', '开创者奖'),
+    label: b('Trailblazer Award · highest award', '开创者奖'),
     universityIds: ['queens'],
     sourceRef: 'event2024',
   },
   {
     id: '2024-lingxianzhe',
-    label: b('领先者奖 (official Chinese wording)', '领先者奖'),
+    label: b('Pioneer Award', '领先者奖'),
     universityIds: ['eth', 'tsinghua'],
     sourceRef: 'event2024',
   },
   {
     id: '2024-chuangxinzhe',
-    label: b('创新者奖 (official Chinese wording)', '创新者奖'),
+    label: b('Innovator Award', '创新者奖'),
     universityIds: ['nus', 'hku', 'uestc', 'gatech'],
     sourceRef: 'event2024',
   },
   {
     id: '2024-special',
-    label: b('特别奖 · Special award', '特别奖'),
+    label: b('Special Award', '特别奖'),
     universityIds: ['swufe'],
     sourceRef: 'event2024',
   },

@@ -145,16 +145,78 @@ await test('international network polish preserves dated records and clear ident
           ),
         );
         assert.match(html, /Academic exchange in Chengdu/);
+        assert.match(
+          html,
+          /eight university teams gathered in Chengdu for an 80-hour financial research-discovery challenge/,
+        );
         assert.doesNotMatch(
           html,
-          /Global minds|team not identified|product name is not established|产品专名尚未明确|具体团队未确认/,
+          /Global minds|team not identified|product name is not established|产品专名尚未明确|具体团队未确认|photographs document participation|合影展示参赛者|not assumed award identities|不据此推断获奖身份|not a ranking|不作为全赛事排名/,
         );
         const { projects } = await server.ssrLoadModule('/content/archive.ts');
+        const { confirmed2022Awards, confirmed2024Awards } =
+          await server.ssrLoadModule('/content/history-evidence.ts');
+        for (const project of projects)
+          assert.doesNotMatch(
+            project.awardLabel.en,
+            /[\u3400-\u9fff]/,
+            project.projectId,
+          );
+        for (const award of [...confirmed2022Awards, ...confirmed2024Awards])
+          assert.doesNotMatch(award.label.en, /[\u3400-\u9fff]/, award.id);
         assert.match(
           projects.find((p) => p.projectId === 'data-queens-report')
             .verificationNote.en,
-          /team name/,
+          /Trailblazer Award.*first place.*Queen’s article/,
         );
+
+        const { default: Detail } = await server.ssrLoadModule(
+          '/components/network/UniversityDetailPanel.tsx',
+        );
+        const { SiteLanguageProvider } = await server.ssrLoadModule(
+          '/hooks/use-site-language.tsx',
+        );
+        const previousWindow = Object.getOwnPropertyDescriptor(
+          globalThis,
+          'window',
+        );
+        const previousLocation = Object.getOwnPropertyDescriptor(
+          globalThis,
+          'location',
+        );
+        try {
+          Object.defineProperty(globalThis, 'window', {
+            value: {},
+            configurable: true,
+          });
+          Object.defineProperty(globalThis, 'location', {
+            value: { search: '?lang=zh' },
+            configurable: true,
+          });
+          const berkeleyPanel = renderToString(
+            React.createElement(
+              SiteLanguageProvider,
+              null,
+              React.createElement(Detail, {
+                university: universities.find((u) => u.id === 'berkeley'),
+                onClose() {},
+              }),
+            ),
+          );
+          assert.match(berkeleyPanel, /领先者奖/);
+          assert.match(berkeleyPanel, /2019官方结果 · 伯克利，Pioneer/);
+          assert.doesNotMatch(
+            berkeleyPanel,
+            /official recap wording|source wording/,
+          );
+        } finally {
+          if (previousWindow)
+            Object.defineProperty(globalThis, 'window', previousWindow);
+          else delete globalThis.window;
+          if (previousLocation)
+            Object.defineProperty(globalThis, 'location', previousLocation);
+          else delete globalThis.location;
+        }
       },
     );
   } finally {

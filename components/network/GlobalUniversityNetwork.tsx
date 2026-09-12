@@ -65,7 +65,7 @@ export default function GlobalUniversityNetwork({
   compact?: boolean;
 }) {
   const { t, href, language } = useSiteLanguage();
-  const mapPanel = useRef<HTMLDivElement>(null);
+  const mapPanel = useRef<HTMLElement>(null);
   const tourFrame = useRef<HTMLDivElement>(null);
   const [tourFramed, setTourFramed] = useState(false);
   const inView = useInView(mapPanel, { margin: '100px' });
@@ -167,6 +167,23 @@ export default function GlobalUniversityNetwork({
           });
       });
     }
+  };
+  const locateSelected = () => {
+    if (!selection.selectedId) return;
+    tour.stop('card');
+    setTourFramed(false);
+    setCityId(null);
+    selection.setCardHover(null);
+    selection.setNodeHover(null);
+    selection.focusOn(selection.selectedId);
+    // Wait for the normal globe height to return after a compact tour layout.
+    window.requestAnimationFrame(() => {
+      mapPanel.current?.focus({ preventScroll: true });
+      mapPanel.current?.scrollIntoView({
+        behavior: reducedMotion ? 'instant' : 'smooth',
+        block: 'start',
+      });
+    });
   };
   const changeRegion = (region: NetworkRegion) => {
     tour.stop('filter');
@@ -517,9 +534,12 @@ export default function GlobalUniversityNetwork({
           </span>
         </div>
         <div className={styles.workspace} data-particle-reading-region>
-          <div
+          <section
             ref={mapPanel}
             className={styles.mapPanel}
+            data-network-map
+            tabIndex={-1}
+            aria-label={t(b('University globe', '高校地球'))}
             data-particle-no-force
           >
             <div className={styles.mapHeading}>
@@ -615,18 +635,14 @@ export default function GlobalUniversityNetwork({
                 )}
               </span>
             </div>
-          </div>
+          </section>
           {selectedUniversity && selection.selectedId && (
             <UniversitySpotlight
               key={selection.selectedId + ':' + selection.year}
               universityId={selection.selectedId}
               year={selection.year}
               compact={compact}
-              onLocate={() => {
-                tour.stop('card');
-                if (selection.selectedId)
-                  selection.focusOn(selection.selectedId);
-              }}
+              onLocate={locateSelected}
               onDetails={() => {
                 tour.stop('card');
                 if (selection.selectedId)
@@ -641,8 +657,8 @@ export default function GlobalUniversityNetwork({
           <h3>
             {t(
               b(
-                'Universities across competitions & academic exchange',
-                '赛事与学术交流合作高校',
+                'University participation & academic exchange records',
+                '高校参与与学术交流记录',
               ),
             )}
           </h3>

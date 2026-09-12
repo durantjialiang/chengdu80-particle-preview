@@ -36,11 +36,18 @@ export type UniversityId =
   | 'tau'
   | 'emlyon'
   | 'unsw';
-export type Evidence = { title: string; url: string; years: readonly number[] };
+export type Evidence = {
+  title: string;
+  titleZh?: string;
+  url: string;
+  years: readonly number[];
+};
 export type Achievement = {
   year: number | null;
   reportedYear?: number;
   name: string;
+  nameEn?: string;
+  nameZh?: string;
   sourceUrl: string;
   projectId?: string;
 };
@@ -706,7 +713,8 @@ const universityRecords: readonly University[] = [
     awards: [
       {
         year: 2019,
-        name: 'Pioneer (2019 official recap wording)',
+        name: 'Pioneer',
+        nameZh: '领先者奖',
         sourceUrl: 'https://cd80.swufe.edu.cn/info/1081/1071.htm',
       },
     ],
@@ -716,37 +724,45 @@ const universityRecords: readonly University[] = [
     evidence: [
       {
         title: 'SWUFE–CDAR 2021 forum · Robert M. Anderson keynote',
+        titleZh: 'SWUFE–CDAR论坛 · Robert M. Anderson主旨演讲',
         url: 'https://jinrong.swufe.edu.cn/info/1100/3386.htm',
         years: [2021],
       },
       {
         title: '2019 annual detail · Berkeley named below its team photograph',
+        titleZh: '2019年度详情 · 合影说明列出伯克利',
         url: 'https://cd80.swufe.edu.cn/info/1031/1091.htm',
         years: [2019],
       },
       {
         title: '2019 official results · Berkeley, Pioneer (source wording)',
+        titleZh: '2019官方结果 · 伯克利，Pioneer',
         url: 'https://cd80.swufe.edu.cn/info/1081/1071.htm',
         years: [2019],
       },
       {
         title: 'SWUFE historical participation and awards review',
+        titleZh: '西南财经大学历史参赛与获奖回顾',
         url: 'https://lab.swufe.edu.cn/info/1035/1020.htm',
         years: [],
       },
       {
         title: 'NUS · 2018 competition report',
+        titleZh: '新加坡国立大学 · 2018赛事报道',
         url: 'https://www.comp.nus.edu.sg/news/2018-chengdu-80-competition/',
         years: [2018],
       },
       {
         title: 'NUS · 2020 competitor record',
+        titleZh: '新加坡国立大学 · 2020参赛记录',
         url: 'https://www.comp.nus.edu.sg/news/2020-chengdu80-win/',
         years: [2020],
       },
     ],
     recordNote:
       'Selected documented editions, not an exhaustive participation history.',
+    recordNoteZh:
+      '引用来源记录伯克利2018—2020年相关经历及2019年领先者奖项；具体来源见下方。',
     logoSource: 'https://brand.berkeley.edu/visual-identity/logos/',
     logoSurface: 'dark',
   },
@@ -1168,6 +1184,8 @@ export const universities: readonly University[] = universityRecords.map(
         .map((a) => ({
           year: Number(year),
           name: a.label.zh,
+          nameEn: a.label.en,
+          nameZh: a.label.zh,
           sourceUrl: anniversarySource.url,
         })),
     );
@@ -1187,6 +1205,7 @@ export const universities: readonly University[] = universityRecords.map(
             ...original.evidence,
             {
               title: anniversarySource.title.en,
+              titleZh: anniversarySource.title.zh,
               url: anniversarySource.url,
               years: additions.map((a) => a.year),
             },
@@ -1211,6 +1230,7 @@ export const universities: readonly University[] = universityRecords.map(
           ...university.evidence,
           {
             title: 'Berkeley funder · 2018 project report',
+            titleZh: '伯克利 funder · 2018作品报道',
             url: universitySources.berkeley2018,
             years: [2018],
           },
@@ -1244,14 +1264,25 @@ export const universities: readonly University[] = universityRecords.map(
       ].sort((a, b) => a - b),
       awards: [
         ...university.awards.filter(
-          (a) => !(a.year === 2024 && a.name === result.label.zh),
+          (a) =>
+            !(
+              a.year === 2024 &&
+              (a.name === result.label.zh || a.name === result.label.en)
+            ),
         ),
-        { year: 2024, name: result.label.zh, sourceUrl: edition2024Source.url },
+        {
+          year: 2024,
+          name: result.label.zh,
+          nameEn: result.label.en,
+          nameZh: result.label.zh,
+          sourceUrl: edition2024Source.url,
+        },
       ],
       evidence: [
         ...university.evidence,
         {
           title: edition2024Source.title.en,
+          titleZh: edition2024Source.title.zh,
           url: edition2024Source.url,
           years: [2024],
         },

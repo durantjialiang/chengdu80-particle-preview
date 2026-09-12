@@ -7,6 +7,7 @@ import {
   type NetworkYear,
 } from '@/lib/university-explorer';
 import { useSiteLanguage } from '@/hooks/use-site-language';
+import { Photo } from '@/components/site/ArchiveGallery';
 import { UniversityLogo } from './UniversityLogo';
 import UniversityRelationships from './UniversityRelationships';
 import styles from './UniversitySpotlight.module.css';
@@ -27,6 +28,7 @@ export default function UniversitySpotlight({
 }) {
   const { t, language, href } = useSiteLanguage();
   const record = universitySpotlight(universityId, year);
+  const allYearsRecord = universitySpotlight(universityId, 'all');
   const { university } = record;
   const institution = academicInstitutionForUniversity(universityId);
   const exchange =
@@ -34,8 +36,17 @@ export default function UniversitySpotlight({
     (year === 'all' || institution.years.some((value) => value === year))
       ? institution
       : null;
-  const project = record.projects[0];
+  const project = record.projects.find(
+    (candidate) =>
+      candidate.verificationStatus === 'documented' &&
+      candidate.projectName !== null,
+  );
   const award = record.awards[0];
+  // A reviewed team photograph may belong to a different documented edition
+  // than the active filter. Keep its own year visible in the caption.
+  const teamPhoto =
+    record.teamPhoto ??
+    (record.hasParticipation ? allYearsRecord.teamPhoto : null);
   const headingId = `spotlight-title-${universityId}`;
   return (
     <article
@@ -68,6 +79,31 @@ export default function UniversitySpotlight({
         </p>
       )}
       <UniversityRelationships university={university} />
+      {teamPhoto && (
+        <figure className={styles.teamPhoto}>
+          <a
+            href={href(`/media/?year=${teamPhoto.eventYear}#photos`)}
+            aria-label={`${teamPhoto.eventYear} · ${t(
+              b(
+                'View the university team photograph in the photo archive',
+                '在照片档案中查看高校团队合影',
+              ),
+            )}`}
+          >
+            <Photo image={teamPhoto} />
+          </a>
+          <figcaption>
+            {teamPhoto.eventYear} ·{' '}
+            {t(
+              b(
+                'University team photograph · View photo archive',
+                '高校团队合影 · 查看照片档案',
+              ),
+            )}{' '}
+            ↗
+          </figcaption>
+        </figure>
+      )}
       <div className={styles.quickActions}>
         <button type="button" onClick={onLocate}>
           {t(b('Locate on globe', '在地球上查看'))}
@@ -97,7 +133,7 @@ export default function UniversitySpotlight({
             </p>
             <h5>
               <a href={href(`/winners/${project.projectId}/`)}>
-                {project.projectName ?? project.teamName} ↗
+                {project.projectName} ↗
               </a>
             </h5>
             <p className={styles.summary}>{t(project.summary)}</p>

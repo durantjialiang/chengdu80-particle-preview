@@ -81,13 +81,13 @@
   pointer-events: auto;
   padding: 6px 8px;
   min-height: 32px;
-  max-width: min(244px, calc(100vw - 30px));
+  max-width: min(150px, calc(100cqw - 24px));
   font-size: 12px;
   line-height: 1.3;
-  color: #a6c0ce;
+  color: #c4dce8;
   border: 1px solid #81b4c631;
   border-radius: 5px;
-  background: #07101dd9;
+  background: #07131ff2;
 }
 .nodeLabel button[data-highlighted='true'] {
   color: #e6fcff;
@@ -102,11 +102,14 @@
 .nodeLabel button[data-expanded='true'] {
   white-space: normal;
   text-align: left;
-  min-width: min(176px, calc(100vw - 30px));
+  width: min(224px, calc(100cqw - 24px));
+  max-width: min(224px, calc(100cqw - 24px));
   padding: 7px 9px;
 }
 .conciseLabel {
-  display: inline;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .expandedLabel {
   display: none;
@@ -158,8 +161,8 @@
 }
 .expandedLabel small {
   display: block;
-  color: #8fb4c2;
-  font-size: 10px;
+  color: #c2d5df;
+  font-size: 11px;
   letter-spacing: 0.01em;
 }
 .nodeLabel button[data-expanded='true'] .conciseLabel {
@@ -193,6 +196,7 @@
   z-index: 3;
 }
 .scene[data-network-explorer='true'] {
+  container-type: inline-size;
   /* Keep vertical page scrolling usable while horizontal drags rotate the map. */
   touch-action: pan-y;
 }

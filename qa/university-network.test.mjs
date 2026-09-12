@@ -222,26 +222,69 @@ await test('shared university ecosystem contracts', async (t) => {
             id: String(i),
             x: width / 2 + (i % 2) * 2,
             y: height / 2,
-            width: i ? 90 : 145,
+            width: i ? 90 : 224,
+            height: i ? 34 : 60,
             visibility: 1,
             labelX: 0,
             labelY: 0,
           }));
           const before = anchors.map((a) => [a.x, a.y]);
           assert.equal(placeNetworkLabels(anchors, width, height), anchors);
+          assert.equal(
+            anchors[0].hidden,
+            false,
+            'Selected school always gets first placement',
+          );
           anchors.forEach((a, i) => {
             assert.deepEqual([a.x, a.y], before[i]);
+            if (a.hidden) return;
             assert.ok(a.labelX >= 0 && a.labelX + a.width <= width);
-            assert.ok(a.labelY >= 0 && a.labelY + 32 <= height);
-            for (const b of anchors.slice(0, i))
+            assert.ok(a.labelY >= 0 && a.labelY + a.height <= height);
+            for (const b of anchors.slice(0, i).filter((item) => !item.hidden))
               assert.ok(
                 a.labelX + a.width <= b.labelX ||
                   b.labelX + b.width <= a.labelX ||
-                  a.labelY + 32 <= b.labelY ||
-                  b.labelY + 32 <= a.labelY,
+                  a.labelY + a.height <= b.labelY ||
+                  b.labelY + b.height <= a.labelY,
                 `${width} overlap ${a.id}/${b.id}`,
               );
           });
+        }
+      },
+    );
+    await t.test(
+      'responsive camera fits the sphere in portrait, landscape and compact tour containers',
+      async () => {
+        const { networkCameraDistance } = await server.ssrLoadModule(
+          '/lib/network-camera.ts',
+        );
+        for (const [width, height] of [
+          [352, 343],
+          [282, 320],
+          [352, 424],
+          [684, 424],
+          [352, 130],
+        ]) {
+          for (const fov of [37, 42]) {
+            const distance = networkCameraDistance(
+              width,
+              height,
+              fov,
+              1.62,
+              6.5,
+            );
+            const angularRadius = Math.asin((1.62 * 1.08) / distance);
+            const projectedHeight =
+              (((2 * Math.tan(angularRadius)) /
+                Math.tan((fov * Math.PI) / 360)) *
+                height) /
+              2;
+            assert.ok(
+              projectedHeight <= Math.min(width, height) * 0.84 + 1e-6,
+              `${width}x${height}: ${projectedHeight}`,
+            );
+            assert.ok(distance >= 6.5);
+          }
         }
       },
     );
