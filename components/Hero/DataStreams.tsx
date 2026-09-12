@@ -177,7 +177,7 @@ function Routes({
       material.current.uniforms.uSelected.value =
         network?.selectedId && network.selectedId !== 'swufe'
           ? destinations.findIndex((city) =>
-              city.universityIds.includes(network.selectedId),
+              city.universityIds.includes(network.selectedId!),
             )
           : -1;
     }

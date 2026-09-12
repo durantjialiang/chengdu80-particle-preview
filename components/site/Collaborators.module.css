@@ -83,6 +83,17 @@
   font-size: 14px;
   line-height: 1.6;
 }
+.honorLabel {
+  margin: 0 0 6px;
+  color: #a9bfd0;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.honorBadge {
+  min-width: 0;
+}
 .section .featuredCard h3 {
   margin: 0;
   font-size: 24px;
@@ -107,6 +118,55 @@
   color: #a9bfd0;
   font-size: 14px;
   line-height: 1.65;
+}
+.activityPreview {
+  margin: 0 0 24px;
+  padding-top: 15px;
+  border-top: 1px solid #a6cce02b;
+}
+.activityLabel,
+.activities h4,
+.honorsBlock h4 {
+  margin: 0 0 11px;
+  color: #e1c797;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+.activityList {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.activityList li {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+.activityYear {
+  color: #e1c797;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.6;
+}
+.activityFormat {
+  display: block;
+  color: #e4edf5;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+.activityEvent {
+  display: block;
+  margin: 3px 0 0;
+  color: #a9bfd0;
+  font-size: 13px;
+  line-height: 1.45;
 }
 .cardLink {
   display: flex;
@@ -230,6 +290,39 @@
   font-size: 16px;
   line-height: 1.85;
 }
+.activities {
+  margin-top: 24px;
+  padding: 18px 20px;
+  border: 1px solid #a4c8df2c;
+  background: #14253699;
+}
+.activities .activityList {
+  gap: 16px;
+}
+.activities .activityEvent {
+  color: #c2d4e1;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.activitySource {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  color: #b8d5e7;
+  font-size: 13px;
+  line-height: 1.5;
+  text-underline-offset: 4px;
+}
+.activitySource svg {
+  flex-shrink: 0;
+}
+.honorsBlock {
+  margin-top: 24px;
+}
+.honorsBlock .honors {
+  margin-top: 0;
+}
 .honors {
   margin: 20px 0 0;
   padding-left: 20px;
@@ -324,6 +417,9 @@
   }
   .groupPhoto {
     margin-top: 42px;
+  }
+  .activities {
+    padding: 16px;
   }
 }
 @media (max-width: 460px) {

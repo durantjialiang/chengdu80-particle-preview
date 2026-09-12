@@ -4,14 +4,11 @@ import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { type University } from '@/content/network';
 import { universityConnectionYears } from '@/content/universities';
 import { academicInstitutionForUniversity } from '@/content/academic-institutions';
-import {
-  universityName,
-  universityLocation,
-  universityRole,
-} from '@/content/university-i18n';
+import { universityName, universityLocation } from '@/content/university-i18n';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import { bilingual as b } from '@/content/competition';
 import { UniversityLogo } from './UniversityLogo';
+import UniversityRelationships from './UniversityRelationships';
 import styles from './Network.module.css';
 
 export { UniversityLogo } from './UniversityLogo';
@@ -74,15 +71,13 @@ export default function UniversityCard({
         aria-haspopup="dialog"
       >
         <UniversityLogo university={university} />
-        <span
-          className={styles.relationship}
-          data-role={university.relationshipType}
-        >
-          {university.verification === 'pending'
-            ? t(b('Record under review', '资料待核'))
-            : universityRole(university.relationshipType, language)}
-        </span>
+        <UniversityRelationships university={university} />
         <h4>{universityName(university, language)}</h4>
+        {language === 'zh' && (
+          <p className={styles.englishName} lang="en">
+            {university.name}
+          </p>
+        )}
         <p>{universityLocation(university, language)}</p>
         <div className={styles.years}>
           <span>

@@ -419,8 +419,9 @@ export default function Scene({
                       disabled={city.universityIds.length === 0}
                       tabIndex={-1}
                       aria-label={`${selectLabel} ${accessibleName}${language === 'zh' ? '' : ' on globe'}`}
-                      aria-pressed={city.universityIds.includes(
-                        network.selectedId,
+                      aria-pressed={Boolean(
+                        network.selectedId &&
+                        city.universityIds.includes(network.selectedId),
                       )}
                       data-highlighted={city.universityIds.includes(
                         network.highlightedId!,

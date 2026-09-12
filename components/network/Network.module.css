@@ -931,3 +931,84 @@
     grid-row: auto;
   }
 }
+
+/* Keep the tour controls and its two reading surfaces in one scroll target. */
+.tourFrame {
+  scroll-margin-top: 84px;
+}
+.workspace {
+  align-items: stretch;
+}
+.workspace .mapPanel {
+  position: relative;
+  top: 0;
+}
+.globe {
+  height: clamp(260px, calc(100svh - 350px), 424px);
+}
+.recoveryActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+.englishName {
+  display: block;
+  margin: 3px 0 8px;
+  color: #9fb5c4;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.detailPhoto {
+  margin: 24px 0;
+}
+.detailPhoto img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.detailPhoto figcaption {
+  margin-top: 10px;
+  color: #a9becb;
+  font-size: 12px;
+  line-height: 1.5;
+}
+@media (max-width: 900px) {
+  .tourFrame[data-tour-framed='true'] .workspace {
+    gap: 12px;
+  }
+  .tourFrame[data-tour-framed='true'] .mapHeading {
+    padding: 10px 16px;
+    font-size: 10px;
+  }
+  .tourFrame[data-tour-framed='true'] .globe {
+    height: clamp(130px, calc(100svh - 550px), 220px);
+  }
+  .tourFrame[data-tour-framed='true'] .connectionReadout {
+    display: none;
+  }
+  .tourFrame[data-tour-framed='true'] .mapFooter {
+    padding: 8px 16px;
+  }
+  .tourFrame[data-tour-framed='true'] .mapFooter button {
+    min-height: 30px;
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+}
+
+.directoryButton {
+  gap: 8px;
+}
+.directoryButton > :global([data-university-relationships]) {
+  margin: 6px 0 0;
+}
+.directoryButton > .englishName {
+  margin: -4px 0 2px;
+}
+@media (max-width: 480px) {
+  .compactGrid {
+    grid-template-columns: 1fr;
+  }
+}

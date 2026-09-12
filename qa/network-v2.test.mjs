@@ -261,6 +261,39 @@ await test('Network V2 filtered identity and archive contracts', async (t) => {
           query: '',
           selectedId: 'swufe',
         });
+        assert.equal(readNetworkView('').selectedId, 'swufe');
+        const legacyQuery = new URL(
+          'https://example.com' +
+            networkViewUrl(
+              'https://example.com/global-network/?q=Zurich&lang=zh',
+              readNetworkView('?q=Zurich&lang=zh'),
+            ),
+        );
+        assert.equal(legacyQuery.searchParams.has('q'), false);
+        assert.equal(legacyQuery.searchParams.get('query'), 'Zurich');
+        assert.equal(legacyQuery.searchParams.get('lang'), 'zh');
+        for (const year of [2025, 2026])
+          assert.equal(
+            readNetworkView(`?year=${year}&university=nus`).selectedId,
+            null,
+          );
+        assert.equal(
+          readNetworkView('?year=2019&region=north-america&university=eth')
+            .selectedId,
+          'toronto',
+        );
+        assert.equal(
+          networkViewUrl(
+            'https://example.com/global-network/?year=2025&university=nus',
+            {
+              year: 2025,
+              region: 'all',
+              query: '',
+              selectedId: 'nus',
+            },
+          ),
+          '/global-network/?year=2025',
+        );
         assert.ok(
           !networkViewUrl('https://example.com/?year=2019&lang=en', {
             year: 'all',

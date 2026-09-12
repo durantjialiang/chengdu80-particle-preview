@@ -108,7 +108,7 @@ await test('shared university ecosystem contracts', async (t) => {
         assert.deepEqual(getUniversity('unsw').participationYears, [2020]);
         assert.equal(getUniversity('unsw').awards.length, 0);
         assert.equal(getUniversity('unsw').projects.length, 0);
-        assert.equal(getUniversity('unsw').logo, null);
+        assert.equal(getUniversity('unsw').logo, '/university-logos/unsw.png');
         assert.ok(
           getUniversity('queens').awards.some(
             (a) => a.year === 2024 && a.name === '开创者奖',

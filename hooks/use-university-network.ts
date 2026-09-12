@@ -5,6 +5,7 @@ import type { NetworkRegion } from '@/content/network-regions';
 import {
   readNetworkView,
   networkViewUrl,
+  normalizeNetworkView,
   type NetworkView,
   type NetworkYear,
 } from '@/lib/university-explorer';
@@ -20,7 +21,7 @@ export function useUniversityNetwork(_reducedMotion: boolean) {
   useEffect(() => {
     viewRef.current = view;
   }, [view]);
-  const [focusId, setFocusId] = useState<UniversityId>(view.selectedId);
+  const [focusId, setFocusId] = useState<UniversityId | null>(view.selectedId);
   const [focusRevision, setFocusRevision] = useState(0);
   const [cardHover, setCardHover] = useState<UniversityId | null>(null);
   const [nodeHover, setNodeHover] = useState<UniversityId | null>(null);
@@ -29,7 +30,7 @@ export function useUniversityNetwork(_reducedMotion: boolean) {
     setCardHover(null);
     setNodeHover(null);
   }, []);
-  const focus = useCallback((id: UniversityId) => {
+  const focus = useCallback((id: UniversityId | null) => {
     setFocusId(id);
     setFocusRevision((revision) => revision + 1);
   }, []);
@@ -38,13 +39,16 @@ export function useUniversityNetwork(_reducedMotion: boolean) {
       nextOrUpdate: NetworkView | ((current: NetworkView) => NetworkView),
       mode: 'push' | 'replace' = 'push',
     ) => {
-      const next =
+      const previous = viewRef.current;
+      const proposed =
         typeof nextOrUpdate === 'function'
-          ? nextOrUpdate(viewRef.current)
+          ? nextOrUpdate(previous)
           : nextOrUpdate;
+      const next = normalizeNetworkView(proposed);
       viewRef.current = next;
       setViewState(next);
       clearHover();
+      if (next.selectedId !== previous.selectedId) focus(next.selectedId);
       const url = networkViewUrl(window.location.href, next);
       if (
         url !==
@@ -56,28 +60,41 @@ export function useUniversityNetwork(_reducedMotion: boolean) {
           url,
         );
       }
+      return next;
     },
-    [clearHover],
+    [clearHover, focus],
   );
   useEffect(() => {
     const restore = () => {
-      const next = readNetworkView(window.location.search);
+      const next = normalizeNetworkView(
+        readNetworkView(window.location.search),
+      );
       viewRef.current = next;
       setViewState(next);
+      const url = networkViewUrl(window.location.href, next);
+      if (
+        url !==
+        window.location.pathname + window.location.search + window.location.hash
+      ) {
+        window.history.replaceState(window.history.state, '', url);
+      }
       focus(next.selectedId);
       setDetailId(null);
       clearHover();
     };
+    // Canonicalize an invalid/stale deep link before the first interaction.
+    restore();
     window.addEventListener('popstate', restore);
     return () => window.removeEventListener('popstate', restore);
   }, [clearHover, focus]);
   const selectUniversity = useCallback(
     (id: UniversityId, options?: { replace?: boolean }) => {
-      commit(
+      const shouldRefocus = viewRef.current.selectedId === id;
+      const next = commit(
         (current) => ({ ...current, selectedId: id }),
         options?.replace ? 'replace' : 'push',
       );
-      focus(id);
+      if (shouldRefocus) focus(next.selectedId);
     },
     [commit, focus],
   );

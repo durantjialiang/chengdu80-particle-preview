@@ -2,16 +2,15 @@
 import { useEffect, useRef } from 'react';
 import { ArrowUpRight, X } from 'lucide-react';
 import { type University } from '@/content/network';
-import {
-  universityName,
-  universityLocation,
-  universityRole,
-} from '@/content/university-i18n';
+import { universityName, universityLocation } from '@/content/university-i18n';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import { bilingual as b } from '@/content/competition';
 import { projects, projectTitle } from '@/content/archive';
+import { universitySpotlight } from '@/lib/university-explorer';
+import { Photo } from '@/components/site/ArchiveGallery';
 import { Button } from '@/components/ui/button';
 import { UniversityLogo } from './UniversityLogo';
+import UniversityRelationships from './UniversityRelationships';
 import UniversityExchange from './UniversityExchange';
 import styles from './Network.module.css';
 
@@ -24,6 +23,7 @@ export default function UniversityDetailPanel({
   onClose: () => void;
 }) {
   const { t, href, language } = useSiteLanguage();
+  const teamPhoto = universitySpotlight(university.id, 'all').teamPhoto;
   const panel = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const element = panel.current;
@@ -52,21 +52,36 @@ export default function UniversityDetailPanel({
           </Button>
         </div>
         <UniversityLogo university={university} />
-        <p
-          className={styles.relationship}
-          data-role={university.relationshipType}
-        >
-          {university.verification === 'pending'
-            ? t(b('Record under review', '资料待核'))
-            : universityRole(university.relationshipType, language)}
-        </p>
+        <UniversityRelationships university={university} />
         <h2 id="university-detail-title">
           {universityName(university, language)}
         </h2>
+        {language === 'zh' && (
+          <p className={styles.englishName} lang="en">
+            {university.name}
+          </p>
+        )}
         <p className={styles.location}>
           {universityLocation(university, language)}
         </p>
         <UniversityExchange universityId={university.id} detail />
+        {teamPhoto && (
+          <figure className={styles.detailPhoto}>
+            <a href={href(`/media/?year=${teamPhoto.eventYear}#photos`)}>
+              <Photo image={teamPhoto} />
+            </a>
+            <figcaption>
+              {teamPhoto.eventYear} ·{' '}
+              {t(
+                b(
+                  'University team photograph · View photo archive',
+                  '高校团队合影 · 查看照片档案',
+                ),
+              )}{' '}
+              ↗
+            </figcaption>
+          </figure>
+        )}
         {university.relationshipType !== 'academic' && (
           <>
             <p className={styles.recordNote}>
@@ -203,6 +218,18 @@ export default function UniversityDetailPanel({
             </section>
           </>
         )}
+        <section>
+          <h3>{t(b('Sources & records', '资料与来源'))}</h3>
+          <ul>
+            {university.evidence.map((source) => (
+              <li key={source.url}>
+                <a href={source.url} target="_blank" rel="noopener noreferrer">
+                  {source.years.join(' · ')} · {source.title} ↗
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
         <a
           className={styles.officialButton}
           href={university.website}

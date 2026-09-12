@@ -22,23 +22,18 @@ export function FeaturedCollaborators() {
       <header className={styles.heading}>
         <div>
           <p className={styles.eyebrow}>
-            {t(b('INTERNATIONAL ACADEMIC EXCHANGE', '国际学术交流'))}
+            {t(b('PAST INTERNATIONAL EXCHANGES', '往届交流 · 2019 / 2021'))}
           </p>
           <h2 id="academic-exchange-title">
-            {t(
-              b(
-                'Global minds.\nIn conversation in Chengdu.',
-                '与国际学者，\n在成都面对面。',
-              ),
-            )}
+            {t(b('Academic exchange in Chengdu', '往届国际学术交流'))}
           </h2>
         </div>
         <div className={styles.intro}>
           <p>
             {t(
               b(
-                'A Nobel laureate, leading economists and a science storyteller. Meet the people who have joined the academic conversations around Chengdu 80.',
-                '诺奖得主、经济学家与科学传播者，共同走进成都八零的学术交流现场。',
+                'Documented forum speakers and a science communicator from Chengdu 80’s associated academic exchange.',
+                '记录与成都八零相关的往届国际学术交流：论坛嘉宾与科学传播者。',
               ),
             )}
           </p>
@@ -67,13 +62,46 @@ export function FeaturedCollaborators() {
                 <Photo image={image} />
               </div>
               <div className={styles.featuredCopy}>
-                <p className={styles.distinction}>{t(person.distinction)}</p>
+                <div className={styles.honorBadge}>
+                  <p className={styles.honorLabel}>
+                    {t(
+                      person.id === 'brady-haran'
+                        ? b('Creative work', '创作身份')
+                        : person.id === 'robert-anderson'
+                          ? b('Academic role', '学术职务')
+                          : b('Honors', '荣誉'),
+                    )}
+                  </p>
+                  <p className={styles.distinction}>{t(person.distinction)}</p>
+                </div>
                 <h3>{t(person.name)}</h3>
                 {language === 'zh' && (
                   <p className={styles.latinName}>{person.name.en}</p>
                 )}
                 <p className={styles.affiliation}>{t(person.affiliation)}</p>
                 <p className={styles.cardRole}>{t(person.role)}</p>
+                <div className={styles.activityPreview}>
+                  <p className={styles.activityLabel}>
+                    {t(b('Participation', '交流活动'))}
+                  </p>
+                  <ul className={styles.activityList}>
+                    {person.activities.map((activity) => (
+                      <li key={`${activity.year}-${activity.event.en}`}>
+                        <span className={styles.activityYear}>
+                          {activity.year}
+                        </span>
+                        <div>
+                          <strong className={styles.activityFormat}>
+                            {t(activity.format)}
+                          </strong>
+                          <span className={styles.activityEvent}>
+                            {t(activity.event)}
+                          </span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 <span className={styles.cardLink}>
                   {t(b('Profile & photographs', '人物介绍与现场照片'))}
                   <ArrowUpRight size={17} aria-hidden="true" />
@@ -125,7 +153,7 @@ export default function Collaborators() {
       <header className={styles.heading}>
         <div>
           <p className={styles.eyebrow}>
-            {t(b('PEOPLE BEHIND THE EXCHANGE', '国际学术交流'))}
+            {t(b('PAST INTERNATIONAL EXCHANGES', '往届交流 · 2019 / 2021'))}
           </p>
           <h2 id="academic-collaborators-title">
             {t(
@@ -139,8 +167,8 @@ export default function Collaborators() {
         <p className={styles.intro}>
           {t(
             b(
-              'Research, dialogue and shared experience connect Chengdu 80 to a wider academic community. These photographs record talks and conversations at the SWUFE & CDAR 2019 International FinTech Forum and its associated activities.',
-              '研究、对话与经验分享，连接成都八零与更广泛的国际学术社群。这组照片记录了SWUFE & CDAR 2019国际金融科技论坛及同期活动中的演讲与交流。',
+              'These profiles separate documented activities from academic honors. All supplied photographs shown here are from the 2019 exchange.',
+              '以下人物档案将有据可查的活动与学术荣誉分开呈现；这里的现有照片均为2019年交流现场。',
             ),
           )}
         </p>
@@ -183,7 +211,18 @@ export default function Collaborators() {
               </p>
             </div>
             <div className={styles.profileCopy}>
-              <p className={styles.distinction}>{t(person.distinction)}</p>
+              <div className={styles.honorBadge}>
+                <p className={styles.honorLabel}>
+                  {t(
+                    person.id === 'brady-haran'
+                      ? b('Creative work', '创作身份')
+                      : person.id === 'robert-anderson'
+                        ? b('Academic role', '学术职务')
+                        : b('Honors', '荣誉'),
+                  )}
+                </p>
+                <p className={styles.distinction}>{t(person.distinction)}</p>
+              </div>
               <h3>{t(person.name)}</h3>
               {language === 'zh' && (
                 <p className={styles.latinName}>{person.name.en}</p>
@@ -193,11 +232,53 @@ export default function Collaborators() {
               </p>
               <p className={styles.profileRole}>{t(person.role)}</p>
               <p className={styles.biography}>{t(person.biography)}</p>
-              <ul className={styles.honors}>
-                {person.highlights.map((item) => (
-                  <li key={item.en}>{t(item)}</li>
-                ))}
-              </ul>
+              <section
+                className={styles.activities}
+                aria-labelledby={`${person.id}-activities`}
+              >
+                <h4 id={`${person.id}-activities`}>
+                  {t(b('Participation', '交流活动'))}
+                </h4>
+                <ul className={styles.activityList}>
+                  {person.activities.map((activity) => (
+                    <li key={`${activity.year}-${activity.event.en}`}>
+                      <span className={styles.activityYear}>
+                        {activity.year}
+                      </span>
+                      <div>
+                        <strong className={styles.activityFormat}>
+                          {t(activity.format)}
+                        </strong>
+                        <p className={styles.activityEvent}>
+                          {t(activity.event)}
+                        </p>
+                        <a
+                          className={styles.activitySource}
+                          href={activity.source.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {t(activity.source.label)}
+                          <ArrowUpRight size={14} aria-hidden="true" />
+                        </a>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+              <section
+                className={styles.honorsBlock}
+                aria-labelledby={`${person.id}-honors`}
+              >
+                <h4 id={`${person.id}-honors`}>
+                  {t(b('Appointments & honors', '任职与荣誉'))}
+                </h4>
+                <ul className={styles.honors}>
+                  {person.highlights.map((item) => (
+                    <li key={item.en}>{t(item)}</li>
+                  ))}
+                </ul>
+              </section>
               <div className={styles.connection}>
                 <h4>{t(b('With Chengdu 80', '与成都八零的交流'))}</h4>
                 <p>{t(person.connection)}</p>

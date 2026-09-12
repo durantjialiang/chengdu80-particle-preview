@@ -1,6 +1,13 @@
 import { bilingual as b, type Localized } from './competition';
 export { publicCollaboratorImages } from './collaborator-media';
 
+export type CollaboratorActivity = {
+  year: number;
+  event: Localized;
+  format: Localized;
+  source: { label: Localized; url: string };
+};
+
 export type Collaborator = {
   id: string;
   shortName: string;
@@ -10,6 +17,7 @@ export type Collaborator = {
   distinction: Localized;
   biography: Localized;
   highlights: readonly Localized[];
+  activities: readonly CollaboratorActivity[];
   connection: Localized;
   photoIds: readonly string[];
   sources: readonly { label: Localized; url: string }[];
@@ -44,6 +52,20 @@ export const collaborators: readonly Collaborator[] = [
         '2010 BBVA Foundation Frontiers of Knowledge Award in Economics, Finance and Management.',
         '2010年BBVA基金会知识前沿奖（经济、金融与管理领域）得主。',
       ),
+    ],
+    activities: [
+      {
+        year: 2019,
+        event: b(
+          'Second International FinTech Forum — SWUFE & CDAR (2019)',
+          '第二届国际金融科技论坛—SWUFE & CDAR（2019）',
+        ),
+        format: b('Keynote speaker', '主题演讲嘉宾'),
+        source: {
+          label: b('Official 2019 forum page', '2019论坛官方页面'),
+          url: 'https://cd80.swufe.edu.cn/info/1051/1121.htm',
+        },
+      },
     ],
     connection: b(
       'Keynote speaker at the SWUFE–CDAR International FinTech Forum, held in Chengdu on 1–3 November 2019 alongside the second Chengdu 80. The photographs capture his talk and exchanges with the forum audience.',
@@ -93,6 +115,20 @@ export const collaborators: readonly Collaborator[] = [
         'Editor of Econometrica, 2015–2019.',
         '2015—2019年任《Econometrica》编辑。',
       ),
+    ],
+    activities: [
+      {
+        year: 2019,
+        event: b(
+          'Second International FinTech Forum — SWUFE & CDAR (2019)',
+          '第二届国际金融科技论坛—SWUFE & CDAR（2019）',
+        ),
+        format: b('Invited speaker', '特邀嘉宾'),
+        source: {
+          label: b('Official 2019 forum page', '2019论坛官方页面'),
+          url: 'https://cd80.swufe.edu.cn/info/1051/1121.htm',
+        },
+      },
     ],
     connection: b(
       'Invited speaker at the SWUFE–CDAR 2019 International FinTech Forum, held alongside Chengdu 80. His visit included a talk on academic publishing, a panel discussion and conversations with participants.',
@@ -147,6 +183,35 @@ export const collaborators: readonly Collaborator[] = [
         '伯克利风险管理研究中心主任。',
       ),
     ],
+    activities: [
+      {
+        year: 2019,
+        event: b(
+          'Second International FinTech Forum — SWUFE & CDAR (2019)',
+          '第二届国际金融科技论坛—SWUFE & CDAR（2019）',
+        ),
+        format: b('CDAR representative; welcome remarks', 'CDAR代表；欢迎致辞'),
+        source: {
+          label: b('Official 2019 forum page', '2019论坛官方页面'),
+          url: 'https://cd80.swufe.edu.cn/info/1051/1121.htm',
+        },
+      },
+      {
+        year: 2021,
+        event: b(
+          'Fourth International FinTech Forum — SWUFE & CDAR (2021)',
+          '第四届国际金融科技论坛—SWUFE & CDAR（2021）',
+        ),
+        format: b(
+          'Keynote speaker as CDAR co-director',
+          'CDAR联合主任、主题演讲嘉宾',
+        ),
+        source: {
+          label: b('Official 2021 forum report', '2021论坛官方报道'),
+          url: 'https://jinrong.swufe.edu.cn/info/1100/3386.htm',
+        },
+      },
+    ],
     connection: b(
       'The 2019 photographs record Anderson delivering CDAR welcome remarks and joining forum discussions. He also participated as a CDAR co-director and keynote speaker in the 2021 SWUFE–CDAR forum, held alongside the fourth Chengdu 80.',
       '2019现场照片记录了他代表CDAR致辞、参与论坛讨论及与参会者交流。2021年，他再次以CDAR联合主任及主题演讲嘉宾身份，参与第四届成都八零同期举办的SWUFE–CDAR论坛。',
@@ -199,8 +264,22 @@ export const collaborators: readonly Collaborator[] = [
         '2016年获诺丁汉大学荣誉文学博士学位。',
       ),
     ],
+    activities: [
+      {
+        year: 2019,
+        event: b(
+          'Jiaozi Innovation Forum · second session: “I love Numbers”',
+          '交子创新讲坛·第二届主题：“I love Numbers”',
+        ),
+        format: b('Science-communication guest speaker', '科学传播讲座嘉宾'),
+        source: {
+          label: b('Official SWUFE talk page', '西财讲座官方页面'),
+          url: 'https://fife.swufe.edu.cn/info/1311/2341.htm',
+        },
+      },
+    ],
     connection: b(
-      'Visited SWUFE in November 2019 to give “I love Numbers” at the Jiazi Innovation Forum. SWUFE describes this lecture series as a lead-in to the International FinTech Forum; his contribution brought science communication into the wider exchange around Chengdu 80.',
+      'Visited SWUFE in November 2019 to give “I love Numbers” at the Jiaozi Innovation Forum. SWUFE describes this lecture series as a lead-in to the International FinTech Forum; his contribution brought science communication into the wider exchange around Chengdu 80.',
       '2019年11月到访西财，在交子创新讲坛分享“I love Numbers”。该讲坛是国际金融科技论坛的前导活动，他将科学传播的视角带入了成都八零相关交流活动。',
     ),
     photoIds: [
@@ -223,7 +302,7 @@ export const collaborators: readonly Collaborator[] = [
         url: 'https://fife.swufe.edu.cn/info/1311/2341.htm',
       },
       {
-        label: b('Jiazi Innovation Forum', '交子创新讲坛'),
+        label: b('Jiaozi Innovation Forum', '交子创新讲坛'),
         url: 'https://fife.swufe.edu.cn/info/1311/2371.htm',
       },
     ],

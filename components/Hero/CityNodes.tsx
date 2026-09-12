@@ -75,7 +75,7 @@ function City({
     facingCamera.current = facing > 0.04;
     const visibility =
       THREE.MathUtils.smoothstep(facing, 0.04, 0.24) * appearance;
-    const selected = network
+    const selected = network?.selectedId
       ? city.universityIds.includes(network.selectedId)
       : false;
     const hovered = network
@@ -284,7 +284,9 @@ export default function CityNodes(
   const nearbyIds = useMemo(() => {
     if (!props.network) return new Set<string>();
     const focusId = props.network.highlightedId ?? props.network.selectedId;
-    const focus = cities.find((city) => city.universityIds.includes(focusId));
+    const focus = focusId
+      ? cities.find((city) => city.universityIds.includes(focusId))
+      : null;
     if (!focus) return new Set<string>();
     const focusPoint = latLon(focus.latitude, focus.longitude, 1).normalize();
     return new Set(
@@ -304,7 +306,10 @@ export default function CityNodes(
     for (const city of cities) {
       const anchor = anchors.get(city.id);
       if (!anchor) continue;
-      const selected = city.universityIds.includes(props.network.selectedId);
+      const selected = Boolean(
+        props.network.selectedId &&
+        city.universityIds.includes(props.network.selectedId),
+      );
       anchor.width = selected
         ? Math.min(224, size.width * 0.64)
         : city.isOrigin
@@ -316,7 +321,10 @@ export default function CityNodes(
       const label = props.labels.current.get(city.name),
         anchor = anchors.get(city.id);
       if (!label || !anchor) continue;
-      const selected = city.universityIds.includes(props.network.selectedId);
+      const selected = Boolean(
+        props.network.selectedId &&
+        city.universityIds.includes(props.network.selectedId),
+      );
       const highlighted = city.universityIds.includes(
         props.network.highlightedId!,
       );

@@ -259,7 +259,6 @@ export function HomeBeforeNetwork() {
   const { t, href } = useSiteLanguage();
   return (
     <div className={styles.home}>
-      <FeaturedCollaborators />
       <Section
         id="organizers"
         eyebrow={b('ACADEMIA × INDUSTRY', '学术 × 产业')}
@@ -288,6 +287,7 @@ export function HomeAfterNetwork() {
   const { t, href } = useSiteLanguage();
   return (
     <div className={styles.home}>
+      <FeaturedCollaborators />
       <Section
         id="featured-projects"
         eyebrow={b('FEATURED PROJECTS', '精选作品')}

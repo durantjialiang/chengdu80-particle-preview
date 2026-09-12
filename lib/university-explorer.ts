@@ -41,7 +41,7 @@ export type NetworkView = {
   year: NetworkYear;
   region: NetworkRegion;
   query: string;
-  selectedId: UniversityId;
+  selectedId: UniversityId | null;
 };
 export function filterUniversities(
   year: NetworkYear,
@@ -68,6 +68,24 @@ export function filterUniversities(
       ),
   );
 }
+
+/**
+ * Keep a URL or history entry from pointing at a university that is hidden by
+ * the active filters. A selection is nullable only when there are no matching
+ * universities; otherwise the region representative (SWUFE for the default
+ * all-record view) provides a stable focus card.
+ */
+export function normalizeNetworkView(view: NetworkView): NetworkView {
+  const candidates = filterUniversities(view.year, view.query, view.region);
+  if (candidates.length === 0) return { ...view, selectedId: null };
+  if (candidates.some((university) => university.id === view.selectedId))
+    return view;
+  return {
+    ...view,
+    selectedId: regionFocusUniversity(view.region, candidates, []),
+  };
+}
+
 /** Filter first, group second. The hub is geographic context, not an extra participant. */
 export function explorerNodes(
   filtered: readonly (typeof universities)[number][],
@@ -118,7 +136,7 @@ export function readNetworkView(search: string): NetworkView {
   const params = new URLSearchParams(search);
   const candidate = Number(params.get('year'));
   const regionCandidate = params.get('region');
-  return {
+  return normalizeNetworkView({
     year: networkYears.includes(candidate as NetworkYear)
       ? (candidate as NetworkYear)
       : 'all',
@@ -127,24 +145,25 @@ export function readNetworkView(search: string): NetworkView {
       : 'all',
     query: (params.get('query') ?? params.get('q') ?? '').trim(),
     selectedId:
-      universities.find((u) => u.id === params.get('university'))?.id ??
-      'swufe',
-  };
+      universities.find((u) => u.id === params.get('university'))?.id ?? null,
+  });
 }
 export function networkViewUrl(current: string, view: NetworkView) {
   const url = new URL(current);
-  if (view.year === 'all') url.searchParams.delete('year');
-  else url.searchParams.set('year', String(view.year));
-  const region = view.region ?? 'all';
-  const query = view.query ?? '';
+  const next = normalizeNetworkView(view);
+  if (next.year === 'all') url.searchParams.delete('year');
+  else url.searchParams.set('year', String(next.year));
+  const region = next.region ?? 'all';
+  const query = next.query ?? '';
   if (region === 'all') url.searchParams.delete('region');
   else url.searchParams.set('region', region);
+  url.searchParams.delete('q');
   if (query.trim()) url.searchParams.set('query', query.trim());
   else {
     url.searchParams.delete('query');
-    url.searchParams.delete('q');
   }
-  url.searchParams.set('university', view.selectedId);
+  if (next.selectedId) url.searchParams.set('university', next.selectedId);
+  else url.searchParams.delete('university');
   return url.pathname + url.search + url.hash;
 }
 export function regionFocusUniversity(

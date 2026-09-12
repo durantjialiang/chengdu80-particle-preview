@@ -12,7 +12,11 @@ export function UniversityLogo({ university }: { university: University }) {
   // Local, size-bounded static assets: this Vite preview has no Next image server.
   /* oxlint-disable next/no-img-element */
   return (
-    <div className={styles.logo} data-surface={university.logoSurface}>
+    <div
+      className={styles.logo}
+      data-university-logo={university.id}
+      data-surface={university.logoSurface}
+    >
       {university.logo ? (
         <img
           src={university.logo}

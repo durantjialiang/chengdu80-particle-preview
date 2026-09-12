@@ -33,6 +33,9 @@ export default function UniversityExchange({
       </p>
       <p>{t(exchange.summary)}</p>
       <div className={styles.links}>
+        <a href={exchange.source} target="_blank" rel="noopener noreferrer">
+          {t(b('Original event report', '活动原始报道'))} ↗
+        </a>
         <a href={href(`/partners/#${exchange.collaboratorId}`)}>
           {t(b('Collaborator & event photographs', '合作学者与现场照片'))} ↗
         </a>

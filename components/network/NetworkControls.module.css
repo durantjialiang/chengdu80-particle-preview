@@ -52,7 +52,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 20px;
+  margin: 0 0 14px;
 }
 
 .tourButton {
@@ -115,6 +115,11 @@
   }
 
   .tourButton {
-    width: 100%;
+    width: auto;
+    min-height: 40px;
+  }
+  .tourRow {
+    align-items: center;
+    gap: 8px;
   }
 }

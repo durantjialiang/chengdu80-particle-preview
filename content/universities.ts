@@ -449,7 +449,7 @@ const universityRecords: readonly University[] = [
     recordNote:
       'Selected documented editions, not an exhaustive participation history.',
     logoSource: 'https://www.sustech.edu.cn/',
-    logoSurface: 'light',
+    logoSurface: 'dark',
   },
   {
     id: 'cqu',
@@ -747,8 +747,8 @@ const universityRecords: readonly University[] = [
     ],
     recordNote:
       'Selected documented editions, not an exhaustive participation history.',
-    logoSource: 'https://www.berkeley.edu/',
-    logoSurface: 'light',
+    logoSource: 'https://brand.berkeley.edu/visual-identity/logos/',
+    logoSurface: 'dark',
   },
   {
     id: 'uchicago',
@@ -758,7 +758,9 @@ const universityRecords: readonly University[] = [
     country: 'United States',
     latitude: 41.7897,
     longitude: -87.5997,
-    logo: null,
+    logo: '/university-logos/uchicago.svg',
+    logoSource: 'https://creative.uchicago.edu/logos-and-identity-elements/',
+    logoSurface: 'light',
     website: 'https://www.uchicago.edu/',
     participationYears: [],
     awards: [],
@@ -797,7 +799,9 @@ const universityRecords: readonly University[] = [
     country: 'United States',
     latitude: 32.878353,
     longitude: -117.231842,
-    logo: null,
+    logo: '/university-logos/ucsd.svg',
+    logoSource: 'https://brand.ucsd.edu/logos/primary-campus-logo/index.html',
+    logoSurface: 'light',
     website: 'https://www.ucsd.edu/',
     participationYears: [],
     awards: [],
@@ -899,7 +903,7 @@ const universityRecords: readonly University[] = [
     recordNoteZh:
       '2019年度详情明确列出多伦多大学，独立回顾记载Innovator奖项，保留该英文原文而不套用其他年份的冲突翻译。其他具体参赛年份和产品专名仍未核实。',
     logoSource: 'https://www.utoronto.ca/',
-    logoSurface: 'light',
+    logoSurface: 'dark',
   },
   {
     id: 'queens',
@@ -1062,7 +1066,7 @@ const universityRecords: readonly University[] = [
     recordNote:
       'Selected documented editions, not an exhaustive participation history.',
     logoSource: 'https://english.tau.ac.il/',
-    logoSurface: 'dark',
+    logoSurface: 'light',
   },
   {
     id: 'emlyon',
@@ -1112,7 +1116,9 @@ const universityRecords: readonly University[] = [
     country: 'Australia',
     latitude: -33.917689,
     longitude: 151.231022,
-    logo: null,
+    logo: '/university-logos/unsw.png',
+    logoSource: 'https://www.unsw.edu.au/',
+    logoSurface: 'light',
     website: 'https://www.unsw.edu.au/',
     participationYears: [2020],
     awards: [],

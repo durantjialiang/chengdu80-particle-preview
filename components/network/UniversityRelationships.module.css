@@ -1,0 +1,22 @@
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0;
+}
+.badge {
+  display: inline-block;
+  border: 1px solid #9dbeca38;
+  border-radius: 5px;
+  padding: 4px 7px;
+  color: #b8d2dc;
+  background: #102431;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.45;
+  text-align: left;
+}
+.badge[data-relationship='forum'] {
+  color: #e0c299;
+  border-color: #c6a77850;
+}

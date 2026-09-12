@@ -56,7 +56,7 @@ export default function StaticNetwork({
     ? getUniversity(network.selectedId)
     : null;
   const selectedOrigin =
-    network && origin.universityIds.includes(network.selectedId)
+    network?.selectedId && origin.universityIds.includes(network.selectedId)
       ? getUniversity(network.selectedId)
       : null;
   const selectedBadgeVisible = Boolean(

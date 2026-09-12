@@ -18,7 +18,7 @@ export type NetworkInteraction = {
   /** Monotonic focus action token; permits refocusing the same university. */
   focusRevision?: number;
   highlightedId: UniversityId | null;
-  selectedId: UniversityId;
+  selectedId: UniversityId | null;
   onNodeHover: (id: UniversityId | null) => void;
   onNodeSelect: (id: UniversityId) => void;
   /**

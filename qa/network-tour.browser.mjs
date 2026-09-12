@@ -27,7 +27,7 @@ const waitState = (p, s) =>
     s,
   );
 const replay = async (p) => {
-  await p.getByRole('button', { name: /^Take a global tour/ }).click();
+  await p.getByRole('button', { name: /^(Start|Restart) tour$/ }).click();
   await p.locator('[data-network-node-count]').scrollIntoViewIfNeeded();
   await p.mouse.move(0, 0);
   await waitState(p, 'running');
@@ -150,7 +150,9 @@ try {
   await p.emulateMedia({ reducedMotion: 'reduce' });
   await waitState(p, 'stopped');
   assert.equal(
-    await p.getByRole('button', { name: /^Take a global tour/ }).isDisabled(),
+    await p
+      .getByRole('button', { name: /^(Start|Restart) tour$/ })
+      .isDisabled(),
     true,
   );
   checks.push({ label: 'Live reduced-motion preference stops tour' });

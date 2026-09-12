@@ -344,8 +344,8 @@ export const projects: readonly Project[] = [
       '开创者奖（西财正式报道）；女王大学专文称第一名',
     ),
     summary: b(
-      'Data Queens built an autonomous-vehicle insurance prototype in 80 hours. SWUFE’s seventh-edition report confirms Queen’s highest award; the university report identifies the team. A product name is not established.',
-      'Data Queens在80小时内开发自动驾驶车辆保险原型。西财第七届正式报道确认女王大学获最高奖项，校方专文补充团队信息。产品专名尚未明确。',
+      'Data Queens developed an insurance prototype for autonomous vehicles in 80 hours and received the Trailblazer Award at the seventh Chengdu 80.',
+      'Data Queens在80小时内开发了面向自动驾驶汽车的保险原型，获得第七届成都八零开创者奖。',
     ),
     sourceRefs: ['event2024', 'queensReport'],
     verificationStatus: 'documented',
@@ -447,7 +447,11 @@ export const editions: readonly Edition[] = [
           }
         : {}),
       ...(year === 2020
-        ? { startDate: '2020-10-26', endDate: '2020-10-29', coverImageId: 'cd80-2020-owner-dn6v7222' }
+        ? {
+            startDate: '2020-10-26',
+            endDate: '2020-10-29',
+            coverImageId: 'cd80-2020-owner-dn6v7222',
+          }
         : {}),
       ...(year === 2023
         ? {
@@ -461,15 +465,9 @@ export const editions: readonly Edition[] = [
       ...(year === 2022
         ? { coverImageId: 'cd80-2022-owner-event-poster' }
         : {}),
-      ...(year === 2021
-        ? { coverImageId: 'cd80-2021-owner-dn6v1381' }
-        : {}),
-      ...(year === 2019
-        ? { coverImageId: 'cd80-2019-owner-1c9a6519' }
-        : {}),
-      ...(year === 2018
-        ? { coverImageId: 'cd80-2018-owner-img-1754' }
-        : {}),
+      ...(year === 2021 ? { coverImageId: 'cd80-2021-owner-dn6v1381' } : {}),
+      ...(year === 2019 ? { coverImageId: 'cd80-2019-owner-1c9a6519' } : {}),
+      ...(year === 2018 ? { coverImageId: 'cd80-2018-owner-img-1754' } : {}),
       challenge: editionChallenges[year] ?? null,
       dateNote:
         year === 2019
