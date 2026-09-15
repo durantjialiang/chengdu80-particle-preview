@@ -1,6 +1,7 @@
 import { useRef, type ReactNode } from 'react';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Mail } from 'lucide-react';
 import { navigation, navigationReady } from '@/content/navigation';
+import { contactEmail } from '@/content/contact';
 import { currentCompetition, bilingual as b } from '@/content/competition';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import styles from './Site.module.css';
@@ -125,6 +126,11 @@ export function SiteFooter() {
             CHENGDU 80
           </a>
           <p>{t(currentCompetition.dateLabel)}</p>
+          <a className={styles.contactLink} href={`mailto:${contactEmail}`}>
+            <Mail size={18} aria-hidden="true" />
+            <span>{t(b('Contact us', '联系我们'))}</span>
+            <span>{contactEmail}</span>
+          </a>
         </div>
         <nav aria-label={t(b('Footer navigation', '页脚导航'))}>
           {navigation

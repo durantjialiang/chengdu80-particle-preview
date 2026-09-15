@@ -1,3 +1,5 @@
+import { contactEmail } from './contact';
+
 export type Language = 'en' | 'zh';
 export type Localized = { en: string; zh: string };
 export const bilingual = (en: string, zh: string): Localized => ({ en, zh });
@@ -18,7 +20,7 @@ export const currentCompetition = {
   eligibility: null,
   venue: null,
   challenge: null,
-  contact: null,
+  contact: contactEmail,
   sourceRefs: ['project-owner-next-stage-2026-09-06'],
   confirmationStatus: 'project-owner-supplied',
   dateLabel: bilingual(
@@ -129,8 +131,8 @@ export const faqs = [
       '在哪里查看更新、规则和联系方式？',
     ),
     answer: bilingual(
-      'This competition page is the update location. No current consultation address or approved 2026 download has been supplied yet. Historical contact details are not presented as current contacts.',
-      '本赛事信息页将作为更新入口。目前尚未提供有效的本届咨询渠道或获准公开的2026资料。往届联系方式不作为本届联系人展示。',
+      `This page will carry competition updates and published rules. For enquiries, email ${contactEmail}. The 2026 rules and downloads will be added when available.`,
+      `本页将更新赛事安排与正式规则。如需咨询，请发邮件至 ${contactEmail}。2026规则与下载资料将在发布后提供。`,
     ),
   },
 ];

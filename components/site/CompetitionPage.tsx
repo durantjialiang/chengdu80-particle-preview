@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { Mail } from 'lucide-react';
+import { contactEmail } from '@/content/contact';
 import {
   currentCompetition,
   faqs,
@@ -204,16 +206,20 @@ export default function CompetitionPage() {
               </p>
             )}
           </div>
-          <div>
-            <h3>{t(b('Contact', '联系方式'))}</h3>
+          <div id="contact">
+            <h3>{t(b('Contact us', '联系我们'))}</h3>
             <p>
               {t(
                 b(
-                  'The current consultation channel is awaiting confirmation. We do not collect email addresses or application details on this preview.',
-                  '本届咨询渠道待确认。本预览不收集邮箱或报名信息。',
+                  'For enquiries about Chengdu 80 and collaboration, get in touch by email.',
+                  '如需了解成都八零赛事与合作，欢迎邮件联系。',
                 ),
               )}
             </p>
+            <a className={styles.contactLink} href={`mailto:${contactEmail}`}>
+              <Mail size={18} aria-hidden="true" />
+              <span>{contactEmail}</span>
+            </a>
           </div>
         </div>
         <p className={styles.note}>

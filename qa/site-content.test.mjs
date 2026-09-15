@@ -894,9 +894,9 @@ await test('site content and static archive contracts', async (t) => {
           'applicationUrl',
           'venue',
           'challenge',
-          'contact',
         ])
           assert.equal(c[key], null, key);
+        assert.equal(c.contact, 'fintech80@swufe.edu.cn');
         assert.equal(c.confirmationStatus, 'project-owner-supplied');
         assert.equal(approvedDownloads.length, 0);
         assert.equal(new Set(faqs.map((f) => f.id)).size, faqs.length);
