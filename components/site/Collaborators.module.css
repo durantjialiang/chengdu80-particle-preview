@@ -439,3 +439,63 @@
     transition: none;
   }
 }
+
+/* Profile navigation and video destinations are independent sibling links. */
+.featuredProfile {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+.speechVideos {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid #a6cce02b;
+}
+.speechVideos[data-compact='true'] {
+  margin: 0 20px 24px;
+}
+.speechLabel {
+  margin: 0 0 12px;
+  color: #e1c797;
+  font-size: 14px;
+  font-weight: 500;
+}
+.videoPlatforms {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.videoLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 15px;
+  border: 1px solid #c9ab7999;
+  border-radius: 7px;
+  background: #c9ab7914;
+  color: #f1ddba;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.videoLink:hover {
+  background: #c9ab7929;
+  border-color: #e1c797;
+}
+.videoLink svg {
+  flex-shrink: 0;
+}
+.speechVideos[data-compact='true'] .videoLink {
+  width: 100%;
+}
+.videoPending {
+  color: #a9bfd0;
+  font-size: 12px;
+  line-height: 1.6;
+}

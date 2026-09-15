@@ -1,14 +1,71 @@
 import { useState } from 'react';
-import { ArrowUpRight, Expand } from 'lucide-react';
+import { ArrowUpRight, Expand, PlayCircle } from 'lucide-react';
 import { bilingual as b } from '@/content/competition';
 import type { ArchiveImage } from '@/content/archive-media';
 import {
   collaborators,
   publicCollaboratorImages,
+  type Collaborator,
 } from '@/content/collaborators';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import { Photo, Viewer } from './ArchiveGallery';
 import styles from './Collaborators.module.css';
+
+function SpeechVideos({
+  person,
+  compact = false,
+}: {
+  person: Collaborator;
+  compact?: boolean;
+}) {
+  const { t } = useSiteLanguage();
+  if (!person.speechVideos) return null;
+  const platforms = [
+    {
+      id: 'bilibili',
+      label: t(b('Bilibili', 'B站')),
+      url: person.speechVideos.bilibili,
+    },
+    { id: 'youtube', label: 'YouTube', url: person.speechVideos.youtube },
+    { id: 'x', label: 'X / Twitter', url: person.speechVideos.x },
+  ];
+  return (
+    <div
+      className={styles.speechVideos}
+      data-speech-videos={person.id}
+      data-compact={compact}
+    >
+      <p className={styles.speechLabel}>{t(b('Watch the talk', '观看演讲'))}</p>
+      <div className={styles.videoPlatforms}>
+        {platforms.map(({ id, label, url }) =>
+          url ? (
+            <a
+              key={id}
+              className={styles.videoLink}
+              data-video-platform={id}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${t(person.name)} · ${t(b('Watch the talk on', '观看演讲：'))} ${label} · ${t(b('opens in a new tab', '在新标签页打开'))}`}
+            >
+              <PlayCircle size={17} aria-hidden="true" />
+              <span>{label}</span>
+              <ArrowUpRight size={15} aria-hidden="true" />
+            </a>
+          ) : (
+            <span
+              key={id}
+              className={styles.videoPending}
+              data-video-pending={id}
+            >
+              {label} · {t(b('Coming soon', '即将上线'))}
+            </span>
+          ),
+        )}
+      </div>
+    </div>
+  );
+}
 
 export function FeaturedCollaborators() {
   const { t, href, language } = useSiteLanguage();
@@ -52,62 +109,69 @@ export function FeaturedCollaborators() {
             (item) => item.id === person.photoIds[0],
           )!;
           return (
-            <a
+            <article
               key={person.id}
               className={styles.featuredCard}
-              href={href(`/partners/#${person.id}`)}
               data-featured-collaborator={person.id}
             >
-              <div className={styles.featuredPhoto}>
-                <Photo image={image} />
-              </div>
-              <div className={styles.featuredCopy}>
-                <div className={styles.honorBadge}>
-                  <p className={styles.honorLabel}>
-                    {t(
-                      person.id === 'brady-haran'
-                        ? b('Creative work', '创作身份')
-                        : person.id === 'robert-anderson'
-                          ? b('Academic role', '学术职务')
-                          : b('Honors', '荣誉'),
-                    )}
-                  </p>
-                  <p className={styles.distinction}>{t(person.distinction)}</p>
+              <a
+                className={styles.featuredProfile}
+                href={href(`/partners/#${person.id}`)}
+              >
+                <div className={styles.featuredPhoto}>
+                  <Photo image={image} />
                 </div>
-                <h3>{t(person.name)}</h3>
-                {language === 'zh' && (
-                  <p className={styles.latinName}>{person.name.en}</p>
-                )}
-                <p className={styles.affiliation}>{t(person.affiliation)}</p>
-                <p className={styles.cardRole}>{t(person.role)}</p>
-                <div className={styles.activityPreview}>
-                  <p className={styles.activityLabel}>
-                    {t(b('Participation', '交流活动'))}
-                  </p>
-                  <ul className={styles.activityList}>
-                    {person.activities.map((activity) => (
-                      <li key={`${activity.year}-${activity.event.en}`}>
-                        <span className={styles.activityYear}>
-                          {activity.year}
-                        </span>
-                        <div>
-                          <strong className={styles.activityFormat}>
-                            {t(activity.format)}
-                          </strong>
-                          <span className={styles.activityEvent}>
-                            {t(activity.event)}
+                <div className={styles.featuredCopy}>
+                  <div className={styles.honorBadge}>
+                    <p className={styles.honorLabel}>
+                      {t(
+                        person.id === 'brady-haran'
+                          ? b('Creative work', '创作身份')
+                          : person.id === 'robert-anderson'
+                            ? b('Academic role', '学术职务')
+                            : b('Honors', '荣誉'),
+                      )}
+                    </p>
+                    <p className={styles.distinction}>
+                      {t(person.distinction)}
+                    </p>
+                  </div>
+                  <h3>{t(person.name)}</h3>
+                  {language === 'zh' && (
+                    <p className={styles.latinName}>{person.name.en}</p>
+                  )}
+                  <p className={styles.affiliation}>{t(person.affiliation)}</p>
+                  <p className={styles.cardRole}>{t(person.role)}</p>
+                  <div className={styles.activityPreview}>
+                    <p className={styles.activityLabel}>
+                      {t(b('Participation', '交流活动'))}
+                    </p>
+                    <ul className={styles.activityList}>
+                      {person.activities.map((activity) => (
+                        <li key={`${activity.year}-${activity.event.en}`}>
+                          <span className={styles.activityYear}>
+                            {activity.year}
                           </span>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                          <div>
+                            <strong className={styles.activityFormat}>
+                              {t(activity.format)}
+                            </strong>
+                            <span className={styles.activityEvent}>
+                              {t(activity.event)}
+                            </span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <span className={styles.cardLink}>
+                    {t(b('Profile & photographs', '人物介绍与现场照片'))}
+                    <ArrowUpRight size={17} aria-hidden="true" />
+                  </span>
                 </div>
-                <span className={styles.cardLink}>
-                  {t(b('Profile & photographs', '人物介绍与现场照片'))}
-                  <ArrowUpRight size={17} aria-hidden="true" />
-                </span>
-              </div>
-            </a>
+              </a>
+              <SpeechVideos person={person} compact />
+            </article>
           );
         })}
       </div>
@@ -232,6 +296,7 @@ export default function Collaborators() {
               </p>
               <p className={styles.profileRole}>{t(person.role)}</p>
               <p className={styles.biography}>{t(person.biography)}</p>
+              <SpeechVideos person={person} />
               <section
                 className={styles.activities}
                 aria-labelledby={`${person.id}-activities`}
