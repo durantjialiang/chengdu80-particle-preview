@@ -14,7 +14,7 @@ const navChinese: Record<string, string> = {
   'Projects & Awards': '作品与奖项',
   'Global Network': '高校网络',
   Partnerships: '合作与倡议',
-  Photos: '照片',
+  'Photos and Videos': '照片与视频',
 };
 export function LanguageSwitch() {
   const { language, setLanguage } = useSiteLanguage();

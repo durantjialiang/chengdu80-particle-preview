@@ -801,8 +801,16 @@ await test('site content and static archive contracts', async (t) => {
         );
         for (const item of schoolRequests)
           assert.ok(!html.includes(item.text.en));
-        assert.doesNotMatch(html, /<video\b|<source\b|<track\b|<iframe\b|id="videos"|href="#videos"|\/videos\//);
-        assert.doesNotMatch(html, /Download the film|90-second photo film|Coming soon/);
+        assert.doesNotMatch(html, /<video\b|<source\b|<track\b|<iframe\b|\/videos\//);
+        assert.doesNotMatch(html, /Download the film|90-second photo film/);
+        assert.match(html, /id="videos"/);
+        assert.match(html, /href="#videos"/);
+        const videos = html.slice(html.indexOf('id="videos"'), html.indexOf('id="photos"'));
+        assert.equal((videos.match(/data-video-id=/g) ?? []).length, 4);
+        assert.equal((videos.match(/<img\b/g) ?? []).length, 4);
+        for (const bvid of ['BV1wEen6nEXe', 'BV12Qen6oE3f', 'BV13Fen6YEXj', 'BV1UUen6fEgd'])
+          assert.ok(videos.includes(`https://www.bilibili.com/video/${bvid}/`));
+        assert.equal((videos.match(/data-video-pending=/g) ?? []).length, 8);
         assert.ok(html.indexOf('id="photos"') < html.indexOf('id="resources"'));
         const { default: VideoChannel } = await server.ssrLoadModule('/components/site/VideoChannel.tsx');
         assert.equal(renderToString(React.createElement(VideoChannel)), '');

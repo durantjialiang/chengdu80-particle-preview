@@ -93,3 +93,12 @@ Three previously published owner photographs are removed from the current album 
 The same synchronization adds all 14 unique selected 2021 photographs currently in the owner’s folder, including event presentations, awards and group photographs. Full WebP derivatives preserve the entire frame, apply EXIF orientation and use a maximum 3200-pixel long edge; thumbnails use a maximum 960-pixel long edge. Original hashes and derivative dimensions are recorded in `docs/2021-photo-inventory.json`, without local paths or embedded camera/GPS metadata. Bilingual captions describe visible scenes without identifying people or inferring school/project relationships.
 
 The current public archive contains 128 photographs: 15 from 2018, 28 from 2019, 12 from 2020, 14 from 2021, 1 from 2022, 25 from 2023, and 33 from 2024. This comprises 115 owner photographs and 13 previously approved official-archive photographs. Separate city-collaboration photographs retain their publication records. Earlier sections record the original dated publication batches; these current counts supersede their batch totals for the present website. Videos remain withheld from publication.
+
+
+## Four external video entries, 2026-09-15
+
+The project owner now requests Photos and Videos / 照片与视频 in the shared navigation and four video cards with one cover each. This supersedes the earlier photo-only display for these four specified external videos. Bilibili destinations were supplied directly by the owner: `BV1wEen6nEXe`, `BV12Qen6oE3f`, `BV13Fen6YEXj`, and `BV1UUen6fEgd`. The Bilibili public metadata confirms each title, cover and duration; the uploader is FIC_fintech.
+
+Only the four static cover images and external links are published on the website. Clicking a cover or a platform link opens the corresponding external video. No video files, embedded players or automatic playback are added. YouTube and X / Twitter are non-clickable pending labels until their individual video URLs are supplied. The two academic-collaborator entries reuse the existing Hansen and Anderson speech links.
+
+`content/video-library.ts` contains the bilingual library entries; `docs/video-library-sources.json` records the source cover URLs and hashes. Covers under `public/video-posters/` are the original images of these owner-specified uploads, retained without modification. Annual photo albums and local edited video masters are unchanged.

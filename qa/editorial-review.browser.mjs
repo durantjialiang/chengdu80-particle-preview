@@ -25,8 +25,8 @@ const headings = {
     zh: '成都八零背后的合作力量',
   },
   media: {
-    en: 'Chengdu 80 in words and photographs',
-    zh: '文字与影像中的成都八零',
+    en: 'Photos and Videos',
+    zh: '照片与视频',
   },
   about: {
     en: 'Finance meets the people who build.',

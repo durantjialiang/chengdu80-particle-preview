@@ -32,8 +32,7 @@ import { WinnerCard } from './ArchivePages';
 import EditorialMedia from './EditorialMedia';
 import CityCollaboration from './CityCollaboration';
 import Collaborators, { FeaturedCollaborators } from './Collaborators';
-import VideoChannel from './VideoChannel';
-import { videoChannel } from '@/content/video-channel';
+import VideoLibrary from './VideoLibrary';
 import styles from './Editorial.module.css';
 import site from './Site.module.css';
 
@@ -1044,13 +1043,13 @@ export function MediaPage() {
     <>
       <p className={site.kicker}>{t(b('MEDIA & RESOURCES', '媒体与资源'))}</p>
       <h1>
-        {t(b('Chengdu 80 in words and photographs', '文字与影像中的成都八零'))}
+        {t(b('Photos and Videos', '照片与视频'))}
       </h1>
       <p className={site.lead}>
         {t(
           b(
-            'Explore Chengdu 80 through photographs, event news and publications.',
-            '通过赛事照片、新闻与专刊，回顾成都八零。',
+            'Explore Chengdu 80 through talks, event films and photographs, alongside news and publications.',
+            '通过嘉宾分享、赛事视频与历年照片，回顾成都八零，了解相关新闻与专刊。',
           ),
         )}
       </p>
@@ -1058,10 +1057,11 @@ export function MediaPage() {
         className={site.pills}
         aria-label={t(b('Media sections', '媒体栏目'))}
       >
+        <a href="#videos">{t(b('Videos', '视频'))}</a>
         <a href="#photos">{t(b('Photo archive', '照片档案'))}</a>
-        {videoChannel.youtubeUrl && <a href="#videos">YouTube</a>}
         <a href="#resources">{t(b('News & publications', '新闻与专刊'))}</a>
       </nav>
+      <VideoLibrary />
       <Section id="photos" title={b('Photo archive', '照片档案')}>
         <nav
           className={site.pills}
@@ -1147,7 +1147,6 @@ export function MediaPage() {
           </p>
         )}
       </Section>
-      <VideoChannel />
       <Section id="resources" title={b('News & publications', '新闻与出版物')}>
         <div className={styles.resourceList}>
           {resources.map((resource) => (

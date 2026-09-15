@@ -39,3 +39,12 @@ The owner reported continuous shaking in the v2 film. The v3 edit removes the an
 The owner now requests the 2023 and 2024 photographs on the website and asks to withhold videos. This supersedes the earlier public-player configuration above. The navigation currently reads Photos / 照片. Media opens with the photo archive, supports year/category filters and links to both edition albums.
 
 The local 2024 player and all files under `public/videos/` are removed from the current deployment. Original source videos, edited exports and the previously published file bundle are preserved outside the site checkout. `VideoChannel` retains the owner's future YouTube-link capability, but renders nothing while `content/video-channel.ts` has `youtubeUrl: null`. A configured owner URL will render the external channel entry after the photographs, with no embedded player or background YouTube request.
+
+
+## Four external video entries, 2026-09-15
+
+The project owner now requests Photos and Videos / 照片与视频 in the shared navigation and four video cards with one cover each. This supersedes the earlier photo-only display for these four specified external videos. Bilibili destinations were supplied directly by the owner: `BV1wEen6nEXe`, `BV12Qen6oE3f`, `BV13Fen6YEXj`, and `BV1UUen6fEgd`. The Bilibili public metadata confirms each title, cover and duration; the uploader is FIC_fintech.
+
+Only the four static cover images and external links are published on the website. Clicking a cover or a platform link opens the corresponding external video. No video files, embedded players or automatic playback are added. YouTube and X / Twitter are non-clickable pending labels until their individual video URLs are supplied. The two academic-collaborator entries reuse the existing Hansen and Anderson speech links.
+
+`content/video-library.ts` contains the bilingual library entries; `docs/video-library-sources.json` records the source cover URLs and hashes. Covers under `public/video-posters/` are the original images of these owner-specified uploads, retained without modification. Annual photo albums and local edited video masters are unchanged.
