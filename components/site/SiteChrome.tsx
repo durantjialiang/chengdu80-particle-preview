@@ -10,6 +10,7 @@ import { AmbientParticleBackdrop } from '@/components/PersistentParticleBackdrop
 const navChinese: Record<string, string> = {
   About: '关于赛事',
   Competition: '参赛信息',
+  News: '新闻动态',
   History: '历届赛事',
   'Projects & Awards': '作品与奖项',
   'Global Network': '高校网络',

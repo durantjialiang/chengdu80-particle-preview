@@ -28,8 +28,72 @@
     "title": "2026 Competition",
     "zh": "2026赛事信息"
   },
-  { "path": "/history/", "title": "History", "zh": "历届赛事" },
-  { "path": "/winners/", "title": "Winners & Projects", "zh": "成果档案" },
+  {
+    "path": "/news/",
+    "title": "News",
+    "zh": "新闻动态",
+    "description": "Competition stories, international academic exchange, project initiatives and media features from Chengdu 80.",
+    "descriptionZh": "成都八零赛事动态、国际学术交流、项目合作与媒体报道。",
+    "image": "/history-media/cd80-2024-01-full.webp"
+  },
+  {
+    "path": "/news/competition-2024/",
+    "title": "2024 Chengdu 80: Redefining auto insurance",
+    "zh": "2024成都八零：重定义汽车保险",
+    "description": "University teams explored insurance for intelligent driving at the seventh Chengdu 80, culminating in the final pitches and awards on 30 October.",
+    "descriptionZh": "第七届赛事聚焦智能驾驶时代的汽车保险，高校团队于10月30日展开路演与答辩，迎来评选与颁奖。",
+    "image": "/history-media/cd80-2024-01-full.webp"
+  },
+  {
+    "path": "/news/incubator-2024/",
+    "title": "Chengdu 80 Incubator launches at the 2024 final",
+    "zh": "成都八零孵化器在2024决赛现场启动",
+    "description": "Universities, industry and public-sector organizations launched an initiative focused on fintech projects and talent development.",
+    "descriptionZh": "高校、企业与公共部门共同参与，围绕金融科技项目成长与人才培养启动新的合作倡议。",
+    "image": "/history-media/cd80-2024-05-full.webp"
+  },
+  {
+    "path": "/news/discoverer-feature/",
+    "title": "Inside Chengdu 80: The Discoverer feature",
+    "zh": "走进成都八零：《发现者》专题",
+    "description": "Shared by FIC, The Discoverer looks behind the scenes of Chengdu 80 through team preparation, collaboration and project showcases.",
+    "descriptionZh": "由FIC分享的《发现者》专题，带观众走进团队备赛、协作与项目展示，了解成都八零的台前幕后。",
+    "image": "/video-posters/behind-the-scenes.jpg"
+  },
+  {
+    "path": "/news/competition-2023/",
+    "title": "2023 Chengdu 80: Eight teams analyse financial news",
+    "zh": "2023成都八零：八支队伍分析财经新闻",
+    "description": "The sixth edition reached its 2 November final after an 80-hour challenge focused on financial-news analysis.",
+    "descriptionZh": "第六届赛事于11月2日举行决赛，八支队伍完成了聚焦财经新闻分析的80小时挑战。",
+    "image": "/history-media/cd80-2023-owner-yfy-3743-full.webp"
+  },
+  {
+    "path": "/news/hansen-2019/",
+    "title": "Lars Peter Hansen at the 2019 International FinTech Forum",
+    "zh": "诺奖学者汉森参加2019国际金融科技论坛",
+    "description": "The Nobel laureate joined international researchers and practitioners in Chengdu for a forum held alongside the second Chengdu 80.",
+    "descriptionZh": "诺贝尔经济学奖得主汉森与国际学者、行业人士相聚成都，参与与第二届成都八零同期举行的论坛。",
+    "image": "/history-media/collaborators/collab-2019-hansen-portrait-full.webp"
+  },
+  {
+    "path": "/news/anderson-2019/",
+    "title": "Robert Anderson: Scenes from the 2019 FinTech Forum",
+    "zh": "Robert Anderson：2019国际金融科技论坛现场",
+    "description": "Revisit Robert Anderson’s welcome remarks for CDAR and the academic exchanges at the 2019 forum in Chengdu.",
+    "descriptionZh": "回看Robert Anderson代表CDAR致欢迎辞的现场，以及2019年论坛在成都展开的学术交流。",
+    "image": "/history-media/collaborators/collab-2019-anderson-portrait-full.webp"
+  },
+  {
+    "path": "/history/",
+    "title": "History",
+    "zh": "历届赛事"
+  },
+  {
+    "path": "/winners/",
+    "title": "Winners & Projects",
+    "zh": "成果档案"
+  },
   {
     "path": "/winners/funder-2018/",
     "title": "funder · Berkeley 2018",
@@ -45,27 +109,71 @@
     "title": "NUSight · NUS Finovators",
     "zh": "NUSight · NUS Finovators团队作品"
   },
-  { "path": "/history/2018/", "title": "2018 edition", "zh": "2018赛事" },
-  { "path": "/history/2019/", "title": "2019 edition", "zh": "2019赛事" },
-  { "path": "/history/2020/", "title": "2020 edition", "zh": "2020赛事" },
-  { "path": "/history/2021/", "title": "2021 edition", "zh": "2021赛事" },
-  { "path": "/history/2022/", "title": "2022 edition", "zh": "2022赛事" },
-  { "path": "/history/2023/", "title": "2023 edition", "zh": "2023赛事" },
+  {
+    "path": "/history/2018/",
+    "title": "2018 edition",
+    "zh": "2018赛事"
+  },
+  {
+    "path": "/history/2019/",
+    "title": "2019 edition",
+    "zh": "2019赛事"
+  },
+  {
+    "path": "/history/2020/",
+    "title": "2020 edition",
+    "zh": "2020赛事"
+  },
+  {
+    "path": "/history/2021/",
+    "title": "2021 edition",
+    "zh": "2021赛事"
+  },
+  {
+    "path": "/history/2022/",
+    "title": "2022 edition",
+    "zh": "2022赛事"
+  },
+  {
+    "path": "/history/2023/",
+    "title": "2023 edition",
+    "zh": "2023赛事"
+  },
   {
     "path": "/history/2024/",
     "title": "2024 seventh edition",
     "zh": "2024第七届赛事"
   },
-  { "path": "/history/2026/", "title": "2026 upcoming", "zh": "2026即将举办" },
-  { "path": "/winners/nushadow/", "title": "NuShadow", "zh": "NuShadow" },
+  {
+    "path": "/history/2026/",
+    "title": "2026 upcoming",
+    "zh": "2026即将举办"
+  },
+  {
+    "path": "/winners/nushadow/",
+    "title": "NuShadow",
+    "zh": "NuShadow"
+  },
   {
     "path": "/winners/dragon-search/",
     "title": "Dragon Search",
     "zh": "Dragon Search"
   },
-  { "path": "/winners/pisces/", "title": "Pisces", "zh": "Pisces" },
-  { "path": "/winners/panda/", "title": "Panda", "zh": "Panda" },
-  { "path": "/winners/giraffe/", "title": "Giraffe", "zh": "Giraffe" },
+  {
+    "path": "/winners/pisces/",
+    "title": "Pisces",
+    "zh": "Pisces"
+  },
+  {
+    "path": "/winners/panda/",
+    "title": "Panda",
+    "zh": "Panda"
+  },
+  {
+    "path": "/winners/giraffe/",
+    "title": "Giraffe",
+    "zh": "Giraffe"
+  },
   {
     "path": "/winners/apollo-2023/",
     "title": "Apollo team record",

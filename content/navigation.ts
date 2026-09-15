@@ -18,6 +18,12 @@ export const navigation = [
     description: 'From a challenge to a working product.',
   },
   {
+    label: 'News',
+    href: '/news',
+    description:
+      'Competition news, international exchange and stories from Chengdu 80.',
+  },
+  {
     label: 'History',
     href: '/history',
     description: 'Explore the editions since 2018.',
@@ -35,12 +41,14 @@ export const navigation = [
   {
     label: 'Photos and Videos',
     href: '/media',
-    description: 'Photographs, talks and films from Chengdu 80 through the years.',
+    description:
+      'Photographs, talks and films from Chengdu 80 through the years.',
   },
   {
     label: 'Partnerships',
     href: '/partners',
-    description: 'Meet our academic collaborators, organizations and initiatives.',
+    description:
+      'Meet our academic collaborators, organizations and initiatives.',
   },
 ] as const;
 

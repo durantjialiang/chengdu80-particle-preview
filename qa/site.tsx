@@ -6,6 +6,8 @@ import {
 } from '@/hooks/use-site-language';
 import { TextPage } from '@/components/site/SiteChrome';
 import CompetitionPage from '@/components/site/CompetitionPage';
+import { NewsPage, NewsArticlePage } from '@/components/site/News';
+import { newsArticles } from '@/content/news';
 import { HistoryPage, WinnersPage } from '@/components/site/ArchivePages';
 import { publicEditions as editions, projects } from '@/content/archive';
 import { bilingual as b } from '@/content/competition';
@@ -18,6 +20,19 @@ import {
 function SitePage() {
   const { t, href } = useSiteLanguage();
   const path = location.pathname.replace(/\/$/, '');
+  if (path === '/news')
+    return (
+      <TextPage>
+        <NewsPage />
+      </TextPage>
+    );
+  const article = newsArticles.find((item) => path === `/news/${item.id}`);
+  if (article)
+    return (
+      <TextPage>
+        <NewsArticlePage article={article} />
+      </TextPage>
+    );
   if (path === '/about')
     return (
       <TextPage>
