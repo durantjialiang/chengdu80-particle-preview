@@ -11,7 +11,6 @@ required.
 
 | id | local asset | official image URL | source page | provenance / use note |
 |---|---|---|---|---|
-| swufe | `swufe-logo.png` | https://www.swufe.edu.cn/images/logo.png | https://www.swufe.edu.cn/ | Official SWUFE homepage header logo; no permissive reuse licence was noticed in this bounded check; preserve unchanged and treat as a trademark. |
 | tsinghua | `tsinghua-logo.png` | https://www.tsinghua.edu.cn/image/logo.png | https://www.tsinghua.edu.cn/ | Official Tsinghua homepage header logo (CSS background); the official visual-identity guide is https://vi.tsinghua.edu.cn/jcgf.htm; follow that guide and do not redraw or modify the mark. |
 | pku | `pku-logo.png` | https://english.pku.edu.cn/Uploads/Bden/Picture/2021/04/27/s6087dd6901d02.png | https://english.pku.edu.cn/ | Official Peking University English homepage header image; the identity-office page https://vim.pku.edu.cn/xzzq/ provides official downloads and usage standards; no blanket reuse licence inferred. |
 | sjtu | `sjtu-logo-white.png` | https://global.sjtu.edu.cn/en/assets/images/logo_white_130.png | https://global.sjtu.edu.cn/en/ | Official SJTU Global English homepage white header lockup. This local file is the 130th-anniversary white variant (the `130` mark is part of the source image), not evidence of a generic-logo licence; preserve unchanged. |
@@ -44,7 +43,6 @@ pku-logo.png                797b434052f37a3f937e04f5e3979db3374b55b8980578017248
 queens.svg                  6915e877a2e92de55e7744d32233660a9bc6910b822a8b39cc5ed9c1b32da02a
 sjtu-logo-white.png         b9af15404e3fdd39d79f6fd85329899d3717c2fcb21508b940175db45125c673
 sustech-logo-en.png         518adeb797cd4b06065f18a3e916bc5f8e0f0a45ad0c99b19dd0cd3e54fc1d80
-swufe-logo.png              5d94838bd453e6c7684619a58c7855f677ab411b1669da494c816699c82f1da9
 tel-aviv-university.png     2604488c75dcc2dda600e573c6b34feccebd67a6ea773405bf58b831369f9e99
 toronto.svg                 f0d288b6c5b6daabf0b1fe7f5c370d87fce674b2c51bc4a7bda3dc8ca283875e
 tsinghua-logo.png           dd43e6bb8c1bb332cc38d255e2cbf60eb5240d902deb7ea76904a2cea9aef987

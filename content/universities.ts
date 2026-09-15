@@ -105,7 +105,8 @@ const universityRecords: readonly University[] = [
     country: 'China',
     latitude: 30.688,
     longitude: 103.815,
-    logo: '/university-logos/swufe-logo.png',
+    // School identifying artwork was removed at the project owner's request.
+    logo: null,
     website: 'https://www.swufe.edu.cn/',
     participationYears: [2018, 2019, 2020, 2021, 2022, 2023],
     awards: [
@@ -167,7 +168,6 @@ const universityRecords: readonly University[] = [
     ],
     recordNote:
       'Chengdu hub. SWUFE is a documented host. Participation years here refer to its university team, not every year it hosted.',
-    logoSource: 'https://www.swufe.edu.cn/',
     logoSurface: 'dark',
   },
   {

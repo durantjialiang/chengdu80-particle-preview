@@ -57,15 +57,17 @@ export default function UniversitySpotlight({
       data-particle-reading-region
       aria-labelledby={headingId}
     >
-      <div className={styles.identity}>
-        <a
-          href={university.website}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${universityName(university, language)} · ${t(b('Official website', '官方网站'))}`}
-        >
-          <UniversityLogo university={university} />
-        </a>
+      <div className={styles.identity} data-has-logo={Boolean(university.logo)}>
+        {university.logo && (
+          <a
+            href={university.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${universityName(university, language)} · ${t(b('Official website', '官方网站'))}`}
+          >
+            <UniversityLogo university={university} />
+          </a>
+        )}
         <p className={styles.location}>
           {universityLocation(university, language)}
         </p>

@@ -26,14 +26,6 @@
   object-position: center;
   filter: none;
 }
-.monogram {
-  max-width: 100%;
-  overflow-wrap: anywhere;
-  font-size: 1.2rem;
-  letter-spacing: 0.02em;
-  color: #e4f3f6;
-  font-weight: 550;
-}
 
 /* The Chicago kit includes clear space in its canvas; compensate optically
    within the same tile without changing the mark or its aspect ratio. */

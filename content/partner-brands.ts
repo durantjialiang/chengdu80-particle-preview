@@ -4,17 +4,8 @@ import { bilingual as b } from './competition';
 export const hostBrandProfiles = {
   swufe: {
     website: 'https://www.swufe.edu.cn/',
-    usageStatus: 'project-owner-confirmed',
-    logo: {
-      src: '/university-logos/swufe-logo.png',
-      width: 245,
-      height: 180,
-      surface: 'dark',
-      sourcePage: 'https://www.swufe.edu.cn/',
-      reusedFrom: 'content/universities.ts',
-      sha256:
-        '5d94838bd453e6c7684619a58c7855f677ab411b1669da494c816699c82f1da9',
-    },
+    usageStatus: 'text-only',
+    logo: null,
   },
   jiaozi: {
     website: 'https://www.cdjzjk.com/',

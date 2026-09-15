@@ -522,7 +522,7 @@ await test('site content and static archive contracts', async (t) => {
       },
     );
     await t.test(
-      'host identities reuse original logos and link both logo and name to official homepages',
+      'host identities keep text-only SWUFE and link image-backed hosts to official homepages',
       async () => {
         const { hostBrandProfiles } = await server.ssrLoadModule(
           '/content/partner-brands.ts',
@@ -543,10 +543,15 @@ await test('site content and static archive contracts', async (t) => {
           'https://www.cdjzjk.com/',
         );
         assert.equal(
-          hostBrandProfiles.swufe.logo.src,
+          hostBrandProfiles.swufe.logo,
           universities.find((u) => u.id === 'swufe').logo,
         );
-        for (const profile of Object.values(hostBrandProfiles)) {
+        assert.equal(hostBrandProfiles.swufe.logo, null);
+        assert.equal(hostBrandProfiles.swufe.usageStatus, 'text-only');
+        assert.ok(hostBrandProfiles.jiaozi.logo);
+        for (const profile of Object.values(hostBrandProfiles).filter(
+          (profile) => profile.logo,
+        )) {
           const original = await readFile(`public${profile.logo.src}`);
           assert.equal(
             createHash('sha256').update(original).digest('hex'),
@@ -599,17 +604,26 @@ await test('site content and static archive contracts', async (t) => {
                 assert.ok(card.includes(`href="${profile.website}"`));
                 assert.match(card, /target="_blank" rel="noopener noreferrer"/);
                 assert.match(card, /aria-label="[^"]+"/);
-                assert.ok(card.includes(`src="${profile.logo.src}"`));
-                assert.ok(
-                  card.includes(
-                    `width="${profile.logo.width}" height="${profile.logo.height}"`,
-                  ),
-                );
-                assert.match(card, /loading="lazy" decoding="async"/);
-                assert.ok(
-                  card.indexOf('<img ') < card.indexOf('<strong>'),
-                  'Logo precedes the name',
-                );
+                if (profile.logo) {
+                  assert.ok(card.includes(`src="${profile.logo.src}"`));
+                  assert.ok(
+                    card.includes(
+                      `width="${profile.logo.width}" height="${profile.logo.height}"`,
+                    ),
+                  );
+                  assert.match(card, /loading="lazy" decoding="async"/);
+                  assert.ok(
+                    card.indexOf('<img ') < card.indexOf('<strong>'),
+                    'Logo precedes the name',
+                  );
+                } else {
+                  assert.equal(id, 'swufe');
+                  assert.match(
+                    card,
+                    /SWUFE|Southwestern University of Finance and Economics|西南财经大学/,
+                  );
+                  assert.doesNotMatch(card, /<img\b|swufe-logo\.png/);
+                }
                 assert.equal(
                   (card.match(/<a\b/g) ?? []).length,
                   1,

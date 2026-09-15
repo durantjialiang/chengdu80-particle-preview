@@ -134,22 +134,7 @@
   background: #f4f6f8;
   border-color: #d9e3e8;
 }
-.nodeLogoFallback {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  min-height: 30px;
-  padding: 3px;
-  box-sizing: border-box;
-  border: 1px solid #a6c8d44d;
-  border-radius: 4px;
-  color: #e4f3f6;
-  background: #102331;
-  font-size: 8px;
-  font-weight: 600;
-  line-height: 1.05;
-  overflow-wrap: anywhere;
-}
+
 .expandedCopy {
   min-width: 0;
 }
@@ -232,4 +217,8 @@
   .city {
     will-change: auto;
   }
+}
+
+.nodeLabel button[data-has-logo='false'] .expandedLabel {
+  grid-template-columns: minmax(0, 1fr);
 }

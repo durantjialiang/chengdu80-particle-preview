@@ -429,6 +429,7 @@ export default function Scene({
                       data-selected={isSelected}
                       data-expanded={isExpanded}
                       data-hub={city.isOrigin}
+                      data-has-logo={Boolean(record?.logo)}
                       onPointerEnter={() => {
                         network.onNodeHover(city.id);
                       }}
@@ -451,25 +452,19 @@ export default function Scene({
                     >
                       <span className={styles.conciseLabel}>{concise}</span>
                       <span className={styles.expandedLabel}>
-                        {isSelected && record ? (
-                          record.logo ? (
-                            /* oxlint-disable next/no-img-element -- The Vite preview serves bounded local logo assets directly. */
-                            <img
-                              className={styles.nodeLogo}
-                              data-surface={record.logoSurface}
-                              src={record.logo}
-                              alt=""
-                              width="36"
-                              height="30"
-                              loading="lazy"
-                            />
-                          ) : (
-                            /* oxlint-enable next/no-img-element */
-                            <span className={styles.nodeLogoFallback}>
-                              {record.shortName}
-                            </span>
-                          )
+                        {isSelected && record?.logo ? (
+                          /* oxlint-disable next/no-img-element -- Local university marks are opt-in. */
+                          <img
+                            className={styles.nodeLogo}
+                            data-surface={record.logoSurface}
+                            src={record.logo}
+                            alt=""
+                            width="36"
+                            height="30"
+                            loading="lazy"
+                          />
                         ) : null}
+                        {/* oxlint-enable next/no-img-element */}
                         <span className={styles.expandedCopy}>
                           <strong>{expandedName}</strong>
                           <small>{expandedLocation}</small>

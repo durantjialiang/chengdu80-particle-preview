@@ -27,10 +27,26 @@ await test('international network polish preserves dated records and clear ident
       '/components/network/UniversitySpotlight.tsx',
     );
     await t.test(
-      'all 20 universities have local official marks and matching light or dark surfaces',
+      'SWUFE stays text-only while the other 19 university marks remain local',
       async () => {
         assert.equal(universities.length, 20);
+        const swufe = universities.find((u) => u.id === 'swufe');
+        assert.ok(swufe);
+        assert.equal(swufe.logo, null);
+        assert.equal(swufe.logoSource, undefined);
+        assert.equal(swufe.shortName, 'SWUFE');
+        assert.equal(
+          swufe.name,
+          'Southwestern University of Finance and Economics',
+        );
+        assert.equal(swufe.website, 'https://www.swufe.edu.cn/');
+        await assert.rejects(
+          access('public/university-logos/swufe-logo.png'),
+          /ENOENT/,
+        );
+        assert.equal(universities.filter((u) => u.logo).length, 19);
         for (const university of universities) {
+          if (university.id === 'swufe') continue;
           assert.ok(university.logo, university.id);
           assert.ok(university.logoSource, university.id);
           await access('public' + university.logo);
@@ -123,6 +139,23 @@ await test('international network polish preserves dated records and clear ident
             1,
             university.id,
           );
+          if (university.logo) {
+            assert.ok(
+              html.includes(`data-university-logo="${university.id}"`),
+              `${university.id} keeps its university logo DOM`,
+            );
+            assert.ok(
+              html.includes(`src="${university.logo}"`),
+              `${university.id} keeps its approved local mark`,
+            );
+          } else {
+            assert.equal(university.id, 'swufe');
+            assert.doesNotMatch(html, /data-university-logo=|swufe-logo\.png/);
+            assert.match(
+              html,
+              /Southwestern University of Finance and Economics|SWUFE/,
+            );
+          }
           assert.match(html, /Explore university profile/);
           assert.doesNotMatch(
             html,

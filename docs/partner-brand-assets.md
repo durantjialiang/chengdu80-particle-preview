@@ -71,11 +71,10 @@ documents are included.
 
 | Organization                           | Official destination      | Local original                            | Dimensions |
 | -------------------------------------- | ------------------------- | ----------------------------------------- | ---------- |
-| SWUFE                                  | https://www.swufe.edu.cn/ | `public/university-logos/swufe-logo.png`  | 245 × 180  |
+| SWUFE | https://www.swufe.edu.cn/ | Text only; mark withdrawn on 2026-09-15 | — |
 | Chengdu Jiaozi Financial Holding Group | https://www.cdjzjk.com/   | `public/partner-logos/chengdu-jiaozi.png` | 376 × 50   |
 
-SWUFE reuses the approved asset already referenced by `content/universities.ts`;
-it is not a duplicate or a new reconstruction. Jiaozi's white wordmark and gold
+SWUFE uses its school name as text only; its mark has been removed from public assets at the project owner's request. Jiaozi's white wordmark and gold
 symbol were downloaded unchanged from its official homepage's header asset:
 https://www.cdjzjk.com/_nuxt/logo-b.Br5iWYEW.png
 The official header module `https://www.cdjzjk.com/_nuxt/BVSyvsR9.js` references

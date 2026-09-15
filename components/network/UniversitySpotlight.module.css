@@ -191,12 +191,12 @@
   }
 }
 
-  :global([data-tour-framed='true']) .teamPhoto img {
-    max-height: 132px;
-  }
-  :global([data-tour-framed='true']) .teamPhoto a {
-    max-height: 132px;
-  }
+:global([data-tour-framed='true']) .teamPhoto img {
+  max-height: 132px;
+}
+:global([data-tour-framed='true']) .teamPhoto a {
+  max-height: 132px;
+}
 
 @media (max-width: 900px) {
   :global([data-tour-framed='true']) .spotlight {
@@ -262,4 +262,9 @@
   :global([data-tour-framed='true']) .footerActions button {
     min-height: 34px;
   }
+}
+
+.identity[data-has-logo='false'] .location {
+  max-width: 100%;
+  text-align: left;
 }

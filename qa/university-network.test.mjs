@@ -154,7 +154,7 @@ await test('shared university ecosystem contracts', async (t) => {
               /^\/university-logos\/[a-z-]+\.(svg|png|jpg)$/,
             );
             assert.ok((await stat(`public${u.logo}`)).size > 100);
-          } else assert.ok(['unsw', 'uchicago', 'ucsd'].includes(u.id));
+          } else assert.equal(u.id, 'swufe', 'Only the withdrawn SWUFE mark is omitted');
           for (const url of [u.website, ...u.evidence.map((e) => e.url)]) {
             const parsed = new URL(url);
             assert.equal(parsed.protocol, 'https:');

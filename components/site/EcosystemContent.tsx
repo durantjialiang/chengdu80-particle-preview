@@ -107,58 +107,58 @@ function HostPair({ historical = false }: { historical?: boolean }) {
   /* oxlint-disable next/no-img-element -- Static original logos with reserved dimensions. */
   return (
     <div className={styles.partners}>
-      {(['swufe', 'jiaozi'] as const).map((id) => (
-        <a
-          key={id}
-          className={styles.partner}
-          data-host={id}
-          href={hostBrandProfiles[id].website}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={t(
-            b(
-              `${organizations[id].name.en} — official website (opens in a new tab)`,
-              `${organizations[id].name.zh} · 官方网站（新标签页打开）`,
-            ),
-          )}
-        >
-          <small>
-            {t(
-              historical
-                ? b('Joint hosts · 2023 / 2024', '联合主办 · 2023 / 2024')
-                : b('JOINT HOST', '联合主办'),
+      {(['swufe', 'jiaozi'] as const).map((id) => {
+        const logo = hostBrandProfiles[id].logo;
+        return (
+          <a
+            key={id}
+            className={styles.partner}
+            data-host={id}
+            href={hostBrandProfiles[id].website}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t(
+              b(
+                `${organizations[id].name.en} — official website (opens in a new tab)`,
+                `${organizations[id].name.zh} · 官方网站（新标签页打开）`,
+              ),
             )}
-          </small>
-          <div
-            className={styles.hostLogo}
-            data-surface={hostBrandProfiles[id].logo.surface}
           >
-            <img
-              src={hostBrandProfiles[id].logo.src}
-              alt={t(
-                b(
-                  `${organizations[id].name.en} logo`,
-                  `${organizations[id].name.zh} 标志`,
-                ),
+            <small>
+              {t(
+                historical
+                  ? b('Joint hosts · 2023 / 2024', '联合主办 · 2023 / 2024')
+                  : b('JOINT HOST', '联合主办'),
               )}
-              width={hostBrandProfiles[id].logo.width}
-              height={hostBrandProfiles[id].logo.height}
-              style={{
-                maxWidth: `min(100%, ${hostBrandProfiles[id].logo.width}px)`,
-              }}
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-          <strong>
-            {t(
-              historical || id === 'jiaozi'
-                ? organizations[id].name
-                : organizations[id].short,
+            </small>
+            {logo && (
+              <div className={styles.hostLogo} data-surface={logo.surface}>
+                <img
+                  src={logo.src}
+                  alt={t(
+                    b(
+                      `${organizations[id].name.en} logo`,
+                      `${organizations[id].name.zh} 标志`,
+                    ),
+                  )}
+                  width={logo.width}
+                  height={logo.height}
+                  style={{ maxWidth: `min(100%, ${logo.width}px)` }}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
             )}
-          </strong>
-        </a>
-      ))}
+            <strong>
+              {t(
+                historical || id === 'jiaozi'
+                  ? organizations[id].name
+                  : organizations[id].short,
+              )}
+            </strong>
+          </a>
+        );
+      })}
     </div>
   );
   /* oxlint-enable next/no-img-element */
