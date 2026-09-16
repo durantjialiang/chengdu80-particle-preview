@@ -48,3 +48,7 @@ The project owner now requests Photos and Videos / 照片与视频 in the shared
 Only the four static cover images and external links are published on the website. Clicking a cover or a platform link opens the corresponding external video. No video files, embedded players or automatic playback are added. YouTube and X / Twitter are non-clickable pending labels until their individual video URLs are supplied. The two academic-collaborator entries reuse the existing Hansen and Anderson speech links.
 
 `content/video-library.ts` contains the bilingual library entries; `docs/video-library-sources.json` records the source cover URLs and hashes. Covers under `public/video-posters/` are the original images of these owner-specified uploads, retained without modification. Annual photo albums and local edited video masters are unchanged.
+
+## Instagram video destinations — 2026-09-16
+
+The owner requested Instagram alongside Bilibili, YouTube and X on all four video-library cards. All four Instagram URLs are currently null and render as non-clickable “Instagram · Link pending / 链接待补充”. Each can be replaced with the owner's actual video URL later; Hansen and Anderson retain their shared link data in content/collaborators.ts, and the other two entries are configured in content/video-library.ts. Existing Bilibili links and covers are unchanged.

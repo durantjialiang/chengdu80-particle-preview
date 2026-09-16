@@ -1,8 +1,5 @@
 import { bilingual as b, type Localized } from './competition';
-import {
-  collaborators,
-  type SpeechVideoLinks,
-} from './collaborators';
+import { collaborators, type SpeechVideoLinks } from './collaborators';
 
 export type VideoLibraryItem = {
   id: string;
@@ -33,7 +30,7 @@ const bilibiliProvenance = b(
 
 // The four Bilibili URLs were supplied by the project owner. Bilibili API
 // responses confirmed the titles, posters and durations on 2026-09-15.
-// YouTube and X links remain null until their uploads are available.
+// YouTube, X and Instagram links remain null until the owner supplies them.
 export const videoLibrary: readonly VideoLibraryItem[] = [
   {
     id: 'hansen-forum',
@@ -90,16 +87,14 @@ export const videoLibrary: readonly VideoLibraryItem[] = [
       bilibili: 'https://www.bilibili.com/video/BV13Fen6YEXj/',
       youtube: null,
       x: null,
+      instagram: null,
     },
     provenance: bilibiliProvenance,
   },
   {
     id: 'chengdu80-2018-2021',
     year: b('2018–2021', '2018—2021'),
-    title: b(
-      'Chengdu 80, 2018–2021: A retrospective',
-      '2018—2021成都80回顾',
-    ),
+    title: b('Chengdu 80, 2018–2021: A retrospective', '2018—2021成都80回顾'),
     description: b(
       'A visual retrospective of Chengdu 80 teams, demos and exchanges from 2018 to 2021.',
       '回看2018—2021年成都八零的团队协作、路演与展示。',
@@ -112,6 +107,7 @@ export const videoLibrary: readonly VideoLibraryItem[] = [
       bilibili: 'https://www.bilibili.com/video/BV1UUen6fEgd/',
       youtube: null,
       x: null,
+      instagram: null,
     },
     provenance: bilibiliProvenance,
   },

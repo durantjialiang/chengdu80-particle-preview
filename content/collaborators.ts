@@ -12,6 +12,7 @@ export type SpeechVideoLinks = {
   bilibili: string | null;
   youtube: string | null;
   x: string | null;
+  instagram: string | null;
 };
 
 export type Collaborator = {
@@ -40,6 +41,7 @@ export const collaborators: readonly Collaborator[] = [
       bilibili: 'https://www.bilibili.com/video/BV1wEen6nEXe/',
       youtube: null,
       x: null,
+      instagram: null,
     },
     shortName: 'Lars Peter Hansen',
     name: b('Lars Peter Hansen', '拉尔斯·彼得·汉森'),
@@ -179,6 +181,7 @@ export const collaborators: readonly Collaborator[] = [
       bilibili: 'https://www.bilibili.com/video/BV12Qen6oE3f/',
       youtube: null,
       x: null,
+      instagram: null,
     },
     shortName: 'Robert M. Anderson',
     name: b('Robert M. Anderson', '罗伯特·安德森'),

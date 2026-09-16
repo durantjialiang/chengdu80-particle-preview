@@ -8,6 +8,7 @@ const platformLabels = {
   bilibili: b('Bilibili', 'B站'),
   youtube: b('YouTube', 'YouTube'),
   x: b('X / Twitter', 'X / Twitter'),
+  instagram: b('Instagram', 'Instagram'),
 } as const;
 
 function formatDuration(seconds: number) {
@@ -51,9 +52,9 @@ function PlatformLinks({ video }: { video: VideoLibraryItem }) {
             key={id}
             className={styles.platformPending}
             data-video-pending={id}
-            aria-label={`${label} · ${t(b('Coming soon', '即将上线'))}`}
+            aria-label={`${label} · ${t(b('Link pending', '链接待补充'))}`}
           >
-            {label} · {t(b('Coming soon', '即将上线'))}
+            {label} · {t(b('Link pending', '链接待补充'))}
           </span>
         ),
       )}
@@ -128,9 +129,7 @@ export default function VideoLibrary() {
     >
       <div className={styles.sectionHeading}>
         <div>
-          <p className={styles.eyebrow}>
-            {t(b('VIDEO ARCHIVE', '视频档案'))}
-          </p>
+          <p className={styles.eyebrow}>{t(b('VIDEO ARCHIVE', '视频档案'))}</p>
           <h2 id="video-library-title">{t(b('Videos', '视频'))}</h2>
         </div>
         <p className={styles.intro}>
