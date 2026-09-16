@@ -30,7 +30,8 @@ const bilibiliProvenance = b(
 
 // The four Bilibili URLs were supplied by the project owner. Bilibili API
 // responses confirmed the titles, posters and durations on 2026-09-15.
-// YouTube, X and Instagram links remain null until the owner supplies them.
+// YouTube titles and durations matched on the owner's channel on 2026-09-16.
+// X and Instagram links remain null until the owner supplies them.
 export const videoLibrary: readonly VideoLibraryItem[] = [
   {
     id: 'hansen-forum',
@@ -85,7 +86,7 @@ export const videoLibrary: readonly VideoLibraryItem[] = [
     durationSeconds: 901,
     links: {
       bilibili: 'https://www.bilibili.com/video/BV13Fen6YEXj/',
-      youtube: null,
+      youtube: 'https://www.youtube.com/watch?v=jY7adHlJCH0',
       x: null,
       instagram: null,
     },
@@ -105,7 +106,7 @@ export const videoLibrary: readonly VideoLibraryItem[] = [
     durationSeconds: 241,
     links: {
       bilibili: 'https://www.bilibili.com/video/BV1UUen6fEgd/',
-      youtube: null,
+      youtube: 'https://www.youtube.com/watch?v=9gwbLHMHYYk',
       x: null,
       instagram: null,
     },

@@ -52,3 +52,10 @@ Only the four static cover images and external links are published on the websit
 ## Instagram video destinations — 2026-09-16
 
 The owner requested Instagram alongside Bilibili, YouTube and X on all four video-library cards. All four Instagram URLs are currently null and render as non-clickable “Instagram · Link pending / 链接待补充”. Each can be replaced with the owner's actual video URL later; Hansen and Anderson retain their shared link data in content/collaborators.ts, and the other two entries are configured in content/video-library.ts. Existing Bilibili links and covers are unchanged.
+
+
+## YouTube uploads linked — 2026-09-16
+
+The owner supplied channel UC5jSyryWdN-jP0LN-xTDedg (FIC | Fintech Innovation Center, @fic80) and confirmed that all four videos were uploaded. The channel's public video list contains four matching titles and durations; all four titles and authors were additionally confirmed with YouTube oEmbed. Individual watch URLs are recorded in docs/video-library-sources.json. The website uses direct video links for each card, and the Hansen/Anderson links are shared with their homepage and partnership profiles.
+
+The external channel entry is displayed between the video library and photo archive. Its unique youtube-channel anchor avoids colliding with the existing videos anchor. X and Instagram remain pending; there are no embedded players, additional hosted media, or automatic YouTube requests.

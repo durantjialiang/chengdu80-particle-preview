@@ -4,7 +4,7 @@ import { videoChannel } from '@/content/video-channel';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import styles from './VideoChannel.module.css';
 
-/** The owner will supply the channel destination when videos are ready. */
+/** An external channel entry; no embedded player or background platform request. */
 export default function VideoChannel({
   url = videoChannel.youtubeUrl,
 }: {
@@ -14,7 +14,7 @@ export default function VideoChannel({
   if (!url) return null;
   return (
     <section
-      id="videos"
+      id="youtube-channel"
       className={styles.section}
       aria-labelledby="video-channel-title"
       data-particle-reading-region
@@ -27,9 +27,14 @@ export default function VideoChannel({
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={t(b('Watch on YouTube (opens in a new tab)', '前往 YouTube 观看（新标签页打开）'))}
+        aria-label={t(
+          b(
+            'Visit our YouTube channel (opens in a new tab)',
+            '访问 YouTube 频道（新标签页打开）',
+          ),
+        )}
       >
-        {t(b('Watch on YouTube', '前往 YouTube 观看'))}
+        {t(b('Visit our YouTube channel', '访问 YouTube 频道'))}
         <ArrowUpRight size={19} aria-hidden="true" />
       </a>
     </section>

@@ -10,7 +10,17 @@
     "description": "",
     "bytes": 222811,
     "sha256": "3da9db910cd219251fa3c35620fa60a3b046fdc7fe4e72c4c1a3be662fdf0b5f",
-    "publicationAuthorization": "Project owner requested these four linked videos with cover images on the website on 2026-09-15."
+    "publicationAuthorization": "Project owner requested these four linked videos with cover images on the website on 2026-09-15.",
+    "youtube": {
+      "url": "https://www.youtube.com/watch?v=94DMREvLnLE",
+      "title": "Nobel Laureates & Fintech | Forum Highlights and 2021 Preview | FIC",
+      "duration": "3:51",
+      "channelId": "UC5jSyryWdN-jP0LN-xTDedg",
+      "author": "FIC | Fintech Innovation Center",
+      "authorUrl": "https://www.youtube.com/@fic80",
+      "verifiedAt": "2026-09-16",
+      "verification": "Matched against the four uploads on the owner-supplied channel by title and duration; title and author also confirmed by YouTube oEmbed."
+    }
   },
   {
     "id": "anderson-forum",
@@ -23,7 +33,17 @@
     "description": "2019年国际金融科技论坛现场影像，记录Robert Anderson的现场发言及会场片段。当届论坛主题为风险Risk。\n本视频为历史活动影像。\n分享：FIC金融科技国际联合实验室\n关注FIC，了解金融科技研究与国际学术交流。",
     "bytes": 147600,
     "sha256": "7da4a608d1f61334ec0bab125c18e4c7f9ab168cdecddf798771c4c425d58c99",
-    "publicationAuthorization": "Project owner requested these four linked videos with cover images on the website on 2026-09-15."
+    "publicationAuthorization": "Project owner requested these four linked videos with cover images on the website on 2026-09-15.",
+    "youtube": {
+      "url": "https://www.youtube.com/watch?v=0SqVc1E93AU",
+      "title": "Robert Anderson at the 2019 International Fintech Forum | FIC",
+      "duration": "5:24",
+      "channelId": "UC5jSyryWdN-jP0LN-xTDedg",
+      "author": "FIC | Fintech Innovation Center",
+      "authorUrl": "https://www.youtube.com/@fic80",
+      "verifiedAt": "2026-09-16",
+      "verification": "Matched against the four uploads on the owner-supplied channel by title and duration; title and author also confirmed by YouTube oEmbed."
+    }
   },
   {
     "id": "behind-the-scenes",
@@ -36,7 +56,17 @@
     "description": "走进“成都八零”的台前幕后，了解青年团队如何备赛、协作、交流与展示项目，以及赛事背后的组织工作与学术交流。片中包含2024年赛事画面。\n节目名称：《发现者》。原片保留“中央新影·发现之旅”“央视频”标识及节目署名。\n由FIC金融科技国际联合实验室分享。\n关注FIC，了解金融科技研究、国际学术交流与青年创新。",
     "bytes": 202233,
     "sha256": "850e09761da915054125fa3bc7d678905a1d7e77c3114bb09d800681429c83f3",
-    "publicationAuthorization": "Project owner requested these four linked videos with cover images on the website on 2026-09-15."
+    "publicationAuthorization": "Project owner requested these four linked videos with cover images on the website on 2026-09-15.",
+    "youtube": {
+      "url": "https://www.youtube.com/watch?v=jY7adHlJCH0",
+      "title": "Inside Chengdu 80: A Fintech Hackathon Documentary | FIC",
+      "duration": "15:01",
+      "channelId": "UC5jSyryWdN-jP0LN-xTDedg",
+      "author": "FIC | Fintech Innovation Center",
+      "authorUrl": "https://www.youtube.com/@fic80",
+      "verifiedAt": "2026-09-16",
+      "verification": "Matched against the four uploads on the owner-supplied channel by title and duration; title and author also confirmed by YouTube oEmbed."
+    }
   },
   {
     "id": "chengdu80-2018-2021",
@@ -49,6 +79,16 @@
     "description": "从团队协作、方案打磨到路演展示，回看2018—2021年的“成都八零”金融科技赛事现场。本片记录青年参与者将金融知识与技术创意转化为项目的过程。\n\n历史活动影像｜2018—2021\n分享：FIC金融科技国际联合实验室\n关注FIC，了解金融科技研究、国际学术交流与青年创新。",
     "bytes": 219060,
     "sha256": "bb8900317aba8676bc34cb55efa43f78e57b25a2557281a5e674d25c2e3bf60b",
-    "publicationAuthorization": "Project owner requested these four linked videos with cover images on the website on 2026-09-15."
+    "publicationAuthorization": "Project owner requested these four linked videos with cover images on the website on 2026-09-15.",
+    "youtube": {
+      "url": "https://www.youtube.com/watch?v=9gwbLHMHYYk",
+      "title": "Chengdu 80: 80 Hours of Fintech Innovation | 2018-2021 Recap | FIC",
+      "duration": "4:01",
+      "channelId": "UC5jSyryWdN-jP0LN-xTDedg",
+      "author": "FIC | Fintech Innovation Center",
+      "authorUrl": "https://www.youtube.com/@fic80",
+      "verifiedAt": "2026-09-16",
+      "verification": "Matched against the four uploads on the owner-supplied channel by title and duration; title and author also confirmed by YouTube oEmbed."
+    }
   }
 ]

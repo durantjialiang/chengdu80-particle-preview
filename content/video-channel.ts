@@ -1,4 +1,4 @@
-/** Set this to the owner's YouTube channel or playlist URL when supplied. */
+/** Channel supplied by the project owner on 2026-09-16. */
 export const videoChannel: { youtubeUrl: string | null } = {
-  youtubeUrl: null,
+  youtubeUrl: 'https://www.youtube.com/channel/UC5jSyryWdN-jP0LN-xTDedg',
 };

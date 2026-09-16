@@ -33,6 +33,7 @@ import EditorialMedia from './EditorialMedia';
 import CityCollaboration from './CityCollaboration';
 import Collaborators, { FeaturedCollaborators } from './Collaborators';
 import VideoLibrary from './VideoLibrary';
+import VideoChannel from './VideoChannel';
 import styles from './Editorial.module.css';
 import site from './Site.module.css';
 
@@ -1062,6 +1063,7 @@ export function MediaPage() {
         <a href="#resources">{t(b('News & publications', '新闻与专刊'))}</a>
       </nav>
       <VideoLibrary />
+      <VideoChannel />
       <Section id="photos" title={b('Photo archive', '照片档案')}>
         <nav
           className={site.pills}

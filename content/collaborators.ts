@@ -39,7 +39,7 @@ export const collaborators: readonly Collaborator[] = [
     // Video mapping supplied by the project owner; other uploads are pending.
     speechVideos: {
       bilibili: 'https://www.bilibili.com/video/BV1wEen6nEXe/',
-      youtube: null,
+      youtube: 'https://www.youtube.com/watch?v=94DMREvLnLE',
       x: null,
       instagram: null,
     },
@@ -179,7 +179,7 @@ export const collaborators: readonly Collaborator[] = [
     // Video mapping supplied by the project owner; other uploads are pending.
     speechVideos: {
       bilibili: 'https://www.bilibili.com/video/BV12Qen6oE3f/',
-      youtube: null,
+      youtube: 'https://www.youtube.com/watch?v=0SqVc1E93AU',
       x: null,
       instagram: null,
     },
