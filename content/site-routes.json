@@ -32,41 +32,9 @@
     "path": "/news/",
     "title": "News",
     "zh": "新闻动态",
-    "description": "Competition stories, international academic exchange, project initiatives and media features from Chengdu 80.",
-    "descriptionZh": "成都八零赛事动态、国际学术交流、项目合作与媒体报道。",
+    "description": "Read original Chengdu 80 coverage from universities and media, alongside guest retrospectives.",
+    "descriptionZh": "汇集高校与媒体发布的成都八零报道，直达原文，并回顾国际学术嘉宾的交流活动。",
     "image": "/history-media/cd80-2024-01-full.webp"
-  },
-  {
-    "path": "/news/competition-2024/",
-    "title": "2024 Chengdu 80: Redefining auto insurance",
-    "zh": "2024成都八零：重定义汽车保险",
-    "description": "University teams explored insurance for intelligent driving at the seventh Chengdu 80, culminating in the final pitches and awards on 30 October.",
-    "descriptionZh": "第七届赛事聚焦智能驾驶时代的汽车保险，高校团队于10月30日展开路演与答辩，迎来评选与颁奖。",
-    "image": "/history-media/cd80-2024-01-full.webp"
-  },
-  {
-    "path": "/news/incubator-2024/",
-    "title": "Chengdu 80 Incubator launches at the 2024 final",
-    "zh": "成都八零孵化器在2024决赛现场启动",
-    "description": "Universities, industry and public-sector organizations launched an initiative focused on fintech projects and talent development.",
-    "descriptionZh": "高校、企业与公共部门共同参与，围绕金融科技项目成长与人才培养启动新的合作倡议。",
-    "image": "/history-media/cd80-2024-05-full.webp"
-  },
-  {
-    "path": "/news/discoverer-feature/",
-    "title": "Inside Chengdu 80: The Discoverer feature",
-    "zh": "走进成都八零：《发现者》专题",
-    "description": "Shared by FIC, The Discoverer looks behind the scenes of Chengdu 80 through team preparation, collaboration and project showcases.",
-    "descriptionZh": "由FIC分享的《发现者》专题，带观众走进团队备赛、协作与项目展示，了解成都八零的台前幕后。",
-    "image": "/video-posters/behind-the-scenes.jpg"
-  },
-  {
-    "path": "/news/competition-2023/",
-    "title": "2023 Chengdu 80: Eight teams analyse financial news",
-    "zh": "2023成都八零：八支队伍分析财经新闻",
-    "description": "The sixth edition reached its 2 November final after an 80-hour challenge focused on financial-news analysis.",
-    "descriptionZh": "第六届赛事于11月2日举行决赛，八支队伍完成了聚焦财经新闻分析的80小时挑战。",
-    "image": "/history-media/cd80-2023-owner-yfy-3743-full.webp"
   },
   {
     "path": "/news/hansen-2019/",

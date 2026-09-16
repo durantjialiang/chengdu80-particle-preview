@@ -1,12 +1,10 @@
-import { ArrowLeft, ArrowUpRight, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { bilingual as b } from '@/content/competition';
 import { newsArticles, newsCategories, type NewsArticle } from '@/content/news';
 import { useSiteLanguage } from '@/hooks/use-site-language';
-import { useUrlFilters } from '@/hooks/use-url-filters';
+import { PressCoverage } from './PressCoverage';
 import styles from './News.module.css';
 import site from './Site.module.css';
-
-const filterKeys = ['category'] as const;
 
 function Cover({
   article,
@@ -47,35 +45,20 @@ function ArticleMeta({ article }: { article: NewsArticle }) {
   );
 }
 
-function NewsCard({
-  article,
-  featured = false,
-}: {
-  article: NewsArticle;
-  featured?: boolean;
-}) {
+function NewsCard({ article }: { article: NewsArticle }) {
   const { t, href } = useSiteLanguage();
   return (
-    <article
-      className={featured ? styles.featured : styles.card}
-      data-news-card={article.id}
-      data-featured={featured}
-    >
+    <article className={styles.card} data-news-card={article.id}>
       <a href={href(`/news/${article.id}/`)}>
         <div className={styles.cover}>
-          <Cover article={article} eager={featured} />
+          <Cover article={article} />
         </div>
         <div className={styles.cardBody}>
-          {featured && (
-            <p className={styles.eyebrow}>
-              {t(b('FEATURED STORY', '精选报道'))}
-            </p>
-          )}
           <ArticleMeta article={article} />
           <h2>{t(article.title)}</h2>
           <p className={styles.summary}>{t(article.summary)}</p>
           <span className={styles.readMore}>
-            {t(b('Read story', '阅读全文'))}
+            {t(b('Explore the visit', '查看交流回顾'))}
             <ArrowUpRight size={18} aria-hidden="true" />
           </span>
         </div>
@@ -85,16 +68,7 @@ function NewsCard({
 }
 
 export function NewsPage() {
-  const { t, href } = useSiteLanguage();
-  const { filters, change } = useUrlFilters(filterKeys);
-  const category = newsCategories.some((item) => item.id === filters.category)
-    ? filters.category
-    : '';
-  const articles = newsArticles.filter(
-    (item) => !category || item.category === category,
-  );
-  const featured = !category ? articles[0] : undefined;
-  const cards = featured ? articles.slice(1) : articles;
+  const { t } = useSiteLanguage();
   return (
     <div className={styles.newsPage}>
       <p className={site.kicker}>CHENGDU 80 / NEWS</p>
@@ -102,55 +76,34 @@ export function NewsPage() {
       <p className={site.lead}>
         {t(
           b(
-            'Stories from the competition, international academic exchange and the people turning ideas into projects.',
-            '关注赛事进展、国际学术交流，以及将创意变成项目的人与故事。',
+            'Chengdu 80 in university newsrooms and the media. Explore their coverage and read the original stories.',
+            '高校与媒体眼中的成都八零。浏览各机构发布的报道，直接阅读原文。',
           ),
         )}
       </p>
-      <fieldset
-        className={styles.filterBar}
-        aria-label={t(b('News categories', '新闻分类'))}
+      <PressCoverage />
+      <section
+        className={styles.guestSection}
+        aria-labelledby="guest-retrospectives"
       >
-        {[{ id: '', label: b('All stories', '全部') }, ...newsCategories].map(
-          (item) => (
-            <button
-              key={item.id}
-              type="button"
-              data-news-category={item.id}
-              aria-pressed={category === item.id}
-              onClick={() => change({ category: item.id })}
-            >
-              {t(item.label)}
-            </button>
-          ),
-        )}
-      </fieldset>
-      <output className={styles.resultCount} aria-live="polite">
-        {articles.length} {t(b('stories', '篇报道'))}
-      </output>
-      {featured && <NewsCard article={featured} featured />}
-      <div className={styles.grid}>
-        {cards.map((article) => (
-          <NewsCard key={article.id} article={article} />
-        ))}
-      </div>
-      <aside className={styles.nextEdition}>
-        <div>
-          <h2>{t(b('Looking ahead to 2026', '关注2026'))}</h2>
-          <p>
-            {t(
-              b(
-                'New competition arrangements will be published on the Competition page.',
-                '新一届赛事安排将在参赛信息页更新。',
-              ),
-            )}
-          </p>
+        <p className={styles.eyebrow}>{t(b('FROM THE ARCHIVE', '往届交流'))}</p>
+        <h2 id="guest-retrospectives">
+          {t(b('Guest retrospectives', '嘉宾回顾'))}
+        </h2>
+        <p className={styles.guestIntro}>
+          {t(
+            b(
+              'Lars Peter Hansen and Robert Anderson at the 2019 International FinTech Forum: photographs, profiles and talks.',
+              '回顾汉森、Robert Anderson参加2019国际金融科技论坛的现场，查看人物介绍、照片与演讲视频。',
+            ),
+          )}
+        </p>
+        <div className={styles.guestGrid}>
+          {newsArticles.map((article) => (
+            <NewsCard key={article.id} article={article} />
+          ))}
         </div>
-        <a href={href('/competition/')}>
-          {t(b('Competition information', '查看参赛信息'))}
-          <ArrowRight size={18} aria-hidden="true" />
-        </a>
-      </aside>
+      </section>
     </div>
   );
 }

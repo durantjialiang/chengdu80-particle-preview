@@ -315,3 +315,35 @@
     font-size: 17px;
   }
 }
+
+.guestSection {
+  margin-top: 64px;
+  padding-top: 36px;
+  border-top: 1px solid #9bb9cf38;
+}
+.newsPage .guestSection h2 {
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 500;
+  margin: 0 0 14px;
+}
+.newsPage .guestSection .guestIntro {
+  color: #b2c7d5;
+  font-size: 16px;
+  line-height: 1.9;
+  margin: 0 0 28px;
+  max-width: 820px;
+}
+.guestGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px;
+}
+.newsPage .guestSection .card h2 {
+  font-size: clamp(22px, 2.2vw, 29px);
+  margin-top: 18px;
+}
+@media (max-width: 640px) {
+  .guestGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -33,9 +33,12 @@ await test('News articles preserve dated records, valid sources and complete des
       images.flatMap((image) => [image.localAssetPath, image.thumbnailPath]),
     );
     approved.add('/video-posters/behind-the-scenes.jpg');
-    assert.equal(newsArticles.length, 6);
-    assert.equal(new Set(newsArticles.map((a) => a.id)).size, 6);
-    assert.equal(newsCategories.length, 4);
+    assert.equal(newsArticles.length, 2);
+    assert.deepEqual(
+      newsArticles.map((a) => a.id),
+      ['hansen-2019', 'anderson-2019'],
+    );
+    assert.equal(newsCategories.length, 1);
     assert.equal(
       navigation[
         navigation.findIndex((item) => item.href === '/competition') + 1
@@ -43,8 +46,71 @@ await test('News articles preserve dated records, valid sources and complete des
       '/news',
     );
     const index = renderToString(React.createElement(NewsPage));
-    assert.equal((index.match(/data-news-card=/g) ?? []).length, 6);
-    assert.equal((index.match(/data-featured="true"/g) ?? []).length, 1);
+    assert.equal((index.match(/data-news-card=/g) ?? []).length, 2);
+
+    const { pressReports, pressCategories } = await server.ssrLoadModule(
+      '/content/press-coverage.ts',
+    );
+    assert.ok(pressReports.length >= 8);
+    assert.equal(
+      new Set(pressReports.map((r) => r.id)).size,
+      pressReports.length,
+    );
+    assert.equal(
+      new Set(pressReports.map((r) => r.url)).size,
+      pressReports.length,
+    );
+    assert.equal(
+      (index.match(/data-press-card=/g) ?? []).length,
+      pressReports.length,
+    );
+    assert.equal(pressCategories.length, 3);
+    const sourceAudit = JSON.parse(
+      await readFile('docs/press-coverage-sources.json', 'utf8'),
+    );
+    for (const report of pressReports) {
+      assert.ok(pressCategories.some((c) => c.id === report.category));
+      assert.equal(new URL(report.url).protocol, 'https:');
+      assert.ok(
+        !report.url.includes('spm_id') && !report.url.includes('policyId'),
+      );
+      const audit = sourceAudit.reports.find((r) => r.id === report.id);
+      assert.ok(audit && audit.url === report.url, report.id);
+      for (const value of [report.publisher, report.title, report.summary])
+        assert.ok(value.zh && value.en);
+      if (report.publishedAt)
+        assert.match(report.publishedAt, /^\d{4}-\d{2}-\d{2}$/);
+      assert.ok(report.eventYear >= 2018 && report.eventYear <= 2024);
+      const escaped = report.url.replaceAll('&', '&amp;');
+      assert.ok(
+        index.includes(
+          `href="${escaped}" target="_blank" rel="noopener noreferrer"`,
+        ),
+        report.id,
+      );
+      assert.ok(!routes.some((r) => r.path === `/news/${report.id}/`));
+    }
+    const team = pressReports.find((r) => r.id === 'datapi-tsinghua-2021');
+    assert.equal(team.category, 'community');
+    assert.equal(team.eventYear, 2021);
+    assert.equal(team.publishedAt, '2023-03-29');
+    assert.equal(team.originalPublishedAt, '2021-07-26');
+    const redirects = JSON.parse(
+      await readFile('vercel.json', 'utf8'),
+    ).redirects;
+    for (const [id, destination] of [
+      ['competition-2023', '/history/2023/'],
+      ['competition-2024', '/history/2024/'],
+      ['incubator-2024', '/partners/'],
+      ['discoverer-feature', '/media/#videos'],
+    ]) {
+      assert.ok(!routes.some((r) => r.path === `/news/${id}/`));
+      assert.ok(
+        redirects.some(
+          (r) => r.source === `/news/${id}/` && r.destination === destination,
+        ),
+      );
+    }
     for (const article of newsArticles) {
       const route = routes.find((item) => item.path === `/news/${article.id}/`);
       assert.ok(route, article.id);

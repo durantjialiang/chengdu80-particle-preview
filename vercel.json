@@ -14,14 +14,40 @@
       "source": "/history/2025/:path*",
       "destination": "/history/",
       "permanent": true
+    },
+    {
+      "source": "/news/competition-2023/",
+      "destination": "/history/2023/",
+      "permanent": true
+    },
+    {
+      "source": "/news/competition-2024/",
+      "destination": "/history/2024/",
+      "permanent": true
+    },
+    {
+      "source": "/news/incubator-2024/",
+      "destination": "/partners/",
+      "permanent": true
+    },
+    {
+      "source": "/news/discoverer-feature/",
+      "destination": "/media/#videos",
+      "permanent": true
     }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" }
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
       ]
     }
   ]
