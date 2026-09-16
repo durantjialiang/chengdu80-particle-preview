@@ -46,7 +46,7 @@ function SpeechVideos({
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`${t(person.name)} · ${t(b('Watch the talk on', '观看演讲：'))} ${label} · ${t(b('opens in a new tab', '在新标签页打开'))}`}
+              aria-label={`${t(person.name)} · ${t(id === 'x' ? b('View post on', '查看帖子：') : b('Watch the talk on', '观看演讲：'))} ${label} · ${t(b('opens in a new tab', '在新标签页打开'))}`}
             >
               <PlayCircle size={17} aria-hidden="true" />
               <span>{label}</span>

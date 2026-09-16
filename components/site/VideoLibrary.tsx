@@ -42,7 +42,7 @@ function PlatformLinks({ video }: { video: VideoLibraryItem }) {
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`${t(video.title)} · ${t(b('Watch on', '在'))} ${label} · ${t(b('opens in a new tab', '在新标签页打开'))}`}
+            aria-label={`${t(video.title)} · ${t(id === 'x' ? b('View post on', '查看帖子：') : b('Watch on', '在'))} ${label} · ${t(b('opens in a new tab', '在新标签页打开'))}`}
           >
             {label}
             <ArrowUpRight size={15} aria-hidden="true" />

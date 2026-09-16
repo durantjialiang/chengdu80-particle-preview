@@ -58,4 +58,15 @@ The owner requested Instagram alongside Bilibili, YouTube and X on all four vide
 
 The owner supplied channel UC5jSyryWdN-jP0LN-xTDedg (FIC | Fintech Innovation Center, @fic80) and confirmed that all four videos were uploaded. The channel's public video list contains four matching titles and durations; all four titles and authors were additionally confirmed with YouTube oEmbed. Individual watch URLs are recorded in docs/video-library-sources.json. The website uses direct video links for each card, and the Hansen/Anderson links are shared with their homepage and partnership profiles.
 
-The external channel entry is displayed between the video library and photo archive. Its unique youtube-channel anchor avoids colliding with the existing videos anchor. X and Instagram remain pending; there are no embedded players, additional hosted media, or automatic YouTube requests.
+The external channel entry is displayed between the video library and photo archive. Its unique youtube-channel anchor avoids colliding with the existing videos anchor. Four direct X post destinations are now recorded in `docs/video-library-sources.json` and connected to the corresponding cards; Instagram remains pending. There are no embedded players, additional hosted media, or automatic YouTube requests.
+
+## X post destinations — 2026-09-16
+
+The owner supplied the public X profile [Ficfintech / @Fic_Swufe](https://x.com/Fic_Swufe). The public profile showed four posts whose visible titles matched the four video entries. The website uses the individual post URLs as the X destinations:
+
+- Nobel Laureates & Fintech / forum highlights: [X post](https://x.com/Fic_Swufe/status/2100133583377862999)
+- Robert Anderson at the 2019 International Fintech Forum: [X post](https://x.com/Fic_Swufe/status/2100133381128515928)
+- Inside Chengdu 80 documentary: [X post](https://x.com/Fic_Swufe/status/2100133524208857566)
+- 2018–2021 recap: [X post](https://x.com/Fic_Swufe/status/2100133687136555117)
+
+Each public post displayed a YouTube share card or external YouTube link. The records therefore describe these as YouTube shares and retain the X post URL, rather than claiming that the media is hosted natively by X. The account name, visible title, link target and matching video entry were checked in the public browser view on 2026-09-16; no login or account interaction was performed. Instagram destinations remain to be supplied by the owner.

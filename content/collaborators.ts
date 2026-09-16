@@ -36,11 +36,11 @@ export type Collaborator = {
 export const collaborators: readonly Collaborator[] = [
   {
     id: 'lars-peter-hansen',
-    // Video mapping supplied by the project owner; other uploads are pending.
+    // Owner-supplied Bilibili video; YouTube and X matches verified on 2026-09-16.
     speechVideos: {
       bilibili: 'https://www.bilibili.com/video/BV1wEen6nEXe/',
       youtube: 'https://www.youtube.com/watch?v=94DMREvLnLE',
-      x: null,
+      x: 'https://x.com/Fic_Swufe/status/2100133583377862999',
       instagram: null,
     },
     shortName: 'Lars Peter Hansen',
@@ -176,11 +176,11 @@ export const collaborators: readonly Collaborator[] = [
   },
   {
     id: 'robert-anderson',
-    // Video mapping supplied by the project owner; other uploads are pending.
+    // Owner-supplied Bilibili video; YouTube and X matches verified on 2026-09-16.
     speechVideos: {
       bilibili: 'https://www.bilibili.com/video/BV12Qen6oE3f/',
       youtube: 'https://www.youtube.com/watch?v=0SqVc1E93AU',
-      x: null,
+      x: 'https://x.com/Fic_Swufe/status/2100133381128515928',
       instagram: null,
     },
     shortName: 'Robert M. Anderson',
