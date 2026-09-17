@@ -14,7 +14,6 @@ const textOnlyUniversityIds = [
   'uestc',
   'sustech',
   'cqu',
-  'hku',
 ];
 
 await test('shared university ecosystem contracts', async (t) => {
@@ -120,6 +119,9 @@ await test('shared university ecosystem contracts', async (t) => {
         assert.equal(getUniversity('unsw').awards.length, 0);
         assert.equal(getUniversity('unsw').projects.length, 0);
         assert.equal(getUniversity('unsw').logo, '/university-logos/unsw.png');
+        assert.equal(getUniversity('hku').logo, '/university-logos/hku.svg');
+        assert.equal(getUniversity('hku').logoSource, 'https://www.hku.hk/');
+        assert.equal(getUniversity('hku').logoSurface, 'light');
         assert.ok(
           getUniversity('queens').awards.some(
             (a) => a.year === 2024 && a.name === '开创者奖',
@@ -132,7 +134,7 @@ await test('shared university ecosystem contracts', async (t) => {
       },
     );
     await t.test(
-      'foreign logos are local original assets and domestic universities remain text-only',
+      'foreign and HKU logos are local original assets and mainland universities remain text-only',
       async () => {
         const allowed = [
           'swufe.edu.cn',

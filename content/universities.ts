@@ -500,7 +500,7 @@ const universityRecords: readonly University[] = [
     country: 'China · Hong Kong SAR',
     latitude: 22.283,
     longitude: 114.137,
-    logo: null,
+    logo: '/university-logos/hku.svg',
     website: 'https://www.hku.hk/',
     participationYears: [2019, 2021, 2022, 2023],
     awards: [
@@ -572,6 +572,8 @@ const universityRecords: readonly University[] = [
     ],
     recordNote:
       'Selected documented editions, not an exhaustive participation history.',
+    logoSource: 'https://www.hku.hk/',
+    logoSurface: 'light',
   },
   {
     id: 'nus',

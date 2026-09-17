@@ -16,7 +16,6 @@ const textOnlyUniversityIds = [
   'uestc',
   'sustech',
   'cqu',
-  'hku',
 ];
 
 await test('site content and static archive contracts', async (t) => {
@@ -1260,7 +1259,7 @@ await test('site content and static archive contracts', async (t) => {
       },
     );
     await t.test(
-      'winner cards and project headers preserve foreign logos and domestic university text in both languages',
+      'winner cards and project headers preserve foreign and HKU logos and mainland university text in both languages',
       async () => {
         const { WinnerCard, WinnersPage } = await server.ssrLoadModule(
           '/components/site/ArchivePages.tsx',
@@ -1274,9 +1273,9 @@ await test('site content and static archive contracts', async (t) => {
         );
         assert.doesNotMatch(logoSource, /framer-motion|UniversityCard|three/);
         const hku = universities.find((u) => u.id === 'hku');
-        assert.equal(hku.logo, null);
-        assert.equal(hku.logoSource, undefined);
-        assert.equal(hku.logoSurface, undefined);
+        assert.equal(hku.logo, '/university-logos/hku.svg');
+        assert.equal(hku.logoSource, 'https://www.hku.hk/');
+        assert.equal(hku.logoSurface, 'light');
         const previousWindow = Object.getOwnPropertyDescriptor(
           globalThis,
           'window',

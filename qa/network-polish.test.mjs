@@ -13,7 +13,6 @@ const textOnlyUniversityIds = [
   'uestc',
   'sustech',
   'cqu',
-  'hku',
 ];
 
 await test('international network polish preserves dated records and clear identities', async (t) => {
@@ -38,7 +37,7 @@ await test('international network polish preserves dated records and clear ident
       '/components/network/UniversitySpotlight.tsx',
     );
     await t.test(
-      'domestic universities stay text-only while the 12 foreign marks remain local',
+      'mainland universities stay text-only while foreign and HKU marks remain local',
       async () => {
         assert.equal(universities.length, 20);
         const swufe = universities.find((u) => u.id === 'swufe');
@@ -59,7 +58,7 @@ await test('international network polish preserves dated records and clear ident
           universities.filter((u) => !u.logo).map((u) => u.id),
           textOnlyUniversityIds,
         );
-        assert.equal(universities.filter((u) => u.logo).length, 12);
+        assert.equal(universities.filter((u) => u.logo).length, 13);
         for (const university of universities) {
           if (textOnlyUniversityIds.includes(university.id)) {
             assert.equal(university.logo, null, university.id);
@@ -77,6 +76,18 @@ await test('international network polish preserves dated records and clear ident
           'dark',
         );
         assert.equal(universities.find((u) => u.id === 'sustech').logo, null);
+        assert.equal(
+          universities.find((u) => u.id === 'hku').logo,
+          '/university-logos/hku.svg',
+        );
+        assert.equal(
+          universities.find((u) => u.id === 'hku').logoSource,
+          'https://www.hku.hk/',
+        );
+        assert.equal(
+          universities.find((u) => u.id === 'hku').logoSurface,
+          'light',
+        );
         assert.equal(
           universities.find((u) => u.id === 'tau').logoSurface,
           'light',

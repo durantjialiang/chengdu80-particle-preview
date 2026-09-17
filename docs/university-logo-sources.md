@@ -1,6 +1,6 @@
 # University logo sources
 
-Updated 2026-09-17. Local files are original university assets, not redrawn marks. At the project owner's request, domestic universities (including Hong Kong) are now shown by name only. Their standalone logo files have been removed from the public assets and all shared university records use `logo: null` for those institutions.
+Updated 2026-09-17. Local files are original university assets, not redrawn marks. At the project owner's request, mainland universities are now shown by name only. Their standalone logo files have been removed from the public assets and all shared university records use `logo: null` for those institutions. The owner explicitly asked to retain the University of Hong Kong logo alongside the 12 foreign university logos.
 
 | Record | Local asset | Official source | Surface |
 |---|---|---|---|

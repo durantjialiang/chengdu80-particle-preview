@@ -1,8 +1,9 @@
 # Chengdu80 network — official university logo provenance
 
 Collected 2026-09-06; display scope updated 2026-09-17.
-Domestic universities, including Hong Kong, are shown by name only at the
-project owner's request. Their standalone logo assets have been removed. Each row maps a checked local file to the exact image
+Mainland universities are shown by name only at the project owner's request.
+The University of Hong Kong logo is retained at the owner's explicit request,
+alongside the 12 foreign university logos. Each row maps a checked local file to the exact image
 URL used for that file and to the official page that exposed it. The files are
 unmodified copies (except that `eth-zurich.svg` was extracted from an inline
 official header SVG, as noted below). A university homepage or identity page
@@ -13,6 +14,7 @@ required.
 
 | id | local asset | official image URL | source page | provenance / use note |
 |---|---|---|---|---|
+| hku | `hku.svg` | https://www.hku.hk/adobe/dynamicmedia/deliver/dm-aid--afc8d43c-587a-43f0-b93c-26f8bd397e0e/logo-hku.svg | https://www.hku.hk/ | Original HKU homepage header asset, retained at the project owner's explicit request. |
 | nus | `nus.jpg` | https://www.nus.edu.sg/images/default-source/identity-images/fullcolorlogo.jpg | https://www.nus.edu.sg/identity/guidelines/logo-guideline | NUS identity asset. NUS states its name/logo are registered trademarks; uses beyond identifying official publications, presentations, or sites require Office of University Communications permission (https://www.nus.edu.sg/identity/home). |
 | berkeley | `uc-berkeley.png` | https://brand.berkeley.edu/wp-content/uploads/2024/08/logo-variations-thumbnail-gold-blue-1.png | https://brand.berkeley.edu/visual-identity/logos/ | Official Berkeley brand asset. Berkeley says to use official files and not recreate or typeset the logo; primary-logo uses may require Brand Protection permission (https://brand.berkeley.edu/downloads/brand-essentials-toolkit/). |
 | uchicago | `uchicago.svg` | University-Logo.zip from the official identity kit | https://creative.uchicago.edu/logos-and-identity-elements/ | Original maroon mark; source recorded in docs/university-logo-sources.md. |
@@ -34,6 +36,7 @@ SHA-256 of the local files (for reproducibility):
 emlyon-business-school.svg  7ba9f2d857b9147406d7cc2336de12c13f1f35e8a59d2eadcd0bf4c3afe55437
 eth-zurich.svg              6a714921b40e095aeb1c806b162ab5dd7d3fae9cd695a6f0ada81d5103c50b33
 georgia-tech.svg            3a47afecfba1ff764e9bbb4a0bf74e10995150b73428f3b844db9da98253cb5d
+hku.svg                     8015f43dbdef80cb7c77f4ad2ec3236abd6c28d912c848702bde7ebada5b02be
 nus.jpg                     6d9906f546e906a60d037d5b81c28301ed36988491a244a2edddd1774bda540e
 queens.svg                  6915e877a2e92de55e7744d32233660a9bc6910b822a8b39cc5ed9c1b32da02a
 tel-aviv-university.png     2604488c75dcc2dda600e573c6b34feccebd67a6ea773405bf58b831369f9e99

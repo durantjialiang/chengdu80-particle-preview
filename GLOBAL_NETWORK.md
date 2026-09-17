@@ -79,8 +79,8 @@ The directory is a selected historical record, not a confirmed 2026 roster or fu
 - Pins identify approximate representative/current campuses, not historical team travel
   locations or survey-precision coordinates. emlyon's pin is its current Lyon campus.
 - Empty project/award arrays mean no individual record verified here, not no achievements.
-- The 12 retained foreign university logos are real institutional assets. Domestic universities,
-  including Hong Kong, use text-only identities at the project owner's request (2026-09-17).
+- The 12 foreign university logos and the University of Hong Kong logo are retained.
+  Mainland universities use text-only identities at the project owner's request (2026-09-17).
   Organizer approval for public brand use remains
   necessary; hosting an image on an official website does not grant a trademark license.
 
