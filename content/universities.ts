@@ -178,7 +178,7 @@ const universityRecords: readonly University[] = [
     country: 'China',
     latitude: 40.003,
     longitude: 116.326,
-    logo: '/university-logos/tsinghua-logo.png',
+    logo: null,
     website: 'https://www.tsinghua.edu.cn/',
     participationYears: [2018, 2019, 2020, 2021, 2022, 2023],
     awards: [
@@ -257,8 +257,6 @@ const universityRecords: readonly University[] = [
     ],
     recordNote:
       'Selected documented editions, not an exhaustive participation history.',
-    logoSource: 'https://www.tsinghua.edu.cn/',
-    logoSurface: 'dark',
   },
   {
     id: 'pku',
@@ -268,7 +266,7 @@ const universityRecords: readonly University[] = [
     country: 'China',
     latitude: 39.992,
     longitude: 116.305,
-    logo: '/university-logos/pku-logo.png',
+    logo: null,
     website: 'https://www.pku.edu.cn/',
     participationYears: [2018, 2019],
     awards: [
@@ -303,8 +301,6 @@ const universityRecords: readonly University[] = [
     ],
     recordNote:
       'Selected documented editions, not an exhaustive participation history.',
-    logoSource: 'https://www.pku.edu.cn/',
-    logoSurface: 'dark',
   },
   {
     id: 'sjtu',
@@ -314,7 +310,7 @@ const universityRecords: readonly University[] = [
     country: 'China',
     latitude: 31.025,
     longitude: 121.438,
-    logo: '/university-logos/sjtu-logo-white.png',
+    logo: null,
     website: 'https://www.sjtu.edu.cn/',
     participationYears: [2019],
     awards: [
@@ -338,8 +334,6 @@ const universityRecords: readonly University[] = [
     ],
     recordNote:
       'Selected documented editions, not an exhaustive participation history.',
-    logoSource: 'https://www.sjtu.edu.cn/',
-    logoSurface: 'dark',
   },
   {
     id: 'uestc',
@@ -349,7 +343,7 @@ const universityRecords: readonly University[] = [
     country: 'China',
     latitude: 30.752,
     longitude: 103.924,
-    logo: '/university-logos/uestc-logo.png',
+    logo: null,
     website: 'https://www.uestc.edu.cn/',
     participationYears: [2020, 2021, 2022, 2023],
     awards: [
@@ -399,8 +393,6 @@ const universityRecords: readonly University[] = [
     ],
     recordNote:
       'Selected documented editions, not an exhaustive participation history.',
-    logoSource: 'https://www.uestc.edu.cn/',
-    logoSurface: 'dark',
   },
   {
     id: 'sustech',
@@ -410,7 +402,7 @@ const universityRecords: readonly University[] = [
     country: 'China',
     latitude: 22.599,
     longitude: 113.999,
-    logo: '/university-logos/sustech-logo-en.png',
+    logo: null,
     website: 'https://www.sustech.edu.cn/',
     participationYears: [2018, 2020, 2022, 2023],
     awards: [
@@ -455,8 +447,6 @@ const universityRecords: readonly University[] = [
     ],
     recordNote:
       'Selected documented editions, not an exhaustive participation history.',
-    logoSource: 'https://www.sustech.edu.cn/',
-    logoSurface: 'dark',
   },
   {
     id: 'cqu',
@@ -466,7 +456,7 @@ const universityRecords: readonly University[] = [
     country: 'China',
     latitude: 29.563,
     longitude: 106.47,
-    logo: '/university-logos/cqu-logo.png',
+    logo: null,
     website: 'https://www.cqu.edu.cn/',
     participationYears: [2020, 2021],
     awards: [
@@ -501,8 +491,6 @@ const universityRecords: readonly University[] = [
     ],
     recordNote:
       'Selected documented editions, not an exhaustive participation history.',
-    logoSource: 'https://www.cqu.edu.cn/',
-    logoSurface: 'dark',
   },
   {
     id: 'hku',
@@ -512,7 +500,7 @@ const universityRecords: readonly University[] = [
     country: 'China · Hong Kong SAR',
     latitude: 22.283,
     longitude: 114.137,
-    logo: '/university-logos/hku.svg',
+    logo: null,
     website: 'https://www.hku.hk/',
     participationYears: [2019, 2021, 2022, 2023],
     awards: [
@@ -584,8 +572,6 @@ const universityRecords: readonly University[] = [
     ],
     recordNote:
       'Selected documented editions, not an exhaustive participation history.',
-    logoSource: 'https://www.hku.hk/',
-    logoSurface: 'light',
   },
   {
     id: 'nus',

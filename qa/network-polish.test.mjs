@@ -5,6 +5,17 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { createServer } from 'vite';
 
+const textOnlyUniversityIds = [
+  'swufe',
+  'tsinghua',
+  'pku',
+  'sjtu',
+  'uestc',
+  'sustech',
+  'cqu',
+  'hku',
+];
+
 await test('international network polish preserves dated records and clear identities', async (t) => {
   const server = await createServer({
     configFile: 'qa/particle80.vite.config.ts',
@@ -27,7 +38,7 @@ await test('international network polish preserves dated records and clear ident
       '/components/network/UniversitySpotlight.tsx',
     );
     await t.test(
-      'SWUFE stays text-only while the other 19 university marks remain local',
+      'domestic universities stay text-only while the 12 foreign marks remain local',
       async () => {
         assert.equal(universities.length, 20);
         const swufe = universities.find((u) => u.id === 'swufe');
@@ -44,9 +55,19 @@ await test('international network polish preserves dated records and clear ident
           access('public/university-logos/swufe-logo.png'),
           /ENOENT/,
         );
-        assert.equal(universities.filter((u) => u.logo).length, 19);
+        assert.deepEqual(
+          universities.filter((u) => !u.logo).map((u) => u.id),
+          textOnlyUniversityIds,
+        );
+        assert.equal(universities.filter((u) => u.logo).length, 12);
         for (const university of universities) {
-          if (university.id === 'swufe') continue;
+          if (textOnlyUniversityIds.includes(university.id)) {
+            assert.equal(university.logo, null, university.id);
+            assert.equal(university.logoSource, undefined, university.id);
+            if (university.id !== 'swufe')
+              assert.equal(university.logoSurface, undefined, university.id);
+            continue;
+          }
           assert.ok(university.logo, university.id);
           assert.ok(university.logoSource, university.id);
           await access('public' + university.logo);
@@ -55,10 +76,7 @@ await test('international network polish preserves dated records and clear ident
           universities.find((u) => u.id === 'toronto').logoSurface,
           'dark',
         );
-        assert.equal(
-          universities.find((u) => u.id === 'sustech').logoSurface,
-          'dark',
-        );
+        assert.equal(universities.find((u) => u.id === 'sustech').logo, null);
         assert.equal(
           universities.find((u) => u.id === 'tau').logoSurface,
           'light',
@@ -149,11 +167,15 @@ await test('international network polish preserves dated records and clear ident
               `${university.id} keeps its approved local mark`,
             );
           } else {
-            assert.equal(university.id, 'swufe');
-            assert.doesNotMatch(html, /data-university-logo=|swufe-logo\.png/);
-            assert.match(
+            assert.ok(textOnlyUniversityIds.includes(university.id));
+            assert.doesNotMatch(
               html,
-              /Southwestern University of Finance and Economics|SWUFE/,
+              /data-university-logo=|university-logos\//,
+            );
+            assert.ok(
+              html.includes(university.name) ||
+                html.includes(university.shortName),
+              university.id,
             );
           }
           assert.match(html, /Explore university profile/);

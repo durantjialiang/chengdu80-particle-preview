@@ -6,6 +6,17 @@ import * as THREE from 'three';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 
+const textOnlyUniversityIds = [
+  'swufe',
+  'tsinghua',
+  'pku',
+  'sjtu',
+  'uestc',
+  'sustech',
+  'cqu',
+  'hku',
+];
+
 await test('shared university ecosystem contracts', async (t) => {
   const server = await createServer({
     configFile: 'qa/particle80.vite.config.ts',
@@ -121,7 +132,7 @@ await test('shared university ecosystem contracts', async (t) => {
       },
     );
     await t.test(
-      'logos are local original assets and outbound URLs stay on official university/event domains',
+      'foreign logos are local original assets and domestic universities remain text-only',
       async () => {
         const allowed = [
           'swufe.edu.cn',
@@ -154,7 +165,15 @@ await test('shared university ecosystem contracts', async (t) => {
               /^\/university-logos\/[a-z-]+\.(svg|png|jpg)$/,
             );
             assert.ok((await stat(`public${u.logo}`)).size > 100);
-          } else assert.equal(u.id, 'swufe', 'Only the withdrawn SWUFE mark is omitted');
+          } else {
+            assert.ok(
+              textOnlyUniversityIds.includes(u.id),
+              `Only domestic university marks may be omitted: ${u.id}`,
+            );
+            assert.equal(u.logo, null);
+            assert.equal(u.logoSource, undefined);
+            if (u.id !== 'swufe') assert.equal(u.logoSurface, undefined);
+          }
           for (const url of [u.website, ...u.evidence.map((e) => e.url)]) {
             const parsed = new URL(url);
             assert.equal(parsed.protocol, 'https:');

@@ -8,6 +8,17 @@ import { createServer } from 'vite';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 
+const textOnlyUniversityIds = [
+  'swufe',
+  'tsinghua',
+  'pku',
+  'sjtu',
+  'uestc',
+  'sustech',
+  'cqu',
+  'hku',
+];
+
 await test('site content and static archive contracts', async (t) => {
   const server = await createServer({
     configFile: 'qa/particle80.vite.config.ts',
@@ -1249,7 +1260,7 @@ await test('site content and static archive contracts', async (t) => {
       },
     );
     await t.test(
-      'winner cards and project headers reuse the correct university logo in both languages',
+      'winner cards and project headers preserve foreign logos and domestic university text in both languages',
       async () => {
         const { WinnerCard, WinnersPage } = await server.ssrLoadModule(
           '/components/site/ArchivePages.tsx',
@@ -1262,10 +1273,10 @@ await test('site content and static archive contracts', async (t) => {
           'utf8',
         );
         assert.doesNotMatch(logoSource, /framer-motion|UniversityCard|three/);
-        assert.equal(
-          universities.find((u) => u.id === 'hku').logoSurface,
-          'light',
-        );
+        const hku = universities.find((u) => u.id === 'hku');
+        assert.equal(hku.logo, null);
+        assert.equal(hku.logoSource, undefined);
+        assert.equal(hku.logoSurface, undefined);
         const previousWindow = Object.getOwnPropertyDescriptor(
           globalThis,
           'window',
@@ -1306,10 +1317,16 @@ await test('site content and static archive contracts', async (t) => {
               const university = universities.find(
                 (u) => u.id === project.universityId,
               );
-              assert.ok(university?.logo, project.projectId);
-              assert.ok(
-                (await readFile(`public${university.logo}`)).length > 0,
-              );
+              assert.ok(university, project.projectId);
+              if (university.logo)
+                assert.ok(
+                  (await readFile(`public${university.logo}`)).length > 0,
+                );
+              else {
+                assert.ok(textOnlyUniversityIds.includes(university.id));
+                assert.equal(university.logoSource, undefined);
+                assert.equal(university.logoSurface, undefined);
+              }
               const card = render(WinnerCard, { project });
               assert.ok(
                 card.includes(`data-project-university="${university.id}"`),
@@ -1320,21 +1337,26 @@ await test('site content and static archive contracts', async (t) => {
                   `href="/winners/${project.projectId}/?lang=${language}"`,
                 ),
               );
-              assert.ok(anchor.includes(`src="${university.logo}"`));
+              if (university.logo) {
+                assert.ok(anchor.includes(`src="${university.logo}"`));
+                assert.ok(
+                  card.includes(`data-surface="${university.logoSurface}"`),
+                );
+                assert.ok(
+                  card.includes(language === 'zh' ? '官方标识' : 'official logo'),
+                );
+                assert.match(card, /loading="lazy"/);
+                assert.match(card, /width="144" height="48"/);
+              } else {
+                assert.doesNotMatch(anchor, /data-university-logo=|<img\b|university-logos\//);
+                assert.ok(anchor.includes(university.shortName));
+              }
               assert.match(anchor, /<h3>/);
               assert.equal(
                 (card.match(/<a\b/g) ?? []).length,
                 1,
                 'Logo and title share one keyboard target',
               );
-              assert.ok(
-                card.includes(`data-surface="${university.logoSurface}"`),
-              );
-              assert.ok(
-                card.includes(language === 'zh' ? '官方标识' : 'official logo'),
-              );
-              assert.match(card, /loading="lazy"/);
-              assert.match(card, /width="144" height="48"/);
               const detail = render(WinnersPage, {
                 projectId: project.projectId,
               });
@@ -1342,7 +1364,15 @@ await test('site content and static archive contracts', async (t) => {
               assert.ok(
                 header.includes(`data-project-university="${university.id}"`),
               );
-              assert.ok(header.includes(`src="${university.logo}"`));
+              if (university.logo) {
+                assert.ok(header.includes(`src="${university.logo}"`));
+              } else {
+                assert.doesNotMatch(
+                  header,
+                  /data-university-logo=|<img\b|university-logos\//,
+                );
+                assert.ok(detail.includes(university.shortName));
+              }
               assert.doesNotMatch(header, /<canvas|WebGLRenderer/);
             }
           }
@@ -1367,6 +1397,9 @@ await test('site content and static archive contracts', async (t) => {
         );
         const { projectStudies } = await server.ssrLoadModule(
           '/content/project-studies.ts',
+        );
+        const { universityName } = await server.ssrLoadModule(
+          '/content/university-i18n.ts',
         );
         const expected = {
           2018: [
@@ -1596,7 +1629,16 @@ await test('site content and static archive contracts', async (t) => {
               const university = universities.find(
                 (u) => u.id === project.universityId,
               );
-              assert.ok(detail.includes(`src="${university.logo}"`));
+              if (university.logo) {
+                assert.ok(detail.includes(`src="${university.logo}"`));
+              } else {
+                assert.ok(textOnlyUniversityIds.includes(university.id));
+                assert.doesNotMatch(
+                  detail,
+                  new RegExp(`data-university-logo="${university.id}"`),
+                );
+                assert.ok(detail.includes(universityName(university, language)));
+              }
               assert.ok(
                 !detail.includes(escapeHtml(edition.dateNote[language])),
                 'Internal date notes are not rendered as public disclosures',
