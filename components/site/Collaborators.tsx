@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowUpRight, Expand, PlayCircle } from 'lucide-react';
 import { bilingual as b } from '@/content/competition';
+import { videoChannel } from '@/content/video-channel';
 import type { ArchiveImage } from '@/content/archive-media';
 import {
   collaborators,
@@ -20,6 +21,8 @@ function SpeechVideos({
 }) {
   const { t } = useSiteLanguage();
   if (!person.speechVideos) return null;
+  const instagramIsProfile =
+    !person.speechVideos.instagram && Boolean(videoChannel.instagramProfileUrl);
   const platforms = [
     {
       id: 'bilibili',
@@ -28,6 +31,13 @@ function SpeechVideos({
     },
     { id: 'youtube', label: 'YouTube', url: person.speechVideos.youtube },
     { id: 'x', label: 'X / Twitter', url: person.speechVideos.x },
+    {
+      id: 'instagram',
+      label: instagramIsProfile
+        ? t(b('Instagram profile', 'Instagram 主页'))
+        : 'Instagram',
+      url: person.speechVideos.instagram || videoChannel.instagramProfileUrl,
+    },
   ];
   return (
     <div
@@ -43,12 +53,17 @@ function SpeechVideos({
               key={id}
               className={styles.videoLink}
               data-video-platform={id}
+              data-video-destination={
+                id === 'instagram' && instagramIsProfile ? 'profile' : 'video'
+              }
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`${t(person.name)} · ${t(id === 'x' ? b('View post on', '查看帖子：') : b('Watch the talk on', '观看演讲：'))} ${label} · ${t(b('opens in a new tab', '在新标签页打开'))}`}
+              aria-label={`${t(person.name)} · ${t(id === 'instagram' && instagramIsProfile ? b('Visit', '访问') : id === 'x' ? b('View post on', '查看帖子：') : b('Watch the talk on', '观看演讲：'))} ${label} · ${t(b('opens in a new tab', '在新标签页打开'))}`}
             >
-              <PlayCircle size={17} aria-hidden="true" />
+              {!(id === 'instagram' && instagramIsProfile) && (
+                <PlayCircle size={17} aria-hidden="true" />
+              )}
               <span>{label}</span>
               <ArrowUpRight size={15} aria-hidden="true" />
             </a>

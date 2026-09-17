@@ -7,13 +7,18 @@ import styles from './VideoChannel.module.css';
 /** An external channel entry; no embedded player or background platform request. */
 export default function VideoChannel({
   url = videoChannel.youtubeUrl,
+  bilibiliProfileUrl = videoChannel.bilibiliProfileUrl,
   xProfileUrl = videoChannel.xProfileUrl,
+  instagramProfileUrl = videoChannel.instagramProfileUrl,
 }: {
   url?: string | null;
+  bilibiliProfileUrl?: string | null;
   xProfileUrl?: string | null;
+  instagramProfileUrl?: string | null;
 }) {
   const { t } = useSiteLanguage();
-  if (!url && !xProfileUrl) return null;
+  if (!url && !bilibiliProfileUrl && !xProfileUrl && !instagramProfileUrl)
+    return null;
   return (
     <section
       id="youtube-channel"
@@ -25,6 +30,24 @@ export default function VideoChannel({
         {t(b('Follow Chengdu 80', '关注成都八零'))}
       </h2>
       <div className={styles.actions}>
+        {bilibiliProfileUrl && (
+          <a
+            className={`${styles.action} ${styles.bilibiliAction}`}
+            href={bilibiliProfileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-channel-platform="bilibili"
+            aria-label={t(
+              b(
+                'Visit our Bilibili profile (opens in a new tab)',
+                '访问 B站主页（新标签页打开）',
+              ),
+            )}
+          >
+            {t(b('Bilibili profile', 'B站主页'))}
+            <ArrowUpRight size={19} aria-hidden="true" />
+          </a>
+        )}
         {url && (
           <a
             className={styles.action}
@@ -57,6 +80,24 @@ export default function VideoChannel({
             )}
           >
             {t(b('X / Twitter profile', 'X / Twitter 主页'))}
+            <ArrowUpRight size={19} aria-hidden="true" />
+          </a>
+        )}
+        {instagramProfileUrl && (
+          <a
+            className={`${styles.action} ${styles.instagramAction}`}
+            href={instagramProfileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-channel-platform="instagram"
+            aria-label={t(
+              b(
+                'Visit our Instagram profile (opens in a new tab)',
+                '访问 Instagram 主页（新标签页打开）',
+              ),
+            )}
+          >
+            {t(b('Instagram profile', 'Instagram 主页'))}
             <ArrowUpRight size={19} aria-hidden="true" />
           </a>
         )}

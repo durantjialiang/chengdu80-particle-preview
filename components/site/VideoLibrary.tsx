@@ -1,6 +1,7 @@
 import { ArrowUpRight, PlayCircle } from 'lucide-react';
 import { bilingual as b } from '@/content/competition';
 import { videoLibrary, type VideoLibraryItem } from '@/content/video-library';
+import { videoChannel } from '@/content/video-channel';
 import { useSiteLanguage } from '@/hooks/use-site-language';
 import styles from './VideoLibrary.module.css';
 
@@ -21,28 +22,40 @@ function PlatformLinks({ video }: { video: VideoLibraryItem }) {
   const { t } = useSiteLanguage();
   const platforms = (
     Object.keys(platformLabels) as Array<keyof typeof platformLabels>
-  ).map((id) => ({
-    id,
-    label: t(platformLabels[id]),
-    url: video.links[id],
-  }));
+  ).map((id) => {
+    const isProfile =
+      id === 'instagram' &&
+      !video.links.instagram &&
+      Boolean(videoChannel.instagramProfileUrl);
+    return {
+      id,
+      label: isProfile
+        ? t(b('Instagram profile', 'Instagram 主页'))
+        : t(platformLabels[id]),
+      url:
+        video.links[id] ||
+        (isProfile ? videoChannel.instagramProfileUrl : null),
+      isProfile,
+    };
+  });
 
   return (
     <div
       className={styles.platforms}
       aria-label={t(b('Watch on a platform', '选择观看平台'))}
     >
-      {platforms.map(({ id, label, url }) =>
+      {platforms.map(({ id, label, url, isProfile }) =>
         url ? (
           <a
             key={id}
             className={styles.platformLink}
             data-video-platform={id}
             data-video-link={url}
+            data-video-destination={isProfile ? 'profile' : 'video'}
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`${t(video.title)} · ${t(id === 'x' ? b('View post on', '查看帖子：') : b('Watch on', '在'))} ${label} · ${t(b('opens in a new tab', '在新标签页打开'))}`}
+            aria-label={`${t(video.title)} · ${t(isProfile ? b('Visit', '访问') : id === 'x' ? b('View post on', '查看帖子：') : b('Watch on', '在'))} ${label} · ${t(b('opens in a new tab', '在新标签页打开'))}`}
           >
             {label}
             <ArrowUpRight size={15} aria-hidden="true" />

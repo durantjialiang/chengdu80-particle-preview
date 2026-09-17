@@ -810,7 +810,9 @@ await test('site content and static archive contracts', async (t) => {
         assert.equal((videos.match(/<img\b/g) ?? []).length, 4);
         for (const bvid of ['BV1wEen6nEXe', 'BV12Qen6oE3f', 'BV13Fen6YEXj', 'BV1UUen6fEgd'])
           assert.ok(videos.includes(`https://www.bilibili.com/video/${bvid}/`));
-        assert.equal((videos.match(/data-video-pending=/g) ?? []).length, 4);
+        assert.equal((videos.match(/data-video-pending=/g) ?? []).length, 0);
+        assert.equal((videos.match(/data-video-platform="instagram"/g) ?? []).length, 4);
+        assert.match(videos, /href="https:\/\/www.instagram.com\/ficfintech80\/"/);
         assert.equal((videos.match(/data-video-platform="x"/g) ?? []).length, 4);
         for (const post of ['2100133583377862999', '2100133381128515928', '2100133524208857566', '2100133687136555117'])
           assert.ok(videos.includes(`https://x.com/Fic_Swufe/status/${post}`));
@@ -818,9 +820,10 @@ await test('site content and static archive contracts', async (t) => {
         assert.equal((videos.match(/data-video-platform="youtube"/g) ?? []).length, 4);
         assert.equal((html.match(/id="videos"/g) ?? []).length, 1);
         assert.match(html, /id="youtube-channel"/);
+        assert.match(html, /href="https:\/\/space.bilibili.com\/3546637056084549\/"/);
         assert.ok(html.indexOf('id="photos"') < html.indexOf('id="resources"'));
         const { default: VideoChannel } = await server.ssrLoadModule('/components/site/VideoChannel.tsx');
-        assert.equal(renderToString(React.createElement(VideoChannel, { url: null, xProfileUrl: null })), '');
+        assert.equal(renderToString(React.createElement(VideoChannel, { url: null, bilibiliProfileUrl: null, xProfileUrl: null, instagramProfileUrl: null })), '');
         assert.match(renderToString(React.createElement(VideoChannel)), /UC5jSyryWdN-jP0LN-xTDedg/);
         const channel = renderToString(React.createElement(VideoChannel, { url: 'https://www.youtube.com/@example' }));
         assert.match(channel, /Visit our YouTube channel/);

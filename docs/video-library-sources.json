@@ -29,6 +29,15 @@
       "mediaType": "YouTube share card (external link); not established as an X-native video",
       "verifiedAt": "2026-09-16",
       "verification": "Opened the public X profile in the browser and matched the visible post title and YouTube share card to this video; no login or account interaction was performed."
+    },
+    "instagram": {
+      "profileUrl": "https://www.instagram.com/ficfintech80/",
+      "postUrl": null,
+      "destinationType": "profile",
+      "profileSource": "Owner supplied on 2026-09-17; public browser profile confirms Fic (@ficfintech80).",
+      "verificationStatus": "post-mapping-unverified",
+      "checkedAt": "2026-09-17",
+      "verification": "Public profile shows three untitled Reel links. Opening a Reel prompts for login; titles and mapping to the four site videos could not be verified. Cards explicitly link to the account profile, not a specific upload."
     }
   },
   {
@@ -61,6 +70,15 @@
       "mediaType": "YouTube share card (external link); not established as an X-native video",
       "verifiedAt": "2026-09-16",
       "verification": "Opened the public X profile in the browser and matched the visible post title and YouTube share card to this video; no login or account interaction was performed."
+    },
+    "instagram": {
+      "profileUrl": "https://www.instagram.com/ficfintech80/",
+      "postUrl": null,
+      "destinationType": "profile",
+      "profileSource": "Owner supplied on 2026-09-17; public browser profile confirms Fic (@ficfintech80).",
+      "verificationStatus": "post-mapping-unverified",
+      "checkedAt": "2026-09-17",
+      "verification": "Public profile shows three untitled Reel links. Opening a Reel prompts for login; titles and mapping to the four site videos could not be verified. Cards explicitly link to the account profile, not a specific upload."
     }
   },
   {
@@ -93,6 +111,15 @@
       "mediaType": "YouTube share card (external link); not established as an X-native video",
       "verifiedAt": "2026-09-16",
       "verification": "Opened the public X profile in the browser and matched the visible post title and YouTube share card to this video; no login or account interaction was performed."
+    },
+    "instagram": {
+      "profileUrl": "https://www.instagram.com/ficfintech80/",
+      "postUrl": null,
+      "destinationType": "profile",
+      "profileSource": "Owner supplied on 2026-09-17; public browser profile confirms Fic (@ficfintech80).",
+      "verificationStatus": "post-mapping-unverified",
+      "checkedAt": "2026-09-17",
+      "verification": "Public profile shows three untitled Reel links. Opening a Reel prompts for login; titles and mapping to the four site videos could not be verified. Cards explicitly link to the account profile, not a specific upload."
     }
   },
   {
@@ -125,6 +152,15 @@
       "mediaType": "YouTube share card (external link); not established as an X-native video",
       "verifiedAt": "2026-09-16",
       "verification": "Opened the public X profile in the browser and matched the visible post title and YouTube share card to this video; no login or account interaction was performed."
+    },
+    "instagram": {
+      "profileUrl": "https://www.instagram.com/ficfintech80/",
+      "postUrl": null,
+      "destinationType": "profile",
+      "profileSource": "Owner supplied on 2026-09-17; public browser profile confirms Fic (@ficfintech80).",
+      "verificationStatus": "post-mapping-unverified",
+      "checkedAt": "2026-09-17",
+      "verification": "Public profile shows three untitled Reel links. Opening a Reel prompts for login; titles and mapping to the four site videos could not be verified. Cards explicitly link to the account profile, not a specific upload."
     }
   }
 ]

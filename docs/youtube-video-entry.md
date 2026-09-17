@@ -70,3 +70,10 @@ The owner supplied the public X profile [Ficfintech / @Fic_Swufe](https://x.com/
 - 2018–2021 recap: [X post](https://x.com/Fic_Swufe/status/2100133687136555117)
 
 Each public post displayed a YouTube share card or external YouTube link. The records therefore describe these as YouTube shares and retain the X post URL, rather than claiming that the media is hosted natively by X. The account name, visible title, link target and matching video entry were checked in the public browser view on 2026-09-16; no login or account interaction was performed. Instagram destinations remain to be supplied by the owner.
+
+
+## Instagram and Bilibili account entries — 2026-09-17
+
+The owner supplied [Instagram @ficfintech80](https://www.instagram.com/ficfintech80/) and requested the Bilibili uploader account from [BV13Fen6YEXj](https://www.bilibili.com/video/BV13Fen6YEXj/). The normal browser video page identifies **FIC_fintech** and links to [Bilibili account 3546637056084549](https://space.bilibili.com/3546637056084549/). Both account entries now appear in “Follow Chengdu 80 / 关注成都八零”, alongside YouTube and X.
+
+The Instagram public profile confirms **Fic (@ficfintech80)** and a Fintech Innovation Center (FIC) bio. Its public grid exposed three untitled Reel links, but opening a Reel required login. The individual videos therefore remain unmapped: no Reel is assigned based only on a thumbnail or upload order. The four video-library cards and the Hansen/Anderson profile cards use an explicitly labelled “Instagram profile / Instagram 主页” link to the owner-supplied account. Verified individual destinations can later replace the profile fallback through the existing shared video data. No media upload, platform login or account interaction was performed.

@@ -44,6 +44,20 @@
 .xAction:hover {
   background: #213546;
 }
+.instagramAction {
+  background: #382138;
+  border-color: #ce91bd;
+}
+.instagramAction:hover {
+  background: #512e50;
+}
+.bilibiliAction {
+  background: #123144;
+  border-color: #71badb;
+}
+.bilibiliAction:hover {
+  background: #1c4860;
+}
 .action:focus-visible {
   outline: 2px solid #d9bf87;
   outline-offset: 5px;
