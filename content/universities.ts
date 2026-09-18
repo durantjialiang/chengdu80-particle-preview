@@ -583,7 +583,7 @@ const universityRecords: readonly University[] = [
     country: 'Singapore',
     latitude: 1.296,
     longitude: 103.776,
-    logo: '/university-logos/nus.jpg',
+    logo: '/university-logos/nus.webp',
     website: 'https://www.nus.edu.sg/',
     participationYears: [2018, 2019, 2020, 2021, 2023],
     awards: [
@@ -695,7 +695,7 @@ const universityRecords: readonly University[] = [
     country: 'United States',
     latitude: 37.872,
     longitude: -122.258,
-    logo: '/university-logos/uc-berkeley.png',
+    logo: '/university-logos/uc-berkeley.webp',
     website: 'https://www.berkeley.edu/',
     participationYears: [2018, 2019, 2020],
     awards: [
@@ -1047,7 +1047,7 @@ const universityRecords: readonly University[] = [
     country: 'Israel',
     latitude: 32.114,
     longitude: 34.804,
-    logo: '/university-logos/tel-aviv-university.png',
+    logo: '/university-logos/tel-aviv-university.webp',
     website: 'https://english.tau.ac.il/',
     participationYears: [2021],
     awards: [
@@ -1120,7 +1120,7 @@ const universityRecords: readonly University[] = [
     country: 'Australia',
     latitude: -33.917689,
     longitude: 151.231022,
-    logo: '/university-logos/unsw.png',
+    logo: '/university-logos/unsw.webp',
     logoSource: 'https://www.unsw.edu.au/',
     logoSurface: 'light',
     website: 'https://www.unsw.edu.au/',

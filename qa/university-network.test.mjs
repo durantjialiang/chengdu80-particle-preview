@@ -118,7 +118,7 @@ await test('shared university ecosystem contracts', async (t) => {
         assert.deepEqual(getUniversity('unsw').participationYears, [2020]);
         assert.equal(getUniversity('unsw').awards.length, 0);
         assert.equal(getUniversity('unsw').projects.length, 0);
-        assert.equal(getUniversity('unsw').logo, '/university-logos/unsw.png');
+        assert.equal(getUniversity('unsw').logo, '/university-logos/unsw.webp');
         assert.equal(getUniversity('hku').logo, '/university-logos/hku.svg');
         assert.equal(getUniversity('hku').logoSource, 'https://www.hku.hk/');
         assert.equal(getUniversity('hku').logoSurface, 'light');
@@ -164,7 +164,7 @@ await test('shared university ecosystem contracts', async (t) => {
           if (u.logo) {
             assert.match(
               u.logo,
-              /^\/university-logos\/[a-z-]+\.(svg|png|jpg)$/,
+              /^\/university-logos\/[a-z-]+\.(svg|webp)$/,
             );
             assert.ok((await stat(`public${u.logo}`)).size > 100);
           } else {

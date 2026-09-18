@@ -1,6 +1,11 @@
 import { bilingual as b } from './competition';
 
-/** Reuse approved identities without changing the recorded co-host relationships. */
+/**
+ * Reuse approved identities without changing the recorded co-host relationships.
+ * Raster logo `sha256`, dimensions and paths describe the checked-in WebP
+ * derivative. `sourcePath`/`sourceSha256` preserve the downloaded source-file
+ * history and do not claim that the derivative is byte-identical to it.
+ */
 export const hostBrandProfiles = {
   swufe: {
     website: 'https://www.swufe.edu.cn/',
@@ -11,14 +16,17 @@ export const hostBrandProfiles = {
     website: 'https://www.cdjzjk.com/',
     usageStatus: 'project-owner-confirmed',
     logo: {
-      src: '/partner-logos/chengdu-jiaozi.png',
+      src: '/partner-logos/chengdu-jiaozi.webp',
       width: 376,
       height: 50,
       surface: 'dark',
       sourcePage: 'https://www.cdjzjk.com/',
       originalImageUrl: 'https://www.cdjzjk.com/_nuxt/logo-b.Br5iWYEW.png',
-      sha256:
+      sourcePath: '/partner-logos/chengdu-jiaozi.png',
+      sourceSha256:
         'b297a8b33d84ec30e8e17c61a9745e32b9feb362cf456e32d9392153c4c145b7',
+      sha256:
+        'e8c8d40fd4fa0fe8bf803796c21b2a1088b92ce55db6331764e17fbfbb278a3c',
     },
   },
 } as const;
@@ -42,14 +50,17 @@ export const partnerBrandProfiles = [
     usageStatus: 'project-owner-confirmed',
     permissionConfirmedOn: '2026-09-07',
     logo: {
-      src: '/partner-logos/cdar.png',
+      src: '/partner-logos/cdar.webp',
       width: 291,
       height: 151,
       sourcePage: 'https://cdar.econ.berkeley.edu/',
       originalImageUrl:
         'https://cdar.econ.berkeley.edu/sites/default/files/styles/panopoly_image_original/public/general/cdar_2_logo.png%3Fitok=WoRVIkI4%26timestamp=1580499629',
-      sha256:
+      sourcePath: '/partner-logos/cdar.png',
+      sourceSha256:
         '8ea7a078aa131d57dfcfd75fe89780c747cf0132af42eb8d64985aa1fb8f06d5',
+      sha256:
+        'cca36d0724bcab7b1f6aebcf1ad489acdb667ac24990c6e93d561c7430607672',
     },
   },
   {

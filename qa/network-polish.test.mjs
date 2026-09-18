@@ -68,6 +68,11 @@ await test('international network polish preserves dated records and clear ident
             continue;
           }
           assert.ok(university.logo, university.id);
+          assert.match(
+            university.logo,
+            /^\/university-logos\/[a-z-]+\.(svg|webp)$/,
+            university.id,
+          );
           assert.ok(university.logoSource, university.id);
           await access('public' + university.logo);
         }

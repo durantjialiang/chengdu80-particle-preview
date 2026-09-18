@@ -12,6 +12,7 @@ export type NewsArticle = {
   historical: boolean;
   cover: {
     src: string;
+    thumbnail: string;
     alt: Localized;
     width: number;
     height: number;
@@ -47,12 +48,14 @@ export const newsArticles: readonly NewsArticle[] = [
     historical: true,
     cover: {
       src: '/history-media/collaborators/collab-2019-hansen-portrait-full.webp',
+      thumbnail:
+        '/history-media/collaborators/collab-2019-hansen-portrait-thumb.webp',
       alt: {
         en: 'Lars Peter Hansen speaking at the 2019 forum',
         zh: 'Lars Peter Hansen在2019论坛发言',
       },
-      width: 2400,
-      height: 1597,
+      width: 1600,
+      height: 1065,
     },
     paragraphs: [
       {
@@ -111,12 +114,14 @@ export const newsArticles: readonly NewsArticle[] = [
     historical: true,
     cover: {
       src: '/history-media/collaborators/collab-2019-anderson-portrait-full.webp',
+      thumbnail:
+        '/history-media/collaborators/collab-2019-anderson-portrait-thumb.webp',
       alt: {
         en: 'Robert M. Anderson addressing the 2019 forum',
         zh: 'Robert M. Anderson在2019论坛发言',
       },
-      width: 2400,
-      height: 1597,
+      width: 1600,
+      height: 1065,
     },
     paragraphs: [
       {

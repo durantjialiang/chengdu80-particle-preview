@@ -78,7 +78,7 @@ export const cityCollaborationImages: readonly ArchiveImage[] = [
     localAssetPath: '/history-media/city-qingyang-2024-full.webp',
     thumbnailPath: '/history-media/city-qingyang-2024-thumb.webp',
     width: 1600,
-    height: 1066,
+    height: 1067,
   },
   {
     id: 'city-financial-office-2024',
@@ -100,8 +100,8 @@ export const cityCollaborationImages: readonly ArchiveImage[] = [
     permission,
     localAssetPath: '/history-media/city-financial-office-2024-full.webp',
     thumbnailPath: '/history-media/city-financial-office-2024-thumb.webp',
-    width: 1800,
-    height: 1200,
+    width: 1600,
+    height: 1067,
   },
   {
     id: 'city-financial-office-2024-stage',
@@ -127,8 +127,8 @@ export const cityCollaborationImages: readonly ArchiveImage[] = [
     },
     localAssetPath: '/history-media/city-financial-office-2024-stage-full.webp',
     thumbnailPath: '/history-media/city-financial-office-2024-stage-thumb.webp',
-    width: 2400,
-    height: 1600,
+    width: 1600,
+    height: 1067,
   },
 ];
 

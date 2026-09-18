@@ -186,8 +186,8 @@ await test('site content and static archive contracts', async (t) => {
               7,
             );
             assert.equal(
-              (html.match(/width="1800" height="1200"/g) ?? []).length,
-              3,
+              (html.match(/width="1600" height="1067"/g) ?? []).length,
+              5,
             );
             assert.doesNotMatch(
               html,
@@ -574,6 +574,7 @@ await test('site content and static archive contracts', async (t) => {
             'White original marks need a dark surface',
           );
           assert.ok(profile.logo.width > 0 && profile.logo.height > 0);
+          assert.match(profile.logo.src, /\.(svg|webp)$/);
         }
         const previousWindow = Object.getOwnPropertyDescriptor(
           globalThis,
@@ -707,6 +708,7 @@ await test('site content and static archive contracts', async (t) => {
           assert.equal(profile.usageStatus, 'project-owner-confirmed');
           assert.equal(profile.permissionConfirmedOn, '2026-09-07');
           assert.ok(profile.logo.width > 0 && profile.logo.height > 0);
+          assert.match(profile.logo.src, /\.(svg|webp)$/);
           assert.ok(profile.logo.sourcePage.startsWith('https://'));
           assert.ok(profile.logo.originalImageUrl.startsWith('https://'));
           const card = html.match(
@@ -778,6 +780,7 @@ await test('site content and static archive contracts', async (t) => {
           assert.ok(card.includes(company.name.en));
           assert.ok(card.indexOf('<img') < card.indexOf('<h4'));
           assert.ok(company.logo.width > 0 && company.logo.height > 0);
+          assert.match(company.logo.src, /\.(svg|webp)$/);
           const original = await readFile(`public${company.logo.src}`);
           assert.equal(
             createHash('sha256').update(original).digest('hex'),

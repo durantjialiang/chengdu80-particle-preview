@@ -1,3 +1,7 @@
+.responsivePhoto {
+  display: contents;
+}
+
 .cover {
   margin: 42px 0 54px;
 }

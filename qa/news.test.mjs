@@ -32,7 +32,7 @@ await test('News articles preserve dated records, valid sources and complete des
     const approved = new Set(
       images.flatMap((image) => [image.localAssetPath, image.thumbnailPath]),
     );
-    approved.add('/video-posters/behind-the-scenes.jpg');
+    approved.add('/video-posters/behind-the-scenes.webp');
     assert.equal(newsArticles.length, 2);
     assert.deepEqual(
       newsArticles.map((a) => a.id),

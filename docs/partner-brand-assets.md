@@ -29,32 +29,39 @@ Brand guidance reviewed during asset research:
 - https://investors.statestreet.com/files/doc_downloads/2024/Compliance_Global_Standard-of-Conduct-English.pdf
   (page 47: external promotional use requires prior brand approval).
 
-Use the original files without recoloring, filters, redraws, cropping, logo
-rearrangement, or added effects. White presentation areas retain clear space and
-legibility on the site's dark background. Hover styling applies to the surrounding
-card, not the marks. Rights remain with the respective owners.
+Keep the source marks without recoloring, filters, redraws, cropping, logo
+rearrangement, or added effects. Raster marks are delivered as WebP derivatives
+for the website; their source URLs and original-file hashes remain in the
+metadata, while the checked-in `sha256` values identify the WebP bytes. White
+presentation areas retain clear space and legibility on the site's dark
+background. Hover styling applies to the surrounding card, not the marks.
+Rights remain with the respective owners.
 
-## Original assets and official destinations
+## Source records, WebP delivery and official destinations
 
-| Organization     | Official website / source page          | Local original                          | Format / dimensions    |
-| ---------------- | --------------------------------------- | --------------------------------------- | ---------------------- |
-| UC Berkeley CDAR | https://cdar.econ.berkeley.edu/         | `public/partner-logos/cdar.png`         | PNG, 291 × 151         |
-| State Street     | https://www.statestreet.com/us/en/about | `public/partner-logos/state-street.svg` | SVG, viewBox 576 × 158 |
+| Organization     | Official website / source page          | Source download (history) | Web delivery                             | Source dimensions | Web dimensions |
+| ---------------- | --------------------------------------- | ------------------------- | ---------------------------------------- | ----------------- | -------------- |
+| UC Berkeley CDAR | https://cdar.econ.berkeley.edu/         | `cdar.png`                | `public/partner-logos/cdar.webp`         | 291 × 151         | 291 × 151      |
+| State Street     | https://www.statestreet.com/us/en/about | `state-street.svg`       | `public/partner-logos/state-street.svg`  | viewBox 576 × 158 | viewBox 576 × 158 |
 
-Original URLs and SHA-256 checksums are centralized in `content/partner-brands.ts`.
-CDAR's static site uses an encoded `%3F` and `%26` in the actual image filename;
-these are retained exactly, not changed into a query string. The State Street
-SVG is served by its current official website; no archived logo was recreated.
+Original URLs, source SHA-256 values and WebP derivative SHA-256 values are
+centralized in `content/partner-brands.ts`. CDAR's static site uses an encoded
+`%3F` and `%26` in the actual image filename; these are retained exactly, not
+changed into a query string. The State Street SVG is served by its current
+official website; no archived logo was recreated.
 
-The source files were copied byte-for-byte. CDAR is not enlarged beyond its
-original CSS width; State Street remains vector. Both have reserved dimensions,
-lazy loading and asynchronous decoding. Source and permission notes live here
-instead of adding audit copy to the public cards.
+The original source downloads are recorded through `sourcePath` and
+`sourceSha256`; they are not described as byte-identical to the WebP delivery
+files. CDAR is not enlarged beyond its source CSS width; State Street remains
+vector. Both have reserved dimensions, lazy loading and asynchronous decoding.
+Source and permission notes live here instead of adding audit copy to the public
+cards.
 
 ## Validation boundary
 
-Automated checks cover original checksums, official-domain destinations, native
-links, safe new-tab attributes, local assets, and dated historical roles. The
+Automated checks cover delivered checksums, WebP/SVG path formats,
+official-domain destinations, native links, safe new-tab attributes, local
+assets, and dated historical roles. The
 cards stack below 760px, retain keyboard focus outlines, and suppress hover
 translation for reduced motion. A browser screenshot or manual interaction test
 is not implied by these source/SSR checks.
@@ -69,10 +76,10 @@ endorsement is asserted. The project owner's existing authorization to publish
 company marks is recorded as `project-owner-confirmed`; no private approval
 documents are included.
 
-| Organization                           | Official destination      | Local original                            | Dimensions |
-| -------------------------------------- | ------------------------- | ----------------------------------------- | ---------- |
-| SWUFE | https://www.swufe.edu.cn/ | Text only; mark withdrawn on 2026-09-15 | — |
-| Chengdu Jiaozi Financial Holding Group | https://www.cdjzjk.com/   | `public/partner-logos/chengdu-jiaozi.png` | 376 × 50   |
+| Organization                           | Official destination      | Source download (history) | Web delivery                                  | Web dimensions |
+| -------------------------------------- | ------------------------- | ------------------------- | --------------------------------------------- | -------------- |
+| SWUFE | https://www.swufe.edu.cn/ | Text only; mark withdrawn on 2026-09-15 | — | — |
+| Chengdu Jiaozi Financial Holding Group | https://www.cdjzjk.com/   | `chengdu-jiaozi.png` | `public/partner-logos/chengdu-jiaozi.webp` | 376 × 50 |
 
 SWUFE uses its school name as text only; its mark has been removed from public assets at the project owner's request. Jiaozi's white wordmark and gold
 symbol were downloaded unchanged from its official homepage's header asset:
@@ -80,17 +87,20 @@ https://www.cdjzjk.com/_nuxt/logo-b.Br5iWYEW.png
 The official header module `https://www.cdjzjk.com/_nuxt/BVSyvsR9.js` references
 this original. The small 42 × 40 site icon was not used.
 
-SHA-256 values, natural dimensions, original source and destination are recorded
-in `hostBrandProfiles` in `content/partner-brands.ts`. Both white-on-transparent
-marks use a dark presentation area, clear space and `object-fit: contain`, without
-recoloring, cropping or enlarging the source. Dimensions are reserved and images
-use lazy loading and asynchronous decoding. The two-column layout retains the
+SHA-256 values, source history, delivered dimensions, original source and
+destination are recorded in `hostBrandProfiles` in `content/partner-brands.ts`.
+The white-on-transparent WebP derivative uses a dark presentation area, clear
+space and `object-fit: contain`, without recoloring, cropping or enlarging the
+source. The original source hash is kept in `sourceSha256`; `sha256` matches the
+checked-in WebP. Dimensions are reserved and images use lazy loading and
+asynchronous decoding. The two-column layout retains the
 existing single-column breakpoint. Audit metadata stays in code and this document,
 not in the public cards.
 
-Regression coverage checks original asset hashes, reuse of the SWUFE university
-asset, direct official links, accessible new-tab attributes, image-before-name
-ordering and both languages across all three placements. These are source and
+Regression coverage checks delivered asset hashes, WebP/SVG path formats, reuse
+of the SWUFE university asset, direct official links, accessible new-tab
+attributes, image-before-name ordering and both languages across all three
+placements. These are source and
 server-rendered markup checks, not browser screenshot or click tests.
 
 For this revision, `npm run typecheck`, `npm run lint`, all 58 tests,

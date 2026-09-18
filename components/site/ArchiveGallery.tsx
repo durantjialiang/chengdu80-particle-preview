@@ -20,10 +20,12 @@ export function Photo({
   image,
   full = false,
   eager = false,
+  fullResolution = false,
 }: {
   image: ArchiveImage;
   full?: boolean;
   eager?: boolean;
+  fullResolution?: boolean;
 }) {
   const { t } = useSiteLanguage();
   const [failed, setFailed] = useState(false);
@@ -39,7 +41,7 @@ export function Photo({
       </span>
     );
   /* oxlint-disable next/no-img-element */
-  return (
+  const photo = (
     <img
       src={(full ? image.localAssetPath : image.thumbnailPath) ?? undefined}
       width={image.width}
@@ -52,6 +54,16 @@ export function Photo({
     />
   );
   /* oxlint-enable next/no-img-element */
+  // Inline mobile photos use the smaller derivative; opening the viewer
+  // explicitly requests the large image, regardless of screen size.
+  return full && !fullResolution && image.thumbnailPath ? (
+    <picture className={styles.responsivePhoto}>
+      <source media="(max-width: 767px)" srcSet={image.thumbnailPath} />
+      {photo}
+    </picture>
+  ) : (
+    photo
+  );
 }
 
 export function Viewer({
@@ -110,7 +122,7 @@ export function Viewer({
         </button>
       </div>
       <div className={styles.fullImage}>
-        <Photo key={current.id} image={current} full eager />
+        <Photo key={current.id} image={current} full eager fullResolution />
       </div>
       <div className={styles.viewerBottom}>
         {/* Public viewing is image-first. Audit details remain in the manifest
@@ -230,7 +242,7 @@ export default function ArchiveGallery({
           aria-label={t(b('Open cover photograph', '打开封面照片'))}
           onClick={() => setSelected(items.indexOf(cover))}
         >
-          <Photo image={cover} full eager />
+          <Photo image={cover} full />
           <span className={styles.expand}>
             <Expand size={18} /> {t(b('View image', '查看图片'))}
           </span>

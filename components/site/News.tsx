@@ -17,14 +17,19 @@ function Cover({
   // Approved local photographs are served directly by the static Vite site.
   /* oxlint-disable next/no-img-element */
   return (
-    <img
-      src={article.cover.src}
-      alt={t(article.cover.alt)}
-      width={article.cover.width}
-      height={article.cover.height}
-      loading={eager ? 'eager' : 'lazy'}
-      decoding="async"
-    />
+    <picture className={styles.responsivePhoto}>
+      {eager && (
+        <source media="(max-width: 767px)" srcSet={article.cover.thumbnail} />
+      )}
+      <img
+        src={eager ? article.cover.src : article.cover.thumbnail}
+        alt={t(article.cover.alt)}
+        width={article.cover.width}
+        height={article.cover.height}
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
+      />
+    </picture>
   );
   /* oxlint-enable next/no-img-element */
 }

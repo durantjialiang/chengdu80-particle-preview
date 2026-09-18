@@ -25,8 +25,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-hansen-portrait-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-hansen-portrait-thumb.webp",
-    "width": 2400,
-    "height": 1597
+    "width": 1600,
+    "height": 1065
   },
   {
     "id": "collab-2019-hansen-forum",
@@ -54,8 +54,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-hansen-forum-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-hansen-forum-thumb.webp",
-    "width": 2400,
-    "height": 1597
+    "width": 1600,
+    "height": 1065
   },
   {
     "id": "collab-2019-hansen-exchange",
@@ -83,8 +83,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-hansen-exchange-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-hansen-exchange-thumb.webp",
-    "width": 2400,
-    "height": 1597
+    "width": 1600,
+    "height": 1065
   },
   {
     "id": "collab-2019-hansen-discussion",
@@ -112,8 +112,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-hansen-discussion-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-hansen-discussion-thumb.webp",
-    "width": 2400,
-    "height": 1597
+    "width": 1600,
+    "height": 1065
   },
   {
     "id": "collab-2019-sobel-portrait",
@@ -141,8 +141,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-sobel-portrait-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-sobel-portrait-thumb.webp",
-    "width": 2400,
-    "height": 1603
+    "width": 1600,
+    "height": 1069
   },
   {
     "id": "collab-2019-sobel-forum",
@@ -170,8 +170,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-sobel-forum-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-sobel-forum-thumb.webp",
-    "width": 2400,
-    "height": 1371
+    "width": 1600,
+    "height": 914
   },
   {
     "id": "collab-2019-sobel-exchange",
@@ -199,8 +199,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-sobel-exchange-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-sobel-exchange-thumb.webp",
-    "width": 2400,
-    "height": 1620
+    "width": 1600,
+    "height": 1080
   },
   {
     "id": "collab-2019-sobel-panel",
@@ -228,8 +228,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-sobel-panel-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-sobel-panel-thumb.webp",
-    "width": 1992,
-    "height": 2400
+    "width": 1328,
+    "height": 1600
   },
   {
     "id": "collab-2019-anderson-portrait",
@@ -257,8 +257,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-anderson-portrait-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-anderson-portrait-thumb.webp",
-    "width": 2400,
-    "height": 1597
+    "width": 1600,
+    "height": 1065
   },
   {
     "id": "collab-2019-anderson-forum",
@@ -286,8 +286,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-anderson-forum-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-anderson-forum-thumb.webp",
-    "width": 2400,
-    "height": 1600
+    "width": 1600,
+    "height": 1067
   },
   {
     "id": "collab-2019-anderson-exchange",
@@ -315,8 +315,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-anderson-exchange-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-anderson-exchange-thumb.webp",
-    "width": 2400,
-    "height": 1600
+    "width": 1600,
+    "height": 1067
   },
   {
     "id": "collab-2019-anderson-panel",
@@ -344,8 +344,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-anderson-panel-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-anderson-panel-thumb.webp",
-    "width": 2400,
-    "height": 1348
+    "width": 1600,
+    "height": 899
   },
   {
     "id": "collab-2019-haran-portrait",
@@ -373,8 +373,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-haran-portrait-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-haran-portrait-thumb.webp",
-    "width": 2400,
-    "height": 1589
+    "width": 1600,
+    "height": 1059
   },
   {
     "id": "collab-2019-haran-science",
@@ -402,8 +402,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-haran-science-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-haran-science-thumb.webp",
-    "width": 2400,
-    "height": 1600
+    "width": 1600,
+    "height": 1067
   },
   {
     "id": "collab-2019-haran-forum",
@@ -431,8 +431,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-haran-forum-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-haran-forum-thumb.webp",
-    "width": 2400,
-    "height": 1474
+    "width": 1600,
+    "height": 983
   },
   {
     "id": "collab-2019-haran-audience",
@@ -460,8 +460,8 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-haran-audience-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-haran-audience-thumb.webp",
-    "width": 2400,
-    "height": 1596
+    "width": 1600,
+    "height": 1064
   },
   {
     "id": "collab-2019-forum-group",
@@ -489,7 +489,7 @@
     },
     "localAssetPath": "/history-media/collaborators/collab-2019-forum-group-full.webp",
     "thumbnailPath": "/history-media/collaborators/collab-2019-forum-group-thumb.webp",
-    "width": 2400,
-    "height": 1600
+    "width": 1600,
+    "height": 1067
   }
 ]

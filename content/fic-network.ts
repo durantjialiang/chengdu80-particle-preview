@@ -1,6 +1,10 @@
 import { bilingual as b } from './competition';
 import { partnerBrandProfiles } from './partner-brands';
 
+// Raster logo `sha256`, dimensions and paths describe the checked-in WebP
+// derivative. `sourcePath`/`sourceSha256` preserve the downloaded source-file
+// history; official source URLs remain unchanged.
+
 /**
  * Institutions named in FIC's archived exchange/resource network. This is not
  * a competition sponsorship list or a confirmed 2026 appointment. Retain that
@@ -38,14 +42,17 @@ export const ficIndustry = [
     website: 'https://www.ccb.com/',
     ...additionalLogoPermission,
     logo: {
-      src: '/partner-logos/ccb.png',
+      src: '/partner-logos/ccb.webp',
       width: 200,
       height: 40,
       sourcePage: 'https://en.ccb.com/en/home/indexv3.html',
       originalImageUrl:
         'https://image4.ccb.com/cn/home/company/v3/images/img/20150828_1440745919/20151201084052927594.png',
-      sha256:
+      sourcePath: '/partner-logos/ccb.png',
+      sourceSha256:
         'e0eb33430eb24b7844480172a7186181cf7a4d0cd393cb584137c0cefb6c43b6',
+      sha256:
+        '68217839b399b4b8b01b355c727bd00c8791e247511a0f64925d5f757659166c',
     },
   },
   {
@@ -54,14 +61,17 @@ export const ficIndustry = [
     website: 'https://www.china-inv.cn/chinainven/home/',
     ...additionalLogoPermission,
     logo: {
-      src: '/partner-logos/cic.jpg',
+      src: '/partner-logos/cic.webp',
       width: 400,
       height: 131,
       sourcePage: 'https://www.china-inv.cn/chinainven/home/',
       originalImageUrl:
         'https://www.china-inv.cn/chinainven/xhtml/images/public/logo.jpg',
-      sha256:
+      sourcePath: '/partner-logos/cic.jpg',
+      sourceSha256:
         '47fbb5d62c9394842f6feb37759ed9fddc667c0d5b934d41b925faa04f410d66',
+      sha256:
+        'ca16ab849d7e9e946bdf6a4ef09d20bec084f098a2822165e06e2753bb44b19c',
     },
   },
   {
@@ -78,14 +88,17 @@ export const ficIndustry = [
     website: 'https://www.swissre.com/',
     ...additionalLogoPermission,
     logo: {
-      src: '/partner-logos/swiss-re.jpg',
-      width: 5039,
-      height: 1189,
+      src: '/partner-logos/swiss-re.webp',
+      width: 960,
+      height: 227,
       sourcePage: 'https://www.swissre.com/media/electronic-press-kit.html',
       originalImageUrl:
         'https://www.swissre.com/dam/jcr%3A677cb3f5-a53d-4bf3-bf91-8018afbaa59b/SR_Logo_CMYK_Lake.2024-03-14-11-57-00.jpg',
-      sha256:
+      sourcePath: '/partner-logos/swiss-re.jpg',
+      sourceSha256:
         '72ff60fd535b035c17ac140e0494798cd1281a462b4f696761d35c739ff5bff4',
+      sha256:
+        'da9432086dd862f53e821fd6287a1ef859fee2106b2d885d0a639d041f105a16',
     },
   },
   {
@@ -94,15 +107,18 @@ export const ficIndustry = [
     website: 'https://www.moodys.com/',
     ...additionalLogoPermission,
     logo: {
-      src: '/partner-logos/moodys.png',
-      width: 4086,
-      height: 1129,
+      src: '/partner-logos/moodys.webp',
+      width: 960,
+      height: 265,
       sourcePage: 'https://www.moodys.com/web/en/us/media-relations.html',
       originalImageUrl:
         'https://www.moodys.com/web/en/us/site-assets/moodysmediakit.zip',
       originalArchiveEntry: "1. Moody's Logos/mdy_logo_rgb_MoodysBlue (1).png",
-      sha256:
+      sourcePath: '/partner-logos/moodys.png',
+      sourceSha256:
         '7433c714bd02fa38e3fcd0c5c6c9e85a063449f18a9d4d0a168436c041ebdb3a',
+      sha256:
+        'ab1d3e4c566b9857a6df2c2b601618b95d56fd95402959b5b53439792d48c251',
     },
   },
 ] as const;
